@@ -1,0 +1,67 @@
+---
+sidebar_position: 1000
+tags:
+  - webpack
+---
+
+# Installation
+
+## Prerequisite
+
+Webpack 5 runs on Node.js version 10.13.0+.
+
+## Local Installation
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash title=
+npm install --save-dev webpack
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash title=
+yarn add --dev webpack
+```
+
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="note">
+
+If you're using webpack version > 4 and want to call webpack from the command line, you'll also need to install the CLI.
+
+```bash title=
+npm install --save-dev webpack-cli
+```
+
+</Admonition>
+
+## Global Installation
+
+<Tabs>
+<TabItem value="npm" label="npm">
+
+```bash title=
+npm install --global webpack
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash title=
+yarn global webpack
+```
+
+</TabItem>
+</Tabs>
+
+<Admonition type="caution" title="caution">
+
+Note that this is not a recommended practice.
+
+Installing globally locks you down to a specific version of webpack and could fail in projects that use a different version.
+
+</Admonition>
