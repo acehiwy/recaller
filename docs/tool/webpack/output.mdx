@@ -1,0 +1,58 @@
+---
+sidebar_position: 3000
+tags:
+  - webpack
+---
+
+# Output
+
+The output property <Color color="var(--secondary-font-color)"> tells webpack where to emit the bundles it creates </Color> and how to name these files.
+
+It defaults to `./dist/main.js` for the main output file and to the `./dist` folder for any other generated file.
+
+<Admonition type="note" title="note">
+
+Note that, while there can be multiple entry points, <Color color="var(--secondary-font-color)"> only one </Color> output configuration is specified.
+
+</Admonition>
+
+## Usage
+
+The minimum requirement for the output property in your webpack configuration is to set its value to an object and provide an `output.filename` to use for the output file(s):
+
+```javascript title=webpack.config.js showLineNumbers
+module.exports = {
+  output: {
+    filename: "bundle.js",
+  },
+};
+```
+
+This configuration would output a single `bundle.js` file into the `dist` directory.
+
+## Multiple Entry Points
+
+If your configuration creates more than a single "chunk", you should use substitutions to ensure that each file has a unique name.
+
+```javascript title=webpack.config.js showLineNumbers
+module.exports = {
+  entry: {
+    app: "./src/app.js",
+    search: "./src/search.js",
+  },
+  output: {
+    filename: "[name].js",
+    path: __dirname + "/dist",
+  },
+};
+```
+
+This will output `./dist/app.js` and `./dist/search.js` files.
+
+<br />
+
+---
+
+# Sources
+
+- https://webpack.js.org/concepts/output
