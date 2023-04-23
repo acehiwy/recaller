@@ -1,0 +1,271 @@
+---
+sidebar_position: 40000
+tags:
+  - rust
+---
+
+# Data Types
+
+Rust must know types of all variables at compile time.
+
+## Scalar Type
+
+A scalar type represents a single value.
+
+Rust has four primary scalar types:
+
+- [Integers](#integer)
+- [Floating-point numbers](#floating-point)
+- [Booleans](#booleans)
+- [Characters](#character-type)
+
+### Integer
+
+```rust title= showLineNumbers
+let foo = 5;
+let bar: i8 = -10;
+```
+
+An integer is a number without a fractional component.
+
+Signed and unsigned refer to whether it's possible for the number to be negative(signed).
+
+<Color color="var(--not-require-but-good-to-know-font-color)">
+
+In other words, whether the number needs to have a sign with it (signed) or
+whether it will only ever be positive and can therefore be represented without
+a sign (unsigned)
+
+</Color>
+
+| Length  | Signed | Unsigned |
+| ------- | ------ | -------- |
+| 8-bit   | i8     | u8       |
+| 16-bit  | i16    | u16      |
+| 32-bit  | i32    | u32      |
+| 64-bit  | i64    | u64      |
+| 128-bit | i128   | u128     |
+| arch    | isize  | usize    |
+
+<Admonition type="note" title="note">
+
+`isize` and `usize` type are
+
+- 64-bits integer length on 64bit computer architecture
+- 32-bits integer length for 32bit computer architecture
+
+</Admonition>
+
+<details>
+
+<summary> Range of integer for each type </summary>
+
+8-bit:
+
+- Signed: -128 to 127
+- Unsigned: 0 to 255
+
+16-bit:
+
+- Signed: -32,768 to 32,767
+- Unsigned: 0 to 65,535
+
+32-bit:
+
+- Signed: -2.1 B to 2.1 B (-2,147,483,648 to 2,147,483,647)
+- Unsigned: 0 to 4.2 B (4,294,967,295)
+
+64-bit:
+
+- Signed: -9 MMM to 9 MMM (-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807)
+- Unsigned: 0 to 18 MMM (18,446,744,073,709,551,615)
+
+128-bit:
+
+- Signed: -170,141,183,460,469,231,731,687,303,715,884,105,728 to 170,141,183,460,469,231,731,687,303,715,884,105,727
+- Unsigned: 0 to 340,282,366,920,938,463,463,374,607,431,768,211,455
+
+&#8203;<Color color="var(--secondary-font-color)"> Signed </Color> variant can store numbers
+from $-(2^{n - 1})$ to $(2^{n - 1})-1$ inclusive, where `n` is the number of bits.
+
+&#8203;<Color color="var(--secondary-font-color)"> Unsigned </Color> variants can store
+numbers from 0 to $2n - 1$
+
+</details>
+
+<Admonition type="note" title="note">
+
+Integer types default to `i32`.
+
+</Admonition>
+
+Integer can also be represent in these format
+
+| Number literals | Example        |
+| --------------- | -------------- |
+| Decimal         | 98_222         |
+| Hex             | 0xff           |
+| Octal           | 0o77           |
+| Binary          | 0b1111_0000    |
+| Byte            | (u8 only) b'A' |
+
+<Admonition type="note" title="note">
+
+Integer division will be rounded down
+
+```rust title=
+println!("{}, {}", 9/5, -9/8);
+// output: 1, -1
+// 9/5 = 1.8 which round down to 1
+// -9/8 = -1.125 which round down to -1
+```
+
+</Admonition>
+
+<Admonition type="tip" title="later" icon="">
+
+[Integer Overflow](https://doc.rust-lang.org/book/ch03-02-data-types.html#integer-overflow)
+
+</Admonition>
+
+### Floating-Point
+
+```rust title= showLineNumbers
+let x = 2.0; // f64
+let y: f32 = 3.0; // f32
+```
+
+`f32`, 32 bits in size
+
+`f64`, 64 bits in size
+
+<Admonition type="note" title="note">
+
+The default type is f64
+
+</Admonition>
+
+<Admonition type="note" title="note">
+
+All floating-point types are signed
+
+</Admonition>
+
+### Booleans
+
+```rust title= showLineNumbers
+let foo = true;
+let bar: bool = false;
+```
+
+Booleans are one <Color color="var(--secondary-font-color)"> byte </Color> in size
+
+### Character Type
+
+```rust title= showLineNumbers
+let c = 'z';
+let z: char = 'ℤ'; // with explicit type annotation
+let heart_eyed_cat = '😻';
+```
+
+`char` type use <Color color="var(--secondary-font-color)"> single </Color> quote.
+
+`char` type is 4 bytes in size and represents a Unicode Scalar Value.
+
+<Admonition type="note" title="note">
+
+zero-width spaces are valid `char` values
+
+</Admonition>
+
+## Compound Types
+
+Compound types can group <Color color="var(--secondary-font-color)"> multiple values </Color> into one type.
+
+### Tuple Type
+
+Tuples have a fixed length: once declared, they cannot grow or shrink in size.
+
+```rust title=
+let foo: (i32, f64, u8) = (500, 6.4, 1);
+let tup = (500, 6.4, 1);
+let (x, y, z) = tup;
+println!("The value of y is: {y}");
+```
+
+access a tuple element directly by using a period `.` followed by the index of the value we want to access.
+
+```rust title=
+let x: (i32, f64, u8) = (500, 6.4, 1);
+let five_hundred = x.0;
+let six_point_four = x.1;
+let one = x.2;
+```
+
+<Admonition type="info" title="info">
+
+The tuple without any values has a special name, `unit`.
+
+This value and its corresponding type are both written `()` and represent an empty value or an empty return type.
+
+```rust title=
+let fooUnit: () = ();
+```
+
+Expressions implicitly return the `unit` value if they don't return any other value.
+
+</Admonition>
+
+### Array
+
+&#8203;<Color color="var(--not-require-but-good-to-know-font-color)"> An array is a collection of multiple values. </Color>
+
+Every element of an array must have the <Color color="var(--secondary-font-color)"> same type </Color>.
+
+Arrays have a <Color color="var(--secondary-font-color)"> fixed </Color> length.
+
+```rust title= showLineNumbers
+let a = [1, 2, 3, 4, 5];
+
+// i32 is type definition ; 5 is array's length
+let foo: [i32; 5] = [1, 2, 3, 4, 5];
+
+// short hand
+let bar = [3; 5];
+// equivalent to
+let bar = [3,3,3,3,3];
+```
+
+Accessing array element:
+
+```rust title= showLineNumbers
+let a = [1,2,3];
+let foo = a[0];
+let bar = a[1];
+```
+
+<Admonition type="note" title="note">
+
+Rust will `panic` if you access an invalid index.
+
+</Admonition>
+
+---
+
+<Admonition type="info" title="info">
+
+In cases when many types are possible, we must add a type annotation
+
+```rust title=
+let bar: u32 = "42".parse().expect("Not a number!");
+```
+
+</Admonition>
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch03-02-data-types.html
