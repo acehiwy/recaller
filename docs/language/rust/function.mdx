@@ -1,0 +1,127 @@
+---
+sidebar_position: 50000
+tags:
+  - rust
+---
+
+# Functions
+
+```rust title= showLineNumbers
+fn main() {
+    print_labeled_measurement(5, 'h');
+}
+
+fn print_labeled_measurement(value: i32, unit_label: char) {
+    println!("The measurement is: {value}{unit_label}");
+}
+```
+
+<Admonition type="note" title="note">
+
+In function signatures, each <Color color="var(--secondary-font-color)"> parameter type </Color> must be declared.
+
+</Admonition>
+
+<Admonition type="note" title="note">
+
+Within the same scope, functions can be called regardless of their defining order.
+
+</Admonition>
+
+<Admonition type="info" title="info">
+
+Rust code uses snake case as the conventional style for function and variable names
+
+</Admonition>
+
+## Statements and Expressions
+
+- Statements are instructions that perform some action and <Color color="var(--secondary-font-color)"> do not return a value </Color>.
+- Expressions evaluate to a resultant value.
+
+### Statements
+
+Statements do not return values.
+
+`let y = 6;` is a statement.
+
+```rust title=
+let y = 6;
+```
+
+`let y = 6;` does not return value so you can not assign this statement to a variable
+
+```rust title=
+// highlight-error-next-line
+let x = (let y = 6);
+// highlight-error-next-line
+// Syntax Error: `let` expressions are not supported here
+// highlight-error-next-line
+// expected expression, found statement (`let`)
+```
+
+### Expressions
+
+Expressions evaluate <Color color="var(--primary-font-color)"> to </Color> <Color color="var(--secondary-font-color)"> a value </Color>.
+
+Expressions can be part of statements. In statement `let y = 6;`, `6` is an expression.
+
+A new scope block created with curly brackets is an expression:
+
+```rust title= showLineNumbers
+fn main() {
+    let y = {
+        let x = 3;
+        x + 1
+    };
+    // {
+    //   let x = 3;
+    //   x + 1
+    // }
+    // is an expression
+
+    println!("The value of y is: {y}");
+}
+```
+
+<Admonition type="note" title="note">
+
+`x + 1` is a implicit `return` and doesn't have a semicolon at the end.
+
+Expressions do not include ending semicolons.If you add a semicolon to the end of an expression, you turn it into a statement and it will then not return a value.
+
+</Admonition>
+
+## Functions with return values
+
+```rust title= showLineNumbers
+fn main() {
+    let x = plus_one(5);
+
+    println!("The value of x is: {x}");
+}
+
+fn plus_one(x: i32) -> i32 {
+    x + 1
+    // x + 1 is a return value
+    // note that return expression does not have a semicolon
+}
+```
+
+In Rust, the return value of the function is synonymous with the value of the <Color color="var(--secondary-font-color)"> final expression in the block of the body of a function </Color>.
+
+You can return early from a function by using the `return` keyword and specifying a value
+
+<Admonition type="note" title="note">
+
+If function have a return values. The return type must be declared using `->`
+
+</Admonition>
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch03-03-how-functions-work.html
