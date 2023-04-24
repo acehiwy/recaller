@@ -1,0 +1,221 @@
+---
+sidebar_position: 60000
+tags:
+  - rust
+---
+
+# Control Flow
+
+Executing code base on conditions(`if`, `loop`)
+
+## `if` <Color color="var(--primary-font-color)"> Expressions </Color>
+
+```rust title= showLineNumbers
+fn main() {
+    let number = 6;
+
+    if number % 4 == 0 {
+        println!("number is divisible by 4");
+    } else if number % 2 == 0 {
+        println!("number is divisible by 2");
+    } else {
+        println!("number is not divisible by 4, 3, or 2");
+    }
+}
+```
+
+<Admonition type="caution" title="caution">
+
+The condition in this code must evaluate to `bool` value otherwise Rust will throw complie time error.
+
+```rust title= showLineNumbers
+fn main() {
+    let number = 3;
+
+    // highlight-error-next-line
+    if number { // expected `bool`, found integer
+        println!("number was three");
+    }
+}
+```
+
+</Admonition>
+
+## Using `if` in a `let` Statement
+
+Because `if` is an expression, we can use it on the right side of a `let` statement to assign the outcome to a variable
+
+```rust title= showLineNumbers
+fn main() {
+    let condition = true;
+    let number = if condition { 5 } else { 6 };
+
+    println!("The value of number is: {number}");
+}
+```
+
+<Admonition type="note" title="note">
+
+The type of values return from each `if` branchs must be the same type.
+
+```rust title= showLineNumbers
+fn main() {
+    let condition = true;
+    // highlight-error-next-line
+    let number = if condition { 5 } else { "six" }; //`if` and `else` have incompatible types
+}
+```
+
+</Admonition>
+
+## `loop`
+
+```rust title= showLineNumbers
+fn main() {
+    loop { // infinite loop
+        println!("again!");
+    }
+}
+```
+
+`continue` to continue next iteration
+
+`break` to stop the `loop`
+
+### Returning Values from Loops
+
+Add value after `break` so loop can stop and return that value
+
+```rust title= showLineNumbers
+fn main() {
+    let mut counter = 0;
+
+    let result = loop {
+        counter += 1;
+
+        if counter == 10 {
+          // highlight-next-line
+            break counter * 2;
+        }
+    };
+
+    println!("The result is {result}");
+}
+```
+
+<Admonition type="note" title="note">
+
+When using multiple `break` to return value in a loop, their return type also need to be the compatible.
+
+</Admonition>
+
+### `break` and `continue` inside nested loop
+
+`break` and `continue` apply to the innermost loop.
+
+You can optionally specify a <Color color="var(--secondary-font-color)"> loop label </Color> on a loop that you can then use with `break` or `continue` to specify that those keywords apply to the labeled loop instead of the innermost loop.
+
+```rust title= showLineNumbers
+fn main() {
+    let mut count = 0;
+    // highlight-next-line
+    'counting_up: loop {
+        println!("count = {count}");
+        let mut remaining = 10;
+
+        loop {
+            println!("remaining = {remaining}");
+            if remaining == 9 {
+              // highlight-next-line
+                break;
+            }
+            if count == 2 {
+              // highlight-next-line
+                break 'counting_up;
+            }
+            remaining -= 1;
+        }
+
+        count += 1;
+    }
+    println!("End count = {count}");
+}
+```
+
+<Admonition type="note" title="note">
+
+Loop labels must begin with a single quote.
+
+</Admonition>
+
+<Admonition type="info" title="info">
+
+Use return value `break` with loop label
+
+```rust title=
+break 'counting_up 123;
+```
+
+</Admonition>
+
+### `while` loop
+
+```rust title= showLineNumbers
+fn main() {
+    let mut number = 3;
+
+    while number != 0 {
+        println!("{number}!");
+
+        number -= 1;
+    }
+
+    println!("LIFTOFF!!!");
+}
+```
+
+### loop through a collection
+
+```rust title= showLineNumbers
+fn main() {
+    let a = [10, 20, 30, 40, 50];
+
+    for element in a {
+        println!("the value is: {element}");
+    }
+}
+```
+
+use `Range`, provided by the standard library, to generates all numbers in sequence starting from one number and ending before another number.
+
+```rust title= showLineNumbers
+fn main() {
+    for element in 1..4 {
+        println!("{element}");
+    }; // output:  1, 2, 3
+
+    // or
+    for element in 1..=4 {
+        println!("{element}");
+
+    }; //output:  1, 2, 3, 4
+}
+```
+
+&#8203;<Color color="var(--not-require-but-good-to-know-font-color)"> use `.rev()` to reverse `Range` </Color>
+
+```rust title= showLineNumbers
+fn main() {
+    for number in (1..4).rev() {
+        println!("{number}"); //output: 3, 2, 1
+    }
+}
+```
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch03-05-control-flow.html
