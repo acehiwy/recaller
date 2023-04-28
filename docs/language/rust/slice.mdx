@@ -1,0 +1,94 @@
+# Slice
+
+## String Slice
+
+A string slice is a <Color color="var(--secondary-font-color)"> reference </Color> to part of a `String`:
+
+```rust title= showLineNumbers
+let s = String::from("hello world");
+
+let hello: &str = &s[0..5]; // exclusive upper bound
+let world = &s[6..11];
+```
+
+The slice data structure stores the <Color color="var(--secondary-font-color)"> starting position </Color> and the <Color color="var(--secondary-font-color)"> length </Color> of the slice
+
+In the case of `let world = &s[6..11];`, `world` would be a slice that contains a pointer to the byte at index 6 of `s` with a length value of 5.
+
+![slice](assets/slice.svg)
+
+<Admonition type="caution" title="caution">
+
+String slice range indices must occur at valid UTF-8 character boundaries.
+
+If you attempt to create a string slice in the middle of a multibyte character, your program will exit with an error.
+
+</Admonition>
+
+### Syntax short hand
+
+#### First char of String
+
+```rust title= showLineNumbers
+let s = String::from("hello");
+
+let slice = &s[0..2];
+let slice = &s[..2];
+```
+
+#### Last char of String
+
+```rust title= showLineNumbers
+let s = String::from("hello");
+
+let len = s.len();
+
+let slice = &s[3..len];
+let slice = &s[3..];
+```
+
+#### Entire string slice
+
+```rust title= showLineNumbers
+let slice = &s[..];
+let slice = &s;
+```
+
+## String Literals as Slices
+
+string literals being stored inside the binary.
+
+```rust title=
+let s = "Hello, world!";
+```
+
+The type of `s` here is `&str`: <Color color="var(--secondary-font-color)"> it's a slice </Color> pointing to that specific point of the binary.
+
+<Admonition type="info" title="info">
+
+Type `&String` is compatible with `&str`
+
+</Admonition>
+
+## Miscellaneous
+
+string to bytes array:
+
+```rust title= showLineNumbers
+let s = String::from("foo");
+let bytes = s.as_bytes();
+```
+
+set `String` to empty (`""`):
+
+```rust title=
+<String>.clear();
+```
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch04-03-slices.html
