@@ -1,0 +1,237 @@
+---
+sidebar_position: 10000
+tags:
+  - rust
+---
+
+# Ownership
+
+A set of rules that the compiler checks.It enables Rust to make memory safety guarantees without needing a garbage collector.
+
+## Stack and Heap
+
+Both the stack and the heap are parts of memory available to your code to use <Color color="var(--secondary-font-color)"> at runtime </Color>, but they are structured in different ways.
+
+All data stored on the stack must have a known, fixed size.
+
+Data with an unknown size at compile time or a size that might change must be stored on the heap instead.
+
+<Admonition type="tip" title="later" icon="">
+
+More info: https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#the-stack-and-the-heap
+
+</Admonition>
+
+## Ownership Rules
+
+- Each value in Rust has an owner.
+- There can only be one owner at a time.
+- When the owner goes out of scope, the value will be dropped.
+
+&#8203;<Color color="var(--not-require-but-good-to-know-font-color)"> The types covered previously are of a known size, can be stored on the stack and popped off the stack when their scope is over
+and can be quickly copied as an instance if another part of code needs to use it in a different scope. </Color>
+
+## `String` type
+
+```rust title= showLineNumbers
+let mut s = String::from("hello");
+
+s.push_str(", world!"); // push_str() appends a literal to a String
+
+println!("{}", s); // This will print `hello, world!`
+```
+
+`String` type is a mutable growable text
+
+### `String` under cover
+
+![string in memory](../assets/string-in-memory.svg)
+A String is made up of three parts
+
+On the left:
+
+- a pointer to the memory that holds the contents of the string,
+- a length
+- a capacity.
+
+This group of data is <Color color="var(--secondary-font-color)"> stored on the stack </Color>.
+
+On the right is the memory <Color color="var(--secondary-font-color)"> on the heap </Color> that <Color color="var(--secondary-font-color)"> holds the contents </Color>.
+
+## Memory and Allocation
+
+In the case of a string literal, we know the contents at compile time, so <Color color="var(--secondary-font-color)"> the text </Color> <Color color="var(--primary-font-color)"> is hardcoded directly into the final executable </Color>.
+
+However, in order to create `String` we need to allocate an amount of memory on the heap (unknown at compile time) to hold the contents.
+
+This means:
+
+- The memory must be requested from the memory allocator at <Color color="var(--secondary-font-color)"> runtime </Color>.
+- We need a way of returning this memory (free memory) back to the allocator when we're done with our `String`.
+
+When a variable goes out of scope, Rust automatically calls a special `drop` function and <Color color="var(--secondary-font-color)"> cleans up the heap memory for that variable </Color>.
+
+```rust title= showLineNumbers
+{
+    let s = String::from("hello"); // s is valid from this point forward
+
+    // do stuff with s
+}                                  // this scope is now over, and s is no
+                                    // longer valid
+```
+
+## Variables and Data Interacting with Move
+
+When copying known-size value, the value can be copied and push to the stack
+
+```rust title= showLineNumbers
+let x = 5;
+let y = x;
+// two `5` value are pushed onto the stack
+```
+
+But copying unknown-size create a stack of its metadata and pointer point to the content location.
+
+```rust title= showLineNumbers
+let s1 = String::from("hello");
+let s2 = s1;
+```
+
+![same unknown size value](../assets/same-unknown-size-value.svg)
+
+When `s1` and `s2` go out of scope, Rust need to free the memory that stored their content("hello"). But double free the same memory will be an error.
+
+After copying, `let s2 = s1;`, Rust invalidate `s1`.
+
+![invalidate-variable-after-copy](../assets/invalidate-variable-after-copy.svg)
+
+`s1` can no longer be used and Rust dont need to deal with double free error.
+
+```rust title= showLineNumbers
+let s1 = String::from("hello");
+let s2 = s1;
+```
+
+<Admonition type="info" title="info">
+
+The unknow-size value that are copied are called "moved value"
+
+`s1` was moved into `s2`
+
+</Admonition>
+
+## Variables and Data Interacting with Clone
+
+Clone unknown-size variable by `clone` method
+
+```rust title= showLineNumbers
+let s1 = String::from("hello");
+let s2 = s1.clone();
+
+println!("s1 = {}, s2 = {}", s1, s2);
+```
+
+will get this:
+
+![cloned variable](../assets/cloned-variable.svg)
+
+<Admonition type="note" title="note">
+
+Calling `clone` on known-size variable are the same as direct assignment. They are stored entirely on the stack.
+
+```rust title= showLineNumbers
+let x = 5;
+let y = x;
+
+println!("x = {}, y = {}", x, y);
+// same as
+let x = 5;
+let y = x.clone();
+
+println!("x = {}, y = {}", x, y);
+```
+
+</Admonition>
+
+## `Copy` and `Drop` trait
+
+`Copy` trait for (known-size) variable store in stack.
+
+`Drop` trait for (unknown-size) variable store in heap.
+
+If type implement `Copy` trait, variables will not moved but copied instead.
+
+You <Color color="var(--secondary-font-color)"> can not </Color> annotate a type that has implemented `Drop` trait with `Copy` trait
+
+Example of types that implement `Copy`:
+
+- integer
+- bool
+- float
+- char
+- tuples (if all type they contain can implement `Copy`)
+
+## Ownership and function
+
+Passing a variable to a function will move or copy (passing ownership), just as assignment does.
+
+```rust title= showLineNumbers
+fn main() {
+    let s = String::from("hello");  // s comes into scope
+
+    takes_ownership(s);             // value of s moves into the function...
+                                    // ... and so is no longer valid here
+
+    let x = 5;                      // x comes into scope
+
+    makes_copy(x);                  // x would move into the function,
+                                    // but i32 is Copy, so it's okay to still
+                                    // use x afterward
+
+} // Here, x goes out of scope, then s. But because s's value was moved, nothing
+  // special happens.
+```
+
+return value and scope
+
+```rust title= showLineNumbers
+fn main() {
+    let s1 = gives_ownership();         // gives_ownership moves its return
+                                        // value into s1
+
+    let s2 = String::from("hello");     // s2 comes into scope
+
+    let s3 = takes_and_gives_back(s2);  // s2 is moved into
+                                        // takes_and_gives_back, which also
+                                        // moves its return value into s3
+} // Here, s3 goes out of scope and is dropped. s2 was moved, so nothing
+  // happens. s1 goes out of scope and is dropped.
+
+fn gives_ownership() -> String {             // gives_ownership will move its
+                                             // return value into the function
+                                             // that calls it
+
+    let some_string = String::from("yours"); // some_string comes into scope
+
+    some_string                              // some_string is returned and
+                                             // highlight-next-line
+                                             // moves out to the calling function
+}
+
+// This function takes a String and returns one
+fn takes_and_gives_back(a_string: String) -> String { // a_string comes into
+                                                      // scope
+
+    a_string  // a_string is returned and moves out to the calling function
+}
+```
+
+When a variable that includes data on the heap goes out of scope, the value will be cleaned up by `drop` unless ownership of the data has been moved to <Color color="var(--primary-font-color)"> another variable </Color>.
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html
