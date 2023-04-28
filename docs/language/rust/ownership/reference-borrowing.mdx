@@ -1,0 +1,175 @@
+---
+sidebar_position: 20000
+tags:
+  - rust
+---
+
+# References and Borrowing
+
+## References
+
+Passing value without ownership being taken.
+
+`&` represent references, and they allow you to refer to some value without taking ownership of it.
+
+```rust title= showLineNumbers
+fn main() {
+    let s1 = String::from("hello");
+
+    let len = calculate_length(&s1);
+
+    println!("The length of '{}' is {}.", s1, len);
+}
+
+fn calculate_length(s: &String) -> usize { // s is a reference to a String
+    s.len()
+} // Here, s goes out of scope. But because it does not have ownership of what
+  // it refers to, it is not dropped.
+```
+
+The `&s1` syntax lets us create a reference that refers to the value of `s1` but <Color color="var(--secondary-font-color)"> does not own it </Color>.
+
+Because it does not own it, the value it <Color color="var(--primary-font-color)"> points to </Color> will not be dropped when the reference stops being used.
+
+<Admonition type="info" title="info">
+
+We call the action of creating a reference "borrowing".
+
+</Admonition>
+
+References are immutable by default. You can't modify the value that you have borrowed
+
+```rust title= showLineNumbers
+fn main() {
+    let s = String::from("hello");
+
+    change(&s);
+}
+
+fn change(some_string: &String) {
+  // highlight-error-next-line
+    some_string.push_str(", world"); // cannot borrow `*some_string` as mutable, as it is behind a `&` reference
+}
+```
+
+## Mutable References
+
+```rust title= showLineNumbers
+fn main() {
+    let mut s = String::from("hello");
+
+    change(&mut s);
+}
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
+}
+```
+
+<Admonition type="info" title="info">
+
+Mutable reference can only be crated from mutable variable.
+
+</Admonition>
+
+&#8203;<Color color="var(--primary-font-color)"> In the same scope </Color>, <Color color="var(--secondary-font-color)"> multiple mutable references to the same value are not allowed </Color>.
+If you have a mutable reference to a value, you can have no other references to that value.
+
+This throw error:
+
+```rust title= showLineNumbers
+fn main() {
+    let mut s = String::from("hello");
+
+    let r1 = &mut s;
+    // highlight-error-next-line
+    let r2 = &mut s; // cannot borrow `s` as mutable more than once at a time
+
+    println!("{}, {}", r1, r2);
+}
+```
+
+This not:
+
+```rust title= showLineNumbers
+    let mut s = String::from("hello");
+
+    {
+        let r1 = &mut s;
+    } // r1 goes out of scope here, so we can make a new reference with no problems.
+
+    let r2 = &mut s;
+
+```
+
+We also cannot have a mutable reference while we have an immutable one to the same value.
+
+```rust title= showLineNumbers
+    let mut s = String::from("hello");
+
+    let r1 = &s; // no problem
+    let r2 = &s; // no problem
+    // highlight-error-next-line
+    let r3 = &mut s; // BIG PROBLEM
+    // cannot borrow `s` as mutable because it is also borrowed as immutable
+
+    println!("{}, {}, and {}", r1, r2, r3);
+
+```
+
+## References' Scope
+
+a reference’s scope starts from where it is introduced and continues through the last time that reference is used.
+
+this code is perfectly valid:
+
+```rust title= showLineNumbers
+let mut s = String::from("hello");
+
+// highlight-start
+let r1 = &s; // no problem
+let r2 = &s; // no problem
+println!("{} and {}", r1, r2);
+// variables r1 and r2 will not be used after this point
+// highlight-end
+
+let r3 = &mut s; // no problem
+println!("{}", r3);
+```
+
+the scope of `r1` and `r2` end at line 5 (last time they were used).
+
+So creating mutable reference after line 5 will not overlop their scope make it perfectly valid.
+
+## Dangling References
+
+If you have a reference to some data, the compiler will ensure that the data will not go out of scope before the reference to the data does.
+
+```rust title= showLineNumbers
+fn main() {
+    let reference_to_nothing = dangle();
+}
+
+// highlight-error-start
+fn dangle() -> &String { // dangle returns a reference to a String
+
+    let s = String::from("hello"); // s is a new String
+
+    &s // we return a reference to the String, s
+} // Here, s goes out of scope, and is dropped. Its memory goes away.
+// highlight-error-end
+```
+
+<Admonition type="info" title="info">
+
+In Rust, the compiler guarantees that references will never be dangling references
+
+</Admonition>
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html
