@@ -1,0 +1,384 @@
+# Struct
+
+A `struct`, or structure, is a custom data type.
+
+## define `struct`
+
+```rust title= showLineNumbers
+struct User {
+    active: bool,
+    username: String,
+    email: String,
+    sign_in_count: u64,
+}
+```
+
+## create `struct` instance
+
+```rust title= showLineNumbers
+fn main() {
+    let user1 = User {
+        active: true,
+        username: String::from("someusername123"),
+        email: String::from("someone@example.com"),
+        sign_in_count: 1,
+    };
+}
+```
+
+## Access `struct` field
+
+```rust title=
+let foo = user.username;
+```
+
+## Set field value
+
+If an <Color color="var(--primary-font-color)"> instance </Color> is mutable:
+
+```rust title= showLineNumbers
+fn main() {
+    // highlight-next-line
+    let mut user1 = User {
+        active: true,
+        username: String::from("someusername123"),
+        email: String::from("someone@example.com"),
+        sign_in_count: 1,
+    };
+    // highlight-next-line
+    user1.email = String::from("anotheremail@example.com");
+}
+```
+
+<Admonition type="note" title="note">
+
+The entire instance must be mutable.
+
+Rust doesn’t allow us to mark only certain fields as mutable.
+
+</Admonition>
+
+## Defining Shorthand
+
+same variables name and struct field:
+
+```rust title= showLineNumbers
+fn build_user(email: String, username: String) -> User {
+    User {
+        active: true,
+        // highlight-start
+        username,
+        email,
+        // highlight-end
+        sign_in_count: 1,
+    }
+}
+```
+
+## Create `struct` instance from other instance
+
+Use `..` syntax to specify the remaining fields:
+
+```rust title= showLineNumbers
+fn main() {
+    // --snip--
+    // let user1 = ........
+
+    let user2 = User {
+        email: String::from("another@example.com"),
+        // highlight-next-line
+        ..user1
+    };
+}
+```
+
+<Admonition type="note" title="note">
+
+The `..` syntax must come last.
+
+</Admonition>
+
+"Moved value" concept are applied to any unknown-size field assignment
+
+Think of `some_field: some_variable` syntax is like `let some_field = some_variable;`. It move `some_variable`.
+
+```rust title= showLineNumbers
+fn main() {
+    let user1 = User {
+        active: true,
+        username: String::from("someusername123"),
+        email: String::from("someone@example.com"),
+        sign_in_count: 1,
+    };
+
+
+    let new_user = User {
+      email: String::from("new_useremail"),
+      ..user1 // under the hood this syntax it do
+      // username: user1.username which move user1.username
+    }
+
+    // highlight-error-next-line
+    let foo = user1.username; // use of moved value: `user1.username`
+    // user1.username can't be used here bc it s moved.
+
+
+    println!("{}, {}", user1.email, new_user.email); // but user1.email are not moved
+    // so it can be used here.
+
+}
+```
+
+## Tuple struct
+
+```rust title= showLineNumbers
+struct Color(i32, i32, i32);
+struct Point(i32, i32, i32);
+
+fn main() {
+    let black = Color(0, 0, 0);
+    let origin = Point(0, 0, 0);
+}
+```
+
+<Admonition type="note" title="note">
+
+Two Different tuple struct with exact element types are not the same type.
+
+A function that takes a parameter of type `Color` cannot take a `Point` as an argument
+
+</Admonition>
+
+<Admonition type="info" title="info">
+
+Tuple structs are useful when you want to give the whole tuple a name
+
+</Admonition>
+
+## Unit-like Struct
+
+You can also define structs that don’t have any fields.
+
+Unit-like structs can be useful when you need to implement a trait on some type but don’t have any data that you want to store in the type itself.
+
+```rust title= showLineNumbers
+struct AlwaysEqual; // without () or {}
+
+fn main() {
+    let subject = AlwaysEqual; // without () or {}
+}
+```
+
+&#8203;<Color color="var(--not-require-but-good-to-know-font-color)"> These are called unit-like structs because they behave similarly to unit `()`. </Color>
+
+## Method Syntax
+
+Methods are defined within the context of a struct, an enum or a trait object.
+
+Their first parameter is always `self` which represents the <Color color="var(--secondary-font-color)"> instance of the struct </Color> the method is being called on.
+
+### Defining Methods
+
+```rust title= showLineNumbers
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+// highlight-start
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+}
+// highlight-end
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!(
+        "The area of the rectangle is {} square pixels.",
+        rect1.area()
+    );
+}
+```
+
+The `&self` is actually short for `self: &Self`.
+
+Within an `impl` block, the type `Self` is an alias for the type that the `impl` block is for
+
+Methods <Color color="var(--secondary-font-color)"> must have a parameter named </Color> `self` of type `Self` for their first parameter.
+
+<Admonition type="note" title="note">
+
+Method's first parameter `self` have type `&Self` indicate that it borrow instance of `Self`
+
+You can also use mutable reference of `Self` type as well. eg `&mut Self`. But its `struct` instance need to be mutable.
+
+It can also be `Self` which take ownership from struct instance.
+
+</Admonition>
+
+Method can have the same name as one of its struct field. `getter` is one of this usecase.
+
+```rust title= showLineNumbers
+impl Rectangle {
+    fn width(&self) -> bool {
+        self.width > 0
+    }
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    if rect1.width() {
+        println!("The rectangle has a nonzero width; it is {}", rect1.width);
+    }
+}
+```
+
+<Admonition type="info" title="info">
+
+When calling a method, Rust automatically adds in `&,` `&mut`, or `*` so object matches the signature of the method.
+
+The following are the same:
+
+```rust title= showLineNumbers
+rect1.area();
+(&rect1).area();
+```
+
+</Admonition>
+
+### Associated Functions
+
+Associated functions are function that define within `impl` block and don't have `self` as their first parameter (and thus are not methods) because they don't need an instance of the type to work with.
+
+It is often used for constructors that will return a new instance of the struct.
+
+To call this associated function, we use the `::` syntax with the struct name
+
+```rust title= showLineNumbers
+impl Rectangle {
+    fn square(size: u32) -> Self {
+        Self {
+            width: size,
+            height: size,
+        }
+    }
+}
+
+fn main(){
+    let sq = Rectangle::square(3);
+}
+```
+
+<Admonition type="info" title="info">
+
+Rust dont have `new` keyword.
+
+</Admonition>
+
+### Multiple `impl` block
+
+Each struct is allowed to have multiple `impl` blocks.
+
+```rust title= showLineNumbers
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+}
+
+impl Rectangle {
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+}
+
+// same as
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+}
+
+```
+
+---
+
+## Miscellaneous
+
+### print `struct` in <Color color="var(--secondary-font-color)"> `Debug` </Color> format
+
+#### using pretty println and `#[derive(Debug)]` attribute
+
+```rust title= showLineNumbers
+// highlight-next-line
+#[derive(Debug)] //
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!(
+        // highlight-next-line
+        "rect1 is {:?}",
+        rect1
+    );
+}
+```
+
+#### using `dbg!`
+
+```rust title= showLineNumbers
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+fn main() {
+    let scale = 2;
+    let rect1 = Rectangle {
+        // highlight-start
+        // dbg! return ownership to width property
+        width: dbg!(30 * scale),
+        // highlight-end
+        height: 50,
+    };
+
+    // highlight-start
+    // we dont want dbg! to take ownership
+    // so we are passing reference of rect1
+    dbg!(&rect1);
+    // highlight-end
+}
+```
+
+`dbg!` <Color color="var(--secondary-font-color)"> takes ownership </Color> of <Color color="var(--primary-font-color)"> an expression </Color> and returns ownership of the <Color color="var(--secondary-font-color)"> value </Color>.
+
+It also prints the file and line number along with result of value passed to `dbg!`
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch05-03-method-syntax.html
