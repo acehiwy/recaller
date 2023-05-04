@@ -1,0 +1,358 @@
+# Modules
+
+Modules let us organize code within a crate for readability and easy reuse.
+
+Modules also allow us to control the privacy <Color color="var(--secondary-font-color)"> of items </Color>
+
+## Cheatsheet
+
+- **Start from the crate root:** When compiling a crate, the compiler <Color color="var(--secondary-font-color)"> first looks in the crate root file </Color> (usually src/lib.rs for a library crate or src/main.rs for a binary crate) for code to compile.
+- **Declaring modules:** In the crate root file if you declare `mod garden`. The compiler will look for the module’s code in these places:
+  - Inline, within curly brackets that replace the semicolon following mod garden
+  - In the file `src/garden.rs`
+  - In the file `src/garden/mod.rs`
+- **Declaring submodules:** In any file other than the crate root. For example, if you declare `mod vegetables` in `src/garden.rs` . The compiler will look for the submodule’s code within the directory named for the parent module in these places:
+  - Inline, directly following mod vegetables, within curly brackets instead of the semicolon
+  - In the file `src/garden/vegetables.rs`
+  - In the file `src/garden/vegetables/mod.rs`
+- **Paths to code in modules:** Once a module is part of your crate, you can refer to code in that module from anywhere else in that same crate, as long as the privacy rules allow, using the path to the code. For example, an `Asparagus` type in the garden vegetables module would be found at `crate::garden::vegetables::Asparagus`.
+- **Private vs public:** Code within a module is private from its parent modules by default. To make a module public, declare it with pub mod instead of mod. To make items within a public module public as well, use pub before their declarations.
+- **The use keyword:** Within a scope, the use keyword creates shortcuts to items to reduce repetition of long paths. In any scope that can refer to `crate::garden::vegetables::Asparagus`, you can create a shortcut with use `crate::garden::vegetables::Asparagus;` and from then on you only need to write `Asparagus` to make use of that type in the scope.
+
+## Defining an inline module
+
+```rust title=src/lib.rs showLineNumbers
+mod front_of_house {
+    mod hosting {
+        fn add_to_waitlist() {}
+
+        fn seat_at_table() {}
+    }
+
+    mod serving {
+        fn take_order() {}
+
+        fn serve_order() {}
+
+        fn take_payment() {}
+    }
+}
+```
+
+## Module Tree
+
+```text title= showLineNumbers
+crate
+ └── front_of_house
+     ├── hosting
+     │   ├── add_to_waitlist
+     │   └── seat_at_table
+     └── serving
+         ├── take_order
+         ├── serve_order
+         └── take_payment
+```
+
+Siblings module mean they’re defined in the same module.`hosting` and `serving` are siblings defined within `front_of_house`.
+
+## Referring Module Tree with Path
+
+A path can take two forms:
+
+- An absolute path is the full path starting <Color color="var(--secondary-font-color)"> from a crate root </Color>;
+  - for code from an external crate, the absolute path <Color color="var(--secondary-font-color)"> begins with the crate name </Color>
+  - for code from the current crate, it starts with the literal `crate`.
+- A relative path starts from the current module and uses
+  - `self`
+  - `super`
+  - an identifier in the current module
+
+```rust title= showLineNumbers
+mod front_of_house {
+    pub mod hosting {
+        pub fn add_to_waitlist() {}
+    }
+}
+
+pub fn eat_at_restaurant() {
+    // Absolute path
+    crate::front_of_house::hosting::add_to_waitlist();
+
+    // Relative path
+    front_of_house::hosting::add_to_waitlist();
+}
+```
+
+### Module privacy
+
+In Rust, all items (functions, methods, structs, enums, modules, and constants) are private to parent modules by default.
+
+Items in a parent module can’t use the private items inside child modules
+
+But items in child modules can use the items in their ancestor modules (ancestor modules must be brought into child scope, eg. `use super::foo`, `use crate::ancestor_module::foo`).
+
+Use `pub` keyword to expose inner parts of child modules’ code to outer ancestor modules.
+
+<Admonition type="tip" title="tip">
+
+If you want to make an item like a function or struct private, you put it in a module.
+
+</Admonition>
+
+## Relative path using `super`
+
+`super` refer to an item that we know is in the parent module.
+
+It is like `..` in filesystem.
+
+```rust title=src/lib.rs showLineNumbers
+fn deliver_order() {}
+
+mod back_of_house {
+    fn fix_incorrect_order() {
+        cook_order();
+        // highlight-next-line
+        super::deliver_order();
+    }
+
+    fn cook_order() {}
+}
+```
+
+## Making Structs and Enums Public
+
+Use `pub` on `struct` and `enums` to make them public.
+
+### `pub` `struct`
+
+`pub` on `struct` definetion only make `struct` public not its fields.
+
+`pub` on `struct` field need to be explitly used
+
+```rust title= showLineNumbers
+mod back_of_house {
+  // highlight-next-line
+    pub struct Breakfast {
+        // highlight-next-line
+        pub toast: String,
+        seasonal_fruit: String,
+    }
+
+    impl Breakfast {
+        // highlight-next-line
+        pub fn summer(toast: &str) -> Breakfast {
+            Breakfast {
+                toast: String::from(toast),
+                seasonal_fruit: String::from("peaches"),
+            }
+        }
+    }
+}
+
+pub fn eat_at_restaurant() {
+    // Order a breakfast in the summer with Rye toast
+    let mut meal = back_of_house::Breakfast::summer("Rye");
+    // Change our mind about what bread we'd like
+    meal.toast = String::from("Wheat");
+    println!("I'd like {} toast please", meal.toast);
+
+
+    // highlight-error-start
+    // can not read/write private field
+    // field `seasonal_fruit` of struct `Breakfast` is private
+    println!("{}", meal.seasonal_fruit);
+    meal.seasonal_fruit = String::from("blueberries");
+    // highlight-error-end
+}
+```
+
+<Admonition type="note" title="note">
+
+Because `struct` `Breakfast` has some private field.
+
+The struct needs to provide a public associated function (`summer`) that constructs an instance of `Breakfast`
+
+Otherwise client wouldn't be able to create `Breakfast` instance.
+
+</Admonition>
+
+<Admonition type="info" title="info">
+
+`struct` fields are private by default
+
+</Admonition>
+
+### `pub` `enum`
+
+Using `pub` on `enum` make it and its fields public.
+
+```rust title=src/lib.rs showLineNumbers
+mod back_of_house {
+    pub enum Appetizer {
+        Soup,
+        Salad,
+    }
+}
+
+pub fn eat_at_restaurant() {
+    let order1 = back_of_house::Appetizer::Soup;
+    let order2 = back_of_house::Appetizer::Salad;
+}
+```
+
+<Admonition type="info" title="info">
+
+`enum` variants are public by default
+
+</Admonition>
+
+## `use` keyword
+
+We can create a shortcut to a path with the `use` keyword
+
+`use` make the path valid <Color color="var(--primary-font-color)"> in the scope </Color> `use` is used.
+
+```rust title=src/lib.rs showLineNumbers
+mod front_of_house {
+    pub mod hosting {
+        pub fn add_to_waitlist() {}
+    }
+}
+
+pub fn eat_at_restaurant() {
+    use front_of_house::hosting;
+    hosting::add_to_waitlist();
+}
+
+pub fn something_else(){
+    // highlight-error-next-line
+    hosting::add_to_waitlist(); // failed to resolve: use of undeclared crate or module `hosting`
+}
+```
+
+<Admonition type="tip" title="tip">
+
+When bringing <Color color="var(--secondary-font-color)"> function </Color> into scope, preferably bringing its parent module rather than the function
+
+So calling function would be `<Parent>::<function name>`. Eg. `hosting::add_to_waitlist`
+
+Specifying the parent module when calling the function <Color color="var(--secondary-font-color)"> makes it clear </Color> that the function <Color color="var(--secondary-font-color)"> isn’t locally defined </Color>
+
+</Admonition>
+
+## Providing new name
+
+Rust dont allow bringing multiple type with the same name.
+
+```rust title= showLineNumbers
+use std::fmt::Result;
+// highlight-next-line
+use std::io::Result as IoResult;
+
+fn function1() -> Result {
+    // --snip--
+}
+
+fn function2() -> IoResult<()> {
+    // --snip--
+}
+```
+
+## Re-exporting Names with `pub use`
+
+When we bring a name into scope with the use keyword, the name available in the new scope is private.
+
+```rust title=restaurant/src/lib.rs showLineNumbers
+mod front_of_house {
+    pub mod hosting {
+        pub fn add_to_waitlist() {}
+    }
+}
+
+pub use crate::front_of_house::hosting;
+
+pub fn eat_at_restaurant() {
+    hosting::add_to_waitlist();
+}
+```
+
+Instead of lib user calling `restaurant::front_of_house::hosting::add_to_waitlist()`, they can then call `restaurant::hosting::add_to_waitlist()`.
+
+## Shared `use` paths
+
+```rust title= showLineNumbers
+use std::cmp::Ordering;
+use std::io;
+
+// same as
+use std::{cmp::Ordering, io};
+```
+
+this bring `std::io` and `std::cmp::Ordering` into scope
+
+### Using `self`
+
+```rust title= showLineNumbers
+use std::io;
+use std::io::Write;
+
+// same as
+use std::io::{self, Write};
+```
+
+this brings `std::io` and `std::io::Write` into scope.
+
+## Separating Modules into Different Files
+
+```rust title=src/lib.rs showLineNumbers
+mod front_of_house;
+mod back_of_house;
+
+pub use crate::front_of_house::hosting;
+
+pub fn eat_at_restaurant() {
+  // calling function located in a module
+    front_of_house::foo_in_front_of_house();
+
+    // calling function located in sub-module
+    front_of_house::hosting::add_to_waitlist();
+    // or
+    hosting::add_to_waitlist();
+}
+```
+
+```rust title=src/front_of_house.rs showLineNumbers
+pub mod hosting;
+
+pub fn foo_in_front_of_house() {}
+```
+
+```rust title=src/front_of_house/hosting.rs showLineNumbers
+pub fn add_to_waitlist() {}
+
+
+// highlight-start
+// valid only when back_of_house module is imported to the same crate
+// Once a module is part of your crate, you can refer to code in that module from anywhere else in that same crate
+use crate::back_of_house;
+pub fn bar_in_hosting() {
+  back_of_house::foo_in_back_of_house();
+}
+// highlight-end
+```
+
+```rust title=src/back_of_house.rs showLineNumbers
+fn foo_in_back_of_house(){}
+```
+
+
+<br/>
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html
+- https://doc.rust-lang.org/book/ch07-03-paths-for-referring-to-an-item-in-the-module-tree.html
+- https://doc.rust-lang.org/book/ch07-04-bringing-paths-into-scope-with-the-use-keyword.html
+- https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html
