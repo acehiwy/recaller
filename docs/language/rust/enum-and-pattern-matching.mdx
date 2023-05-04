@@ -1,0 +1,324 @@
+# Enums and Pattern Matching
+
+Enums allow you to <Color color="var(--secondary-font-color)"> define a type </Color> by enumerating its possible variants.
+
+```rust title= showLineNumbers
+enum IpAddrKind {
+    V4,
+    V6,
+}
+```
+
+## Enum value
+
+```rust title= showLineNumbers
+enum IpAddrKind {
+    V4, // 0
+    V6, // 1
+}
+
+fn main(){
+  let four = IpAddrKind::V4;
+  let six = IpAddrKind::V6;
+
+  route(four);
+  route(IpAddrKind::V6);
+}
+
+// accept enum type
+fn route(ip_kind: IpAddrKind) {
+  // do something
+}
+```
+
+We attach data to each variant of the enum directly
+
+```rust title= showLineNumbers
+enum Message {
+    Quit, // value will be integer (in this case 0)
+    Move { x: i32, y: i32 }, // struct as a value
+    Write(String), // tuple as a value
+    ChangeColor(i32, i32, i32), // tuple as a value
+}
+
+fn main(){
+  let msg_quit = Message::Quit;
+  let msg_move = Message::Move{
+    x: 12,
+    y: 65
+  };
+  let msg_change_color = Message::ChangeColor(10,20,30);
+}
+
+enum Enum {
+    Foo, // 0
+    Bar, // 1
+    Baz, // 2
+}
+
+assert_eq!(0, Enum::Foo as isize);
+assert_eq!(1, Enum::Bar as isize);
+assert_eq!(2, Enum::Baz as isize);
+
+enum Foo {
+    Bar,            // 0
+    Baz = 123,      // 123
+    Quux,           // 124
+}
+
+let baz_discriminant = Foo::Baz as u32;
+assert_eq!(baz_discriminant, 123);
+```
+
+You can put any kind of data inside an enum variant: strings, numeric types, or structs.
+
+You can even include another enum.
+
+## Defining Method
+
+We can also define method on enums using `impl`
+
+```rust title= showLineNumbers
+fn main() {
+    enum Message {
+        Quit,
+        Move { x: i32, y: i32 },
+        Write(String),
+        ChangeColor(i32, i32, i32),
+    }
+
+    impl Message {
+        fn call(&self) {
+            // method body would be defined here
+        }
+    }
+
+    let m = Message::Write(String::from("hello"));
+    m.call();
+}
+```
+
+<Admonition type="note" title="note">
+
+Value of `self` will be the value of its variant
+
+</Admonition>
+
+## `Option` Enum
+
+Variable that have type `Option<T>` means it either contain `T` or `None` (a value that can possibly be null)
+
+When you use that value, you are required to explicitly handle the case when the value is null.
+
+```rust title= showLineNumbers
+enum Option<T> {
+    None,
+    Some(T),
+}
+```
+
+```rust title= showLineNumbers
+let some_number = Some(5); // type of some_number is Option<i32>
+let some_char = Some('e'); // type of some_char is Option<char>
+
+let absent_number: Option<i32> = None;
+```
+
+<Admonition type="info" title="info">
+
+`Option` enum is an enum defined by the standard library.
+
+`Some` and `None` variants are also include in the prelude.
+
+You can use directly without the `Option::` prefix.
+
+</Admonition>
+
+## `match` Expression
+
+`match` allows you to compare a value against a series of patterns and then execute code based on which pattern matches.
+
+```rust title= showLineNumbers
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter,
+}
+
+fn value_in_cents(coin: Coin) -> u8 {
+    match coin {
+        Coin::Penny => {
+            println!("Lucky penny!");
+            1
+        }
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter => 25,
+    }
+}
+
+
+```
+
+The code associated with each arm is <Color color="var(--secondary-font-color)"> an expression </Color>,
+and the resultant value of the expression in the matching arm is the value that gets <Color color="var(--secondary-font-color)"> returned for </Color> the entire <Color color="var(--secondary-font-color)"> match expression </Color>.
+
+`match` end when a particular pattern is matched.
+
+<Admonition type="info" title="info">
+
+Every possible case of `match` need to be handled.
+
+</Admonition>
+
+### Tuple variant enum with `match`
+
+If your enum variant have a tuple as a value, you can use this syntax to access the variant's value:
+
+```rust title= showLineNumbers
+#[derive(Debug)] // so we can inspect the state in a minute
+enum UsState {
+    Alabama,
+    Alaska,
+    // --snip--
+}
+
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter(UsState),
+}
+
+fn main(){
+  let foo = value_in_cents(Coin::Quarter(UsState::Alaska));
+}
+
+fn value_in_cents(coin: Coin) -> u8 {
+    match coin {
+        Coin::Penny => 1,
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        // highlight-start
+        Coin::Quarter(state) => {
+            // variable `state` represent UsState value contain inside Coin::Quarter
+            println!("State quarter from {:?}!", state);
+            25
+        }
+        // highlight-end
+    }
+}
+```
+
+`state` value will be `UsState::Alaska`
+
+### <Color color="var(--not-require-but-good-to-know-font-color)"> Matching with `Option<T>` </Color>
+
+```rust title= showLineNumbers
+fn plus_one(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => None,
+        Some(i) => Some(i + 1),
+    }
+}
+
+let five = Some(5);
+let six = plus_one(five);
+let none = plus_one(None);
+```
+
+### Catch-all Pattern
+
+Defining a variable as a pattern in `match` will match all values not specifically listed.
+
+```rust title= showLineNumbers
+let dice_roll = 9;
+match dice_roll {
+    3 => add_fancy_hat(),
+    7 => remove_fancy_hat(),
+    // highlight-start
+    // other value that are not handled will be binded to `some_variable_name`
+    some_variable_name => move_player(some_variable_name),
+    // highlight-end
+}
+
+fn add_fancy_hat() {}
+fn remove_fancy_hat() {}
+fn move_player(num_spaces: u8) {}
+```
+
+If the value will not be used, prepend variable name with `_` or use `_` as a variable name
+
+```rust title= showLineNumbers
+match dice_roll {
+    3 => add_fancy_hat(),
+    7 => remove_fancy_hat(),
+    // highlight-next-line
+    _ => reroll(),
+}
+```
+
+```rust title= showLineNumbers
+match dice_roll {
+    3 => add_fancy_hat(),
+    7 => remove_fancy_hat(),
+    // highlight-next-line
+    _will_not_be_used => reroll(),
+}
+```
+
+### `if let`
+
+`if let` is a syntax sugar of `match` but it can express only 1 pattern per `if let`
+
+```rust title= showLineNumbers
+let config_max = Some(3u8);
+match config_max {
+    Some(max) => println!("The maximum is configured to be {}", max),
+    _ => (),
+}
+
+// same as
+let config_max = Some(3u8);
+if let Some(max) = config_max {
+    println!("The maximum is configured to be {}", max);
+}
+```
+
+```rust title= showLineNumbers
+let coin = Coin::Quarter(UsState::Alaska);
+let mut bar = 0;
+
+
+match coin {
+    Coin::Quarter(state) => println!("State quarter from {:?}!", state),
+    Coin::Dime => println!("Coin Dime"),
+    _ => bar += 1,
+}
+
+// same as
+if let Coin::Quarter(state) = coin {
+    println!("State quarter from {:?}!", state);
+}else if let Coin::Dime = coin {
+    println!("Coin Dime");
+}else {
+    bar += 1;
+};
+```
+
+<Admonition type="note" title="note">
+
+`if let` does not have the exhaustive checking that `match` enforces.
+
+</Admonition>
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html
+- https://doc.rust-lang.org/book/ch06-02-match.html
+- https://doc.rust-lang.org/book/ch06-03-if-let.html
