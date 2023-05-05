@@ -1,0 +1,221 @@
+# Strings
+
+Strings are implemented as a <Color color="var(--secondary-font-color)"> collection of bytes </Color> <Color color="var(--not-require-but-good-to-know-font-color)"> , plus some methods to provide useful functionality when those bytes are interpreted as text. </Color>
+
+Both `String` and string slices are UTF-8 encoded.
+
+## Creating a new String
+
+```rust title= showLineNumbers
+let s = String::from("initial contents");
+
+// same as
+let data = "initial contents";
+let s = data.to_string();
+
+// same as
+let s = "initial contents".to_string();
+```
+
+<Admonition type="info" title="info">
+
+Many of the same operations available with `Vec<T>` are available with `String` as well,
+because String is actually implemented as a wrapper around a <Color color="var(--secondary-font-color)"> vector of bytes (`vector<u8>`)</Color>
+
+</Admonition>
+
+## Updating String
+
+A String can grow in size and its contents can change, <Color color="var(--secondary-font-color)"> just like the contents of a `Vec<T>` </Color>
+
+### Using `push_str`
+
+```rust title= showLineNumbers
+let mut s = String::from("foo");
+s.push_str("bar");
+```
+
+`push_str` method take string slice as an argument. It dont take ownership of argument passed.
+
+### Using `push`
+
+The `push` method takes <Color color="var(--secondary-font-color)"> a single </Color> <Color color="var(--primary-font-color)"> character </Color> as a parameter.
+
+```rust title= showLineNumbers
+let mut s = String::from("lo");
+s.push('l'); // char use single quote
+```
+
+### Concatenation with `+`
+
+```rust title= showLineNumbers
+let s1 = String::from("Hello, ");
+let s2 = String::from("world!");
+let s3 = s1 + &s2; // note s1 has been moved here and can no longer be used
+```
+
+When concatenate String, left most (`s1`) `String`'s <Color color="var(--secondary-font-color)"> ownership is taken </Color> and rest of String (`s2`) on its right need to be `&str`
+
+Because `+` operator use `add` method
+
+```rust title= showLineNumbers
+fn add(self, s: &str) -> String { // also returning ownership
+  // ...
+}
+```
+
+<Admonition type="info" title="info">
+
+We can only add a `&str` to a `String`. we can’t add two `String` values together.
+
+</Admonition>
+
+<Admonition type="info" title="info">
+
+`&String` can be used as `&str` because Rust uses a deref coercion, which here turns `&String`(`&s2`) into `&str`(`&s2[..]`).
+
+</Admonition>
+
+Although `let s3 = s1 + &s2;` looks like it will copy both strings and create a new one.
+
+This statement actually takes ownership of `s1`, <Color color="var(--secondary-font-color)"> appends </Color> <Color color="var(--primary-font-color)"> a copy of </Color> the contents of `s2`, and then returns ownership of the result.
+
+### Combining with `format!`
+
+```rust title= showLineNumbers
+let s1 = String::from("tic");
+let s2 = String::from("tac");
+let s3 = String::from("toe");
+
+let s = format!("{s1}-{s2}-{s3}");
+// output: tic-tac-toe
+```
+
+The `format!` macro works like `println!`, but instead of printing the output to the screen,
+it returns a `String` with the contents.
+
+<Admonition type="info" title="info">
+
+`format!` macro uses references. It doesn’t take ownership of any of its parameters.
+
+</Admonition>
+
+## Different representation of Strings
+
+Strings in Rust can be represented in 3 different form.
+
+Take word `नमस्ते` as an example
+
+### As bytes
+
+```rust title= showLineNumbers
+// store as vector<u8>
+[224, 164, 168, 224, 164, 174, 224, 164, 184, 224, 165, 141, 224, 164, 164,
+224, 165, 135]
+```
+
+### As `char`
+
+Rust's `char` type represent unicode scalar value ( value that correspond to its codepoint ).
+
+```rust title= showLineNumbers
+['न', 'म', 'स', '्', 'त', 'े']
+```
+
+### As grapheme
+
+Grapheme is <Color color="var(--primary-font-color)"> a single</Color> unit of human writing ( can be compose of 1 or more codepoint )
+
+```rust title= showLineNumbers
+["न", "म", "स्", "ते"]
+```
+
+## Indexing into Strings
+
+A String is a wrapper over a `Vec<u8>`.
+
+Rust strings don't support indexing.
+
+```rust title= showLineNumbers
+fn main(){
+    let hello = "Здравствуйте";
+    // highlight-error-next-line
+    let answer = hello[0]; // the type `str` cannot be indexed by `{integer}`
+}
+```
+
+Because Rust use `vector<u8>` to store String, each element in vector represent each byte encoded in UTF-8
+
+Getting a single byte of encoded UTF-8 might result in invalid UTF-8 value (UTF-8 use 1-4 bytes to represent a codepoint)
+
+See this example:
+
+```rust title= showLineNumbers
+// highlight-error-start
+let hello = String::from("дравствуйте");
+let first = &hello[0];
+// the type `str` cannot be indexed by `{integer}`
+// highlight-error-end
+```
+
+`д` use 2 bytes to encode 208 and 180. Getting just first byte, 208, is not what user want
+
+<Admonition type="caution" title="caution">
+
+Slicing `Strings` could lead to panic at runtime if you to try to slice only part of a character’s bytes
+
+```rust title= showLineNumbers
+let hello = "дравствуйте";
+
+// highlight-error-start
+let s = &hello[0..3];
+// thread 'main' panicked at 'byte index 3 is not a char boundary; it is inside 'р' (bytes 2..4) of `дравствуйте`'
+println!("{s}");
+// highlight-error-end
+```
+
+`д` and `р` both use 2 byte to represent.
+
+</Admonition>
+
+## Iterate over Strings
+
+Use `String.chars()` to get unicode scalar value
+
+```rust title= showLineNumbers
+for c in "Зд".chars() {
+    println!("{c}");
+}
+// З
+// д
+```
+
+Use `String.bytes()` to get raw byte
+
+```rust title= showLineNumbers
+for b in "Зд".bytes() {
+    println!("{b}");
+}
+// 208
+// 151
+// 208
+// 180
+```
+
+<Admonition type="note" title="note">
+
+Getting grapheme require external lib. Find it on [crate.io](https://crates.io/)
+
+</Admonition>
+
+## Miscellaneous
+
+`to_string` method is available on any type that implements the `Display` trait
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch08-02-strings.html
