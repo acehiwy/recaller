@@ -1,0 +1,190 @@
+# Hash Maps
+
+The type `HashMap<K, V>` stores a mapping of keys of type `K` to values of type `V`
+
+## Creating Hash Map
+
+```rust title= showLineNumbers
+use std::collections::HashMap;
+
+let mut scores = HashMap::new();
+
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Yellow"), 50);
+```
+
+<Admonition type="info" title="info">
+
+Just like vectors, hash maps store their data on the heap.
+
+</Admonition>
+
+## Acessing Value
+
+`HashMap<K,V>` `get` method return `Option<&V>`
+
+```rust title= showLineNumbers
+use std::collections::HashMap;
+
+let mut scores = HashMap::new();
+
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Yellow"), 50);
+
+let team_name = String::from("Blue");
+let score: Option<&i32> = scores.get(&team_name);
+```
+
+<Admonition type="tip" title="tip">
+
+You can handles the Option by calling `copied` to get an `Option<i32>` rather than an `Option<&i32>`,
+
+Then `unwrap_or` to set score to zero if scores doesn't have an entry for the key.
+
+```rust title= showLineNumbers
+let team_name = String::from("Blue");
+let score = scores.get(&team_name).copied().unwrap_or(0);
+```
+
+</Admonition>
+
+## Iterating
+
+Similar to vectors
+
+```rust title= showLineNumbers
+use std::collections::HashMap;
+
+let mut scores = HashMap::new();
+
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Yellow"), 50);
+
+// highlight-next-line
+for (key, value) in &scores {
+    println!("{key}: {value}");
+}
+```
+
+<Admonition type="note" title="note">
+
+Order of iteration is arbitrary.
+
+</Admonition>
+
+## Ownership
+
+For `Drop` trait value, Hash map take their ownership when inserted into hash map
+
+For `Copy` trait value, the values are copied into hash map.
+
+```rust title= showLineNumbers
+use std::collections::HashMap;
+
+let field_name = String::from("Favorite color");
+let field_value = String::from("Blue");
+
+let mut map = HashMap::new();
+map.insert(field_name, field_value);
+// field_name and field_value are invalid at this point, try using them and
+// see what compiler error you get!
+
+
+// highlight-error-start
+println!("{field_name}{field_value}");
+// borrow of moved value: `field_name`
+// borrow of moved value: `field_value`
+// highlight-error-end
+```
+
+<Admonition type="note" title="note">
+
+If we insert references to values into the hash map, the values won’t be moved into the hash map.
+
+The values that the references point to must be valid for at least as long as the hash map is valid.
+
+</Admonition>
+
+## Updating a Hash Map
+
+### Overwriting a value
+
+```rust title= showLineNumbers
+use std::collections::HashMap;
+
+let mut scores = HashMap::new();
+
+scores.insert(String::from("Blue"), 10);
+scores.insert(String::from("Blue"), 25);
+
+println!("{:?}", scores);
+// {"Blue": 25}
+```
+
+### Insert only if a Key is not present
+
+Hash map have `entry` method that take key you want to check and return `Entry` enum representing a value might or might not exist.
+
+```rust title= showLineNumbers
+use std::collections::HashMap;
+
+let mut scores = HashMap::new();
+scores.insert(String::from("Blue"), 10);
+
+// highlight-start
+scores.entry(String::from("Yellow")).or_insert(50);
+scores.entry(String::from("Blue")).or_insert(50);
+// highlight-end
+
+println!("{:?}", scores);
+// {"Yellow": 50, "Blue": 10}
+```
+
+`Entry.or_insert` insert key-value if key does not exist or do nothing if key exist.
+
+<Admonition type="note" title="note">
+
+`Entry.or_insert` return a mutable reference of corresponding value
+
+</Admonition>
+
+### Updating a value based on the old value
+
+```rust title= showLineNumbers
+use std::collections::HashMap;
+
+let text = "hello world wonderful world";
+
+let mut map = HashMap::new();
+
+for word in text.split_whitespace() {
+    // highlight-start
+    let count = map.entry(word).or_insert(0); // return mutable reference of the value
+    *count += 1; // update value
+    // highlight-end
+}
+
+println!("{:?}", map);
+```
+
+<Admonition type="tip" title="later">
+
+`split_whitespace` method returns an iterator over sub-slices, separated by whitespace
+
+</Admonition>
+
+## <Color color="var(--not-nesary-for-now-future-font-color)"> Hashing Functions </Color>
+
+By default, HashMap uses a hashing function called SipHash that can provide resistance to Denial of Service (DoS) attacks involving hash tables.
+
+If you profile your code and find that the default hash function is too slow for your purposes, you can switch to another function by specifying a different hasher. A hasher is a type that implements the BuildHasher trait.
+
+You don’t necessarily have to implement your own hasher from scratch; crates.io has libraries shared by other Rust users that provide hashers implementing many common hashing algorithms.
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch08-03-hash-maps.html
