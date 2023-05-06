@@ -1,0 +1,258 @@
+# Recoverable Errors
+
+## Result enum
+
+The `Result` enum have two variants, `Ok` and `Err`
+
+```rust title= showLineNumbers
+enum Result<T, E> {
+  Ok(T),
+  Err(E),
+}
+```
+
+- The `Ok` variant indicates the operation was successful, and <Color color="var(--secondary-font-color)"> inside </Color> `Ok` is the successfully generated value (`T`).
+- The `Err` variant means the operation failed, and `Err` contains information (`E`) about how or why the operation failed.
+
+## Handling Error
+
+For example opening a file:
+
+```rust title= showLineNumbers
+use std::fs::File;
+
+fn main() {
+    let greeting_file_result = File::open("hello.txt");
+    // type of greeting_file_result is Result<File, Error>
+
+    let greeting_file = match greeting_file_result {
+        Ok(file) => file,
+        Err(error) => panic!("Problem opening the file: {:?}", error),
+    };
+}
+```
+
+<Admonition type="info" title="info">
+
+`Result` enum and its variants are included in the prelude.
+
+</Admonition>
+
+## Matching on Different Errors
+
+```rust title= showLineNumbers
+use std::fs::File;
+use std::io::ErrorKind;
+
+fn main() {
+    let greeting_file_result = File::open("hello.txt");
+
+    let greeting_file = match greeting_file_result {
+        Ok(file) => file,
+        // highlight-start
+        Err(error) => match error.kind() {
+            ErrorKind::NotFound => {
+              // do something
+            },
+            other_error => {
+              // do other thing
+            }
+        },
+        // highlight-end
+    };
+}
+```
+
+The value that `File::open` returns inside the `Err` variant is `io::Error`
+
+`io::Error` has a method `kind` that we can call to get an `io::ErrorKind` enum.
+
+## Shortcuts for Panic on Error: `unwrap` and `expect`
+
+`Result` have `unwrap` nad `expect` method
+
+If the `Result` value is the `Ok` variant, unwrap will return the value inside the Ok.
+
+If the `Result` is the `Err` variant, unwrap will call the `panic!` macro for us.
+
+`expect` is like `unwrap` but you can pass error message as an argument
+
+### Using `unwrap`
+
+```rust title= showLineNumbers
+use std::fs::File;
+
+fn main() {
+    let greeting_file = File::open("hello.txt").unwrap();
+}
+```
+
+```text title= showLineNumbers
+thread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: Os {
+code: 2, kind: NotFound, message: "No such file or directory" }',
+src/main.rs:4:49
+```
+
+### Using `expect`
+
+```rust title= showLineNumbers
+use std::fs::File;
+
+fn main() {
+    let greeting_file = File::open("hello.txt")
+        .expect("hello.txt should be included in this project");
+}
+```
+
+```text title= showLineNumbers
+thread 'main' panicked at 'hello.txt should be included in this project: Os {
+code: 2, kind: NotFound, message: "No such file or directory" }',
+src/main.rs:5:10
+```
+
+## Propagating Errors
+
+Propagating Errors is return error to the calling code instead of handling error itself.
+
+```rust title= showLineNumbers
+use std::fs::File;
+use std::io::{self, Read};
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    let username_file_result = File::open("hello.txt");
+
+    let mut username_file = match username_file_result {
+        Ok(file) => file,
+        // highlight-next-line
+        Err(e) => return Err(e),
+    };
+
+    return Ok("foobar".to_string());
+}
+```
+
+### A Shortcut for Propagating Errors: the `?` Operator
+
+The pattern of propagating errors is so common in Rust that Rust provides the question mark operator `?` to make this easier.
+
+```rust title= showLineNumbers
+use std::fs::File;
+use std::io::{self, Read};
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    // highlight-next-line
+    let mut username_file = File::open("hello.txt")?;
+
+    return Ok("foobar".to_string());
+}
+```
+
+The `?` placed after a `Result` indicating
+
+- If `Ok` variant: the value inside the `Ok` will get returned from this expression (return to `username_file`)
+- If `Err` variant: the `Err` will be returned as function return.
+
+<Admonition type="note" title="note">
+
+Error type return by `?` will be converted into the error type defined in the return type of the current function.
+
+</Admonition>
+
+### Where The `?` Operator Can Be Used
+
+The `?` operator can only be used <Color color="var(--secondary-font-color)"> in a function </Color> that returns `Result` or `Option` (or another type that implements `FromResidual`)
+
+### Use `?` after `Option<T>`
+
+```rust title= showLineNumbers
+fn last_char_of_first_line(text: &str) -> Option<char> {
+    text.lines() // return iterator of string separated by line
+    .next()? // next return Option type bc first line can be empty
+    .chars()
+    .last()
+```
+
+If the value is `None`, the `None` will be returned early from the function at that point.
+
+If the value is `Some`, the value inside the `Some` is the resulting value of the expression
+
+<br />
+
+---
+
+## Miscellaneous
+
+`File::open` have `read_to_string` method which take mutable variable for passing file content to it.
+
+```rust title= showLineNumbers
+use std::fs::File;
+use std::io::{self, Read};
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    // highlight-start
+    let mut username = String::new();
+
+    File::open("hello.txt")?.read_to_string(&mut username)?;
+    // highlight-end
+
+    Ok(username)
+}
+```
+
+---
+
+You can read file then return `Result<file content String>` in one method
+
+```rust title= showLineNumbers
+use std::fs;
+use std::io;
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    // highlight-next-line
+    fs::read_to_string("hello.txt")
+}
+```
+
+---
+
+### <Color color="var(--not-nesary-for-now-future-font-color)"> Main function return type </Color>
+
+`main` can also return a `Result<(), E>`
+
+```rust title= showLineNumbers
+use std::error::Error;
+use std::fs::File;
+
+fn main() -> Result<(), Box<dyn Error>> {
+    let greeting_file = File::open("hello.txt")?;
+
+    Ok(())
+}
+```
+
+When a main function returns a `Result<(), E>`, the executable will exit with a value of 0 if main returns `Ok(())` and will exit with a nonzero value if main returns an `Err` value.
+
+<Admonition type="tip" title="later">
+
+The main function may return any types that implement the [std::process::Termination trait](https://doc.rust-lang.org/std/process/trait.Termination.html),
+which contains a function report that returns an `ExitCode`.
+
+Consult the standard library documentation for more information on implementing the `Termination` trait for your own types.
+
+</Admonition>
+
+---
+
+<Admonition type="caution" title="?????" icon="">
+
+the `ok` method on `Result` or the `ok_or` method on `Option`
+
+</Admonition>
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html
