@@ -1,0 +1,104 @@
+# Unrecoverable Errors
+
+## Calling panic!
+
+```rust title= showLineNumbers
+fn main() {
+    panic!("crash and burn");
+}
+```
+
+will result:
+
+```text title= showLineNumbers
+$ cargo run
+   Compiling panic v0.1.0 (file:///projects/panic)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.25s
+     Running `target/debug/panic`
+// highlight-start
+thread 'main' panicked at 'crash and burn', src/main.rs:2:5
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+// highlight-end
+```
+
+## Using `panic!` Backtrace
+
+A backtrace is a list of all the functions that have been called to get to the point panic occur. (call stack, stack trace)
+
+To see backtrace
+
+- set `RUST_BACKTRACE` environment variable to any value except 0
+- debug symbols must be enabled. Debug symbols are <Color color="var(--secondary-font-color)"> enabled by default </Color> when using `cargo build` or `cargo run` <Color color="var(--secondary-font-color)"> without </Color> the `--release` flag
+
+From this code:
+
+```rust title=src/main.rs showLineNumbers
+fn main() {
+    let v = vec![1, 2, 3];
+
+    v[99];
+}
+```
+
+Then run:
+
+```text title= showLineNumbers
+// highlight-next-line
+$ RUST_BACKTRACE=1 cargo run
+thread 'main' panicked at 'index out of bounds: the len is 3 but the index is 99', src/main.rs:4:5
+stack backtrace:
+   0: rust_begin_unwind
+             at /rustc/e092d0b6b43f2de967af0887873151bb1c0b18d3/library/std/src/panicking.rs:584:5
+   1: core::panicking::panic_fmt
+             at /rustc/e092d0b6b43f2de967af0887873151bb1c0b18d3/library/core/src/panicking.rs:142:14
+   2: core::panicking::panic_bounds_check
+             at /rustc/e092d0b6b43f2de967af0887873151bb1c0b18d3/library/core/src/panicking.rs:84:5
+   3: <usize as core::slice::index::SliceIndex<[T]>>::index
+             at /rustc/e092d0b6b43f2de967af0887873151bb1c0b18d3/library/core/src/slice/index.rs:242:10
+   4: core::slice::index::<impl core::ops::index::Index<I> for [T]>::index
+             at /rustc/e092d0b6b43f2de967af0887873151bb1c0b18d3/library/core/src/slice/index.rs:18:9
+   5: <alloc::vec::Vec<T,A> as core::ops::index::Index<I>>::index
+             at /rustc/e092d0b6b43f2de967af0887873151bb1c0b18d3/library/alloc/src/vec/mod.rs:2591:9
+   // highlight-start
+   6: panic::main
+             at ./src/main.rs:4:5
+   // highlight-end
+   7: core::ops::function::FnOnce::call_once
+             at /rustc/e092d0b6b43f2de967af0887873151bb1c0b18d3/library/core/src/ops/function.rs:248:5
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+```
+
+<Admonition type="tip" title="tip">
+
+The key to reading the backtrace is to start from the top and read until you see files you wrote. Then
+
+- The lines above are code that your code has called
+- The lines below are code that called your code
+
+</Admonition>
+
+## Unwinding and Aborting
+
+By default, when a panic occurs, the program starts "unwinding" which means Rust walks back up the stack and cleans up the data (free memory) from each function it encounters. This walking back and cleanup is a lot of work.
+
+So Rust allows you to immediately aborting which ends the program without cleaning up. Memory that the program was using will then need to be cleaned up by the operating system.
+
+```toml title=Cargo.toml showLineNumbers
+# if you want to abort on panic in release mode
+[profile.release]
+panic = 'abort'
+```
+
+<Admonition type="tip" title="tip">
+
+Switch to `panic = 'abort'` if you need to make the resulting binary as small as possible
+
+</Admonition>
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch09-01-unrecoverable-errors-with-panic.html
