@@ -1,0 +1,68 @@
+# To panic or Not to panic
+
+## Use panic when
+
+- You’re making the decision that a situation is unrecoverable <Color color="var(--primary-font-color)"> on behalf of </Color> the calling code.
+- Your code could end up in the bad state
+  - The bad state is something that is unexpected, <Color color="var(--primary-font-color)"> as opposed to </Color> something that will likely <Color color="var(--secondary-font-color)"> happen occasionally </Color>, like a user entering data in the wrong format.
+- Your code after this point needs to rely on <Color color="var(--secondary-font-color)"> not being </Color> in this bad state.
+- Continuing could be insecure or harmful
+- Your code behavior is only guaranteed if input meet particular requirement but calling code does not meet the requirements(invalid input).
+- It is <Color color="var(--secondary-font-color)"> not make sense </Color> for calling code to <Color color="var(--primary-font-color)"> explicitly </Color> handle the error
+
+## Use Result when
+
+- Failure is expected
+- Your code might fail in a way that it could recover from
+
+---
+
+<Admonition type="tip" title="tip">
+
+Returning `Result` is a good default choice
+
+</Admonition>
+
+<Admonition type="note" title="note">
+
+If you can ensure by manually inspecting the code that you’ll <Color color="var(--secondary-font-color)"> never </Color> have an `Err` variant, it’s perfectly acceptable to call `unwrap`,
+and even better to document the reason you think you’ll never have an `Err` variant in the expect text.
+
+Here’s an example:
+
+```rust title= showLineNumbers
+ use std::net::IpAddr;
+
+ let home: IpAddr = "127.0.0.1"
+     .parse() // parse method return Result but we know that hardcoded "127.0.0.1" is always valid
+     .expect("Hardcoded IP address should be valid");
+```
+
+</Admonition>
+
+## Miscellaneous
+
+When you dont want your struct user to write to struct field but allow reading, you can implement `getter` method. vice versa with `setter`
+
+```rust title= showLineNumbers
+pub struct Guess {
+    // highlight-next-line
+    value: i32, // this field is private
+}
+
+impl Guess {
+    // highlight-next-line
+    pub fn value(&self) -> i32 { // user can read value using this getter method
+        self.value
+    }
+}
+
+```
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch09-03-to-panic-or-not-to-panic.html
