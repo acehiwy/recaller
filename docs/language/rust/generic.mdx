@@ -1,0 +1,148 @@
+# Generic Types
+
+Generics allow us to replace specific types with a placeholder that represents multiple types to remove code duplication.
+
+<Admonition type="info" title="info">
+
+Rust’s type-naming convention is UpperCamelCase
+
+</Admonition>
+
+## Generic in Function Definition
+
+```rust title= showLineNumbers
+fn largest<T: std::cmp::PartialOrd>(list: &[T]) -> &T {
+```
+
+`<T: std::cmp::PartialOrd>` mean `T` can only be a type that implement `std::cmp::PartialOrd` <Color color="var(--primary-font-color)"> trait </Color>
+
+## In Struct definition
+
+```rust title= showLineNumbers
+struct Point<T, U> {
+    x: T,
+    y: U,
+}
+
+fn main() {
+    let both_integer = Point { x: 5, y: 10 };
+    let both_float = Point { x: 1.0, y: 4.0 };
+    let integer_and_float = Point { x: 5, y: 4.0 };
+}
+```
+
+## In Enum definition
+
+```rust title= showLineNumbers
+enum Result<T, E> {
+    Ok(T),
+    Err(E),
+}
+```
+
+## In `impl` block
+
+```rust title= showLineNumbers
+struct Point<T> {
+    x: T,
+    y: T,
+}
+
+// type parameter name does not need to be similar as in strcut definition
+impl<FooBar> Point<FooBar> {
+    fn x(&self) -> &FooBar {
+        &self.x
+    }
+}
+```
+
+We can define method for subset of generic type
+
+```rust title= showLineNumbers
+struct Point<T> {
+    x: T,
+    y: T,
+}
+
+impl<T> Point<T> {
+    fn x(&self) -> &T {
+        &self.x
+    }
+}
+
+// highlight-start
+impl Point<f32> {
+    fn distance_from_origin(&self) -> f32 {
+        (self.x.powi(2) + self.y.powi(2)).sqrt()
+    }
+}
+// highlight-end
+
+fn main() {
+    let p = Point { x: 5.5, y: 10.5 };
+
+    println!("p.x = {}", p.distance_from_origin());
+}
+```
+
+Only the `Point` instance which is `f32` type will have `distance_from_origin` method.
+
+Declaring `impl<T>` specify that method inside `impl` block is for `Point<T>` type.
+
+### In method definition
+
+Each method definition can have it own generic type which are unrelated to struct generic.
+
+It can still access generic of `impl` block
+
+```rust title= showLineNumbers
+struct Point<X1, Y1> {
+    x: X1,
+    y: Y1,
+}
+
+impl<X1, Y1> Point<X1, Y1> {
+    // highlight-next-line
+    fn mixup<X2, Y2>(self, other: Point<X2, Y2>) -> Point<X1, Y2> {
+        Point {
+            x: self.x,
+            y: other.y,
+        }
+    }
+}
+
+fn main() {
+    let p1 = Point { x: 5, y: 10.4 };
+    let p2 = Point { x: "Hello", y: 'c' };
+
+    let p3 = p1.mixup(p2);
+
+    println!("p3.x = {}, p3.y = {}", p3.x, p3.y);
+}
+```
+
+## <Color color="var(--not-nesary-for-now-future-font-color)"> Performance of Code Using Generics </Color>
+
+Using generic types won't make your program run any slower than it would with concrete types.
+
+Rust compiles generic code into code that specifies the type in each instance.
+
+When the code runs, it performs just as it would if we had duplicated each definition by hand.
+
+<Color color="var(--not-require-but-good-to-know-font-color)">
+
+Rust accomplishes this by performing monomorphization of the code using generics at compile time.
+
+Monomorphization is the process of turning generic code into specific code by filling in the concrete types that are used when compiled.
+
+The compiler looks at all the places where generic code is called and generates code for the concrete types the generic code is called with.
+
+</Color>
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch10-01-syntax.html
