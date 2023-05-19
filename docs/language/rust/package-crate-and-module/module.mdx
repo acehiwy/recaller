@@ -2,11 +2,11 @@
 
 Modules let us organize code within a crate for readability and easy reuse.
 
-Modules also allow us to control the privacy <Color color="var(--secondary-font-color)"> of items </Color>
+Modules also allow us to control the privacy <Color color="var(--secondary-font-color)"> of items ???</Color>
 
 ## Cheatsheet
 
-- **Start from the crate root:** When compiling a crate, the compiler <Color color="var(--secondary-font-color)"> first looks in the crate root file </Color> (usually src/lib.rs for a library crate or src/main.rs for a binary crate) for code to compile.
+- **Start from the crate root:** When compiling a crate, the compiler <Color color="var(--secondary-font-color)"> first looks in the crate root file ??? </Color> (usually src/lib.rs for a library crate or src/main.rs for a binary crate) for code to compile.
 - **Declaring modules:** In the crate root file if you declare `mod garden`. The compiler will look for the module’s code in these places:
   - Inline, within curly brackets that replace the semicolon following mod garden
   - In the file `src/garden.rs`
@@ -39,7 +39,7 @@ mod front_of_house {
 }
 ```
 
-## Module Tree
+Above module definetion will reflect as this module tree
 
 ```text title= showLineNumbers
 crate
@@ -53,7 +53,11 @@ crate
          └── take_payment
 ```
 
+<Admonition type="info" title="info">
+
 Siblings module mean they’re defined in the same module.`hosting` and `serving` are siblings defined within `front_of_house`.
+
+</Admonition>
 
 ## Referring Module Tree with Path
 
@@ -61,7 +65,9 @@ A path can take two forms:
 
 - An absolute path is the full path starting <Color color="var(--secondary-font-color)"> from a crate root </Color>;
   - for code from an external crate, the absolute path <Color color="var(--secondary-font-color)"> begins with the crate name </Color>
+    - eg. `<library name>::<library module>::<library funtion>`
   - for code from the current crate, it starts with the literal `crate`.
+    - eg. `create::<internal module>::<internal function>`
 - A relative path starts from the current module and uses
   - `self`
   - `super`
@@ -91,11 +97,17 @@ Items in a parent module can’t use the private items inside child modules
 
 But items in child modules can use the items in their ancestor modules (ancestor modules must be brought into child scope, eg. `use super::foo`, `use crate::ancestor_module::foo`).
 
-Use `pub` keyword to expose inner parts of child modules’ code to outer ancestor modules.
+Use `pub` keyword to mark items / module public which can be accessed by their outer ancestor.
 
-<Admonition type="tip" title="tip">
+<Admonition type="note" title="note">
 
-If you want to make an item like a function or struct private, you put it in a module.
+If the module itself is not marked public, the item it contained are still private even the item is marked public.
+
+</Admonition>
+
+<Admonition type="note" title="note">
+
+Siblings modules / item can access each other without themselves marked public
 
 </Admonition>
 
@@ -184,7 +196,7 @@ Otherwise client wouldn't be able to create `Breakfast` instance.
 
 ### `pub` `enum`
 
-Using `pub` on `enum` make it and its fields public.
+Using `pub` on `enum` make it and its variants public.
 
 ```rust title=src/lib.rs showLineNumbers
 mod back_of_house {
@@ -206,7 +218,7 @@ pub fn eat_at_restaurant() {
 
 </Admonition>
 
-## `use` keyword
+## Bringing Paths into Scope with `use` keyword
 
 We can create a shortcut to a path with the `use` keyword
 
@@ -260,7 +272,9 @@ fn function2() -> IoResult<()> {
 
 ## Re-exporting Names with `pub use`
 
-When we bring a name into scope with the use keyword, the name available in the new scope is private.
+The shortcut brought to the scope are private by default. Meaning outer ancestor / external code (lib user in this case) can not access the shortcut
+
+Marking a shortcut with `pub` to allow outer ancestor to also use the shortcut.
 
 ```rust title=restaurant/src/lib.rs showLineNumbers
 mod front_of_house {
@@ -269,7 +283,7 @@ mod front_of_house {
     }
 }
 
-pub use crate::front_of_house::hosting;
+pub use crate::front_of_house::hosting; // without `pub`, `hosting` shortcut is private
 
 pub fn eat_at_restaurant() {
     hosting::add_to_waitlist();
@@ -345,8 +359,17 @@ pub fn bar_in_hosting() {
 fn foo_in_back_of_house(){}
 ```
 
+Modules can also hold definitions for other items, such as structs, enums, constants, traits
 
-<br/>
+making the module public doesn’t make its contents public. The pub keyword on a module only lets code in its ancestor modules refer to it, not access its inner code.
+
+<Admonition type="tip" title="later">
+
+If you plan on sharing your library crate, see [Rust API guidelines](https://rust-lang.github.io/api-guidelines/)
+
+</Admonition>
+
+<br />
 
 ---
 
