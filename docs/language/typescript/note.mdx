@@ -1,0 +1,44 @@
+---
+last_update:
+  date: 2026-03-08T05:30:36.255Z
+---
+
+You can import a file and not include any variables into your current module via import "./file":
+
+```typescript title=app.ts showLineNumbers
+import './maths.js';
+
+console.log('3.14');
+```
+
+In this case, the import does nothing. However, all of the code in maths.ts was evaluated, which could trigger side-effects which affect other objects.
+
+## Import type
+Which is an import statement which can only import types:
+
+```typescript title=animal.ts showLineNumbers
+export type Cat = { breed: string; yearOfBirth: number };
+export const createCatName = () => 'fluffy';
+```
+
+```typescript title=valid.ts showLineNumbers
+import type { Cat, Dog } from './animal.js';
+export type Animals = Cat | Dog;
+```
+
+```typescript title=app.ts showLineNumbers
+import type { createCatName } from './animal.js';
+const name = createCatName();
+// 'createCatName' cannot be used as a value because it was imported using 'import type'.
+```
+
+## Inline type imports
+
+```typescript title= showLineNumbers
+import { createCatName, type Cat, type Dog } from './animal.js';
+
+export type Animals = Cat | Dog;
+const name = createCatName();
+```
+
+Together these allow a non-TypeScript transpiler like Babel, swc or esbuild to know what imports can be safely removed.

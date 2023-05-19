@@ -2,6 +2,9 @@
 sidebar_position: 40000
 tags:
   - rust
+last_update:
+  date: 2026-03-08T05:30:36.255Z
+
 ---
 
 # Data Types
@@ -189,7 +192,8 @@ Tuples have a fixed length: once declared, they cannot grow or shrink in size.
 ```rust title=
 let foo: (i32, f64, u8) = (500, 6.4, 1);
 let tup = (500, 6.4, 1);
-let (x, y, z) = tup;
+// highlight-next-line
+let (x, y, z) = tup; // Destructuring tuple
 println!("The value of y is: {y}");
 ```
 
