@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkrecaller=self.webpackChunkrecaller||[]).push([[7918],{7990:(e,r,l)=>{l.d(r,{Z:()=>s});var c=l(7294);var n=l(2931),t=l(5162),a=l(4866),o=l(3612);const s={...n.Z,Admonition:o.Z,Tabs:a.Z,TabItem:t.Z,Color:function(e){let{children:r,color:l}=e;return c.createElement("span",{style:{color:l}},r)}}}}]);
