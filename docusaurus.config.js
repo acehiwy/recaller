@@ -8,10 +8,10 @@ const shadesOfPurple = require("prism-react-renderer/themes/shadesOfPurple");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Woof",
+  title: "Recaller",
   tagline: "Dinosaurs are cool",
   url: "https://acehiwy.github.io/",
-  baseUrl: "/woof/",
+  baseUrl: "/recaller/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
@@ -19,7 +19,7 @@ const config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: "acehiwy", // Usually your GitHub org/user name.
-  projectName: "woof", // Usually your repo name.
+  projectName: "recaller", // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
@@ -61,7 +61,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: "Woof",
+        title: "Recaller",
         logo: {
           alt: "My Site Logo",
           src: "img/logo.svg",
