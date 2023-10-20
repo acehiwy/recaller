@@ -1,0 +1,87 @@
+---
+sidebar_position: 30000
+tags:
+  - rust
+---
+
+# Variables and Mutability
+
+## Variable
+
+Variables are immutable by default
+
+```rust title= showLineNumbers
+let x = 5;
+
+// highlight-error-next-line
+x = 10
+// error[E0384]: cannot assign twice to immutable variable `x`
+```
+
+You can make them mutable by adding mut in front of the variable name
+
+```rust title= showLineNumbers
+let mut x = 5;
+x = 6;
+```
+
+## Constants
+
+```rust title=
+const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
+```
+
+Constants is like variable but they are always immutable. `mut` is not allowed to use with constant.
+
+When defining constants, its type must be declared.
+
+Constants can be declared in <Color color="var(--secondary-font-color)"> any scope </Color>, including the global scope.
+
+Constants may be set only to a constant expression, <Color color="var(--secondary-font-color)"> not the result of a value that could only be computed at runtime </Color>.
+
+<Admonition type="info" title="info">
+
+Rust’s naming convention for constants is to use all uppercase with underscores between words.
+
+</Admonition>
+
+Constants are valid for the entire time a program runs, within the scope in which they were declared.
+
+## Shadowing
+
+You can declare a new variable <Color color="var(--secondary-font-color)"> with the same name </Color> as a previous variable.
+
+Rustaceans say that the first variable is shadowed by the second. The second variable is valid until it itself is shadowed(by another variable) or the scope ends.
+
+```rust title= showLineNumbers
+fn main() {
+    let x = 5;
+    let x = x + 1;
+    {
+        let x = x * 2;
+        println!("The value of x in the inner scope is: {x}");
+        // The value of x in the inner scope is: 12
+    }
+
+    println!("The value of x is: {x}");
+    // The value of x is: 6
+}
+```
+
+Shadowing is different from marking a variable as `mut`.
+
+- With shadowing we can perform a few transformations on a value but have the variable be immutable after those transformations have been completed (out of scope).
+- With shadowing we are creating a new variable using `let`, the type of value can be change as well
+
+```rust title= showLineNumbers
+let spaces = "   ";
+let spaces = spaces.len();
+```
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html
