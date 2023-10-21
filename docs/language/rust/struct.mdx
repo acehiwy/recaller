@@ -1,3 +1,9 @@
+---
+sidebar_position: 80000
+tags:
+  - rust
+---
+
 # Struct
 
 A `struct`, or structure, is a custom data type.
@@ -87,7 +93,7 @@ fn main() {
     let user2 = User {
         email: String::from("another@example.com"),
         // highlight-next-line
-        ..user1
+        ..user1 // set all remaining field except `email` from user1
     };
 }
 ```
@@ -217,9 +223,17 @@ Methods <Color color="var(--secondary-font-color)"> must have a parameter named 
 
 Method's first parameter `self` have type `&Self` indicate that it borrow instance of `Self`
 
-You can also use mutable reference of `Self` type as well. eg `&mut Self`. But its `struct` instance need to be mutable.
+<Admonition type="info" title="info">
 
 It can also be `Self` which take ownership from struct instance.
+
+Having a method that takes ownership of the instance by using just self as the first parameter is rare
+
+This technique is usually used when the method transforms self into something else <Color color="var(--secondary-font-color)"> and </Color> you want to prevent the caller from using the original instance after the transformation.
+
+</Admonition>
+
+You can also use mutable reference of `Self` type as well. eg `&mut Self`. But its `struct` instance need to be mutable.
 
 </Admonition>
 
