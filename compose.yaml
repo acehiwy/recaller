@@ -1,0 +1,16 @@
+name: recaller
+
+services:
+  app:
+    build:
+      dockerfile: local.Dockerfile
+    volumes:
+        - app-node-modules:/usr/src/app/node_modules
+        - .:/usr/src/app
+    ports:
+      - 22222:22222
+    command: bash -c "yarn start"
+
+
+volumes:
+  app-node-modules:
