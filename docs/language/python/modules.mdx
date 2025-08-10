@@ -1,0 +1,349 @@
+---
+sidebar_position: 10000
+tags:
+  - python
+---
+
+# Modules
+
+A modules is a file containing variables, statements and functions. 
+
+A file name is a module name
+
+Eg. from the same directory:
+
+<Tabs>
+
+<TabItem value="some_other_file" label="some_other_file.py">
+
+```python title=some_other_file.py showLineNumbers
+import my_module
+
+print(my_module.__name___)
+# my_module
+print(my_module.foo())
+# foo
+print(__name__)
+# some_other_file
+```
+
+
+<Admonition type="note" title="note"> 
+
+Within a module, the module's name (as string) is available as a value of global variable `__name__`
+
+</Admonition>
+
+
+</TabItem>
+
+<TabItem value="my_module" label="my_module.py">
+
+```python title=my_module.py showLineNumbers
+def foo():
+  return 'foo'
+```
+
+
+
+
+</TabItem>
+
+</Tabs>
+
+
+
+## Import definitions from a module
+
+```python title=main.py showLineNumbers
+from my_module import foo, bar as something_else
+
+foo()
+something_else()
+```
+
+### Import all definitions
+
+```python title=main.py showLineNumbers
+from my_module import * # not recommended
+
+foo()
+something_else()
+
+
+# use this style instead
+import my_module as something
+
+something.foo()
+something.something_else()
+```
+
+
+## Module initialization
+
+Each module is only <Color color="var(--secondary-font-color)"> imported once per interpreter session </Color>. Meaning, statements define in module are executed once on imported whether one or multiple file importing it.
+
+<Tabs>
+<TabItem value="main" label="main">
+
+```python title=main.py showLineNumbers
+print('init:' , __name__)
+
+import deepest_module
+import middle_module
+
+print('exec from', __name__ , deepest_module.deepest())
+# init: __main__
+# init: deepest_module
+# init: middle_module
+# exec from middle_module deepest
+# exec from __main__ deepest
+```
+
+</TabItem>
+
+<TabItem value="middle" label="middle module">
+
+```python title=middle_module.py showLineNumbers
+print('init:' , __name__)
+
+import deepest_module
+
+print('exec from', __name__ , deepest_module.deepest())
+```
+
+</TabItem>
+
+<TabItem value="deepest" label="deepest module">
+
+```python title=deepest_module.py showLineNumbers
+print('init:' , __name__)
+
+def deepest():
+  return 'deepest'
+```
+
+</TabItem>
+
+</Tabs>
+
+### <Color color="var(--not-nesary-for-now-future-font-color)"> Re-importing module </Color>
+
+```python title= showLineNumbers
+import importlib
+
+importlib.reload(modulename)
+```
+
+
+## Executing modules as scripts
+
+When Python executing a module file, its module name, `__name__`, will be replace with string `__main__`.
+
+Eg. from this module file:
+
+```python title=my_module.py showLineNumbers
+print('init:', __name__)
+```
+
+If executed as a script, `python my_module.py`. The output will be `init: __main__`
+
+If imported by another file. The output will be output: `init: my_module`
+
+### Run something only when executed as a script
+
+```python title=my_module.py showLineNumbers
+def foo():
+  return 'foo'
+
+def bar():
+  return 'bar'
+
+print('this string will be printed every time whether this file is imported or executed as a script')
+
+if __name__ == '__main__':
+  # the code inside this if will run only if this file executed as a script
+  # not run on import statement (import my_module)
+  foo()
+  bar()
+```
+
+## Module search path
+
+Lets say module `foo` is imported, the interpreter start search from:
+
+- build-in module name `foo`. <Color color="var(--not-require-but-good-to-know-font-color)"> build-in module are listed in `sys.builtin_module_names` </Color>
+- a file named `foo.py` from a list of dictionaries given by `sys.path` which are:
+  - the directory containing the input script (current dir if no file input)
+  - `PYTHONPATH` environment variable
+  - <Color color="var(--can-not-understand-font-color)"> installation-dependent default </Color>
+
+<Admonition type="note" title="note"> 
+
+if the input script is symlinked. The intrepreter will add the original file location to the search path, <Color color="var(--secondary-font-color)"> not symliked file directory </Color>.
+
+</Admonition>
+
+<details>
+
+<summary> `sys.path` example </summary>
+
+```bash title= showLineNumbers
+[
+    '', # directory containing the script being run
+    '/usr/local/lib/python313.zip', 
+    '/usr/local/lib/python3.13', 
+    '/usr/local/lib/python3.13/lib-dynload', 
+    '/usr/local/lib/python3.13/site-packages'
+]
+```
+
+</details>
+
+<br/>
+
+## `dir` function
+
+give u a list of definitions name (variables, modules, functions) which a certain module contain.
+
+
+<Tabs>
+<TabItem value="main" label="main.py">
+
+```python title= showLineNumbers
+import foo
+
+def f1():
+  return 'f1'
+
+main_var = 'main'
+
+print(dir(foo))
+# [
+# highlight-start
+#   'foo',
+#   'sys',
+#   'variable_from_foo',
+# highlight-end
+#   '__builtins__',
+#   '__cached__',
+#   '__doc__',
+#   '__file__',
+#   '__loader__',
+#   '__name__',
+#   '__package__',
+#   '__spec__',
+# ]
+```
+
+</TabItem>
+<TabItem value="foo" label="foo.py">
+
+```python title= showLineNumbers
+import sys
+
+def foo():
+  pass
+
+variable_from_foo = "foo"
+```
+
+</TabItem>
+</Tabs>
+
+calling `dir` without any argument give u a list of a current module.
+
+eg. `dir()` from `main.py` file above will give:
+```bash title= showLineNumbers
+[
+  # highlight-start
+  'f1',
+  'foo',
+  'main_var',
+  # highlight-end
+  '__annotations__',
+  '__builtins__',
+  '__doc__',
+  '__loader__',
+  '__name__',
+  '__package__',
+  '__spec__',
+  
+]
+```
+
+<Admonition type="info" title="info"> 
+
+Built-in definitions can be listed by `import builtins; dir(builtins)`
+
+</Admonition>
+
+
+## Packages
+
+Package is a collection of modules
+
+With these file structure:
+
+```python title= showLineNumbers
+sound/                          Top-level package
+      __init__.py               Initialize the sound package
+      formats/                  Subpackage for file format conversions
+              __init__.py
+              wavread.py
+              wavwrite.py
+```
+
+User then can use these module and it sub-module
+
+```python title= showLineNumbers
+import sound
+import sound.formats
+import sound.formats.wavread
+from sound.formats.wavread import some_definition_inside_wavread
+```
+
+<Admonition type="info" title="info"> 
+
+`__init__.py` make its directory a module using definitions inside `__init__.py` file 
+
+eg. the `import sound` statement would import definitions from a file `sound.py` or  `__init__.py` which live inside `sound` directory
+
+</Admonition>
+
+
+<Admonition type="tip" title="later"> 
+
+When using syntax like `import item.subitem.subsubitem`, each item except for the last must be a package.
+
+The last item can be a module or a package but can't be a class or function or variable defined in the previous item.
+
+</Admonition>
+
+### Importing `*` from package
+
+The statement `from sound.formats import *` only import definitions defined in `formats` module. It is not import `formats` submodule (`waveread` and `wavwrite`).
+
+If you want submodules to be included, you have to add submodules' name in side `__all__` global variable of a module's `__init__` file
+
+```python title=formats/__init__.py showLineNumbers
+__all__ = [
+  'waveread',
+  'wavewrite'
+]
+```
+
+### Relative import
+
+```python title= showLineNumbers
+from . import foo # from current module directory, import foo
+from .. import bar # move out from current module directory 1 level, import bar
+from ... import bar # move out from current module directory 2 level, import bar
+from ..other_dir import baz # move out from current module directory 1 level then goes in other_dir directory, import baz
+```
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/modules.html

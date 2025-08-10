@@ -1,0 +1,226 @@
+---
+# sidebar_position: 60000
+tags:
+  - python
+---
+
+# Control Flow
+
+## `if` statement
+
+```python title= showLineNumbers
+if x < 0:
+    print('foo')
+elif not x == 0:
+    print('bar')
+elif x != 1 or x != 2 and x != 3:
+    print('baz')
+else:
+    print('default')
+```
+
+### Compare whether 2 object the same
+
+```python title= showLineNumbers
+if object_1 is object_2:
+  pass
+elif object_1 is not object_2:
+  pass
+elif object_1 is not None:
+  pass
+```
+
+### Chain comparison
+
+```python title= showLineNumbers
+if 1 < 2 == 2 > 0 or SomeObject.hasSomething() :
+  pass
+
+# equivalent to 
+if 1 < 2 and 2 == 2 and 2 > 0 or SomeObject.hasSomething() :
+  pass
+```
+
+### Comparing sequences object
+
+```python title= showLineNumbers
+"somestring" > "other string"
+
+(1,2,5) >= (5,6,7,8)
+
+["3" ,555] > ["2"]
+```
+
+<Color color="var(--secondary-font-color)"> 
+
+First the first two items are compared, and if they differ this determines the outcome of the comparison; if they are equal, the next two items are compared, and so on 
+
+</Color>
+
+<Admonition type="note" title="note"> 
+
+Comparing two string uses the Unicode code point number to order individual characters.
+
+eg:
+- `b > a` because unicode point of `b` is `0062` but `a` is `0061`, so `b` is more than `a`
+- `a > B` because unicode point of `a` is `0061` but `B` is `0042`, so `a` is more than `B`
+
+</Admonition>
+
+<Admonition type="info" title="info"> 
+
+More info on [operator precedence](https://docs.python.org/3/reference/expressions.html#operator-precedence)
+
+</Admonition>
+
+## Loop
+
+```python title= showLineNumbers
+for i in range(5): # or range(2,5) -> 2,3,4
+    print(i)
+
+# 0
+# 1
+# 2
+# 3
+# 4
+```
+
+<Admonition type="info" title="info"> 
+
+`range()` function return [iterable](https://docs.python.org/3/glossary.html#term-iterable)
+
+</Admonition>
+
+---
+
+```python title= showLineNumbers
+words = ['cat', 'window', 'defenestrate']
+for w in words:
+    print(w, len(w))
+```
+
+get list's index inside loop
+
+```python title= showLineNumbers
+words = ['cat', 'window', 'defenestrate']
+for index, value in enumerate(words):
+    print(index, value)
+```
+
+### loop on collection
+
+```python title= showLineNumbers
+users = {'Hans': 'active', 'Éléonore': 'inactive', '景太郎': 'active'}
+
+for key, value in users.copy().items():
+    # do something
+```
+
+<Admonition type="caution" title="caution"> 
+
+Modifying and iterating same collection should be avoided. You can work with a copy of them. eg. `<collection>.copy()` 
+
+</Admonition>
+
+<Admonition type="info" title="info"> 
+
+`<collection>.items()` function return `key, value` iterable
+
+</Admonition>
+
+### `break` and `continue`
+
+
+```python title= showLineNumbers
+for ... :
+  # do something
+  for ... :
+    # do something
+    break
+```
+
+`break` statement breaks out of the <Color color="var(--primary-font-color)"> innermost enclosing </Color> `for` or `while` loop
+
+---
+
+```python title= showLineNumbers
+for ... :
+  # do something
+  continue
+```
+
+### `else` on Loop
+
+
+If the loop <Color color="var(--primary-font-color)"> finishes without </Color> executing the `break`, the `else` clause executes.
+
+```python title= showLineNumbers
+for ... :
+  # do something
+else:
+  print("print if no break")
+```
+
+```python title= showLineNumbers
+i = 0
+while i <= 3:
+  print(i)
+  i = i +1 
+  break
+else:
+  print('print if no break')
+
+# output
+# 0
+```
+
+## `pass` statement
+
+`pass` act like empty code block
+
+```python title= showLineNumbers
+class MyEmptyClass:
+  pass
+
+while True:
+  pass
+
+def initlog(*args):
+  pass 
+
+if True:
+  pass
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/controlflow.html
