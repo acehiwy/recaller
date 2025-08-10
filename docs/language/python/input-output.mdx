@@ -1,0 +1,265 @@
+---
+sidebar_position: 10000
+tags:
+  - python
+---
+
+# Working with file
+
+```python title= showLineNumbers
+with open('path/to/file', 'w', encoding="utf-8") as f
+  file_content = f.read()
+
+
+# check whether file is closed
+f.closed
+# True
+```
+
+First argument is the file name.
+
+Second <Color color="var(--secondary-font-color)"> optional </Color> argument is a string describing how the file will be used:
+
+optional `encoding` keyword argument, default is `utf-8`, is the name of encoding use to encode and decode the file
+
+- `r`: open for reading (default)
+  - file's pointer start at the beginning
+- `w`: open for writing
+  - remove all file content or create a file if does not exist.
+  - file's pointer start at the beginning
+- `x`: open for exclusive creation, failing if the file already exists
+- `a`: open for writing. appending to the end of file 
+  - create file if does not exist
+  - all writes append to the end of the file regardless of the current pointer position
+
+
+- `b`: binary mode
+- `t`: text mode (default)
+- `+`: open for updating (reading and writing)
+
+the default mode is `r` (synonym of `rt`)
+
+`w+` and `w+b` open and truncate the file. 
+`r+` and `r+b` open the file with no truncation.
+
+<Admonition type="note" title="note"> 
+
+Mode `b`, contents are return as [`bytes`](https://docs.python.org/3/library/stdtypes.html#bytes) object
+
+Mode `t`, contents are return as `str`
+
+</Admonition>
+
+<Admonition type="note" title="note"> 
+
+`with` keyword ensure that file is closed after the process is done even if an exception is raised.
+
+</Admonition>
+
+
+<Admonition type="info" title="later"> 
+
+When <Color color="var(--secondary-font-color)"> reading </Color> in text mode, the default is to convert platform-specific line endings (`\n` on Unix, `\r\n` on Windows) to just `\n`. 
+
+When <Color color="var(--secondary-font-color)"> writing </Color> in text mode, the default is to convert occurrences of `\n` <Color color="var(--secondary-font-color)"> back </Color> to platform-specific line endings. 
+This behind-the-scenes modification to file data is fine for text files, but will corrupt binary data like that in JPEG or EXE files. 
+Be very careful to use binary mode when reading and writing such files.
+
+</Admonition>
+
+<Admonition type="info" title="later"> 
+
+In append binary mode, `a+b`, Pointer position will be moved ahead as the amount of bytes written regardless of its position.
+
+eg. pointer position is at 2 on 10 bytes file, then u write 3 bytes to the end resulting 13 bytes file. the pointer would move from 2 -> 5. not 10 -> 13
+
+</Admonition>
+
+## Read file
+
+### `read` method
+
+```python title= showLineNumbers
+with open('filepath') as f:
+  # do something
+  file_content = f.read()
+```
+
+`<file>.read(<size>)` method return string or bytes object.
+
+optional `size` numeric argument can be provided to specify how much characters (in text mode) or bytes (in binary mode) are read and returned. default is to return all the file content.
+
+```python title= showLineNumbers
+with open...:
+  first_10_char = file.read(10)
+  _11_to_20th_char = file.read(10)
+```
+
+### `readline` method
+
+```python title= showLineNumbers
+with open('foo.py') as f:
+  line_1 = f.readline()
+  line_2 = f.readline()
+
+  # or loop over the rest lines
+  for line in f:
+    pass
+```
+
+`readline()` reads a single line from the file
+
+a newline character (`\n`) is left at the end of the string
+
+<Admonition type="tip" title="tip"> 
+
+Returning each line as a list
+
+```python title= showLineNumbers
+my_list = f.readlines()
+
+# or
+my_list = list(f)
+```
+
+</Admonition>
+
+
+<Admonition type="note" title="note"> 
+
+`read` and `readline` method return empty string if the end of the file is reached.
+
+</Admonition>
+
+<Admonition type="note" title="note"> 
+
+read operation return type is string. reading number have to be cast to int
+
+</Admonition>
+
+### Read JSON
+
+```python title= showLineNumbers
+with open('filepath' , 'r') as f:
+    result = json.load(f)
+```
+
+## Write file
+
+```python title= showLineNumbers
+f.write('This is a test\n') 
+# 15 
+
+# write list to file
+f.writelines(['what' , 'ever'])
+```
+
+<Admonition type="note" title="note"> 
+
+`write` method return number of <Color color="var(--secondary-font-color)"> characters </Color> written
+
+</Admonition>
+
+`write` method take string or bytes object. Other type of object need to be converted.
+
+### Write JSON
+
+```python title= showLineNumbers
+arr = ['item1' , 'item2' , 3 , 3333 , (1,2,3,4)]
+dict = {'k1' : 1 , 'k2' : [1,2,3,4] , 'k3' : "foo"}
+
+with open('filepath' , 'w+') as f:
+    json.dump(arr, f)
+    json.dump(dict, f)
+```
+
+## Move file's pointer position
+
+```python title= showLineNumbers
+f.seek(<offset> : int, <whence>: 0 | 1 | 2)
+```
+
+move file pointer for `<offset>` <Color color="var(--primary-font-color)"> byte </Color> from `<whence>`
+
+`whence` argument accept
+- 0 (default): beginning of the file 
+- 1: at current file pointer position
+- 2: end of the file
+
+Eg:
+```python title= showLineNumbers
+# move ahead 3 byte from the beginning
+f.seek(3,0) 
+
+# move ahead 3 byte from the current pointer position
+f.seek(3,1)
+
+# move back 3 byte from the end
+f.seek(-3,2)
+
+# move to the end of the file
+f.seek(0,2)
+```
+
+<Admonition type="note" title="note"> 
+
+`seek` function should be used when you opening file in <Color color="var(--secondary-font-color)"> binary mode </Color>
+
+</Admonition>
+
+<Admonition type="danger" title="danger"> 
+
+When u open file <Color color="var(--secondary-font-color)"> in text mode </Color>, `open('file', 'r+t')`
+
+`seek`'s argument should follow these otherwise error might be raised:
+- `offset` argument should be align with value return from `f.tell()`
+- `whence` argument can only be `0`
+- only 2 exception are: 
+  - move to the beginning, `seek(0)`, of the file
+  - move to the end, `seek(0,2)`, of the file
+
+
+
+<Admonition type="info" title="later"> 
+
+Reason: In text mode, the read operation should return a valid charater(s) but if u move file pointer to the middle of the character bytes, no one could know which character it suppose to be. 
+( If somehow u dont understand these sentences, read more about [character encoding](https://www.youtube.com/watch?v=GMF2Z1EZHXk) )
+
+If you want to move file's pointer in text mode, u can use `read` instead. eg move 4 ahead character `read(4)`
+
+</Admonition>
+
+</Admonition>
+
+
+## Miscellaneous
+
+combine file paths:
+```python title= showLineNumbers
+from pathlib import Path
+
+file_paths = ['/example' , 'file' , 'path' , 'file.txt' ]
+
+path_obj = Path(*file_paths)
+print(path_obj.as_posix())
+# /example/file/path/file.txt
+
+
+#or
+path_obj = Path('base-path')
+path_obj = path_obj.joinpath(*['file' , 'path']) # joinpath is pure function
+print(path_obj.as_posix())
+# base-path/file/path
+```
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/inputoutput.html
+- https://docs.python.org/3/library/functions.html#open
+- https://stackoverflow.com/questions/1466000/difference-between-modes-a-a-w-w-and-r-in-built-in-open-function
+- https://www.youtube.com/watch?v=GMF2Z1EZHXk
+- https://www.youtube.com/watch?v=ut74oHojxqo

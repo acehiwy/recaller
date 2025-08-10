@@ -1,0 +1,99 @@
+---
+sidebar_position: 10000
+tags:
+  - python
+---
+
+# Virtual environment
+
+A self-contained directory that contains a specific version of Python interpreter and a number of additional packages.
+
+It is used for separation between Python's global module and project's module.
+
+Each project can have its own version of Python interpreter and it own module without interfering other.
+
+
+## Create Virtual environment
+
+```bash title= showLineNumbers
+python -m venv <dir path>
+
+# eg
+python -m venv /foo
+```
+
+<Admonition type="note" title="note"> 
+
+`<dir path>` is a directory that will contain a version of python interpreter and python modules
+
+</Admonition>
+
+<Admonition type="note" title="note"> 
+
+`<dir path>` will be created if does not exist
+
+</Admonition>
+
+## Activate and deactivate virtual environment
+
+```bash title= showLineNumbers
+source <dir path>/bin/activate
+
+# eg
+source /foo/bin/activate
+```
+
+### Deactivate
+
+while virtual environment is activating, execute global command:
+```bash title= showLineNumbers
+deactivate 
+```
+
+## Install packages into virtual environment
+
+After activate virtual environment
+
+```bash title= showLineNumbers
+python -m pip install requests==2.6.0 pandas
+```
+
+## Uninstall packages in virtual environment
+
+```bash title= showLineNumbers
+python -m pip uninstall requests==2.6.0 pandas
+```
+
+## Show installed packages infomation
+
+```bash title= showLineNumbers
+python -m pip show request
+```
+
+output:
+```bash title= showLineNumbers
+Name: requests
+Version: 2.6.0
+Summary: Python HTTP for Humans.
+Home-page: http://python-requests.org
+Author: Kenneth Reitz
+Author-email: me@kennethreitz.com
+License: Apache 2.0
+Location: /home/appuser/.local/lib/python3.13/site-packages
+Requires: 
+Required-by: 
+```
+
+## List all packages installed in virtual environment
+
+```bash title= showLineNumbers
+python -m pip list
+```
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/venv.html

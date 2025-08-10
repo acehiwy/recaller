@@ -1,0 +1,130 @@
+# List
+
+```python title= showLineNumbers
+squares = [1, 4, 9, 16, 25, "foo"]
+```
+
+List can also be indexed and sliced
+```python title= showLineNumbers
+squares[0]  # indexing returns the item
+squares[-1]
+squares[-3:]  # slicing returns a new list
+```
+
+## Add <Color color="var(--primary-font-color)"> a single </Color> item to the list
+
+```python title= showLineNumbers
+foo = [1,2,3]
+
+foo.append(4)
+foo.append(["a", "b"])
+# [1, 2, 3, 4, ['a', 'b']]
+```
+
+## Concat List
+
+```python title= showLineNumbers
+some_list + [36, 49, 64, 81, 100]
+```
+
+```python title= showLineNumbers
+list.extend(<iterable>) # mutate object , return None
+
+[1,2,3].extend([4,5,6])
+```
+
+
+## Write value to a list / slice
+
+```python title= showLineNumbers
+letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+
+# replace some values
+letters[2:5] = ['C', 'D', 'E']
+# ['a', 'b', 'C', 'D', 'E', 'f', 'g']
+
+# remove some values
+letters[2:5] = []
+# ['a', 'b', 'f', 'g']
+```
+
+## Sort list
+
+```python title= showLineNumbers
+my_list.sort() # mutate object , return None
+```
+
+<Admonition type="caution" title="caution"> 
+
+If item in a list can not be compared to each other (`None` with `string` , `string` with `int`), then the list can not be sorted
+
+eg. `[None, 'hello', 10]`
+
+</Admonition>
+
+## List comprehensions (sugar syntax to craete list)
+
+```python title= showLineNumbers
+squares = [x**2 for x in range(10) if x > 2]
+```
+
+Equivalent to
+```python title= showLineNumbers
+squares = []
+for x in range(10):
+    if x > 2:
+      squares.append(x**2)
+```
+
+### <Color color="var(--not-require-but-good-to-know-font-color)"> multiple loop </Color>
+
+
+```python title= showLineNumbers
+squares = [(x, y) for x in [1,2,3] if x != 1 for y in [3,1,4] if x != y]
+```
+
+Equivalent to
+```python title= showLineNumbers
+squares = []
+for x in [1,2,3]:
+    if x != 1:
+      for y in [3,1,4]:
+        if x != y:
+          squares.append((x,y))
+```
+
+### nested list comprehensions
+
+```python title= showLineNumbers
+matrix = [
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12],
+]
+
+[[row[i] for row in matrix] for i in range(4)]
+```
+
+equivalent to
+
+```python title= showLineNumbers
+
+transposed = []
+for i in range(4):
+    # the following 3 lines implement the nested listcomp
+    transposed_row = []
+    for row in matrix:
+        transposed_row.append(row[i])
+    transposed.append(transposed_row)
+```
+
+
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/introduction.html#lists
+- https://docs.python.org/3/tutorial/datastructures.html

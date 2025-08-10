@@ -1,0 +1,174 @@
+---
+sidebar_position: 10000
+tags:
+  - python
+---
+
+# String
+
+```python title= showLineNumbers
+some_string = "string value"
+```
+
+double quote and single quote are equivalent
+
+escape character is `\`
+```python title= showLineNumbers
+>>> 'doesn\'t'  # use \' to escape the single quote...
+"doesn't"
+```
+
+with `print()`, special characters are interpreted
+
+```python title= showLineNumbers
+s = 'First line.\n Second line.' 
+s  # without print(), special characters are included in the string
+# 'First line.\n Second line.'
+
+print(s)  
+# First line.
+# Second line.
+```
+
+<Admonition type="info" title="info"> 
+
+use raw string if you don't want characters prefaced by \ to be interpreted as special characters
+
+```python title= showLineNumbers
+print(r'C:\some\name')  # note the r before the quote
+# C:\some\name
+```
+
+</Admonition>
+
+Multiple line string use triple quote:
+```python title= showLineNumbers
+print("""\
+Usage: thingy [OPTIONS]
+     -h                        Display this usage message
+     -H hostname               Hostname to connect to
+""")
+```
+
+<Admonition type="note" title="note"> 
+
+End of line character are automatically <Color color="var(--secondary-font-color)"> included on each line </Color> but u can prevent by adding `\` at the end of the line
+
+</Admonition>
+
+### Concat string
+
+```python title= showLineNumbers
+3 * 'un' + 'ium'
+# 'unununium'
+```
+
+Two or more <Color color="var(--primary-font-color)"> string literals </Color> next to each other are automatically concatenated.
+
+```python title= showLineNumbers
+'foo' 'bar'  'baz'
+# 'foobarbaz'
+```
+
+### string indexing
+
+```python title= showLineNumbers
+word = 'Python'
+word[0]  # character in position 0
+# 'P'
+word[5]  # character in position 5
+# 'n'
+
+word[-2]  # second-last character
+# 'o'
+word[-6]
+# 'P'
+```
+
+### Slice (substring)
+
+```python title= showLineNumbers
+word = 'Python'
+word[0:2]  # characters from position 0 (included) to 2 (excluded)
+# 'Py'
+
+word[:2]   # character from the beginning to position 2 (excluded)
+# 'Py'
+word[4:]   # characters from position 4 (included) to the end
+# 'on'
+word[-2:]  # characters from the second-last (included) to the end
+# 'on'
+```
+
+<Admonition type="note" title="note"> 
+
+Index substitution, the start is always included, and the end always excluded
+
+</Admonition>
+
+<Admonition type="note" title="note"> 
+
+out of range slice indexes are handled gracefully:
+
+```python title= showLineNumbers
+word = "python"
+word[4:42]
+# 'on'
+word[42:]
+# ''
+```
+</Admonition>
+
+### string length
+
+use `len()`
+
+
+### String interpolation
+
+```python title= showLineNumbers
+result = f'{var_1} is not the same as {var_2}'
+```
+
+<Admonition type="tip" title="later"> 
+
+`str.format()` can be used alternatively. See more info [here](https://docs.python.org/3/library/stdtypes.html#str.format)
+
+</Admonition>
+
+<Admonition type="tip" title="later"> 
+
+the `{}` syntax can do much more than substitute a string. It can format a string to be any form u like.
+
+see more info [here](https://docs.python.org/3/reference/lexical_analysis.html#f-strings)
+
+</Admonition>
+
+## Miscellaneous
+
+Use [`str()`](https://docs.python.org/3/library/stdtypes.html#str) or [`repr()`](https://docs.python.org/3/library/functions.html#repr) function to view a string representation of an object.
+
+Convert string to byte, [`str.encode()`](https://docs.python.org/3/library/stdtypes.html#str.encode)
+
+JSON serializing and deserializing
+```python title= showLineNumbers
+import json
+x = [1, 'simple', 'list']
+
+# serializing
+json.dumps(x)
+
+
+# deserializing
+json_string = '...'
+json.loads(json_string)
+```
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/introduction.html#text
+- https://docs.python.org/3/tutorial/inputoutput.html#fancier-output-formatting

@@ -1,0 +1,149 @@
+---
+sidebar_position: 10000
+tags:
+  - python
+---
+
+# Dictionaries
+
+A key-value data structure
+
+## Create
+
+```python title= showLineNumbers
+def foo():
+  return 'foo'
+
+my_dict = { 
+  "asdf" : 123 , 
+  2222 : "sdfhs" , 
+  (1,2) : "2222", 
+  foo: "233"
+}
+```
+
+<Admonition type="info" title="info"> 
+
+Dictionaries are indexed by keys, which can be any <Color color="var(--secondary-font-color)"> immutable </Color> type
+
+</Admonition>
+
+<Admonition type="note" title="note"> 
+
+Tuples can be used as keys if they contain only strings, numbers, or tuples
+
+</Admonition>
+
+<Admonition type="info" title="info"> 
+
+Dictionaries order are preserve as the insertion order
+
+</Admonition>
+
+### Dictionaries comprehensions
+
+```python title= showLineNumbers
+{x: x**2 for x in (2, 4, 6)}
+# {2: 4, 4: 16, 6: 36}
+```
+
+### Create from sequences <Color color="var(--primary-font-color)"> of key-value pairs </Color>
+
+```python title= showLineNumbers
+# create from key-value list
+dict( [('sape', 4139), ('guido', 4127), ('jack', 4098)] )
+# {'sape': 4139, 'guido': 4127, 'jack': 4098}
+
+# create from key-value tuple
+dict( ((1,2), (3,4)) )
+# {1: 2, 3: 4}
+```
+
+### <Color color="var(--not-nesary-for-now-future-font-color)"> Create using keyword argument </Color>
+
+```python title= showLineNumbers
+dict(sape=4139, guido=4127, jack=4098)
+# {'sape': 4139, 'guido': 4127, 'jack': 4098}
+```
+## Read value
+
+```python title= showLineNumbers
+def foo():
+  return 'foo'
+
+my_dict = { 
+  "asdf" : 123 , 
+  2222 : "sdfhs" , 
+  (1,2) : "2222", 
+  foo: "233"
+}
+
+some_var = 2222
+my_dict["asdf"]
+my_dict[some_var]
+my_dict[(1,2)]
+my_dict[foo]
+```
+
+## Write value
+
+```python title= showLineNumbers
+my_dict["asdf"] = 'something_else'
+```
+
+## Check for existing key
+
+```python title= showLineNumbers
+def foo():
+  return 'foo'
+
+my_dict = { 
+  "asdf" : 123 , 
+  2222 : "sdfhs" , 
+  (1,2) : "2222", 
+  foo: "233"
+}
+
+some_var = 2222
+foo in my_dict
+# True
+
+some_var in my_dict
+# True
+
+(1,2) in my_dict
+# True
+
+'else' not in my_dict
+# False
+```
+
+## Delete key
+
+```python title= showLineNumbers
+del foo[some_key]
+```
+
+
+## <Color color="var(--not-nesary-for-now-future-font-color)"> Extract dictionaries' key as list </Color>
+
+```python title= showLineNumbers
+my_dict = list({1: "foo", "2" : "bar" , 3: "baz"})
+# [1, '2', 3]
+```
+
+## Miscellaneous
+
+<Admonition type="info" title="info"> 
+
+Read more on [Dictionaries](https://docs.python.org/3/library/stdtypes.html#mapping-types-dict)
+
+</Admonition>
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/datastructures.html#dictionaries

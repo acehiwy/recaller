@@ -1,0 +1,104 @@
+---
+sidebar_position: 10000
+tags:
+  - python
+---
+
+
+<Color color="var(--can-not-understand-font-color)"> Some Python modules are also useful as scripts. These can be invoked using python -m module [arg] ..., which executes the source file for module as if you had spelled out its full name on the command line. </Color>
+
+## Passing argument to the script
+
+script argument can be accessed by 
+
+```python title= showLineNumbers
+import sys
+
+sys.argv # list of string
+```
+
+The length of the list is at least one
+
+when no script and no arguments are given, `sys.argv[0]` is an empty string
+
+When the script name is given as `-` (meaning standard input), `sys.argv[0]` is set to `-`
+
+In interactive mode, the last printed expression is assigned to the variable `_`
+
+```python title= 
+2+3
+# 5
+_ * 2
+# 10
+_ + 1
+# 11
+```
+
+<Color color="var(--can-not-understand-font-color)"> When -m module is used, sys.argv[0] is set to the full name of the located module. Options found after -c command or -m module are not consumed by the Python interpreter’s option processing but left in sys.argv for the command or module to handle. </Color>
+
+---
+
+
+
+## <Color color="var(--not-require-but-good-to-know-font-color)"> Source Code Encoding </Color>
+
+By default, Python source files are treated as encoded in UTF-8.
+
+declaring other encoding other than default one use special comment should be added as the first line of the file
+
+```python title=foo.py showLineNumbers
+# -*- coding: <encoding> -*-
+```
+
+```python title=foo.py showLineNumbers
+# -*- coding: cp1252 -*-
+```
+
+```bash title=foo.sh showLineNumbers
+#!/usr/bin/env python3
+# -*- coding: cp1252 -*-
+```
+
+
+
+where `<encoding>` is one of [codecs](https://docs.python.org/3/library/codecs.html#module-codecs)
+
+
+
+---
+
+## Miscellaneous
+
+Division `/` always returns a float. To do floor division and get an integer result you can use the `//` operator;
+
+```python title=
+1273/3
+# 424.3333333333333
+1273//3
+# 424
+```
+
+Simple assignment in Python never copies data
+```python title= showLineNumbers
+var1 = "foo"
+var2 = "foo"
+var1 == var2
+# True
+id(var1) == id(var2)
+# True
+```
+
+`print()` accept `end=` argument for specifying end of the line characters
+```python title= showLineNumbers
+print("foo", end="something not new line")
+```
+
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/interpreter.html
+- https://docs.python.org/3/tutorial/introduction.html
