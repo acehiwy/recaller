@@ -12,13 +12,23 @@ jobs:
     name: Test deployment
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16.15.1
-          cache: yarn
+      # 1. Checkout code
+      - name: Checkout
+        uses: actions/checkout@v4
 
+      - name: Enable Corepackk
+        run: corepack enable
+
+      # 2. Setup Node.js 22
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'yarn'
+
+      # 4. Install dependencies with Yarn 4
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Test build website
+        run: yarn install --immutable
+
+      - name: Build website
         run: yarn build
