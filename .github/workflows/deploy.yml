@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy to GitHub Pagesss
 
 on:
   push:
@@ -9,12 +9,15 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to GitHub Pages
+    name: Deploy to GitHub Pagess
     runs-on: ubuntu-latest
     steps:
       # 1. Checkout code
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Enable Corepackk
+        run: corepack enable
 
       # 2. Setup Node.js 22
       - name: Setup Node.js
@@ -22,10 +25,6 @@ jobs:
         with:
           node-version: 22
           cache: 'yarn'
-
-      # 3. Enable Corepack (for Yarn v4)
-      - name: Enable Corepack
-        run: corepack enable
 
       # 4. Install dependencies with Yarn 4
       - name: Install dependencies
