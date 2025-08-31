@@ -1,0 +1,46 @@
+---
+description: something
+title: Fast API
+tags:
+  - fastAPI
+---
+
+
+## Installation
+
+```bash title= showLineNumbers
+pip install 'fastapi[standard]'
+```
+
+<Admonition type="note" title="note"> 
+
+`fastapi[standard]` package come with some optional dependencies. 
+
+If u dont want them just use `pip install fastapi`
+
+</Admonition>
+
+<Admonition type="info" title="info"> 
+
+Install fastAPI without FastAPI cloud cli, `pip install "fastapi[standard-no-fastapi-cloud-cli]"`
+
+</Admonition>
+
+
+## Hello world
+
+```python title=main.py showLineNumbers
+from fastapi import FastAPI
+
+app = FastAPI()
+
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+```
+
+Run server:
+```bash title= showLineNumbers
+fastapi dev main.py
+```
