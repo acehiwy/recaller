@@ -1,0 +1,71 @@
+---
+sidebar_position: 1_001_000_000
+tags:
+  - FastAPI
+  - python
+---
+
+# Query Parameters
+
+Function parameters, that are not part of path parameter, are interpret as query params 
+
+```python title= showLineNumbers
+@app.get("/items/")
+async def read_item(skip: int = 0, limit: int = 10):
+    pass
+```
+
+```bash title= showLineNumbers
+GET /items/?skip=0&limit=10
+```
+
+<Admonition type="note" title="note"> 
+
+Argument declaring with type are validated and parsed. non-type will act as string
+
+</Admonition>
+
+## Make query parameter optional
+
+Defining function argument without default value will make query required
+
+Adding default value will make it optional
+
+```python title= showLineNumbers
+@app.get("/items/")
+async def read_item(skip: int = 0, limit: int | None = None):
+    pass
+```
+
+
+## Boolean query param
+
+If argument type is Boolean, FastAPI will convert a boolean-like string to Boolean
+
+eg.
+```python title= showLineNumbers
+@app.get("/foo")
+def foo(bar: bool):
+  return bar
+```
+
+These values are valid boolean query param:
+- `1`, `0`
+- `true`, `false` (case insensitive)
+- `on`, `off`
+- `yes`, `no`
+
+eg
+- `/foo?short=1`
+- `/foo?short=on`
+- `/foo?short=yes`
+
+Otherwise it will be false
+
+<br/>
+
+---
+
+# Sources
+
+- https://fastapi.tiangolo.com/tutorial/query-params/
