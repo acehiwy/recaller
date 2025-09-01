@@ -1,0 +1,137 @@
+---
+sidebar_position: 1_000_000_000
+last_update: 
+  date: 2025-09-01T10:15:18Z
+tags:
+  - FastAPI
+  - python
+---
+
+# Path Parameters
+
+```python title= showLineNumbers
+@app.get("/items/{item_id}")
+async def read_item(item_id: int):
+    return {"item_id": item_id}
+```
+
+<Admonition type="caution" title="caution"> 
+
+Path parameters name, `item_id`, defined in decorator must be align with argument name, `item_id`, defined on function.
+
+Otherwise FastAPI would interpret function argument as query / search parameters
+
+</Admonition>
+
+## <Color color="var(--secondary-font-color)"> Define argument type </Color>
+
+```python title= showLineNumbers
+@app.get("/items/{item_id}")
+#  highlight-next-line
+async def read_item(item_id: int):
+    # item_id here is parse from string to int by FastAPI
+    return {"item_id": item_id}
+```
+
+Based on argument type, FastAPI will:
+- validate request value
+- parse request's value to that type
+
+Eg. make request `GET /foo/bar`:
+```json title= showLineNumbers
+{
+  "detail": [
+    {
+      "type": "int_parsing",
+      "loc": [
+        "path",
+        "foo_id"
+      ],
+      "msg": "Input should be a valid integer, unable to parse string as an integer",
+      "input": "bar"
+    }
+  ]
+}
+```
+
+<Admonition type="note" title="note"> 
+
+Data validation is performed under the hood by `Pydantic`
+
+</Admonition>
+
+
+## Path operation defining order
+
+FastAPI read path operation in order it defined. 
+
+FastAPI will pick first one that match.
+
+eg:
+```python title= showLineNumbers
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/users/{user_id}")
+async def read_user(user_id: str):
+    return {"user_id": user_id}
+
+@app.get("/users/me") # never match
+async def read_user_me():
+    return {"user_id": "the current user"}
+```
+
+function `read_user_me` will never be executed bc request always match `/users/{user_id}`
+
+
+
+## Define set of valid values for path parameters
+
+```python title= showLineNumbers
+from enum import Enum
+
+# highlight-start
+# must inherit `str` and `Enum`
+class ModelName(str, Enum):
+# highlight-end
+    foo_key = "foo"
+    bar_key = "bar"
+    baz_key = "baz"
+
+@app.get("/models/{model_name}")
+async def get_model(model_name: ModelName):
+    # value here can only be 'foo', 'bar' or 'baz'
+    value = model_name.value
+```
+
+## Path parameters that contain file path
+
+U might want user to pass file path as path parameters in the request
+
+Eg. for endpoint `/files/{file_path}`, passing `path/to/user/file` then whole url would be <Color color="var(--secondary-font-color)"> mis-interpreted </Color> as `/file/path/to/user/file`
+
+FastAPI allow u to extract it as a single string value
+
+```python title= showLineNumbers
+# highlight-next-line
+@app.get("/files/{file_path:path}")
+async def read_file(file_path: str):
+    return {"file_path": file_path}
+```
+
+So the request `GET /files/path/to/user/file` would match `read_file` function and argument `file_path` will be `/path/to/user/file`
+
+<Admonition type="tip" title="tip"> 
+
+With `:path` any `/file` route would match, so it act like wildcard route `/file/**` .
+
+</Admonition>
+
+<br/>
+
+---
+
+# Sources
+
+- https://fastapi.tiangolo.com/tutorial/path-params
