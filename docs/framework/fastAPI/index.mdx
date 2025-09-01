@@ -44,3 +44,35 @@ Run server:
 ```bash title= showLineNumbers
 fastapi dev main.py
 ```
+
+
+## Defind endpoint
+
+use `<FastAPI instance>.<HTTP method name>()` decorator on function
+
+- `@app.get()`
+- `@app.post()`
+- `@app.put()`
+- `@app.delete()`
+- `@app.options()`
+- `@app.head()`
+- `@app.patch()`
+- `@app.trace()`
+
+<Admonition type="note" title="note"> 
+
+FastAPI call this "path operation"
+
+</Admonition>
+
+### returning response
+
+```python title= showLineNumbers
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+```
+
+returned content can be `dict`, `list` , `str`, `int` etc
+
+FastAPI will convert them to JSON
