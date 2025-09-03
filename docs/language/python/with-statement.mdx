@@ -1,0 +1,280 @@
+---
+sidebar_position: 1_000_000_000
+last_update:
+  date: 2025-09-03T13:32:58Z
+tags:
+  - python
+---
+
+# `with` statement
+
+`with` statement allow u to automatically execute setup / teardown code block of a callable(class or function).
+
+In order for a callable to have setup / teardown code block, it then need to support [context manager](https://docs.python.org/3/reference/datamodel.html#context-managers).
+
+In the other words, it need to have `__enter__` method (for setup code block) and `__exit__` method (for teardown code block)
+
+```python title= showLineNumbers
+with foo_callable() as return_value_from__enter__method:
+  print('foo')
+
+print('bar')
+```
+Excueting `with` statement on context manager callable will allow Python to:
+
+1. execute a callable object, `foo_callable`
+1. execute `__enter__` method
+    1. if `with` statement has target, `as return_value_from__enter__method`. it will be assigned with value return from `__enter__` method.
+1. execute code inside `with` enclosing
+1. execute `__end__` method at the end of `with` enclosing.
+    1. `__end__` method is executed whether or not exceptions occur inside the `with` enclosing 
+    1. if an exception occur and is not handled by `__end__` method, exception will be propagated out to upper enclosing.
+
+
+<Admonition type="tip" title="tip"> 
+
+You can pass multiple callable to `with`:
+```python title= showLineNumbers
+with (
+    A() as a,
+    B() as b,
+):
+  pass
+```
+
+equivalent to:
+```python title= showLineNumbers
+with A() as a:
+    with B() as b:
+        pass
+```
+
+</Admonition>
+
+
+<details>
+
+<summary> `with` statement is sugar syntax for `try...finally` </summary>
+
+Opening file with `with`:
+```python title= showLineNumbers
+with open("hello.txt", "w") as file:
+  file.write("Hello, World!")
+```
+
+with `try...finally`:
+```python title= showLineNumbers
+file = open("hello.txt", "w")
+
+try:
+    file.write("Hello, World!")
+finally:
+    file.close()
+```
+
+</details>
+
+
+<Admonition type="info" title="info"> 
+
+More on [context manager](https://docs.python.org/3/reference/datamodel.html#context-managers)
+
+</Admonition>
+
+<Admonition type="info" title="info"> 
+
+More on [`with` statement](https://docs.python.org/3/reference/compound_stmts.html#with)
+
+</Admonition>
+
+## Class-based context manager
+
+You can create a class that support context manager.
+
+```python title= showLineNumbers
+class Foo:
+  def __init__(self, arg1):
+    self._arg1 = arg1
+    print("Init with", arg1)
+
+  def __enter__(self):
+    print("Entering the context")
+    return "Hello, World!"
+
+  def __exit__(self, exception_type, exception_value, exception_traceback):
+    print("Leaving the context")
+    print(f"{exception_type  = }")
+    print(f"{exception_value = }")
+    print(f"{exception_traceback = }")
+
+
+# highlight-start
+with Foo('bar') as hello:
+     print(hello)
+# highlight-end
+
+# Init with bar
+# Entering the context
+# Hello, World!
+# Leaving the context
+# exception_type  = None
+# exception_value = None
+# exception_traceback = None
+```
+
+<Admonition type="note" title="note"> 
+
+An exception raised inside `with` enclosing <Color color="var(--secondary-font-color)"> end its enclosing </Color>. [`with` end when exception occur]
+
+The exception then it will be passed to `__exit__` method.
+
+</Admonition>
+
+<Admonition type="note" title="note"> 
+
+If `__exit__` method return `True`, the expression is suppressed. Otherwise an exception will be propagated to upper enclosing.
+
+<Admonition type="tip" title="tip"> 
+
+This is useful when u want a `callable` to automatically handle a certain exception
+
+```python title= showLineNumbers
+def __exit__(self, exception_type, exception_value, exception_traceback):
+  if isinstance(exception_value, IndexError):
+    # handle error
+    return True
+```
+
+</Admonition>
+
+</Admonition>
+
+## Function-based context manager
+
+```python title= showLineNumbers
+from contextlib import contextmanager
+
+# highlight-next-line
+@contextmanager
+def foo(arg1):
+  print('executing inside generator arg1 =', arg1)
+  try:
+    # highlight-next-line
+    yield "Hello, World!"
+    print('after `with` enclosing end if exception does not occur')
+  except BaseException as e:
+    print('generator handle exception')
+  finally:
+    print("generator finally")
+
+
+with foo('bar') as hello:
+  print('executing inside with statement hello =', hello)
+  raise Exception('something')
+  print('not executed after exception raised')
+
+print('end of program')
+
+# output:
+# executing inside generator arg1 = bar
+# executing inside with statement hello = Hello, World!
+# generator handle exception
+# generator finally
+# end of program
+```
+
+<Admonition type="note" title="note"> 
+
+A decorated function must be a generator function. It must `yield` <Color color="var(--primary-font-color)"> exactly one value</Color>.
+
+</Admonition>
+
+<Admonition type="note" title="note"> 
+
+At the point where the generator yields, the code inside `with` statement is executed.
+
+</Admonition>
+
+<Admonition type="note" title="note"> 
+
+An exception raised inside `with` enclosing <Color color="var(--secondary-font-color)"> end its enclosing </Color>. [`with` end when exception occur]
+
+The exception then reraised inside the generator at the point where `yield` occur
+
+If generator then does not reraised exception it is passed to, the exception is suppressed.
+
+</Admonition>
+
+<Admonition type="note" title="note"> 
+
+If `with` end with no exception, the code after `yield` is resume, [including `finally` statement, of course]
+
+</Admonition>
+
+
+## Async context manager
+
+is a context manager that its setup / teardown function is an async function
+
+It use with `async with` statement.
+
+```python title= showLineNumbers
+async with foo() as bar:
+  pass
+```
+
+### Class
+
+use `__aenter__` for setup method
+
+use `__aexit__` for teardown method
+
+```python title= showLineNumbers
+class AsyncContextManager:
+    async def __aenter__(self):
+        await log('entering context')
+
+    async def __aexit__(self, exc_type, exc, tb):
+        await log('exiting context')
+```
+
+<Admonition type="tip" title="tip"> 
+
+You can define both sync and async setup / teardown methods to support both `with` and `async with`
+
+</Admonition>
+
+### Function
+
+use `asynccontextmanager` decorator
+
+```python title= showLineNumbers
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def get_connection():
+    conn = await acquire_db_connection()
+    try:
+        yield conn
+    finally:
+        await release_db_connection(conn)
+
+async def get_all_users():
+    async with get_connection() as conn:
+        return conn.query('SELECT ...')
+```
+
+
+<br/>
+
+---
+
+# Sources
+
+- https://realpython.com/python-with-statement
+- https://docs.python.org/3/reference/compound_stmts.html#with
+- https://docs.python.org/3/reference/datamodel.html#context-managers
+- https://docs.python.org/3/reference/datamodel.html#asynchronous-context-managers
+- https://docs.python.org/3/library/stdtypes.html#typecontextmanager
+- https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager
+- https://docs.python.org/3/library/contextlib.html#contextlib.asynccontextmanager
