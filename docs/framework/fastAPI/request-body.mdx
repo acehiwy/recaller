@@ -1,0 +1,48 @@
+---
+sidebar_position: 1_002_000_000
+last_update:
+  date: 2025-09-04T13:48:35Z
+tags:
+  - FastAPI
+  - python
+---
+
+# Request Body
+
+Declaring request body type using `Pydantic`'s <Color color="var(--secondary-font-color)"> `BaseModel` </Color>
+
+```python title= showLineNumbers
+from fastapi import FastAPI
+#  highlight-next-line
+from pydantic import BaseModel
+
+
+#  highlight-next-line
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+
+
+app = FastAPI()
+
+@app.post("/items/")
+async def create_item(item: Item):
+    # item is Item instance
+    return item
+```
+
+<Admonition type="note" title="note"> 
+
+Same as query and path param. Attribute with default value are not required when making reqeust
+
+</Admonition>
+
+<br/>
+
+---
+
+# Sources
+
+- https://fastapi.tiangolo.com/tutorial/body/
