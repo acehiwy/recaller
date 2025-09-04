@@ -1,0 +1,323 @@
+---
+sidebar_position: 1_003_000_000
+last_update: 
+  date: 2025-09-04T13:43:12Z
+tags:
+  - FastAPI
+  - python
+---
+
+# Dependencies Injection
+
+FastAPI can execte "callable" object (function , class) that should be exectued before path operation function.
+
+Callable's argument, including sub-dependencies, will <Color color="var(--secondary-font-color)"> be treated as they are the path operation argument </Color> themselvees.
+
+```python title= showLineNumbers
+def call_this_first(query_param1: str, query_param2: int, request_body: RequestBodyClass):
+  return {
+    'query_param1': query_param1,
+    'query_param2': query_param2,
+    'request_body': request_body
+  }
+
+@app.get('/foo')
+def foo(result_from_dependency: Annotated[str , Depends(call_this_first)]):
+  print(result_from_dependency) 
+  # output:  {
+  #   'query_param1': <value>,
+  #   'query_param2': <value>,
+  #   'request_body': <value>
+  # }
+```
+
+The value returned from callable then passed as an argument to the path operation function.
+
+## Function as dependency
+
+```python title= showLineNumbers
+from pydantic import BaseModel
+from typing import Annotated
+from fastapi import Depends, FastAPI
+
+app = FastAPI()
+
+class CommonRequestBody(BaseModel):
+  foo: str
+  bar: int
+
+
+# highlight-next-line
+async def common_parameters(request_body: CommonRequestBody,  q: str | None = None, skip: int = 0, limit: int = 100):
+    return {"q": q, "skip": skip, "limit": limit}
+
+@app.get("/items/")
+# highlight-next-line
+async def read_items(commons: Annotated[dict, Depends(common_parameters)]):
+    return commons
+
+
+@app.get("/users/")
+# highlight-next-line
+async def read_users(commons: Annotated[dict, Depends(common_parameters)]):
+    return commons
+```
+
+`common_parameters` function act like middleware function. 
+
+FastAPI will execute it and pass its return value to path operation
+
+FastAPI will also interpret its argument, (`request_body`, `q` `skip` and `limit`), as request properties (header, query, body)
+
+<details>
+
+<summary> Code above can be written similarly this way </summary>
+
+```python title= showLineNumbers
+# .....
+
+@app.get("/items/")
+async def read_items(request_body: CommonRequestBody,  q: str | None = None, skip: int = 0, limit: int = 100):
+    pass
+
+
+@app.get("/users/")
+async def read_users(request_body: CommonRequestBody,  q: str | None = None, skip: int = 0, limit: int = 100):
+    pass
+```
+
+View it as a reusable block of code
+
+</details>
+
+<Admonition type="note" title="note"> 
+
+Return value of dependency function can be anything. Its type better match with `Annotated`
+
+</Admonition>
+
+## Class as dependency
+
+```python title= showLineNumbers
+from typing import Annotated
+from fastapi import Depends, FastAPI
+
+app = FastAPI()
+
+class CommonQueryParams:
+  # highlight-next-line
+    def __init__(self, q: str | None = None, skip: int = 0, limit: int = 100):
+        self.q = q
+        self.skip = skip
+        self.limit = limit
+
+
+@app.get("/items/")
+# highlight-next-line
+async def read_items(commons: Annotated[CommonQueryParams, Depends(CommonQueryParams)]):
+    # `commons` is a class instance
+    pass
+```
+
+<Admonition type="tip" title="tip"> 
+
+Shorthand style
+
+```python title= showLineNumbers
+async def read_items(commons: Annotated[CommonQueryParams, Depends()]):
+  pass
+
+# similar to
+async def read_items(commons: Annotated[CommonQueryParams, Depends(CommonQueryParams)]):
+  pass
+```
+
+</Admonition>
+
+## Sub dependencies
+
+Your dependency function can also depends on other function
+
+```python title= showLineNumbers
+def baz(query2: str):
+    return 'baz'
+  
+def bar(query1: str, value_return_from_baz: Annotated[any, Depends(baz)]):
+    return 'bar' + value_return_from_baz
+
+@app.get("/foo/")
+async def foo(bar: Annotated[dict, Depends(bar)]):
+    pass
+```
+
+<Admonition type="tip" title="tip"> 
+
+In a single request cycle, if a dependency function is used multiple time. FastAPI will call it only once.
+
+Subsequece call in the same request cycle will be returned with cache
+
+You can disable caching by:
+```python title= showLineNumbers
+# here get_value will be called every time it is used
+def foo(fresh_value: Annotated[str, Depends(get_value, use_cache=False)]):
+    pass
+```
+
+</Admonition>
+
+## Declare dependencies in path operation decorator
+
+Dependencies can be add via decorator but this way their return value will not be passed to the path operation function.
+
+```python title= showLineNumbers
+def verify_token(x_token: Annotated[str, Header()]):
+    # do something
+
+async def verify_key(x_key: Annotated[str, Header()]):
+    # do something
+    return x_key
+
+# highlight-next-line
+@app.get("/items/", dependencies=[Depends(verify_token), Depends(verify_key)])
+async def read_items():
+  pass
+```
+
+
+## Global Dependencies
+
+Apply callable to all routes
+
+```python title= showLineNumbers
+from fastapi import Depends, FastAPI, Header
+from typing_extensions import Annotated
+
+def verify_token(x_token: Annotated[str, Header()]):
+  pass
+
+def verify_key(x_key: Annotated[str, Header()]):
+  pass
+
+# highlight-next-line
+app = FastAPI(dependencies=[Depends(verify_token), Depends(verify_key)])
+```
+
+
+## Context manager as dependencies
+
+FastAPI support dependency function that have setup / teardown step
+
+FastAPI accept any function that valid to use with [`contextmanager`](https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager) or [`asynccontextmanager`](https://docs.python.org/3/library/contextlib.html#contextlib.asynccontextmanager) decorator 
+
+value yielded from dependency function will be passed to path operation
+
+<Admonition type="note" title="note"> 
+
+The dependency function dont need to be decorated with context manager decorator
+
+</Admonition>
+
+```python title= showLineNumbers
+def foo():
+    print('foo')
+    yield 'yielded from foo'
+    print('teardown' , foo.__name__)
+
+@app.get("/gg")
+def read_items(foo: Annotated[dict, Depends(foo)]):
+    print('path operation with foo =', foo)
+    return foo
+
+# output:
+# foo
+# path operation with foo = yielded from foo
+# teardown foo
+```
+
+The code after `yield` statement is executed after creating the HTTP response but before sending it.
+
+<details>
+
+<summary> see multiple context manager dependencies chanined together  </summary>
+
+```python title= showLineNumbers
+def first():
+    name = first.__name__
+    print(name)
+    yield name
+    print('teardown' , name)
+
+def second(first: Annotated[any, Depends(first)]):
+    name = second.__name__
+    print(name)
+    yield name
+    print('teardown' , name)
+    
+def third(second: Annotated[any, Depends(second)]):
+    name = third.__name__
+    print(name)
+    yield name
+    print('teardown' , name)
+
+
+@app.get("/items/")
+async def read_items(third: Annotated[dict, Depends(third)]):
+    print('path operation')
+    return third
+
+# output:
+# first
+# second
+# third
+# path operation
+# teardown third
+# teardown second
+# teardown first
+```
+
+</details>
+
+
+### Handling error inside context manager dependencies
+
+If an exception is raised inside the caller, it then will be passed to a context manager dependency
+
+Context manager dependency can handle it with `except` clause or reraise the exception
+
+<Admonition type="caution" title="caution"> 
+
+The application will throw error, (user will get 500 Internal Server Error response) when an exception is passed from the caller to dependency function and it decide to
+- not reraise an exception
+- raising a non-[HTTP-like exception](https://fastapi.tiangolo.com/tutorial/handling-errors/#use-httpexception) (one that does not trigger response to be returned)
+
+</Admonition>
+
+<Admonition type="tip" title="tip"> 
+
+You should always reraised an exception on context manager
+
+```python title= showLineNumbers
+def foo():
+    try:
+        yield "bar"
+    except:
+        print("logging error")
+        # highlight-next-line
+        raise
+```
+
+</Admonition>
+
+
+<br/>
+
+---
+
+# Sources
+
+- https://fastapi.tiangolo.com/tutorial/dependencies
+- https://fastapi.tiangolo.com/tutorial/dependencies/classes-as-dependencies/
+- https://fastapi.tiangolo.com/tutorial/dependencies/sub-dependencies/
+- https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-in-path-operation-decorators/
+- https://fastapi.tiangolo.com/tutorial/dependencies/global-dependencies/
+- https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-with-yield/
