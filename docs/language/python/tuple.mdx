@@ -1,4 +1,12 @@
-# Tuples
+---
+sidebar_position: 10000
+last_update:
+  date: 2025-09-05T10:53:54Z
+tags:
+  - python
+---
+
+
 Tuples are <Color color="var(--primary-font-color)"> immutable </Color> sequences
 
 ```python title= showLineNumbers
@@ -41,10 +49,79 @@ Empty tuple syntax: `empty = ()`
 
 </Admonition>
 
-<br/>
-
----
-
-# Sources
+<Admonition type="info" title="sources"> 
 
 - https://docs.python.org/3/tutorial/datastructures.html#tuples-and-sequences
+
+</Admonition>
+
+## `namedtuple`
+
+It is like tuple additionally each item can be access by name
+
+```python title= showLineNumbers
+from collections import namedtuple
+
+MyTuple = namedtuple('MyTuple' , ['key1' , 'key2'])
+print(MyTuple)
+# <class '__main__.MyTuple'>
+
+my_tuple_instance = MyTuple("key1_value" , key2="key2_value")
+
+print(my_tuple_instance.key1 , my_tuple_instance.key2)
+# key1_value key2_value
+
+print(my_tuple_instance[0] , my_tuple_instance[1])
+# key1_value key2_value
+```
+
+2nd argument of `namedtuple`, `field_name` can be
+- list of string. `["key1", "key2"]`
+- a string with white spaces. `"key1 key2"`
+- a string with commas. `"key1, key2"`
+
+each field name need to be a valid string that can used to crate attribute name
+
+<Admonition type="note" title="note"> 
+
+Field name can not start with underscore, `_`. 
+
+</Admonition>
+
+<Admonition type="info" title="info"> 
+
+`namedtuple` is a subclass of tuple.
+
+</Admonition>
+
+### Methods
+
+#### `_make`
+
+create `namedtuple` instance from iterable
+
+```python title= showLineNumbers
+MyTuple = namedtuple('MyTuple' , ['key1' , 'key2'])
+
+ins = MyTuple._make(['key1_value', 'key2_value'])
+# MyTuple(key1='key1_value', key2='key2_value')
+```
+
+#### `_asdict`
+
+return dict representing tuple
+
+```python title= showLineNumbers
+MyTuple = namedtuple('MyTuple' , ['key1' , 'key2'])
+
+ins = MyTuple('key1_value', 'key2_value')
+# highlight-next-line
+ins._asdict()
+# {'key1': 'key1_value', 'key2': 'key2_value'}
+```
+
+<Admonition type="info" title="sources"> 
+
+- https://docs.python.org/3/library/collections.html#collections.namedtuple
+
+</Admonition>
