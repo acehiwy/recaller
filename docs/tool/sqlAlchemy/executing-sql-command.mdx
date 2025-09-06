@@ -1,0 +1,142 @@
+---
+sidebar_position: 1_000_000_000
+last_update:
+  date: 2025-09-06T12:32:49Z
+tags:
+  - sqlalchemy
+---
+
+# Exceuting SQL command
+
+use [`Connection.execute()`](https://docs.sqlalchemy.org/en/20/core/connections.html#sqlalchemy.engine.Connection.execute) with [`text()`](https://docs.sqlalchemy.org/en/20/core/sqlelement.html#sqlalchemy.sql.expression.text) function
+
+```python title= showLineNumbers
+with engine.connect() as conn:
+    # highlight-next-line
+    result = conn.execute(text("SELECT x, y FROM some_table"))
+    for row in result:
+      # namedtuple
+      print(f"x: {row.x}  y: {row.y}")
+```
+
+[`Connection.execute()`](https://docs.sqlalchemy.org/en/20/core/connections.html#sqlalchemy.engine.Connection.execute) function return [`Result`](https://docs.sqlalchemy.org/en/20/core/connections.html#sqlalchemy.engine.Result) which represents an iterable object of db records
+
+&#8203;<Color color="var(--secondary-font-color)"> When iterate </Color> through [`Result`](https://docs.sqlalchemy.org/en/20/core/connections.html#sqlalchemy.engine.Result) , it return `namedtuple(< 1st column value >, < 2nd column value > , ...)`
+
+<Admonition type="tip" title="tip"> 
+
+To get immutable dict-like object, iterate over [`Result.mappings()`](https://docs.sqlalchemy.org/en/20/core/connections.html#sqlalchemy.engine.Result.mappings)
+
+```python title= showLineNumbers
+for dict_row in result.mappings():
+  # {'x': 4, 'y': 4}
+  foo = dict_row["x"]
+  bar = dict_row.y
+```
+
+</Admonition>
+
+## Commit changes
+
+Default behavior, of DBAPI, when u connect to db is that transaction is always running and a rollback is execute when connection is closed.
+
+Meaning task(s) that u execute without commit means nothing.
+
+To commit change use [`Connection.commit()`](https://docs.sqlalchemy.org/en/20/core/connections.html#sqlalchemy.engine.Connection.commit)
+
+```python title= showLineNumbers
+with engine.connect() as conn:
+    conn.execute(text("CREATE TABLE some_table (x int, y int)"))
+    conn.execute(
+        text("INSERT INTO some_table (x, y) VALUES (:x, :y)"),
+        [{"x": 1, "y": 1}, {"x": 2, "y": 4}],
+    )
+    # highlight-next-line
+    conn.commit()
+```
+
+### Auto commit
+
+Use `engine.begin()`. On connection close, it will commit everything or rollback if there was an exception.
+```python title= showLineNumbers
+with engine.begin() as conn:
+  # do something with conn
+```
+
+## Execute with parameter
+
+```python title= showLineNumbers
+with engine.connect() as conn:
+    result = conn.execute(
+        text("SELECT x, y FROM some_table WHERE y > :y OR x > :x"), 
+        {"x" : 1 , "y": 2}
+    )
+```
+
+### Invoke same SQL statment with different parameters
+
+If u pass list of param-dict to `execte()` method, the SQL stament will be invoked once for each item in the list
+
+```python title= showLineNumbers
+conn.execute(
+    text("INSERT INTO some_table (x, y) VALUES (:x, :y)"),
+    # highlight-next-line
+    [{"x": 11, "y": 12}, {"x": 13, "y": 14}],
+)
+```
+
+This is called [`executemany`](https://docs.sqlalchemy.org/en/20/glossary.html#term-executemany)
+
+<Admonition type="note" title="note"> 
+
+[`executemany`](https://docs.sqlalchemy.org/en/20/glossary.html#term-executemany) does not support SQL `RETURNING` clause
+
+bc it does not aggregate in result in each statement.
+
+</Admonition>
+
+<Admonition type="info" title="info"> 
+
+[`executemany`](https://docs.sqlalchemy.org/en/20/glossary.html#term-executemany) is different from calling `execute()` multiple time
+
+The DBAPI can do some optimizing for invoking same statement many times.
+
+</Admonition>
+
+<Admonition type="info" title="info"> 
+
+sqlAlchemy automatically use [`cursor.executemany()`](https://peps.python.org/pep-0249/#executemany) when a list of params dict is passed to `execute` method
+
+</Admonition>
+
+## Execute with ORM `Session`
+
+in fact as the Session is used, it refers to a Connection internally which it uses to emit SQL.
+
+```python title= showLineNumbers
+with Session(engine) as session:
+    result = session.execute(
+        text("UPDATE some_table SET y=:y WHERE x=:x"),
+        [{"x": 9, "y": 11}, {"x": 13, "y": 15}],
+    )
+    # highlight-next-line
+    session.commit()
+```
+
+<Admonition type="note" title="note"> 
+
+`session` does not auto commit transaction.
+
+</Admonition>
+
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.sqlalchemy.org/en/20/tutorial/dbapi_transactions.html
+- https://docs.sqlalchemy.org/en/20/tutorial/dbapi_transactions.html#basics-of-statement-execution
+- https://docs.sqlalchemy.org/en/20/glossary.html#term-executemany
+- https://docs.sqlalchemy.org/en/20/core/connections.html#engine-insertmanyvalues
