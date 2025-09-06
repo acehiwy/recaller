@@ -1,0 +1,60 @@
+---
+last_update:
+  date: 2025-09-08T16:02:23Z
+tags:
+  - sqlalchemy
+---
+
+# sqlAlchemy
+
+&#8203;<Color color="var(--primary-font-color)"> Base on version 2.0 </Color>
+
+## Installation
+
+```bash title= showLineNumbers
+pip install SQLAlchemy
+```
+
+##  Create `Engine`
+
+A central source of connection to database
+```python title= showLineNumbers
+from sqlalchemy import create_engine
+engine = create_engine("sqlite+pysqlite:///:memory:", echo=True)
+```
+
+<Admonition type="note" title="note"> 
+
+`create_engine` does not connect to db immediately. It lazily connect when first task came.
+
+</Admonition>
+
+<Admonition type="note" title="note"> 
+
+`echo=True` mean log SQL to stdout. 
+
+</Admonition>
+
+
+## Connect to db
+
+```python title= showLineNumbers
+from sqlalchemy import create_engine, text
+
+db_url = "postgresql://postgres:postgres@psql-db/"
+engine = create_engine(db_url, echo=True)
+
+# highlight-start
+with engine.connect() as conn:
+    result = conn.execute(text("select 'hello world'"))
+# highlight-end
+    print(result.all())
+```
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.sqlalchemy.org/en/20/tutorial/engine.html
