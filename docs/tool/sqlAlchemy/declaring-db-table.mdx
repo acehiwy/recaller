@@ -1,0 +1,178 @@
+---
+sidebar_position: 1_001_000_000
+last_update:
+    date: 2025-09-08T16:02:23Z
+tags:
+  - sqlalchemy
+---
+
+# Declaring database tables
+
+## With sqlAlchemy core
+
+```python title= showLineNumbers
+from sqlalchemy import MetaData
+from sqlalchemy import Table, Column, Integer, String
+
+# highlight-next-line
+metadata_obj = MetaData()
+# highlight-next-line
+user_table = Table(
+    "user_account", # table name
+    metadata_obj, # MetaData instance
+    Column("id", Integer, primary_key=True), # db columns
+    Column("name", String(30)),
+    Column("fullname", String),
+)
+
+address_table = Table(
+    "address",
+    metadata_obj,
+    Column("id", Integer, primary_key=True),
+    # highlight-next-line
+    Column("user_id", ForeignKey("user_account.id"), nullable=False),
+    Column("email_address", String, nullable=False),
+)
+```
+
+Use [Table](https://docs.sqlalchemy.org/en/20/core/metadata.html#sqlalchemy.schema.Table) to create object that represent db table.
+
+A [Table](https://docs.sqlalchemy.org/en/20/core/metadata.html#sqlalchemy.schema.Table) then need to be linked to `MetaData`, `metadata_obj`.
+
+`Metadata` is an object that contain table object<Color color="var(--secondary-font-color)">(s)</Color>. It have various feature to interact with db, eg `MetaData.create_all()` to create all table in its collection.
+
+Use [ForeignKey](https://docs.sqlalchemy.org/en/20/core/constraints.html#sqlalchemy.schema.ForeignKey) to define foreignkey relationship
+
+Use `nullable` option to indicate `NOT NULL` constraint
+
+<Admonition type="info" title="info"> 
+
+You can view table's primary key by: `<table instance>.primary_key`
+
+</Admonition>
+
+### Send DDL to db
+
+```python title= showLineNumbers
+metadata_obj.create_all(engine)
+```
+
+Any tables linked with `metadata_obj` will be created
+
+<details>
+
+<summary> see example output log  </summary>
+
+```bash title= showLineNumbers
+BEGIN (implicit)
+PRAGMA main.table_...info("user_account")
+...
+PRAGMA main.table_...info("address")
+...
+CREATE TABLE user_account (
+    id INTEGER NOT NULL,
+    name VARCHAR(30),
+    fullname VARCHAR,
+    PRIMARY KEY (id)
+)
+...
+CREATE TABLE address (
+    id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    email_address VARCHAR NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY(user_id) REFERENCES user_account (id)
+)
+...
+COMMIT
+```
+
+</details>
+
+<Admonition type="info" title="info"> 
+
+Drop all tables use: [`MetaData.drop_all()`](https://docs.sqlalchemy.org/en/20/core/metadata.html#sqlalchemy.schema.MetaData.drop_all)
+
+</Admonition>
+
+
+## With ORM
+
+To create a class that represent db table, [mapped class](https://docs.sqlalchemy.org/en/20/glossary.html#term-mapped), inherit [`DeclarativeBase`](https://docs.sqlalchemy.org/en/20/orm/mapping_api.html#sqlalchemy.orm.DeclarativeBase) class.
+
+```python title= showLineNumbers
+from typing import List, Optional
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import Mapped, DeclarativeBase, mapped_column, relationship
+
+# highlight-next-line
+class Base(DeclarativeBase):
+    pass
+
+class User(Base):
+    __tablename__ = "user_account"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(30))
+    fullname: Mapped[str | None]
+
+class Address(Base):
+    __tablename__ = "address"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    email_address: Mapped[str]
+    user_id = mapped_column(ForeignKey("user_account.id"))
+```
+
+Use [`mapped_column`](https://docs.sqlalchemy.org/en/20/orm/mapping_api.html#sqlalchemy.orm.mapped_column) to define db column metadata
+
+Use [`Mapped`](https://docs.sqlalchemy.org/en/20/orm/internals.html#sqlalchemy.orm.Mapped) to defind class attribute's type. 
+
+You can define a db column without using `mapped_column` if it is a simple column that does not require additional metadata. eg. [`primary_key`](https://docs.sqlalchemy.org/en/20/orm/mapping_api.html#sqlalchemy.orm.mapped_column.params.primary_key), [`ForeignKey`](https://docs.sqlalchemy.org/en/20/core/constraints.html#sqlalchemy.schema.ForeignKey) , string length with `String(<length>)`
+
+```python title= showLineNumbers
+email_address: Mapped[str] 
+
+# equivalent to 
+email_address = mapped_column(String)
+```
+
+DB `NOT NULL` constraint can be set either by using:
+- `Mapped[<type> | None]`
+- `mapped_column(nullable=False)`
+
+
+<Admonition type="note" title="note"> 
+
+Attribute type annotation, `Mapped`, is <Color color="var(--secondary-font-color)"> optional </Color>. The column information can be infered from `mapped_column` as needed
+
+</Admonition>
+
+
+<Admonition type="info" title="info"> 
+
+`DeclarativeBase` has `MetaData` attached to it. Accessed by `DeclarativeBase.matadata`
+
+Any class that inherit `DeclarativeBase` are automatically linked to its `MetaData`
+
+</Admonition>
+
+<Admonition type="info" title="info"> 
+
+More info on [Declarative table Configuration](https://docs.sqlalchemy.org/en/20/orm/declarative_tables.html#orm-declarative-table-configuration)
+
+</Admonition>
+
+### Send DDL to db
+
+```python title= showLineNumbers
+Base.metadata.create_all(engine)
+```
+
+&#8203;<Color color="var(--can-not-understand-font-color)"> `DeclarativeBase` also has [`registry`](https://docs.sqlalchemy.org/en/20/orm/mapping_api.html#sqlalchemy.orm.registry) attached to it. Access it by `DeclarativeBase.registry` </Color>
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.sqlalchemy.org/en/20/tutorial/metadata.html
