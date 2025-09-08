@@ -1,16 +1,18 @@
 ---
 sidebar_position: 1_000_000_000
 last_update:
-  date: 2025-09-06T12:32:49Z
+  date: 2025-09-08T16:02:23Z
 tags:
   - sqlalchemy
 ---
 
-# Exceuting SQL command
+# Executing SQL command
 
 use [`Connection.execute()`](https://docs.sqlalchemy.org/en/20/core/connections.html#sqlalchemy.engine.Connection.execute) with [`text()`](https://docs.sqlalchemy.org/en/20/core/sqlelement.html#sqlalchemy.sql.expression.text) function
 
 ```python title= showLineNumbers
+from sqlalchemy import text
+
 with engine.connect() as conn:
     # highlight-next-line
     result = conn.execute(text("SELECT x, y FROM some_table"))
@@ -75,7 +77,7 @@ with engine.connect() as conn:
 
 ### Invoke same SQL statment with different parameters
 
-If u pass list of param-dict to `execte()` method, the SQL stament will be invoked once for each item in the list
+If u pass <Color color="var(--secondary-font-color)">list of</Color> param-dict to `execte()` method, the SQL stament will be invoked once for each item in the list
 
 ```python title= showLineNumbers
 conn.execute(
@@ -109,11 +111,11 @@ sqlAlchemy automatically use [`cursor.executemany()`](https://peps.python.org/pe
 
 </Admonition>
 
-## Execute with ORM `Session`
-
-in fact as the Session is used, it refers to a Connection internally which it uses to emit SQL.
+## <Color color="var(--not-nesary-for-now-future-font-color)">Execute with ORM `Session`</Color>
 
 ```python title= showLineNumbers
+from sqlalchemy.orm import Session
+
 with Session(engine) as session:
     result = session.execute(
         text("UPDATE some_table SET y=:y WHERE x=:x"),
