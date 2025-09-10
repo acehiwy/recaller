@@ -1,0 +1,116 @@
+---
+sidebar_position: 1_000_000_000
+tags:
+  - sqlalchemy
+---
+
+# Insert statement
+
+```python title= showLineNumbers
+from sqlalchemy import insert
+insert_instance = insert(user_table).values(name="foo", fullname="bar")
+```
+
+<Admonition type="info" title="info"> 
+
+`insert` return [`Insert`](https://docs.sqlalchemy.org/en/20/core/dml.html#sqlalchemy.sql.expression.Insert) instance
+
+</Admonition>
+
+<Admonition type="info" title="info"> 
+
+view SQL-complied version of `insert` by 
+```python title= showLineNumbers
+print(insert_instance)
+
+insert_instance.compile()
+
+# INSERT INTO user_account (name, fullname) VALUES (:name, :fullname)
+```
+</Admonition>
+
+
+### Executing the statement
+
+```python title= showLineNumbers
+with engine.connect() as conn:
+    result = conn.execute(insert_instance)
+    conn.commit()
+```
+
+<Admonition type="info" title="info"> 
+
+You can also create `insert_instance` without calling `.values()` method
+
+```python title= showLineNumbers
+insert_instance = insert(user_table)
+```
+
+This way the sql `VALUES` clause will be added depends on arguments that u passed to `Connection.execute()` method
+
+eg:
+```python title= showLineNumbers
+insert_instance = insert(user_table)
+with engine.begin() as conn:
+    result = conn.execute(
+        insert_instance,
+        {"name": "22"}, # insert only column `name`
+    )
+    # INSERT INTO user_account (name) VALUES (%(name)s)
+```
+
+</Admonition>
+
+## Insert with returning
+
+Build Sql `INSERT ... RETURNING` statement
+
+```python title= showLineNumbers
+insert(address_table).returning(
+  address_table.c.id, address_table.c.email_address
+)
+```
+
+<Admonition type="note" title="note"> 
+
+`RETURNING` clause is automatically append when inserting a single row
+
+</Admonition>
+
+## Insert from select
+
+Build Sql `INSERT ... INTO ... SELECT ... FROM ` statement
+
+```python title= showLineNumbers
+select_stmt = select(user_table.c.id, user_table.c.name + "@aol.com")
+insert_stmt = insert(address_table).from_select(
+    # highlight-next-line
+    ["user_id", "email_address"], select_stmt
+)
+```
+
+complied to:
+```sql title= showLineNumbers
+INSERT INTO address (user_id, email_address) 
+SELECT user_account.id, user_account.name 
+FROM user_account
+```
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.sqlalchemy.org/en/20/tutorial/data_insert.html
+
+
+
+
+
+
+
+
+
+
+
