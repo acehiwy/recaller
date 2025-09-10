@@ -18,5 +18,3 @@ RUN corepack enable
 RUN yarn install --immutable
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
-
-CMD [ "yarn", "start" ]

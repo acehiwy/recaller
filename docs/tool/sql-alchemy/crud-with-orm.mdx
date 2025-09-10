@@ -1,0 +1,101 @@
+---
+sidebar_position: 1_010_000_000
+tags:
+  - sqlalchemy
+---
+
+
+# CRUD with ORM
+
+Performing CRUD with `Session` object support [unit of work](https://docs.sqlalchemy.org/en/20/glossary.html#term-unit-of-work) pattern.
+
+Meaning tasks / statements can be added / queued to `Session` object. 
+
+Adding tasks to `Session` does not involve with db yet so they can be modified.
+
+When ready, the tasks can be pushed to db to further operate
+
+## Creating task
+
+Instantiate a [`mappedclass`](https://docs.sqlalchemy.org/en/20/glossary.html#term-mapped) in order to create a `INSERT` statement task
+
+```python title= showLineNumbers
+squidward = User(name="squidward", fullname="Squidward Tentacles")
+krabs = User(name="ehkrabs", fullname="Eugene H. Krabs")
+```
+
+<Admonition type="note" title="note"> 
+
+SQLAlchemy assign `None` to the attribute that has not had a value assigned.
+```python title= showLineNumbers
+squidward
+# User(id=None, name='squidward', fullname='Squidward Tentacles')
+```
+
+</Admonition>
+
+These object are now at [`transient`](https://docs.sqlalchemy.org/en/20/glossary.html#term-transient) state. 
+
+Meaning object are not associated with any database state and yet to be associated wtih `Session`.
+
+## Adding task to `Session`
+
+use [`Session.add()`](https://docs.sqlalchemy.org/en/20/orm/session_api.html#sqlalchemy.orm.Session.add)
+
+```python title= showLineNumbers
+from sqlalchemy.orm import Session
+
+session = Session(engine)
+session.add(squidward)
+session.add(krabs)
+```
+
+The object are now in [`pending`](https://docs.sqlalchemy.org/en/20/glossary.html#term-pending) state
+
+Meaning object <Color color="var(--secondary-font-color)">does</Color> asssociate with `Session` but not yet associated with db
+
+
+<Admonition type="info`" title="info`"> 
+
+View `pending` objects by `session.new`
+
+</Admonition>
+
+## Flushing
+
+is pushing `pending` tasks to db.
+
+use [`Session.flush()`](https://docs.sqlalchemy.org/en/20/orm/session_api.html#sqlalchemy.orm.Session.flush)
+
+```python title= showLineNumbers
+session.flush()
+```
+
+When flushing, it <Color color="var(--secondary-font-color)">create a new transaction</Color>, convert task to SQL statement(s) then push to db
+
+SQL stament(s) will have no effect until [`Session.commit()`](https://docs.sqlalchemy.org/en/20/orm/session_api.html#sqlalchemy.orm.Session.commit) is called.
+
+<Admonition type="note" title="note"> 
+
+The transaction remain open until [`Session.commit()`](https://docs.sqlalchemy.org/en/20/orm/session_api.html#sqlalchemy.orm.Session.commit) , [`Session.rollback()`](https://docs.sqlalchemy.org/en/20/orm/session_api.html#sqlalchemy.orm.Session.rollback), or [`Session.close()`](https://docs.sqlalchemy.org/en/20/orm/session_api.html#sqlalchemy.orm.Session.close) is called
+
+</Admonition>
+
+Once tasks are commited, they are now in [`persistent`](https://docs.sqlalchemy.org/en/20/glossary.html#term-persistent) state
+
+They are representing db records and having identities
+
+```python title= showLineNumbers
+squidward.id
+# 4
+krabs.id
+# 5
+```
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.sqlalchemy.org/en/20/tutorial/data_insert.html
