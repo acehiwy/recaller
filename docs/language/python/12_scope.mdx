@@ -1,0 +1,154 @@
+---
+
+last_update:
+  date: 2025-09-14T15:29:00Z
+tags:
+  - python
+---
+
+# Scopes
+
+When u references a variable, Python would look for it start from:
+1. current enclosing (function , class)
+2. next outer enclosing until global enclosing including imported module 
+3. built-in module names
+
+```python title=main.py showLineNumbers
+import sys # built-in module name
+
+from current_module import baz
+# global_scope
+
+def foo():
+    # bar_outer_enclosing
+
+    def bar():
+        # current_enclosing        
+        baz()
+```
+
+## Rewrite outer enclosing variable
+
+You can not rewrite outer enclosing variable without special keyword, `nonlocal` and `global`
+
+```python title=main.py showLineNumbers
+def foo():
+  x = 1
+
+  def bar():
+    # highlight-next-line
+    x = 2
+    print('bar:' ,x)
+  
+  bar()
+  print('foo:', x)
+```
+
+<details>
+
+<summary> output </summary>
+
+```bash title= showLineNumbers
+bar: 2
+foo: 1
+```
+
+</details>
+
+The statement `x = 2` at line 5 would not change the value of `x` at line 2 
+
+Python interpret `x = 2` as defining `x` to current enclosing, so it has no effect for outer
+
+
+### `nonlocal` keyword
+
+To rewrite outer enclosing variable use keyword `nonlocal`
+
+```python title=main.py showLineNumbers
+def foo():
+  x = 1
+
+  def bar():
+    # highlight-start
+    nonlocal x 
+    x = 2
+    # highlight-end
+    print('bar:' ,x)
+  
+  bar()
+  print('foo:', x)
+```
+
+<details>
+
+<summary> output </summary>
+
+```bash title= showLineNumbers
+bar: 2
+foo: 2
+```
+
+</details>
+
+### `global` keyword
+
+
+To rewrite global variable use keyword `global`
+
+```python title=main.py showLineNumbers
+x = 0
+def foo():
+  x = 1
+  def bar():
+    global x 
+    x = 2
+    print('bar:' ,x)
+  
+  bar()
+  print('foo:', x)
+
+print('at global scope' , x)
+```
+
+<details>
+
+<summary> output </summary>
+
+```bash title= showLineNumbers
+bar: 2
+foo: 1
+at global scope 2
+```
+
+</details>
+
+
+<Admonition type="note" title="note"> 
+
+`nonlocal` can not be used to rewrite global scope variable
+
+```python title=main.py showLineNumbers
+x = 0
+def foo():
+  # highlight-error-next-line
+  nonlocal x
+  x = 1
+```
+```bash title= showLineNumbers
+File "/usr/src/app/class.py", line 3
+    nonlocal x
+    ^^^^^^^^^^
+SyntaxError: no binding for nonlocal 'x' found
+```
+
+</Admonition>
+
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/classes.html#python-scopes-and-namespaces
+- https://stackoverflow.com/questions/1261875/what-does-nonlocal-do-in-python-3

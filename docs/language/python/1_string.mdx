@@ -1,5 +1,7 @@
 ---
-sidebar_position: 10000
+
+last_update:
+  date: 2025-09-14T15:29:00Z
 tags:
   - python
 ---
@@ -41,7 +43,9 @@ print(r'C:\some\name')  # note the r before the quote
 
 </Admonition>
 
-Multiple line string use triple quote:
+## Multiple line string 
+
+use triple quote:
 ```python title= showLineNumbers
 print("""\
 Usage: thingy [OPTIONS]
@@ -56,7 +60,7 @@ End of line character are automatically <Color color="var(--secondary-font-color
 
 </Admonition>
 
-### Concat string
+## Concat string
 
 ```python title= showLineNumbers
 3 * 'un' + 'ium'
@@ -70,7 +74,7 @@ Two or more <Color color="var(--primary-font-color)"> string literals </Color> n
 # 'foobarbaz'
 ```
 
-### string indexing
+## String indexing
 
 ```python title= showLineNumbers
 word = 'Python'
@@ -85,7 +89,7 @@ word[-6]
 # 'P'
 ```
 
-### Slice (substring)
+## Slice (substring)
 
 ```python title= showLineNumbers
 word = 'Python'
@@ -119,24 +123,28 @@ word[42:]
 ```
 </Admonition>
 
-### string length
+## String length
 
 use `len()`
 
+```python title= showLineNumbers
+len("foo")
+```
 
-### String interpolation
+
+## String interpolation
 
 ```python title= showLineNumbers
 result = f'{var_1} is not the same as {var_2}'
 ```
 
-<Admonition type="tip" title="later"> 
+<Admonition type="info" title="later"> 
 
 `str.format()` can be used alternatively. See more info [here](https://docs.python.org/3/library/stdtypes.html#str.format)
 
 </Admonition>
 
-<Admonition type="tip" title="later"> 
+<Admonition type="info" title="later"> 
 
 the `{}` syntax can do much more than substitute a string. It can format a string to be any form u like.
 
