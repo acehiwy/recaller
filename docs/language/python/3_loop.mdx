@@ -1,0 +1,119 @@
+---
+
+last_update:
+  date: 1998-09-14T15:29:00Z
+tags:
+  - python
+---
+
+
+# Loop
+
+```python title= showLineNumbers
+for i in range(5): # or range(2,5) -> 2,3,4
+    print(i)
+```
+
+<details>
+
+<summary> output  </summary>
+
+```bash title= showLineNumbers
+# 0
+# 1
+# 2
+# 3
+# 4
+```
+
+</details>
+
+<Admonition type="info" title="info"> 
+
+`range()` function return [iterable](https://docs.python.org/3/glossary.html#term-iterable)
+
+</Admonition>
+
+
+
+## Loop on a list
+
+```python title= showLineNumbers
+words = ['cat', 'window', 'defenestrate']
+for w in words:
+    print(w, len(w))
+```
+
+get list's index
+
+```python title= showLineNumbers
+words = ['cat', 'window', 'defenestrate']
+for index, value in enumerate(words):
+    print(index, value)
+```
+
+## Loop on dict
+
+```python title= showLineNumbers
+users = {'Hans': 'active', 'Éléonore': 'inactive', '景太郎': 'active'}
+
+for key, value in users.copy().items():
+    # do something
+```
+
+<Admonition type="caution" title="caution"> 
+
+Modifying and iterating same collection should be avoided. You can work with a copy of them. eg. `<collection>.copy()` 
+
+</Admonition>
+
+### `break` and `continue`
+
+
+```python title= showLineNumbers
+for ... :
+  # do something
+  # highlight-next-line
+  continue
+  for ... :
+    # do something
+    # highlight-next-line
+    break
+```
+
+`break` statement the <Color color="var(--secondary-font-color)"> innermost enclosing </Color> `for` or `while` loop
+
+---
+
+### `else` on Loop
+
+
+If the loop <Color color="var(--secondary-font-color)"> finishes without </Color> executing the `break`, the `else` clause executes.
+
+```python title= showLineNumbers
+for ... :
+  # do something
+else:
+  print("print if no break")
+```
+
+```python title= showLineNumbers
+i = 0
+while i <= 3:
+  print(i)
+  i = i +1 
+  break
+else:
+  print('print if no break')
+
+# output
+# 0
+```
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/controlflow.html#for-statements
