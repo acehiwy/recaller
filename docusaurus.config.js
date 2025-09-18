@@ -3,8 +3,10 @@
 
 const math = require("remark-math");
 const katex = require("rehype-katex");
-const githubTheme = require("prism-react-renderer/themes/github");
-const shadesOfPurple = require("prism-react-renderer/themes/shadesOfPurple");
+const {
+  github: githubTheme,
+  dracula: draculaTheme,
+} = require("prism-react-renderer").themes;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -125,7 +127,7 @@ const config = {
       },
       prism: {
         theme: githubTheme,
-        darkTheme: shadesOfPurple,
+        darkTheme: draculaTheme,
         additionalLanguages: ["rust", "toml"],
         magicComments: [
           // Remember to extend the default highlight class name as well!
