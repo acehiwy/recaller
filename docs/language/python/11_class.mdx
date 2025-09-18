@@ -1,5 +1,4 @@
 ---
-
 tags:
   - python
 ---
@@ -8,25 +7,190 @@ tags:
 
 class is an object bundling state and functionality to manipulate its state.
 
+&#8203;<Color color="var(--not-require-but-good-to-know-font-color)">Code below is used as reference on futher section on this page</Color>
 
+```python title= showLineNumbers
+class MyClass:
+    """A simple example class"""
+    i = 12345
 
-<Admonition type="info" title="info"> 
+    def __init__(self, arg1):
+      self.arg1 = arg1
 
-Although scopes are determined statically, they are used dynamically. At any time during execution, there are 3 or 4 nested scopes whose namespaces are directly accessible:
+    def f(self, bar):
+        return bar + self.arg1
+```
 
-the innermost scope, which is searched first, contains the local names
+## Class object
 
-the scopes of any enclosing functions, which are searched starting with the nearest enclosing scope, contain non-local, but also non-global names
+is static class. eg `MyClass`
 
-the next-to-last scope contains the current module’s global names
+## Instance object
 
-the outermost scope (searched last) is the namespace containing built-in names
+is a class instance
 
-If a name is declared global, then all references and assignments go directly to the next-to-last scope containing the module’s global names. To rebind variables found outside of the innermost scope, the nonlocal statement can be used; if not declared nonlocal, those variables are read-only (an attempt to write to such a variable will simply create a new local variable in the innermost scope, leaving the identically named outer variable unchanged).
+`__init__` method is a constructor method
+
+first argument, `self`, refer to instance of a class itself
+
+### Instantiate
+
+```python title= showLineNumbers
+instance = MyClass('foo')
+```
+
+When method is called, <Color color="var(--secondary-font-color)">an instance is passed as the first argument</Color>
+
+```python title= showLineNumbers
+instance.f()
+
+# equivalent to
+MyClass.f(instance)
+```
+
+<Admonition type="note" title="note"> 
+
+Word `self` has no special meaning in python
+
+`self` is just convention. It can be any name
 
 </Admonition>
 
-<br/>
+<Admonition type="note" title="note"> 
+
+An instance is still attached to the method even if the method is called sometime later
+
+
+```python title= showLineNumbers
+ins = MyClass('foo')
+temp_f = ins.f
+
+# highlight-start
+# no need to provide `self`
+print(temp_f('bar'))
+# highlight-end
+# barfoo
+```
+
+</Admonition>
+
+
+## Class variable and instance variable
+
+A class variable is attributes that shared across all instances (static attribute / properties)
+
+A instance variable is attributes that unique to each instance
+
+```python title= showLineNumbers
+class Dog:
+    # class variable shared by all instances
+    kind = 'canine'  
+
+    def __init__(self, name):
+        # instance variable unique to each instance
+        self.name = name 
+```
+
+
+## Inheritance
+```python title= showLineNumbers
+class DerivedClassName(BaseClassName):
+    pass
+```
+
+### Calling base class method while overriding
+
+use `<BaseClass>.<method>(<instance> , ...arguments)`
+
+```python title= showLineNumbers
+class BaseClass:
+  def foo(self, arg1):
+    return 'foo' + arg1
+  
+
+class Derived(BaseClass):
+  # highlight-start
+  def foo(self):
+    return BaseClass.foo(self, 'bar') + 'overrided'
+  # highlight-end
+
+ins = Derived()
+print(ins.foo())
+# foobaroverrided
+```
+
+### [`isinstance`](https://docs.python.org/3/library/functions.html#isinstance) function
+```python title= showLineNumbers
+isinstance(obj, int)
+```
+
+Check whether `obj` is an instance or a derived instance of `int`
+
+### [`issubclass`](https://docs.python.org/3/library/functions.html#issubclass) function
+
+```python title= showLineNumbers
+issubclass(Derived, BaseClass)
+```
+
+Check whether class object, `Derived`, is derived from another class object, `BaseClass`
+
+
+
+### Multiple inheritance
+
+
+<Admonition type="caution" title="caution">
+
+After class definition or instantiation
+
+- a class attribute can be reassigned
+- a new attribute can be set / added
+
+<details>
+
+<summary> Example </summary>
+
+```python title= showLineNumbers
+class MyClass:
+    """A simple example class"""
+    i = 12345
+
+    def f(self):
+        return 'hello world'
+
+MyClass.i = 999
+print(MyClass.i)
+# 999
+
+MyClass.new_attr = 'new attr'
+
+ins = MyClass()
+print(ins.i , ins.new_attr)
+# 999 , new attr
+ins.i = 'ins value'
+print(ins.i)
+# ins value
+```
+
+</details>
+
+</Admonition>
+
+## <Color color="var(--not-require-but-good-to-know-font-color)">Attribute references</Color>
+
+is accessing class's attribute or class's method (apply for both a static class and class instance)
+
+```python title= showLineNumbers
+instance = MyClass()
+
+# attr reference
+MyClass.i
+MyClass.f
+instance.i
+instance.f
+```
+
+<br />
 
 ---
 
