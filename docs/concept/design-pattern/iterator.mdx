@@ -1,0 +1,305 @@
+---
+title: Iterator
+last_update:
+  date: 2025-09-24T12:08:02Z
+tags:
+  - design pattern
+---
+
+### Words we will use
+
+collection: is a container for a group of objects. eg, list, stack , tree, graph, etc
+
+## Description
+
+Iterator pattern let you traverse through <Color color="var(--primary-font-color)">a</Color> collection without knowing its traverse implementation <Color color="var(--writer-additional-note-font-color)">[[ internal method for getting a single item and algorithm for tracking which item has already been represented ]]</Color>
+
+## Problem without the pattern
+
+When client want to traverse through a collection 
+
+They need to
+1. know which method they can use to get a single item from the collection 
+1. keep track of which item they have seen
+
+But each collection provide different method for accessing its item
+
+Eg. an array might provide `array.getItem`. On the other hand a graph provide `graph.getNode`
+
+Different method of accessing item on different collection add a burden of client to know each collection properties
+
+Also it add more complexity for client if they need to write code for tracking seen items which might lead to code duplication each time they traverse
+
+## With pattern
+
+Iterator pattern introduce `iterator` object which contain traverse algorithm and methods require to traverse
+```typescript title= showLineNumbers
+interface Iterator<T> {
+  getNextItem(): T;
+  hasMoreItem(): boolean;
+}
+```
+`getNextItem()` return an item from collection 
+
+`hasMoreItem()` check whether they have traversed through all items
+
+The collection then need to return `iterator` object to client by implementing additional method like `collection.getIterator`
+
+<details>
+
+<summary>  Collection implementation example</summary>
+
+```typescript title=FooCollection.ts showLineNumbers
+class FooCollection {
+  // simplified
+  add(){}
+  getItem(){}
+  size(){}
+
+  getIterator(): Iterator<number> {
+    return new EvenItemIterator(this);
+  }
+}
+```
+
+```typescript title=EvenItemIterator.ts showLineNumbers
+class EvenItemIterator implements Iterator<number> {
+  private index = 0;
+
+  // traverse behavior is coupled with a collection
+  constructor(private collection: FooCollection) {}
+
+  getNextItem(): number {
+    if (this.hasMoreItem()) {
+      const result = this.collection.getItem(this.index);
+      this.index += 2
+      return result
+    }
+    
+    throw new Error('no item left')
+  }
+
+  hasMoreItem(): boolean {
+    return this.index < this.collection.size();
+  }
+}
+```
+
+</details>
+
+
+Client then use `iterator` object to traverse
+
+```typescript title= showLineNumbers
+const iterator: Iterator = collection.getIterator()
+
+while (iterator.hasMoreItem()){
+  const item  = iterator.getNextItem()
+  // do something with item
+}
+```
+
+With `iterator` interface, client does not need to know which method each collection used for accessing its item. They can just use `iterator.getNextItem()`
+
+The traverse algorithm and tracking seen item is push to be the collection resposibility. Client can just call `iterator.hasMoreItem()`
+
+
+
+<Admonition type="note" title="note"> 
+
+Client still need to know which method of the collection is used to return `iterator`
+
+Some design has all collection implement same interface for returning `iterator`. Eg.
+```typescript title= showLineNumbers
+interface IterableCollection<T>{
+  getIterator(): Iterator<T>
+}
+```
+
+So that regardless of collection client is dealing with, they can just call `collection.getIterator()`
+
+But returning just one `iterator` might not be enough for a certain collection
+
+Eg. a tree collection need depth-first and breadth-first traverse algorithm. It need to have more than one `getIterator` method
+```typescript title= showLineNumbers
+interface Tree{
+  // ...
+  getDepthFirstIterator(): Iterator;
+  getBreadthFirstIterator(): Iterator;
+}
+```
+
+In this case, Client still need to know method of a `Tree`
+
+<Admonition type="info" title="info"> 
+
+Different kind of `tree` can implement the same `Tree` interface
+
+</Admonition>
+
+</Admonition>
+
+<Admonition type="tip" title="tip"> 
+
+See [diagrams](https://refactoring.guru/design-patterns/iterator#structure) for better understanding
+
+</Admonition>
+
+<Admonition type="info" title="info"> 
+
+One iterator = one traverse behavior 
+
+</Admonition>
+
+<Admonition type="info" title="info"> 
+
+Several iterator can traverse the same collection at the same time
+
+</Admonition>
+
+
+## When to use
+
+- create a custom data structure
+- adding new / reuse traverse behavior 
+- dealing with stream of data with memory constraint
+- lazily compute items in a collection. 
+    - eg. computing all item at once consume resources. With `iterator.getNextItem()` you compute one item at a time
+- delay an iteration and continue when needed
+
+## <Color color="var(--not-nesary-for-now-future-font-color)">Example implementation</Color>
+
+<Tabs>
+<TabItem value="clientCode" label="Client code">
+
+```typescript title=client.ts showLineNumbers
+const collection = new MyCollection()
+const iterator = collection.getIterator()
+while(iterator.hasMoreItem()){
+  const item = iterator.getNextItem()
+}
+
+
+const tree = Math.random() > 0.5 ? new BinaryTree() : new TrinaryTree()
+const treeIterator = tree.getDepthFirstIterator()
+while(treeIterator.hasMoreItem()){
+  const item = treeIterator.getNextItem()
+}
+```
+
+</TabItem>
+
+<TabItem value="interface" label="Interface">
+
+```typescript title=interface.ts showLineNumbers
+interface _Iterator<T> {
+  getNextItem(): T;
+  hasMoreItem(): boolean;
+}
+
+interface IterableCollection<T>{
+  getIterator(): _Iterator<T>
+}
+
+interface IterableTreeCollection<T>{
+  getDepthFirstIterator(): _Iterator<T>;
+  getBreadthFirstIterator(): _Iterator<T>;
+}
+
+interface NormalCollection {
+  getItem(...args: any[]): any
+  size(): any
+}
+
+interface Tree {
+  // ...
+}
+```
+
+</TabItem>
+
+<TabItem value="mycollection" label="EvenItemIterator">
+
+```typescript title=EvenItemIterator.ts showLineNumbers
+class EvenItemIterator implements _Iterator<number> {
+  private index = 0;
+
+  constructor(private collection: NormalCollection) {}
+
+  getNextItem(): number {
+    if (this.hasMoreItem()) {
+      const result = this.collection.getItem(this.index);
+      this.index += 2
+      return result
+    }
+    
+    throw new Error('no item left')
+  }
+
+  hasMoreItem(): boolean {
+    return this.index < this.collection.size();
+  }
+}
+
+class MyCollection implements NormalCollection, IterableCollection<number>{
+  getItem(){}
+  size(){}
+
+  getIterator(): _Iterator<number> {
+    return new EvenItemIterator(this)
+  }
+}
+```
+
+</TabItem>
+
+<TabItem value="tree" label="TreeIterator">
+
+```typescript title=TreeIterator.ts showLineNumbers
+class TreeIterator implements _Iterator<number>{
+  constructor(private tree: Tree){}
+
+  getNextItem(): number {
+    // ...
+  }
+  hasMoreItem(): boolean {
+    // ...
+  }
+}
+
+class BinaryTree implements Tree, IterableTreeCollection<number>{
+  getDepthFirstIterator(): _Iterator<number> {
+    // ...
+  }
+  getBreadthFirstIterator(): _Iterator<number> {
+    // ...
+  }
+}
+
+class TrinaryTree implements Tree, IterableTreeCollection<number>{
+  getDepthFirstIterator(): _Iterator<number> {
+    // ...
+  }
+  getBreadthFirstIterator(): _Iterator<number> {
+    // ...
+  }
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+<Admonition type="info" title="info"> 
+
+See more [code example](https://refactoring.guru/design-patterns/iterator#implementations) from [refactoring.guru](https://refactoring.guru/)
+
+</Admonition>
+
+<br/>
+
+---
+
+# Sources
+
+- https://refactoring.guru/design-patterns/iterator
