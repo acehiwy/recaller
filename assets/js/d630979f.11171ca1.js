@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkrecaller=self.webpackChunkrecaller||[]).push([[2982],{1588:e=>{e.exports=JSON.parse('{"label":"git","permalink":"/recaller/docs/tags/git","allTagsPath":"/recaller/docs/tags","count":1,"items":[{"id":"tool/git/rebase","title":"Rebase","description":"onto option","permalink":"/recaller/docs/tool/git/rebase"}]}')}}]);
