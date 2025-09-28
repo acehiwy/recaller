@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkrecaller=self.webpackChunkrecaller||[]).push([[5860],{9621:e=>{e.exports=JSON.parse('{"label":"flashcard","permalink":"/recaller/docs/tags/flashcard","allTagsPath":"/recaller/docs/tags","count":1,"items":[{"id":"tool/anki/studying","title":"Studying","description":"Decks","permalink":"/recaller/docs/tool/anki/studying"}]}')}}]);
