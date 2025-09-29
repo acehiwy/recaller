@@ -1,4 +1,6 @@
 ---
+last_update:
+  date: 2025-09-19T12:55:55Z
 tags:
   - python
 ---
@@ -92,6 +94,43 @@ class Dog:
 ```
 
 
+<Admonition type="caution" title="caution">
+
+After class definition or instantiation
+
+- a class attribute can be reassigned
+- a new attribute can be set / added
+
+<details>
+
+<summary> Example </summary>
+
+```python title= showLineNumbers
+class MyClass:
+    """A simple example class"""
+    i = 12345
+
+    def f(self):
+        return 'hello world'
+
+MyClass.i = 999
+print(MyClass.i)
+# 999
+
+MyClass.new_attr = 'new attr'
+
+ins = MyClass()
+print(ins.i , ins.new_attr)
+# 999 , new attr
+ins.i = 'ins value'
+print(ins.i)
+# ins value
+```
+
+</details>
+
+</Admonition>
+
 ## Inheritance
 ```python title= showLineNumbers
 class DerivedClassName(BaseClassName):
@@ -138,43 +177,88 @@ Check whether class object, `Derived`, is derived from another class object, `Ba
 
 ### Multiple inheritance
 
+```python title= showLineNumbers
+class DerivedClassName(Base1, Base2, Base3):
+    pass
+```
 
-<Admonition type="caution" title="caution">
+This means `DerivedClassName` class has all attribute of `Base1`, `Base2` and `Base3` combined
 
-After class definition or instantiation
+When attribute is referenced, Python does depth-first / left-to-right search and <Color color="var(--secondary-font-color)">not searching for same class twice</Color>
 
-- a class attribute can be reassigned
-- a new attribute can be set / added
+Eg. if attribute `foo` is called, python will search from
+1. `DerivedClassName`
+1. `Base1` class
+    1. Parent class of `Base1` and continue <Color color="var(--secondary-font-color)">recursivly</Color> through its grandparent class using same left-to-right searching
+1. `Base2` class
+1. `Base3` class
 
 <details>
 
-<summary> Example </summary>
+<summary> "not searching for same class twice" example </summary>
 
-```python title= showLineNumbers
-class MyClass:
-    """A simple example class"""
-    i = 12345
+Assuming `Base1`'s parent class is `Bar` and `Base2` also has same parent class `Bar`
 
-    def f(self):
-        return 'hello world'
+Search path would be `DerivedClassName` -> `Base1` -> `Bar` -> `Base2` -> ~~`Bar`~~ -> `Base3`
 
-MyClass.i = 999
-print(MyClass.i)
-# 999
-
-MyClass.new_attr = 'new attr'
-
-ins = MyClass()
-print(ins.i , ins.new_attr)
-# 999 , new attr
-ins.i = 'ins value'
-print(ins.i)
-# ins value
-```
+Notice that `Base2` inherit `Bar` but `Bar` has already been searched in `Base1` path so it is skipped 
 
 </details>
 
+
+<Admonition type="info" title="info"> 
+
+More info on [Method Resolution Order](https://docs.python.org/3/howto/mro.html#python-2-3-mro)
+
 </Admonition>
+
+
+## Private variable
+
+private instance variable does not exist in Python
+
+People conventionally prepend variable name with single underscore `_` to indicate that it is for internal usage. eg `_foo`
+
+
+### Name mangling
+
+Class attributes that begin with >= 2 underscore and does not end with >= 2 underscore are not acceesible outside class definition
+
+```python title= showLineNumbers
+class Foo:
+  _1under = 10
+  __2under = 20
+  __2under1_ = 21
+  ___3under2__ = 32
+
+ins = Foo()
+
+Foo._1under # no runtime error
+ins._1under # no runtime error
+ins.___3under2__ # no runtime error
+
+
+# highlight-error-start
+Foo.__2under
+ins.__2under
+Foo.__2under1_
+# AttributeError: type object 'Foo' has no attribute '__2under'
+# highlight-error-end
+```
+
+This effect is [Name Mangling](https://docs.python.org/3/reference/expressions.html#index-5)
+
+Python change attribute name from `__<attr name>` to `_<its class name>__<attr name>`
+
+```python title= showLineNumbers
+ins = Foo()
+
+# no error
+Foo._Foo__2under
+ins._Foo__2under
+Foo._Foo__2under1_
+```
+
 
 ## <Color color="var(--not-require-but-good-to-know-font-color)">Attribute references</Color>
 
@@ -197,3 +281,4 @@ instance.f
 # Sources
 
 - https://docs.python.org/3/tutorial/classes.html
+- https://docs.python.org/3/reference/expressions.html#private-name-mangling
