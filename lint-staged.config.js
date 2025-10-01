@@ -1,3 +1,3 @@
 module.exports = {
-  '*.{mdx,md}': ['node /home/node/app/update-last-updated.mjs'],
+  '*.{mdx,md}': ['node update-last-updated.mjs'],
 };
