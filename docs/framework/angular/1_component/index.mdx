@@ -1,0 +1,251 @@
+---
+last_update:
+  date: 2025-10-09T11:21:56.857Z
+---
+
+# Component
+
+```typescript title= showLineNumbers
+import { Component } from "@angular/core";
+
+@Component({
+  selector: "app-root",
+  template: ` Hello `,
+  styles: `
+    :host {
+      color: blue;
+    }
+  `,
+})
+export class App {}
+```
+
+<Admonition type="note" title="note">
+
+`:host` selector refers to the HTML element of a component
+
+</Admonition>
+
+<!--##########################################################################################-->
+<!--##########################################################################################-->
+
+## Component metadata
+
+is fields that configure the component
+
+These fields are provide to `@Component` decorator
+
+Separate HTML and CSS files using `templateUrl` and `styleUrl` fields
+
+```typescript title= showLineNumbers
+@Component({
+  selector: 'user-profile',
+  templateUrl: 'user-profile.html',
+  styleUrl: 'user-profile.css',
+})
+```
+
+Component style only affect element inside its HTML template
+
+<Admonition type="note" title="note">
+
+`style` and `styleUrl` fields are optional
+
+</Admonition>
+
+<Admonition type="note" title="note">
+
+`templateUrl` and `styleUrl` are relative to its component location
+
+</Admonition>
+
+<!--##########################################################################################-->
+<!--##########################################################################################-->
+
+## Component state
+
+`HTML template` can reference to class'properties using `{{ <properties name> }}` syntax
+
+```typescript title= showLineNumbers
+import { Component } from "@angular/core";
+
+@Component({
+  selector: "app-root",
+  template: ` // highlight-next-line Hello {{ city }} {{ 1 + 1 }} `,
+})
+export class App {
+  // highlight-next-line
+  city = "San Francisco";
+}
+```
+
+Angular evaluates contents inside `{{}}`
+
+<Admonition type="info" title="info">
+
+The DOM rendered by component is called component's view
+
+</Admonition>
+
+## Component control flow
+
+use `@if` , `@else`
+
+```typescript title= showLineNumbers
+@Component({
+  ...
+  template: `
+    @if (isFoo && 1 + 1 === 2) {
+      <span> render if </span>
+    }@else if ( 2 + 2 === 4 ){
+      <span> render else if </span>
+    }
+    @else {
+      <span> render else </span>
+    }
+  `,
+})
+export class App {
+  isFoo = true;
+}
+```
+
+## Loop
+
+use `@for (<item> of <iterable> ; track <unique identifier>) {}`
+
+```typescript title= showLineNumbers
+@Component({
+  ...
+  template: `
+    // highlight-next-line
+    @for (os of operatingSystems; track os.id) {
+      {{ os.name }}
+    }
+  `,
+})
+export class App {
+  operatingSystems = [{id: 'win', name: 'Windows'}, {id: 'osx', name: 'MacOS'}, {id: 'linux', name: 'Linux'}];
+}
+```
+
+<Admonition type="note" title="note">
+
+`track` is required
+
+It is like the `key` attribute in React
+
+</Admonition>
+
+<!--##########################################################################################-->
+<!--##########################################################################################-->
+
+## Property binding
+
+Bind component property values to HTML attributes or other component parameters
+
+Use `[]` syntax
+
+```typescript title= showLineNumbers
+import {Component} from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  import: [FooComponent]
+  template: `
+    // highlight-start
+    <div [contentEditable]="isEditable"></div>
+    <foo-component [prop1]="isEditable" />
+    // highlight-end
+  `,
+})
+export class App {
+  // highlight-next-line
+  isEditable = true;
+}
+```
+
+Angular updates the DOM when bound value changes
+
+<Admonition type="info" title="info">
+
+bind to HTML attributes by prefixing with `attr.`
+
+```html title= showLineNumbers
+<ul [attr.role]="foo"></ul>
+```
+
+</Admonition>
+
+<!--##########################################################################################-->
+<!--##########################################################################################-->
+
+## Event handling
+
+To add an event listener, use `()`
+
+e.g., register `greet` function as a callback for a click event
+
+```typescript title= showLineNumbers
+@Component({
+  ...
+  template: `<button (click)="greet($event)">`
+})
+export class App {
+  greet(event: Event) {
+    console.log('Hello, there 👋');
+  }
+}
+```
+
+<Admonition type="note" title="note">
+
+`$event` keyword in HTML template represents DOM [`event`](https://developer.mozilla.org/en-US/docs/Web/API/Event) object
+
+</Admonition>
+
+<!--##########################################################################################-->
+<!--##########################################################################################-->
+
+## Services
+
+A class that can be injected as a dependency into another class
+
+Angular has dependency injection feature
+
+Register a class to DI container by using `Injectable` decorator
+
+```typescript title= showLineNumbers
+import { Injectable } from "@angular/core";
+
+@Injectable({ providedIn: "root" })
+export class Calculator {
+  add(x: number, y: number) {
+    return x + y;
+  }
+}
+```
+
+Use `service` by calling `inject(<inject_token>)`
+
+```typescript title= showLineNumbers
+import { Component, inject } from "@angular/core";
+import { Calculator } from "./calculator";
+
+@Component({
+  // ...
+})
+export class Receipt {
+  // highlight-next-line
+  private calculator = inject(Calculator);
+  totalCost = this.calculator.add(50, 25);
+}
+```
+
+<br />
+
+---
+
+# Sources
+
+- https://angular.dev/guide/components

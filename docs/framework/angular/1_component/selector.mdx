@@ -1,0 +1,139 @@
+---
+last_update:
+  date: 2025-10-09T11:21:56.857Z
+---
+
+# Selector
+
+Every component can define its CSS selector using `selector` metadata
+
+```typescript title= showLineNumbers
+@Component({
+  selector: 'profile-photo',
+  template: `
+  <span>work</span>
+  `
+  ...
+})
+export class ProfilePhoto { }
+```
+
+Angular find a matching selector in HTML template and replace its content with `selector`'s template
+
+Example. with class selector
+
+- `Foo` component define `selector` with value `.some-css-class`
+- `App` component import `Foo` component and having `.some-css-class` define inside its template
+- `Foo` component content replace original content defined in `App` component
+
+<Tabs>
+<TabItem value="foo" label="Foo component">
+
+```typescript title=foo.ts showLineNumbers
+@Component({
+  selector: ".some-css-class",
+  template: ` <span> foo component content </span> `,
+})
+export class Foo {}
+```
+
+</TabItem>
+<TabItem value="app" label="App component">
+
+```typescript title=app.ts showLineNumbers
+@Component({
+  selector: 'app-root',
+  imports: [Foo],
+  template: `
+    main component content
+    // highlight-next-line
+    <div class="some-css-class">
+      original content in main
+      <span> some text </span>
+    </div>
+  `,
+})
+export class App {
+```
+
+</TabItem>
+<TabItem value="html" label="Rendered HTML">
+
+```html title= HTML showLineNumbers
+<div class="some-css-class">
+  <span> foo component content </span>
+</div>
+```
+
+</TabItem>
+</Tabs>
+
+<Admonition type="note" title="note"> 
+
+CSS class still apply to HTML element even if it is matched
+
+</Admonition>
+
+
+<!--##########################################################################################-->
+<!--##########################################################################################-->
+
+## Type selector
+
+Generate component if HTML tag name match the `selector`
+
+Form example above rendered HTML element would be:
+
+```html title= showLineNumbers
+<profile-photo>
+  <span>work</span>
+</profile-photo>
+```
+
+Another component can use a component by refering to this id and import component class to its `imports` metadata
+
+```typescript title= showLineNumbers
+import { Component } from "@angular/core";
+
+@Component({
+  // highlight-next-line
+  selector: "app-user",
+  template: ` from user component `,
+})
+export class User {}
+
+@Component({
+  selector: "app-root",
+  template: `
+    // highlight-next-line
+    <app-user />
+  `,
+  // highlight-next-line
+  imports: [User],
+})
+export class App {}
+```
+
+&#8203;<Color color="var(--can-not-understand-font-color)">Angular matches selectors statically at compile-time. Changing the DOM at run-time, either via Angular bindings or with DOM APIs, does not affect the components rendered.</Color>
+
+<Admonition type="note" title="note">
+
+Component are "standalone" by default. Meaning another component can add a component to its `imports`
+
+metadata `standalone: false` can be specified to indicate that a component belong to a module and need to be imported via its `NgModule` instead
+
+</Admonition>
+
+<Admonition type="info" title="info">
+
+Angular throw error when component selector are duplicate
+
+</Admonition>
+
+<br />
+
+---
+
+# Sources
+
+- https://angular.dev/guide/components/selectors

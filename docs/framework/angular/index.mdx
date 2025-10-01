@@ -1,0 +1,145 @@
+---
+last_update:
+  date: 2025-10-09T11:21:56.857Z
+---
+
+# Angular
+
+&#8203;<Color color="var(--primary-font-color)"> Base on version 20 </Color>
+
+## note
+
+## input
+
+```typescript title= showLineNumbers
+class User {
+  occupation = input<string>();
+}
+
+@Component({
+  ...
+  template: `<app-user occupation="Angular Developer"></app-user>`
+})
+export class App {}
+```
+
+input function return type is [`InputSignal`](https://angular.dev/api/core/InputSignal)
+
+## output
+
+child component can send data to parent component using [`output()`](https://angular.dev/api/core/output)
+
+```typescript title= showLineNumbers
+class Child {
+  incrementCountEvent = output<number>();
+
+  onClick() {
+    this.count++;
+    this.incrementCountEvent.emit(this.count);
+  }
+}
+```
+
+```typescript title=app.ts showLineNumbers
+@Component({
+  selector: "app-root",
+  template: ` <app-child (incrementCountEvent)="doSomething($event)" /> `,
+  imports: [Child],
+})
+export class App {
+  doSomething(countFromChild: number) {
+    // do something when child push an event
+  }
+}
+```
+
+## `@defer`
+
+When lot of components start loading at the same time , it s slow
+
+you can defer some component to load when browser is idle using `@defer`
+
+By default `@defer` will load component when the browser is idle
+
+```html title= showLineNumbers
+@defer {
+<heavy-load-component />
+}
+```
+
+trigger load when defer content enter the viewport
+
+```html title= showLineNumbers
+@defer (on viewport) {
+<heavy-load-component />
+}
+```
+
+### placeholder
+
+use `@placeholder` to show content before loading start
+
+```html title= showLineNumbers
+@defer {
+<some-component />
+} @placeholder { content before some-component start loading }
+```
+
+### loading
+
+use `@loading` to show content when a component is being loaded
+
+```html title= showLineNumbers
+@defer {
+<some-component />
+} @placeholder { content before some-component start loading } @loading {
+<loading-spinner />
+}
+```
+
+`@placeholder` and `@loading` have optional argument `(minimum <time>)` telling their content will be rendered at least for `<time>`. prevent flickering
+
+```html title= showLineNumbers
+@defer {
+<comments />
+} @placeholder (minimum 2s) {
+<p>Future comments</p>
+} @loading (minimum 2s) {
+<p>Loading comments...</p>
+}
+```
+
+## Optimizing images
+
+```typescript title= showLineNumbers
+import { NgOptimizedImage } from '@angular/common';
+@Component({
+  imports: [NgOptimizedImage],
+  template: `
+    <img ngSrc="/path/to/image" width="32" height="32" />
+  `
+})
+```
+- import [`NgOptimizedImage`](https://angular.dev/api/common/NgOptimizedImage) to a component
+- use `ngSrc` attribute instead of `src` on `img` tag
+- pass `width` and `height` to prevent layout shift
+
+[`fill`](https://angular.dev/api/common/NgOptimizedImage#fill) attribute can be passed to fill image ot its container
+
+<Admonition type="note" title="note"> 
+
+With `fill`, parent element must be position `relative`, `fixed` or `absolute`
+
+</Admonition>
+
+[`priority`](https://angular.dev/api/common/NgOptimizedImage#priority) attribute is used for set image priority to high
+
+
+## Routing
+
+create route
+
+```typescript title= showLineNumbers
+import {Routes} from '@angular/router';
+export const routes: Routes = [];
+```
