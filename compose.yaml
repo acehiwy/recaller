@@ -9,7 +9,7 @@ services:
         - .:/home/node/app
     ports:
       - 22222:22222
-    command: bash -c "yarn start"
+    command: bash -c "yarn install --immutable && yarn start"
 
 
 volumes:
