@@ -26,12 +26,13 @@ WORKDIR /home/${CONTAINER_USER}/app
 
 ENV PATH="/home/${CONTAINER_USER}/bin:${PATH}"
 
-ADD package.json yarn.lock .yarnrc.yml ./
-
-RUN <<EOF
+RUN --mount=type=bind,source=package.json,target=package.json \
+<<EOF
 mkdir -p $HOME/bin
 corepack enable yarn --install-directory $HOME/bin
-yarn install --immutable
+yarn --version
 EOF
+
+RUN mkdir node_modules
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
