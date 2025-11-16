@@ -1,0 +1,143 @@
+---
+last_update:
+  date: 2025-11-16T09:48:07.815Z
+---
+
+# Responsive images
+
+## Give the browser images to pick
+
+use `srcset` attribute
+
+```jsx title= showLineNumbers
+<img srcset="<path to image 1> <image 1 width>w, <path to image 2> <image 2 width>w, ..."  />
+
+<img srcset="250-dog.png 250w, 500-dog.png 500w>
+```
+
+These syntax means giving 2 images choices for browser to pick
+
+First image, `250-dog.png`, has 250 pixels intrinsic width.
+
+Second image, ` 500-dog.png`, has 500 pixels intrinsic width.
+
+Browser calculate appropriate space for an image and then pick right one to display
+
+<Admonition type="note" title="note">
+
+Images' [intrinsic size](https://developer.mozilla.org/en-US/docs/Glossary/Intrinsic_Size) is the real size / dimensions of an image file in pixels
+
+```bash title= showLineNumbers
+file some-image.webp
+# some-image.webp: RIFF (little-endian) data, Web/P image, VP8 encoding, 1536x1024, Scaling: [none]x[none], YUV color, decoders should clam
+# -------------------------------------------------------------------------HERE----------------------------------------------------------
+```
+
+</Admonition>
+
+<!--##########################################################################################-->
+<!--##########################################################################################-->
+
+## Device pixel ratio
+
+The number describes the ratio of how much "real" pixels (physical pixels of the screen) are used to display one "logical" pixel (size set in by software. eg CSS).
+
+1px (logical pixel / css pixel) that you define when writing a software is not always equal to 1px (physical pixel) displayed on the physical screen
+
+Normal / old device have less physical pixels and so software are written to fit all pixels the device have.
+
+Newer device have more physical pixels so they can displayed much more clear / sharp content.
+
+But newer device screen that have 1000 _ 1000 physical pixels can not render 500 _ 500 logical pixel content without leaving blank spaces
+
+So it read 1*1 logical pixels but render as 2*2 physical pixels making them display sharper content while compatible with the content written
+
+That is the example of 2X device display. The device pixel ratio is 2 (1:2 ; logical px: physical px)
+
+<!--##########################################################################################-->
+<!--##########################################################################################-->
+
+## Appropriate space
+
+When browser reserve space for an image. It calculate space by looking at the width that image would take (statically set by dev , default is 100 vw) \* device pixel ratio
+
+It then pick first image that is equal or bigger than reserved space
+
+For example:
+
+```jsx title= showLineNumbers
+<img srcset="250-dog.png 250w, 500-dog.png 500w, 1000-dog.png 1000w">
+```
+
+On 1X device (device pixel ratio = 1):
+
+- when an image would take 1000 logical px width. Reserve space will be 1000 \* 1 = 1000. So `1000-dog.png` will be displyed
+- when an image would take 500 logical px width. `500-dog.png` will be displyed
+- when an image would take 501 logical px width. `1000-dog.png` will be displyed
+
+On 2X device:
+
+- when an image would take 1000 logical px width. Reserve space will be 1000 \* 2 = 2000. So `1000-dog.png` will be displyed
+- when an image would take 250 logical px width. `500-dog.png` will be displyed
+
+<Admonition type="info" title="info">
+
+Browser take screen size, pixel density, zoom level, screen orientation, and network speed into account when reserving a space
+
+</Admonition>
+
+<!--##########################################################################################-->
+<!--##########################################################################################-->
+
+## Set amount of space that image would take
+
+`sizes` attribute tell browser how much space image would take
+
+```jsx title= showLineNumbers
+<img
+  srcset="250-dog.png 250w, 500-dog.png 500w, 1000-dog.png 1000w"
+  sizes="
+  (width <= 250px) 100px,
+  (width <= 500px) 300px,
+  70vw"
+>
+```
+
+This means
+
+- at viewport less than or equal 250px, an image would take 100px.
+- at viewport less than or equal 500px, an image would take 300px.
+- otherwise an image would take 70vw
+
+<Admonition type="note" title="note">
+
+Browser match first condition that is true, so order matter.
+
+</Admonition>
+
+## Picture element
+
+```jsx title= showLineNumbers
+<picture>
+  <source
+    type="image/avif"
+    sizes="(width<= 1000px) 150px, 800px"
+    srcset="300.avif 300w, 500.avif 500w, 700.avif 700w"
+  />
+  <source type="image/png" srcset="300.png 300w, 500.png 500w, 700.png 700w" />
+  <img src="cat.png" />
+</picture>
+```
+
+<br />
+
+---
+
+# Sources
+
+- https://developer.mozilla.org/en-US/docs/Web/HTML/Guides/Responsive_images
+- https://web.dev/learn/design/responsive-images
+- https://www.youtube.com/watch?v=u0rfDeaxehc
+- https://web.dev/learn/design/responsive-images/#sizes
+- https://web.dev/learn/design/picture-element
+- https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/picture
