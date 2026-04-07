@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkrecaller=globalThis.webpackChunkrecaller||[]).push([[8401],{7370(l,r,e){e.d(r,{A:()=>i});var o=e(4848);var a=e(8466),c=e(9365),n=e(1470),s=e(7293);const i={...a.A,Admonition:s.A,Tabs:n.A,TabItem:c.A,Color:function({children:l,color:r}){return(0,o.jsx)("span",{style:{color:r},children:l})}}}}]);
