@@ -1,6 +1,11 @@
-import React from "react";
+import type { ReactNode } from "react";
 
-export default function Color({ children, color }) {
+type ColorProps = {
+  children: ReactNode;
+  color: string;
+};
+
+export default function Color({ children, color }: ColorProps) {
   return (
     <span
       style={{
