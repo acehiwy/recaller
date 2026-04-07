@@ -42,14 +42,14 @@ With `{#custom-id}` syntax you can set your own header ID.
 # Foo Header {#custom-id}
 ```
 
-:::note
+<Admonition type="note">
 
 All files prefixed with an underscore (`_`) <Color color='var(--secondary-font-color)'> under the docs directory </Color> are treated as "partial" pages
 and <Color color='var(--secondary-font-color)'> will be ignored by default </Color>.
 
 Read more about [importing partial pages](https://docusaurus.io/docs/markdown-features/react#importing-markdown).
 
-:::
+</Admonition>
 
 ## Doc Front Matter
 
@@ -57,11 +57,11 @@ The front matter is used to <Color color='var(--secondary-font-color)'> provide 
 
 Front matter is optional. Docusaurus will be able to infer all necessary metadata without the front matter.
 
-:::tip[API reference]
+<Admonition type="tip" title="API reference">
 
 For all possible fields, see the [API documentation](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs#markdown-front-matter).
 
-:::
+</Admonition>
 
 ## Doc tags
 
@@ -79,7 +79,7 @@ tags:
 ---
 ```
 
-:::info
+<Admonition type="info">
 
 <details>
 
@@ -91,7 +91,7 @@ tags:
 
 when tag is clicked, Docusaurus filter all docs containing it.
 
-:::
+</Admonition>
 
 ## Docs Folder Structure
 
@@ -157,7 +157,7 @@ slug: /bonjour
 Lorem ipsum
 ```
 
-:::note
+<Admonition type="note">
 
 `slug` will be appended to the doc plugin's routeBasePath, which is `/docs` by default.
 
@@ -166,7 +166,7 @@ It is possible to use:
 - absolute slugs: slug: /mySlug, slug: /...
 - relative slugs: slug: mySlug, slug: ./../mySlug...
 
-:::
+</Admonition>
 
 <br />
 

@@ -25,11 +25,11 @@ function HelloCodeTitle(props) {
 
 Code blocks are text blocks wrapped around by strings of 3 backticks.
 
-:::tip[Reference]
+<Admonition type="tip" title="Reference">
 
 You may check out [this reference](https://github.com/mdx-js/specification) for the specifications of MDX.
 
-:::
+</Admonition>
 
 ````markdown title= showLineNumbers
 ```js
@@ -97,7 +97,7 @@ module.exports = {
 
 After adding `additionalLanguages`, restart Docusaurus.
 
-:::note
+<Admonition type="note">
 
 Each additional language has to be a valid Prism component name.
 
@@ -107,7 +107,7 @@ So you need to use `additionalLanguages: ['csharp']`.
 
 You can look into `node_modules/prismjs/components` to find all components (languages) available.
 
-:::
+</Admonition>
 
 ## Line Highlighting
 
@@ -269,7 +269,7 @@ console.log(name.toUpperCase());
 // Uncaught TypeError: Cannot read properties of null (reading 'toUpperCase')
 ```
 
-:::note
+<Admonition type="note">
 
 Every magic comment entry will contain three keys
 
@@ -277,15 +277,15 @@ Every magic comment entry will contain three keys
 - `line` which applies to the directly next line
 - `block` (containing start and end), which applies to the entire block enclosed by the two comments.
 
-:::
+</Admonition>
 
-:::note
+<Admonition type="note">
 
 You can disable the default line highlighting comments with `magicComments: []`.
 
-:::
+</Admonition>
 
-:::tip[Swizzling]
+<Admonition type="tip" title="Swizzling">
 
 Using CSS to target the class can already do a lot, but you can unlock the full potential of this feature through swizzling.
 
@@ -308,7 +308,7 @@ yarn run swizzle @docusaurus/theme-classic CodeBlock/Line
 
 The `Line` component will receive the list of class names, based on which you can conditionally render different markup.
 
-:::
+</Admonition>
 
 ## Line numbering
 

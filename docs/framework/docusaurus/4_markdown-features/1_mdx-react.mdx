@@ -14,13 +14,13 @@ Docusaurus has built-in support for <Color color="var(--primary-font-color)"> MD
 
 Docusaurus v3 uses <Color color="var(--primary-font-color)"> MDX v3 </Color>, so the parser is stricter than the old MDX v1 pipeline.
 
-:::tip[Debugging MDX]
+<Admonition type="tip" title="Debugging MDX">
 
 Check out the [MDX docs](https://mdxjs.com/) to see what other fancy stuff you can do with MDX.
 
 Use the [MDX playground](https://mdxjs.com/playground/) to validate strict MDX v3 syntax when something doesn't compile.
 
-:::
+</Admonition>
 
 ## Exporting components
 
@@ -28,11 +28,11 @@ To <Color color="var(--secondary-font-color)"> define </Color> any custom compon
 
 Only paragraphs that start with `export` will be parsed as components instead of prose.
 
-:::info
+<Admonition type="info">
 
 prose : written or spoken language in its ordinary form
 
-:::
+</Admonition>
 
 <details>
 
@@ -58,7 +58,7 @@ I can write **Markdown** alongside my _JSX_!
 
 </details>
 
-:::warning[MDX is JSX]
+<Admonition type="warning" title="MDX is JSX">
 
 Since all doc files are parsed using MDX, anything that looks like HTML is actually JSX.
 
@@ -71,7 +71,7 @@ Therefore, if you need to inline-style a component, follow JSX flavor and provid
 <span style={{backgroundColor: 'red'}}>Foo</span>
 ```
 
-:::
+</Admonition>
 
 ## Importing components
 
@@ -86,11 +86,11 @@ import Button from '@mui/material/Button';
 import BrowserWindow from '@site/src/components/BrowserWindow';
 ```
 
-:::tip
+<Admonition type="tip">
 
 The `@site` alias points to your <Color color="var(--secondary-font-color)"> website's directory </Color>, usually <Color color="var(--secondary-font-color)"> where the docusaurus.config.js file is </Color>.
 
-:::
+</Admonition>
 
 While declaring components within Markdown is very convenient for simple cases,
 it becomes hard to maintain because of limited editor support, risks of parsing errors, and low reusability.
@@ -130,11 +130,11 @@ import PartialExample from "./_markdown-partial-example.mdx";
 If you are importing <Color color="var(--secondary-font-color)"> Markdown </Color> <Color color="var(--primary-font-color)"> in </Color><Color color="var(--secondary-font-color)"> a React page </Color>,
 you have to supply `MDXContent` provider yourself.
 
-:::info
+<Admonition type="info">
 
 Wrap your imported Markdown component with `MDXContent` provider.
 
-:::
+</Admonition>
 
 ```jsx title=fooPages.jsx showLineNumbers
 import React from "react";
@@ -154,11 +154,11 @@ export default function LandingPage() {
 }
 ```
 
-:::warning
+<Admonition type="warning">
 
 Currently, the table of contents does not contain the imported Markdown headings.
 
-:::
+</Admonition>
 
 ## Importing code snippets
 
@@ -193,11 +193,11 @@ import MyComponentSource from "!!raw-loader!./myComponent";
 <CodeBlock language="jsx">{MyComponentSource}</CodeBlock>;
 ```
 
-:::tip[See also]
+<Admonition type="tip" title="See also">
 
 See [using code blocks in JSX](code-blocks) for more details of the `<CodeBlock>` component.
 
-:::
+</Admonition>
 
 ## MDX component scope
 
