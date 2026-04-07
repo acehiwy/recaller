@@ -5,10 +5,10 @@ last_update:
 
 # Image Optimization
 
-Built in image optimization feature 
+Built-in image optimization feature.
 
 
-&#8203;import [NgOptimizedImage](https://angular.dev/api/common/NgOptimizedImage) to the component
+&#8203;Import [NgOptimizedImage](https://angular.dev/api/common/NgOptimizedImage) into the component.
 ```typescript title= showLineNumbers
 import { NgOptimizedImage } from '@angular/common'
 
@@ -18,14 +18,14 @@ imports: [
 ],
 ```
 
-use `ngSrc` instead of `src`
+Use `ngSrc` instead of `src`.
 ```jsx title= showLineNumbers
 <img ngSrc="cat.jpg">
 ```
 
 ## Set image `fetchpriority` to `high` 
 
-use `priority` attribute
+Use the `priority` attribute.
 
 ```jsx title= showLineNumbers
 <img ngSrc="cat.jpg" priority>
@@ -36,19 +36,19 @@ use `priority` attribute
 
 ## Miscellaneous
 
-`fetchpriority` attribute tell browser that the resource should be load before other resource with default or `low` `fetchpriority`
+The `fetchpriority` attribute tells the browser that the resource should be loaded before resources with the default or `low` `fetchpriority`.
 
 <Admonition type="tip" title="tip"> 
 
-`fetchpriority=high` should not be overused, marking many resources with `high` make them not `high` at all
+`fetchpriority=high` should not be overused; marking too many resources as `high` makes none of them meaningfully high priority.
 
-It should be use for LCP, typically 1-3 resources.
+It should be used for LCP resources, typically one to three of them.
 
 </Admonition>
 
-`img` `loading=lazy` tell browser NOT to load image when it outside of the viewport
+The `loading=lazy` attribute tells the browser not to load an image when it is outside the viewport.
 
-Browser load image when the image is about to be visible in viewport
+The browser loads the image when it is about to become visible in the viewport.
 
 
 ```jsx title= showLineNumbers
@@ -60,7 +60,7 @@ Browser load image when the image is about to be visible in viewport
 </picture>
 ```
 `sizes="(<at this screen width>): <reserve this much space for an image>"`
-so you can find the appropriate image file from `srcset` that fit my reserved space
+This lets the browser choose the most appropriate image file from `srcset` for the reserved space.
 <br/>
 
 ---

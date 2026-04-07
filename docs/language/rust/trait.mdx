@@ -1,6 +1,6 @@
 # Traits
 
-A trait is set of signatures that need to be followed for one that implementing a trait.
+A trait is a set of signatures that must be followed by any type implementing that trait.
 
 We can use traits to define shared behavior in an abstract way.
 
@@ -58,7 +58,7 @@ impl Summary for Tweet {
 
 ## Calling a Trait
 
-Same as calling method on Type instance but <Color color="var(--secondary-font-color)"> a trait must be brought to the scope </Color>.
+This is the same as calling a method on a type instance, but <Color color="var(--secondary-font-color)"> the trait must be brought into scope </Color>.
 
 ```rust title= showLineNumbers
 // bringing Summary trait
@@ -84,7 +84,7 @@ fn main() {
 
 One restriction is that we can’t implement external traits on external types.
 
-In other word, A trait or a type need to be local to our crate in order to implement the trait.
+In other words, either the trait or the type must be local to our crate in order to implement the trait.
 
 <Color color="var(--not-require-but-good-to-know-font-color)">
 
@@ -94,7 +94,7 @@ We can also implement Summary on `Vec<T>` in our aggregator crate, because the t
 
 But we can’t implement external traits on external types. For example, we can’t implement the Display trait on `Vec<T>` within our aggregator crate, because Display and `Vec<T>` are both defined in the standard library and aren’t local to our aggregator crate.
 
-This rule ensures that other people’s code can’t break your code and vice versa. Without the rule, two crates could implement the same trait for the same type
+This rule ensures that other people's code can't break your code and vice versa. Without the rule, two crates could implement the same trait for the same type.
 
 </Color>
 
@@ -112,7 +112,7 @@ pub trait Summary {
 
 <Admonition type="note" title="note">
 
-Type that implement a trait can override default implementation method
+Types that implement a trait can override the default implementation.
 
 </Admonition>
 
@@ -133,7 +133,7 @@ pub trait Summary {
 
 It isn’t possible to call the default implementation from an overriding implementation of that same method.
 
-**<Color color="var(--writer-additional-note-font-color)"> //\\\ </Color>** if u overriding method `foo`, u can not use default implementation of method `foo` inside it.
+**<Color color="var(--writer-additional-note-font-color)"> //\\\ </Color>** If you override method `foo`, you cannot use the default implementation of method `foo` inside it.
 
 </Admonition>
 
@@ -155,7 +155,7 @@ impl Summary for NewsArticle {}
 
 ## Trait as Parameters
 
-Use `impl` keyword follow by a Trait
+Use the `impl` keyword followed by a trait.
 
 ```rust title= showLineNumbers
 pub fn notify(item: impl Summary) {

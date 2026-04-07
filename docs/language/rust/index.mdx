@@ -19,9 +19,9 @@ fn main() {
 }
 ```
 
-### Complie
+### Compile
 
-use `rustc` to complie Rust file
+Use `rustc` to compile a Rust file.
 
 ```bash title=
 rustc main.rs
@@ -31,7 +31,7 @@ It will output binary file `main`.
 
 ### Run
 
-Excuting the output binary file:
+Executing the output binary file:
 
 ```bash title=
 ./main
@@ -61,7 +61,7 @@ println!("foo bar");
 
 ### Content replacement
 
-Content replacement use `{}` for placeholder and argument(s) of `println` function will be value for placeholder
+Content replacement uses `{}` as placeholders, and the arguments passed to `println!` provide the values for those placeholders.
 
 ```rust title=
 println!("Hello {} from {}", "World" , "Rust");
@@ -70,7 +70,7 @@ println!("Hello {} from {}", "World" , "Rust");
 
 #### Specifying replacement position
 
-Integer and named argument can be used for placeholder.
+Integer and named arguments can be used as placeholders.
 
 ```rust title=
 println!("{0}, this is {1}. {1}, this is {0}", "Alice", "Bob");

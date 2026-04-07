@@ -120,16 +120,16 @@ fn main() {
 
     let new_user = User {
       email: String::from("new_useremail"),
-      ..user1 // under the hood this syntax it do
-      // username: user1.username which move user1.username
+    ..user1 // under the hood, this syntax does
+    // username: user1.username, which moves user1.username
     }
 
     // highlight-error-next-line
     let foo = user1.username; // use of moved value: `user1.username`
-    // user1.username can't be used here bc it s moved.
+    // user1.username can't be used here because it's moved.
 
 
-    println!("{}, {}", user1.email, new_user.email); // but user1.email are not moved
+    println!("{}, {}", user1.email, new_user.email); // but user1.email is not moved
     // so it can be used here.
 
 }
@@ -221,11 +221,11 @@ Methods <Color color="var(--secondary-font-color)"> must have a parameter named 
 
 <Admonition type="note" title="note">
 
-Method's first parameter `self` have type `&Self` indicate that it borrow instance of `Self`
+When the first method parameter is `self` with type `&Self`, it borrows an instance of `Self`.
 
 <Admonition type="info" title="info">
 
-It can also be `Self` which take ownership from struct instance.
+It can also be `Self`, which takes ownership of the struct instance.
 
 Having a method that takes ownership of the instance by using just self as the first parameter is rare
 
@@ -233,7 +233,7 @@ This technique is usually used when the method transforms self into something el
 
 </Admonition>
 
-You can also use mutable reference of `Self` type as well. eg `&mut Self`. But its `struct` instance need to be mutable.
+You can also use a mutable reference to `Self`, for example `&mut Self`, but the struct instance must be mutable.
 
 </Admonition>
 
@@ -273,7 +273,7 @@ rect1.area();
 
 ### Associated Functions
 
-Associated functions are function that define within `impl` block and don't have `self` as their first parameter (and thus are not methods) because they don't need an instance of the type to work with.
+Associated functions are functions defined within an `impl` block that do not have `self` as their first parameter (and thus are not methods), because they do not need an instance of the type to work with.
 
 It is often used for constructors that will return a new instance of the struct.
 
@@ -296,7 +296,7 @@ fn main(){
 
 <Admonition type="info" title="info">
 
-Rust dont have `new` keyword.
+Rust doesn't have a `new` keyword.
 
 </Admonition>
 
@@ -373,14 +373,14 @@ fn main() {
     let scale = 2;
     let rect1 = Rectangle {
         // highlight-start
-        // dbg! return ownership to width property
+        // dbg! returns ownership to the width property
         width: dbg!(30 * scale),
         // highlight-end
         height: 50,
     };
 
     // highlight-start
-    // we dont want dbg! to take ownership
+    // we don't want dbg! to take ownership
     // so we are passing reference of rect1
     dbg!(&rect1);
     // highlight-end

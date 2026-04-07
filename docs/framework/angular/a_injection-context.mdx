@@ -5,15 +5,15 @@ last_update:
 
 # Injection Context
 
-is a place that u have access to `inject` function
+An injection context is a place where you have access to the `inject` function.
 
 ## Valid injection context
 
 ### Class
 
-With component clas, service class or directive class (class that decorated with `@Component`, `@Injectable` or `@Directive`)
+Within a component, service, or directive class (a class decorated with `@Component`, `@Injectable`, or `@Directive`)
 
-Either inside `constructor` code block or class properties initialization statement
+This includes code inside the `constructor` block or class property initializers.
 
 ```typescript title= showLineNumbers
 class Foo {
@@ -27,15 +27,15 @@ class Foo {
 
 ### Factory function
 
-function pass to `useFactory` of a [`Provider`](https://angular.dev/api/core/Provider) or <Color color="var(--can-not-understand-font-color)">an [`@Injectable`](https://angular.dev/api/core/Injectable)</Color>
+A function passed to `useFactory` of a [`Provider`](https://angular.dev/api/core/Provider) or <Color color="var(--can-not-understand-font-color)">an [`@Injectable`](https://angular.dev/api/core/Injectable)</Color>
 
-or factory function for [`InjectionToken`](https://angular.dev/api/core/InjectionToken)
+It also includes a factory function for [`InjectionToken`](https://angular.dev/api/core/InjectionToken).
 
 ### API that run in an injection context
 
-Some API are run inside injection context so it is valid to use `inject`
+Some APIs run inside an injection context, so it is valid to use `inject`.
 
-Eg. router guards `CanActivateFn`
+For example, router guards such as `CanActivateFn`.
 
 ```typescript title= showLineNumbers
 const canActivateTeam: CanActivateFn = (route, state) => {
@@ -46,7 +46,7 @@ const canActivateTeam: CanActivateFn = (route, state) => {
 
 ## Manually run code block in injection context
 
-Wrap code block with [`runInInjectionContext`](https://angular.dev/api/core/runInInjectionContext)
+Wrap the code block with [`runInInjectionContext`](https://angular.dev/api/core/runInInjectionContext).
 
 ```typescript title= showLineNumbers
 @Injectable()
@@ -66,7 +66,7 @@ export class HeroService {
 
 <Admonition type="note" title="note">
 
-[`runInInjectionContext`](https://angular.dev/api/core/runInInjectionContext) require [`EnvironmentInjector`](https://angular.dev/api/core/EnvironmentInjector)
+[`runInInjectionContext`](https://angular.dev/api/core/runInInjectionContext) requires an [`EnvironmentInjector`](https://angular.dev/api/core/EnvironmentInjector).
 
 </Admonition>
 

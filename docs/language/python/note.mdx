@@ -8,11 +8,11 @@ last_update:
 ---
 
 
-<Color color="var(--can-not-understand-font-color)"> Some Python modules are also useful as scripts. These can be invoked using python -m module [arg] ..., which executes the source file for module as if you had spelled out its full name on the command line. </Color>
+<Color color="var(--can-not-understand-font-color)"> Some Python modules are also useful as scripts. You can invoke them with `python -m module [arg] ...`, which executes the module's source file as if you had spelled out its full name on the command line. </Color>
 
 ## Passing argument to the script
 
-script argument can be accessed by 
+Script arguments can be accessed with
 
 ```python title= showLineNumbers
 import sys
@@ -20,9 +20,9 @@ import sys
 sys.argv # list of string
 ```
 
-The length of the list is at least oneee
+The length of the list is at least one.
 
-when no script and no arguments are given, `sys.argv[0]` is an empty string
+When no script and no arguments are given, `sys.argv[0]` is an empty string.
 
 When the script name is given as `-` (meaning standard input), `sys.argv[0]` is set to `-`
 
@@ -37,7 +37,7 @@ _ + 1
 # 11
 ```
 
-<Color color="var(--can-not-understand-font-color)"> When -m module is used, sys.argv[0] is set to the full name of the located module. Options found after -c command or -m module are not consumed by the Python interpreter’s option processing but left in sys.argv for the command or module to handle. </Color>
+<Color color="var(--can-not-understand-font-color)"> When `-m module` is used, `sys.argv[0]` is set to the full name of the located module. Options found after `-c command` or `-m module` are not consumed by the Python interpreter's option processing; they are left in `sys.argv` for the command or module to handle. </Color>
 
 ---
 

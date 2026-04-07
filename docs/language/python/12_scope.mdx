@@ -8,9 +8,9 @@ tags:
 
 # Scopes
 
-When u references a variable, Python would look for it start from:
+When you reference a variable, Python looks for it in this order:
 1. current enclosing (function , class)
-2. next outer enclosing until global enclosing including imported module 
+2. the next outer enclosing scope until the global scope, including imported modules
 3. built-in module names
 
 ```python title=main.py showLineNumbers
@@ -29,7 +29,7 @@ def foo():
 
 ## Rewrite outer enclosing variable
 
-You can not rewrite outer enclosing variable without special keyword, `nonlocal` and `global`
+You cannot rewrite an outer enclosing variable without the special keywords `nonlocal` and `global`.
 
 ```python title=main.py showLineNumbers
 def foo():
@@ -55,14 +55,14 @@ foo: 1
 
 </details>
 
-The statement `x = 2` at line 5 would not change the value of `x` at line 2 
+The statement `x = 2` at line 5 would not change the value of `x` at line 2.
 
-Python interpret `x = 2` as defining `x` to current enclosing, so it has no effect for outer
+Python interprets `x = 2` as defining `x` in the current enclosing scope, so it has no effect on the outer scope.
 
 
 ### `nonlocal` keyword
 
-To rewrite outer enclosing variable use keyword `nonlocal`
+To rewrite an outer enclosing variable, use the `nonlocal` keyword.
 
 ```python title=main.py showLineNumbers
 def foo():
@@ -93,7 +93,7 @@ foo: 2
 ### `global` keyword
 
 
-To rewrite global variable use keyword `global`
+To rewrite a global variable, use the `global` keyword.
 
 ```python title=main.py showLineNumbers
 x = 0
@@ -125,7 +125,7 @@ at global scope 2
 
 <Admonition type="note" title="note"> 
 
-`nonlocal` can not be used to rewrite global scope variable
+`nonlocal` cannot be used to rewrite a global-scope variable.
 
 ```python title=main.py showLineNumbers
 x = 0

@@ -99,13 +99,13 @@ let s2 = s1;
 
 ![same unknown size value](../assets/same-unknown-size-value.svg)
 
-When `s1` and `s2` go out of scope, Rust need to free the memory that stored their content("hello"). But double free the same memory will be an error.
+When `s1` and `s2` go out of scope, Rust needs to free the memory that stores their content ("hello"). But freeing the same memory twice would be an error.
 
 After copying, `let s2 = s1;`, Rust invalidate `s1`.
 
 ![invalidate-variable-after-copy](../assets/invalidate-variable-after-copy.svg)
 
-`s1` can no longer be used and Rust dont need to deal with double free error.
+`s1` can no longer be used, and Rust does not need to deal with a double-free error.
 
 ```rust title= showLineNumbers
 let s1 = String::from("hello");
@@ -159,9 +159,9 @@ println!("x = {}, y = {}", x, y);
 
 `Drop` trait for (unknown-size) variable store in heap.
 
-If type implement `Copy` trait, variables will not moved but copied instead.
+If a type implements the `Copy` trait, variables are copied instead of moved.
 
-You <Color color="var(--secondary-font-color)"> can not </Color> annotate a type that has implemented `Drop` trait with `Copy` trait
+You <Color color="var(--secondary-font-color)"> cannot </Color> annotate a type that implements the `Drop` trait with the `Copy` trait.
 
 Example of types that implement `Copy`:
 

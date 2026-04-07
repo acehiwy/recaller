@@ -65,7 +65,7 @@ def add_item(item, items=None):
 
 ## Keyword argument
 
-instead of remember which argument should be in which position when function is called. u can use parameter name to pass an argument to that parameter regardless of the position
+Instead of remembering which argument should be in which position when a function is called, you can use the parameter name to pass an argument regardless of its position.
 
 ```python title= showLineNumbers
 def foo(arg_1, arg_2, arg_3, optional_arg="default value"):
@@ -88,7 +88,7 @@ foo(arg_2 = 2, 1, 3) # SyntaxError: positional argument follows keyword argument
 
 ### `**` syntax
 
-`**` allow caller to pass any number of keyword argument to the function
+`**` allows the caller to pass any number of keyword arguments to the function.
 
 ```python title= showLineNumbers
 def foo(arg_1, arg_2, **keywords):
@@ -103,7 +103,7 @@ foo("1", arg_2='2', other="other1", other2="other2")
 # keywords: {'other': 'other1', 'other2': 'other2'}
 ```
 
-`**` represent all <Color color="var(--primary-font-color)"> other keyword argument </Color> passed to the function.
+`**` represents all <Color color="var(--primary-font-color)"> other keyword arguments </Color> passed to the function.
 
 <Admonition type="info" title="info"> 
 
@@ -119,7 +119,7 @@ The order of the keyword arguments is guaranteed to match the order they were pr
 
 ## `*` syntax (Arbitrary Argument Lists)
 
-`*` allow caller to pass any number of argument to the function
+`*` allows the caller to pass any number of arguments to the function.
 
 ```python title= showLineNumbers
 def foo(pos1, pos2, *the_rest, kw="kw1"):

@@ -5,7 +5,7 @@ last_update:
 
 # Selector
 
-Every component can define its CSS selector using `selector` metadata
+Every component can define its CSS selector using the `selector` metadata.
 
 ```typescript title= showLineNumbers
 @Component({
@@ -18,13 +18,13 @@ Every component can define its CSS selector using `selector` metadata
 export class ProfilePhoto { }
 ```
 
-Angular find a matching selector in HTML template and replace its content with `selector`'s template
+Angular finds a matching selector in the HTML template and replaces its content with the selector's template.
 
 Example. with class selector
 
-- `Foo` component define `selector` with value `.some-css-class`
-- `App` component import `Foo` component and having `.some-css-class` define inside its template
-- `Foo` component content replace original content defined in `App` component
+- The `Foo` component defines its `selector` as `.some-css-class`
+- The `App` component imports `Foo` and has `.some-css-class` in its template
+- The `Foo` component content replaces the original content defined in `App`
 
 <Tabs>
 <TabItem value="foo" label="Foo component">
@@ -70,7 +70,7 @@ export class App {
 
 <Admonition type="note" title="note"> 
 
-CSS class still apply to HTML element even if it is matched
+The CSS class still applies to the HTML element even if it is matched.
 
 </Admonition>
 
@@ -80,9 +80,9 @@ CSS class still apply to HTML element even if it is matched
 
 ## Type selector
 
-Generate component if HTML tag name match the `selector`
+A component is created if an HTML tag name matches the `selector`.
 
-Form example above rendered HTML element would be:
+The rendered HTML element from the example above would be:
 
 ```html title= showLineNumbers
 <profile-photo>
@@ -90,7 +90,7 @@ Form example above rendered HTML element would be:
 </profile-photo>
 ```
 
-Another component can use a component by refering to this id and import component class to its `imports` metadata
+Another component can use it by referencing this selector and importing the component class into its `imports` metadata.
 
 ```typescript title= showLineNumbers
 import { Component } from "@angular/core";
@@ -118,15 +118,15 @@ export class App {}
 
 <Admonition type="note" title="note">
 
-Component are "standalone" by default. Meaning another component can add a component to its `imports`
+Components are "standalone" by default. This means another component can add them to its `imports`.
 
-metadata `standalone: false` can be specified to indicate that a component belong to a module and need to be imported via its `NgModule` instead
+The `standalone: false` metadata can be specified to indicate that a component belongs to a module and needs to be imported through its `NgModule` instead.
 
 </Admonition>
 
 <Admonition type="info" title="info">
 
-Angular throw error when component selector are duplicate
+Angular throws an error when component selectors are duplicated.
 
 </Admonition>
 

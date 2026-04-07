@@ -12,7 +12,7 @@ last_update:
 
 # Request Body
 
-Declaring request body type using `Pydantic`'s <Color color="var(--secondary-font-color)"> `BaseModel` </Color>
+Declare the request body type by using `Pydantic`'s <Color color="var(--secondary-font-color)"> `BaseModel` </Color>.
 
 ```python title= showLineNumbers
 from fastapi import FastAPI
@@ -32,13 +32,13 @@ app = FastAPI()
 
 @app.post("/items/")
 async def create_item(item: Item):
-    # item is Item instance
+    # item is an Item instance
     return item
 ```
 
 <Admonition type="note" title="note"> 
 
-Same as query and path param. Attribute with default value are not required when making reqeust
+Like query and path parameters, attributes with default values are not required when making a request.
 
 </Admonition>
 

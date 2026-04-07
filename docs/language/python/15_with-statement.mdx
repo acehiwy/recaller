@@ -8,11 +8,11 @@ tags:
 
 # `with` statement
 
-`with` statement allow u to automatically execute setup / teardown code block of a callable(class or function).
+The `with` statement allows you to automatically execute the setup and teardown code blocks of a callable (class or function).
 
-In order for a callable to have setup / teardown code block, it then need to support [context manager](https://docs.python.org/3/reference/datamodel.html#context-managers).
+For a callable to have setup and teardown code blocks, it needs to support the [context manager](https://docs.python.org/3/reference/datamodel.html#context-managers) protocol.
 
-In the other words, it need to have `__enter__` method (for setup code block) and `__exit__` method (for teardown code block)
+In other words, it needs to have an `__enter__` method (for setup code) and an `__exit__` method (for teardown code).
 
 ```python title= showLineNumbers
 with foo_callable() as return_value_from__enter__method:
@@ -20,20 +20,20 @@ with foo_callable() as return_value_from__enter__method:
 
 print('bar')
 ```
-Excueting `with` statement on context manager callable will allow Python to:
+Executing the `with` statement on a context manager callable allows Python to:
 
-1. execute a callable object, `foo_callable`
+1. execute the callable object `foo_callable`
 1. execute `__enter__` method
-    1. if `with` statement has target, `as return_value_from__enter__method`. it will be assigned with value return from `__enter__` method.
-1. execute code inside `with` enclosing
-1. execute `__end__` method at the end of `with` enclosing.
-    1. `__end__` method is executed whether or not exceptions occur inside the `with` enclosing 
-    1. if an exception occur and is not handled by `__end__` method, exception will be propagated out to upper enclosing.
+  1. if the `with` statement has a target, such as `as return_value_from__enter__method`, it is assigned the value returned from `__enter__`.
+1. execute the code inside the `with` block
+1. execute the `__exit__` method at the end of the `with` block.
+  1. the `__exit__` method is executed whether or not an exception occurs inside the `with` block
+  1. if an exception occurs and is not handled by `__exit__`, the exception is propagated to the outer scope.
 
 
 <Admonition type="tip" title="tip"> 
 
-You can pass multiple callable to `with`:
+You can pass multiple callables to `with`:
 ```python title= showLineNumbers
 with (
     A() as a,
@@ -89,7 +89,7 @@ More on [`with` statement](https://docs.python.org/3/reference/compound_stmts.ht
 
 ## Class-based context manager
 
-You can create a class that support context manager.
+You can create a class that supports the context manager protocol.
 
 ```python title= showLineNumbers
 class Foo:
@@ -124,19 +124,19 @@ with Foo('bar') as hello:
 
 <Admonition type="note" title="note"> 
 
-An exception raised inside `with` enclosing <Color color="var(--secondary-font-color)"> end its enclosing </Color>. [`with` end when exception occur]
+An exception raised inside a `with` block <Color color="var(--secondary-font-color)"> ends that block </Color>. [`with` ends when an exception occurs]
 
-The exception then it will be passed to `__exit__` method.
+The exception is then passed to the `__exit__` method.
 
 </Admonition>
 
 <Admonition type="note" title="note"> 
 
-If `__exit__` method return `True`, the expression is suppressed. Otherwise an exception will be propagated to upper enclosing.
+If the `__exit__` method returns `True`, the exception is suppressed. Otherwise, the exception is propagated to the outer scope.
 
 <Admonition type="tip" title="tip"> 
 
-This is useful when u want a `callable` to automatically handle a certain exception
+This is useful when you want a `callable` to automatically handle a certain exception.
 
 ```python title= showLineNumbers
 def __exit__(self, exception_type, exception_value, exception_traceback):
@@ -197,24 +197,24 @@ At the point where the generator yields, the code inside `with` statement is exe
 
 <Admonition type="note" title="note"> 
 
-An exception raised inside `with` enclosing <Color color="var(--secondary-font-color)"> end its enclosing </Color>. [`with` end when exception occur]
+An exception raised inside a `with` block <Color color="var(--secondary-font-color)"> ends that block </Color>. [`with` ends when an exception occurs]
 
-The exception then reraised inside the generator at the point where `yield` occur
+The exception is then re-raised inside the generator at the point where `yield` occurs.
 
-If generator then does not reraised exception it is passed to, the exception is suppressed.
+If the generator does not re-raise the exception passed to it, the exception is suppressed.
 
 </Admonition>
 
 <Admonition type="note" title="note"> 
 
-If `with` end with no exception, the code after `yield` is resume, [including `finally` statement, of course]
+If `with` ends without an exception, the code after `yield` resumes, [including the `finally` statement, of course]
 
 </Admonition>
 
 
 ## Async context manager
 
-is a context manager that its setup / teardown function is an async function
+An async context manager is a context manager whose setup and teardown functions are async functions.
 
 It use with `async with` statement.
 

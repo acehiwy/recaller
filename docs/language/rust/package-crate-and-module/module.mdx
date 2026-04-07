@@ -2,11 +2,11 @@
 
 Modules let us organize code within a crate for readability and easy reuse.
 
-Modules also allow us to control the privacy <Color color="var(--secondary-font-color)"> of items ???</Color>
+Modules also allow us to control the privacy <Color color="var(--secondary-font-color)"> of items </Color>.
 
 ## Cheatsheet
 
-- **Start from the crate root:** When compiling a crate, the compiler <Color color="var(--secondary-font-color)"> first looks in the crate root file ??? </Color> (usually src/lib.rs for a library crate or src/main.rs for a binary crate) for code to compile.
+- **Start from the crate root:** When compiling a crate, the compiler <Color color="var(--secondary-font-color)"> first looks in the crate root file </Color> (usually src/lib.rs for a library crate or src/main.rs for a binary crate) for code to compile.
 - **Declaring modules:** In the crate root file if you declare `mod garden`. The compiler will look for the module’s code in these places:
   - Inline, within curly brackets that replace the semicolon following mod garden
   - In the file `src/garden.rs`
@@ -39,7 +39,7 @@ mod front_of_house {
 }
 ```
 
-Above module definetion will reflect as this module tree
+The module definition above produces this module tree.
 
 ```text title= showLineNumbers
 crate
@@ -55,7 +55,7 @@ crate
 
 <Admonition type="info" title="info">
 
-Siblings module mean they’re defined in the same module.`hosting` and `serving` are siblings defined within `front_of_house`.
+Sibling modules are modules defined in the same parent module. `hosting` and `serving` are siblings defined within `front_of_house`.
 
 </Admonition>
 
@@ -67,7 +67,7 @@ A path can take two forms:
   - for code from an external crate, the absolute path <Color color="var(--secondary-font-color)"> begins with the crate name </Color>
     - eg. `<library name>::<library module>::<library funtion>`
   - for code from the current crate, it starts with the literal `crate`.
-    - eg. `create::<internal module>::<internal function>`
+    - eg. `crate::<internal module>::<internal function>`
 - A relative path starts from the current module and uses
   - `self`
   - `super`
@@ -101,19 +101,19 @@ Use `pub` keyword to mark items / module public which can be accessed by their o
 
 <Admonition type="note" title="note">
 
-If the module itself is not marked public, the item it contained are still private even the item is marked public.
+If the module itself is not marked public, the items it contains are still private even if the item itself is marked public.
 
 </Admonition>
 
 <Admonition type="note" title="note">
 
-Siblings modules / item can access each other without themselves marked public
+Sibling modules and items can access each other without being marked public themselves.
 
 </Admonition>
 
 ## Relative path using `super`
 
-`super` refer to an item that we know is in the parent module.
+`super` refers to an item that we know is in the parent module.
 
 It is like `..` in filesystem.
 
@@ -137,9 +137,9 @@ Use `pub` on `struct` and `enums` to make them public.
 
 ### `pub` `struct`
 
-`pub` on `struct` definetion only make `struct` public not its fields.
+Using `pub` on a `struct` definition only makes the `struct` public, not its fields.
 
-`pub` on `struct` field need to be explitly used
+`pub` must be used explicitly on each `struct` field.
 
 ```rust title= showLineNumbers
 mod back_of_house {
@@ -180,7 +180,7 @@ pub fn eat_at_restaurant() {
 
 <Admonition type="note" title="note">
 
-Because `struct` `Breakfast` has some private field.
+Because the `Breakfast` struct has private fields,
 
 The struct needs to provide a public associated function (`summer`) that constructs an instance of `Breakfast`
 
@@ -222,7 +222,7 @@ pub fn eat_at_restaurant() {
 
 We can create a shortcut to a path with the `use` keyword
 
-`use` make the path valid <Color color="var(--primary-font-color)"> in the scope </Color> `use` is used.
+`use` makes the path valid <Color color="var(--primary-font-color)"> in the scope </Color> where `use` is declared.
 
 ```rust title=src/lib.rs showLineNumbers
 mod front_of_house {
@@ -254,7 +254,7 @@ Specifying the parent module when calling the function <Color color="var(--secon
 
 ## Providing new name
 
-Rust dont allow bringing multiple type with the same name.
+Rust doesn't allow you to bring multiple types with the same name into scope.
 
 ```rust title= showLineNumbers
 use std::fmt::Result;
@@ -272,7 +272,7 @@ fn function2() -> IoResult<()> {
 
 ## Re-exporting Names with `pub use`
 
-The shortcut brought to the scope are private by default. Meaning outer ancestor / external code (lib user in this case) can not access the shortcut
+The shortcut brought into scope is private by default. This means outer ancestors or external code (the library user in this case) cannot access the shortcut.
 
 Marking a shortcut with `pub` to allow outer ancestor to also use the shortcut.
 

@@ -204,15 +204,15 @@ app = FastAPI(dependencies=[Depends(verify_token), Depends(verify_key)])
 
 ## Context manager as dependencies
 
-FastAPI support dependency function that have setup / teardown step
+FastAPI supports dependency functions that have setup and teardown steps.
 
-FastAPI accept any function that valid to use with [`contextmanager`](https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager) or [`asynccontextmanager`](https://docs.python.org/3/library/contextlib.html#contextlib.asynccontextmanager) decorator 
+FastAPI accepts any function that is valid for use with the [`contextmanager`](https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager) or [`asynccontextmanager`](https://docs.python.org/3/library/contextlib.html#contextlib.asynccontextmanager) decorator.
 
-value yielded from dependency function will be passed to path operation
+The value yielded from the dependency function is passed to the path operation.
 
 <Admonition type="note" title="note"> 
 
-The dependency function dont need to be decorated with context manager decorator
+The dependency function does not need to be decorated with a context manager decorator.
 
 </Admonition>
 
