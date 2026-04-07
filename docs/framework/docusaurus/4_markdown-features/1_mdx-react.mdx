@@ -9,12 +9,16 @@ last_update:
 
 # MDX and React
 
-Docusaurus has built-in support for <Color color="var(--primary-font-color)"> MDX v1 </Color>
+Docusaurus has built-in support for <Color color="var(--primary-font-color)"> MDX </Color>
 , which allows you to <Color color="var(--secondary-font-color)"> write JSX </Color> <Color color="var(--primary-font-color)"> within </Color> your <Color color="var(--secondary-font-color)"> Markdown files </Color> and <Color color="var(--primary-font-color)"> render them as React components </Color>.
 
-:::tip later
+Docusaurus v3 uses <Color color="var(--primary-font-color)"> MDX v3 </Color>, so the parser is stricter than the old MDX v1 pipeline.
+
+:::tip[Debugging MDX]
 
 Check out the [MDX docs](https://mdxjs.com/) to see what other fancy stuff you can do with MDX.
+
+Use the [MDX playground](https://mdxjs.com/playground/) to validate strict MDX v3 syntax when something doesn't compile.
 
 :::
 
@@ -54,7 +58,7 @@ I can write **Markdown** alongside my _JSX_!
 
 </details>
 
-:::caution MDX is JSX
+:::warning[MDX is JSX]
 
 Since all doc files are parsed using MDX, anything that looks like HTML is actually JSX.
 
@@ -150,7 +154,7 @@ export default function LandingPage() {
 }
 ```
 
-:::caution
+:::warning
 
 Currently, the table of contents does not contain the imported Markdown headings.
 
@@ -189,7 +193,7 @@ import MyComponentSource from "!!raw-loader!./myComponent";
 <CodeBlock language="jsx">{MyComponentSource}</CodeBlock>;
 ```
 
-:::tip later
+:::tip[See also]
 
 See [using code blocks in JSX](code-blocks) for more details of the `<CodeBlock>` component.
 

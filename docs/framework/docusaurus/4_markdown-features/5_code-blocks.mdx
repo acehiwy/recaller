@@ -25,7 +25,7 @@ function HelloCodeTitle(props) {
 
 Code blocks are text blocks wrapped around by strings of 3 backticks.
 
-:::tip later
+:::tip[Reference]
 
 You may check out [this reference](https://github.com/mdx-js/specification) for the specifications of MDX.
 
@@ -58,10 +58,12 @@ You can change this to another theme by passing theme field in prism as themeCon
 For example, if you prefer to use the `dracula` highlighting theme:
 
 ```javascript title=docusaurus.config.js showLineNumbers
-module.exports = {
+import { themes as prismThemes } from "prism-react-renderer";
+
+export default {
   themeConfig: {
     prism: {
-      theme: require("prism-react-renderer/themes/dracula"),
+      theme: prismThemes.dracula,
     },
   },
 };
@@ -69,7 +71,7 @@ module.exports = {
 
 Because a Prism theme is just a JS object, you can also write your own theme if you are not satisfied with the default. Docusaurus enhances the github and vsDark themes to provide richer highlight
 
-You can check our implementations for the [light](https://github.com/facebook/docusaurus/blob/main/website/src/utils/prismLight.mjs) and [dark](https://github.com/facebook/docusaurus/blob/main/website/src/utils/prismDark.mjs) code block themes.
+You can check our implementations for the [light](https://github.com/facebook/docusaurus/blob/main/website/src/utils/prismLight.ts) and [dark](https://github.com/facebook/docusaurus/blob/main/website/src/utils/prismDark.ts) code block themes.
 
 ---
 
@@ -95,7 +97,7 @@ module.exports = {
 
 After adding `additionalLanguages`, restart Docusaurus.
 
-:::caution
+:::note
 
 Each additional language has to be a valid Prism component name.
 
@@ -283,7 +285,7 @@ You can disable the default line highlighting comments with `magicComments: []`.
 
 :::
 
-:::tip later
+:::tip[Swizzling]
 
 Using CSS to target the class can already do a lot, but you can unlock the full potential of this feature through swizzling.
 
