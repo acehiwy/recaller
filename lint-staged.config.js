@@ -1,3 +1,3 @@
 module.exports = {
-  '*.{mdx,md}': ['node update-last-updated.mjs'],
+  '*.{md,mdx}': ['yarn update-last-updated'],
 };
