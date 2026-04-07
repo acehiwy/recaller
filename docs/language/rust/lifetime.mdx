@@ -64,7 +64,7 @@ fn main() {
 
 ---
 
-Because we can not return a reference of a value created within function (dangling reference), typically a lifetime of returned type would be the same as a lifetime of the function parameters.
+Because we cannot return a reference to a value created within a function (a dangling reference), the lifetime of a returned reference is typically tied to the function parameters.
 
 ```rust title= showLineNumbers
 fn longest<'a>(x: &str, y: &str) -> &'a str {
@@ -76,7 +76,7 @@ fn longest<'a>(x: &str, y: &str) -> &'a str {
 
 ## Lifetime in Struct
 
-If we define `struct` that hold reference, we need to add lifetime on every reference
+If we define a `struct` that holds references, we need to add a lifetime to every reference.
 
 ```rust title= showLineNumbers
 struct ImportantExcerpt<'a> {
@@ -92,14 +92,14 @@ fn main() {
 }
 ```
 
-This annotation means an instance of `ImportantExcerpt` can’t outlive the reference it holds in its `part` field. <Color color="var(--writer-additional-note-font-color)"> //\\\ </Color> fields lifetime
-need to be bigger(live longer) than instance lifetime.
+This annotation means an instance of `ImportantExcerpt` can't outlive the reference it holds in its `part` field. <Color color="var(--writer-additional-note-font-color)"> //\\\ </Color> The field lifetime
+needs to be longer than the instance lifetime.
 
 These rules apply to `fn` definitions as well as `impl` blocks.
 
 ## Lifetime Elision
 
-In some cases, Rust can infer lifetime without you explicitly specific them.
+In some cases, Rust can infer lifetimes without you explicitly specifying them.
 
 They’re a set of particular cases that the compiler will consider, if your code fits these cases, you don’t need to write the lifetimes explicitly.
 
@@ -201,13 +201,13 @@ where
 
 ## Miscellaneous
 
-Rust have no null value and defining variable without initial value is valid
+Rust has no null value, and defining a variable without an initial value is valid.
 
 ```rust title= showLineNumbers
 let foo: u8;
 ```
 
-`foo` here dont have value but if you try to use `foo` while it have no value, you will get compile-time error
+`foo` here does not have a value, but if you try to use `foo` before assigning one, you will get a compile-time error.
 
 ```rust title= showLineNumbers
 let foo: u8;
@@ -217,7 +217,7 @@ println!("{foo}"); // used binding `foo` isn't initialized
 
 ---
 
-If <Color color="var(--secondary-font-color)"> immutable </Color> variable have no initial value, only the first assignment is valid
+If an <Color color="var(--secondary-font-color)"> immutable </Color> variable has no initial value, only the first assignment is valid.
 
 ```rust title= showLineNumbers
 let foo: u8;

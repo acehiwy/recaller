@@ -21,9 +21,9 @@ When you run many workers the tasks will be shared between them.
 
 ## Setting up
 
-We will use `setTimeout` for time-consuming task.
+We will use `setTimeout` to simulate a time-consuming task.
 
-We'll take the number of dots in the string representing onr second of work. For example, a fake task described by `Hello...` will take three seconds.
+We'll use the number of dots in the string to represent one second of work. For example, a fake task described by `Hello...` will take three seconds.
 
 ### Producer
 
@@ -63,7 +63,7 @@ amqp.connect("amqp://localhost", function (error0, connection) {
 
 ### Consumer
 
-We will create `worker.js` file. it needs to fake a second of work for every dot in the message body.
+We will create a `worker.js` file. It will simulate one second of work for every dot in the message body.
 
 ```javascript title=worker.js showLineNumbers
 var amqp = require("amqplib/callback_api");
@@ -118,7 +118,7 @@ node new_task.js
 
 One of the advantages of using a Task Queue is the ability to easily parallelise work.
 
-If we are building up a backlog of work, we can just add more workers and that way, scale easily.
+If we build up a backlog of work, we can simply add more workers and scale more easily.
 
 First, let's try to run <Color color="var(--secondary-font-color)"> two </Color> `worker.js` scripts at the same time.
 
@@ -134,7 +134,7 @@ node worker.js
 node new_task.js
 ```
 
-In the third shell one we'll publish new tasks.
+In the third shell, we'll publish new tasks.
 
 ```bash title=shell_2
 node new_task.js First message.

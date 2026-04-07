@@ -50,7 +50,7 @@ Empty tuple syntax: `empty = ()`
 </Admonition>
 
 
-## Tuple compreshension
+## Tuple comprehension
 
 ```python title= showLineNumbers
 my_tuple = tuple( x + 2 for x in [1,2,3,4] )
@@ -59,7 +59,7 @@ my_tuple = tuple( x + 2 for x in [1,2,3,4] )
 
 ## `namedtuple`
 
-It is like tuple additionally each item can be access by name
+It is like a tuple, but each item can also be accessed by name.
 
 ```python title= showLineNumbers
 from collections import namedtuple
@@ -82,11 +82,11 @@ print(my_tuple_instance[0] , my_tuple_instance[1])
 - a string with white spaces. `"key1 key2"`
 - a string with commas. `"key1, key2"`
 
-each field name need to be a valid string that can used to crate attribute name
+Each field name needs to be a valid string that can be used to create an attribute name.
 
 <Admonition type="note" title="note"> 
 
-Field name can not start with underscore, `_`. 
+Field names cannot start with an underscore, `_`.
 
 </Admonition>
 

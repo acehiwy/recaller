@@ -179,12 +179,12 @@ else:
 
 <Admonition type="tip" title="tip"> 
 
-else clause purpose is to avoid mixing up error in `try`
+The purpose of the `else` clause is to avoid mixing up errors in `try`.
 
 ```python title= showLineNumbers
 try:
   fucntion_1_might_raise_value_error()
-  function_2_might_raise_another_value_error() # <-- dont want this to be catched 
+  function_2_might_raise_another_value_error() # <-- don't want this to be caught
 except ValueError:
   pass
 ```

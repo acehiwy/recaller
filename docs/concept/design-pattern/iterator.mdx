@@ -8,42 +8,42 @@ tags:
 
 ### Words we will use
 
-collection: is a container for a group of objects. eg, list, stack , tree, graph, etc
+A collection is a container for a group of objects, such as a list, stack, tree, or graph.
 
 ## Description
 
-Iterator pattern let you traverse through <Color color="var(--primary-font-color)">a</Color> collection without knowing its traverse implementation <Color color="var(--writer-additional-note-font-color)">[[ internal method for getting a single item and algorithm for tracking which item has already been represented ]]</Color>
+The iterator pattern lets you traverse <Color color="var(--primary-font-color)">a</Color> collection without knowing its traversal implementation <Color color="var(--writer-additional-note-font-color)">[[ internal method for getting a single item and the algorithm for tracking which items have already been visited ]]</Color>
 
 ## Problem without the pattern
 
-When client want to traverse through a collection 
+When a client wants to traverse a collection,
 
-They need to
+the client needs to
 1. know which method they can use to get a single item from the collection 
-1. keep track of which item they have seen
+1. keep track of which items they have seen
 
-But each collection provide different method for accessing its item
+But each collection provides a different method for accessing its items.
 
-Eg. an array might provide `array.getItem`. On the other hand a graph provide `graph.getNode`
+For example, an array might provide `array.getItem`, while a graph might provide `graph.getNode`.
 
-Different method of accessing item on different collection add a burden of client to know each collection properties
+Different access methods across collections force the client to know each collection's specific API.
 
-Also it add more complexity for client if they need to write code for tracking seen items which might lead to code duplication each time they traverse
+It also adds more complexity when the client has to track visited items, which can lead to duplicated code each time they traverse a collection.
 
 ## With pattern
 
-Iterator pattern introduce `iterator` object which contain traverse algorithm and methods require to traverse
+The iterator pattern introduces an `iterator` object that contains the traversal algorithm and the methods required for iteration.
 ```typescript title= showLineNumbers
 interface Iterator<T> {
   getNextItem(): T;
   hasMoreItem(): boolean;
 }
 ```
-`getNextItem()` return an item from collection 
+`getNextItem()` returns an item from the collection.
 
-`hasMoreItem()` check whether they have traversed through all items
+`hasMoreItem()` checks whether all items have been traversed.
 
-The collection then need to return `iterator` object to client by implementing additional method like `collection.getIterator`
+The collection then needs to return an `iterator` object to the client by implementing an additional method such as `collection.getIterator`.
 
 <details>
 
@@ -88,7 +88,7 @@ class EvenItemIterator implements Iterator<number> {
 </details>
 
 
-Client then use `iterator` object to traverse
+The client then uses the `iterator` object to iterate.
 
 ```typescript title= showLineNumbers
 const iterator: Iterator = collection.getIterator()
@@ -99,9 +99,9 @@ while (iterator.hasMoreItem()){
 }
 ```
 
-With `iterator` interface, client does not need to know which method each collection used for accessing its item. They can just use `iterator.getNextItem()`
+With the `iterator` interface, the client does not need to know which method each collection uses to access its items. It can just use `iterator.getNextItem()`.
 
-The traverse algorithm and tracking seen item is push to be the collection resposibility. Client can just call `iterator.hasMoreItem()`
+The traversal algorithm and visited-item tracking are pushed into the collection's responsibility. The client can simply call `iterator.hasMoreItem()`.
 
 
 
@@ -109,18 +109,18 @@ The traverse algorithm and tracking seen item is push to be the collection respo
 
 Client still need to know which method of the collection is used to return `iterator`
 
-Some design has all collection implement same interface for returning `iterator`. Eg.
+Some designs have all collections implement the same interface for returning an `iterator`. For example:
 ```typescript title= showLineNumbers
 interface IterableCollection<T>{
   getIterator(): Iterator<T>
 }
 ```
 
-So that regardless of collection client is dealing with, they can just call `collection.getIterator()`
+Then, regardless of which collection the client is dealing with, it can just call `collection.getIterator()`.
 
-But returning just one `iterator` might not be enough for a certain collection
+But returning just one `iterator` might not be enough for some collections.
 
-Eg. a tree collection need depth-first and breadth-first traverse algorithm. It need to have more than one `getIterator` method
+For example, a tree collection may need both depth-first and breadth-first traversal algorithms, so it needs more than one iterator method.
 ```typescript title= showLineNumbers
 interface Tree{
   // ...
@@ -129,11 +129,11 @@ interface Tree{
 }
 ```
 
-In this case, Client still need to know method of a `Tree`
+In this case, the client still needs to know the methods available on a `Tree`.
 
 <Admonition type="info" title="info"> 
 
-Different kind of `tree` can implement the same `Tree` interface
+Different kinds of `tree` can implement the same `Tree` interface.
 
 </Admonition>
 
@@ -147,13 +147,13 @@ See [diagrams](https://refactoring.guru/design-patterns/iterator#structure) for 
 
 <Admonition type="info" title="info"> 
 
-One iterator = one traverse behavior 
+One iterator corresponds to one traversal behavior.
 
 </Admonition>
 
 <Admonition type="info" title="info"> 
 
-Several iterator can traverse the same collection at the same time
+Several iterators can traverse the same collection at the same time.
 
 </Admonition>
 
@@ -161,10 +161,10 @@ Several iterator can traverse the same collection at the same time
 ## When to use
 
 - create a custom data structure
-- adding new / reuse traverse behavior 
-- dealing with stream of data with memory constraint
-- lazily compute items in a collection. 
-    - eg. computing all item at once consume resources. With `iterator.getNextItem()` you compute one item at a time
+- adding or reusing traversal behavior
+- dealing with streams of data under memory constraints
+- lazily computing items in a collection
+- eg. computing all items at once consumes resources. With `iterator.getNextItem()`, you compute one item at a time
 - delay an iteration and continue when needed
 
 ## <Color color="var(--not-nesary-for-now-future-font-color)">Example implementation</Color>

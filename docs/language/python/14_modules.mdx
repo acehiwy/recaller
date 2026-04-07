@@ -183,7 +183,7 @@ Lets say module `foo` is imported, the interpreter start search from:
 
 <Admonition type="note" title="note"> 
 
-if the input script is symlinked. The intrepreter will add the original file location to the search path, <Color color="var(--secondary-font-color)"> not symliked file directory </Color>.
+If the input script is symlinked, the interpreter adds the original file location to the search path, <Color color="var(--secondary-font-color)"> not the symlinked file directory </Color>.
 
 </Admonition>
 
@@ -207,7 +207,7 @@ if the input script is symlinked. The intrepreter will add the original file loc
 
 ## `dir` function
 
-give u a list of definitions name (variables, modules, functions) which a certain module contain.
+Gives you a list of definition names (variables, modules, functions) contained in a module.
 
 
 <Tabs>
@@ -254,7 +254,7 @@ variable_from_foo = "foo"
 </TabItem>
 </Tabs>
 
-calling `dir` without any argument give u a list of a current module.
+Calling `dir` without any arguments gives you a list of names in the current module.
 
 eg. `dir()` from `main.py` file above will give:
 ```bash title= showLineNumbers
@@ -297,7 +297,7 @@ sound/                          Top-level package
               wavwrite.py
 ```
 
-User then can use these module and it sub-module
+Users can then use this module and its submodules.
 
 ```python title= showLineNumbers
 import sound
@@ -308,7 +308,7 @@ from sound.formats.wavread import some_definition_inside_wavread
 
 <Admonition type="info" title="info"> 
 
-`__init__.py` make its directory a module using definitions inside `__init__.py` file 
+`__init__.py` makes its directory a module by using the definitions inside the `__init__.py` file.
 
 eg. the `import sound` statement would import definitions from a file `sound.py` or  `__init__.py` which live inside `sound` directory
 

@@ -131,7 +131,7 @@ The reference to the vector that the for loop holds <Color color="var(--secondar
 
 <Admonition type="info" title="info">
 
-Iterate vector without using reference is valid. But all items can not no longer be used because they are moved.
+Iterating over a vector without using references is valid, but the items can no longer be used afterward because they are moved.
 
 ```rust title= showLineNumbers
 let v = vec![100, 32, 57];

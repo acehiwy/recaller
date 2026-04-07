@@ -8,7 +8,7 @@ last_update:
 
 # Signals
 
-is a value that notifies its consumer when a value changes
+A signal is a value that notifies its consumers when it changes.
 
 ## Create signal
 
@@ -34,13 +34,13 @@ firstName.update((name) => name.toUpperCase());
 
 <Admonition type="info" title="info">
 
-signal has [`WritableSignal`](https://angular.dev/api/core/WritableSignal) type
+A writable signal has the [`WritableSignal`](https://angular.dev/api/core/WritableSignal) type.
 
 </Admonition>
 
 ## Computed signal
 
-[`computed`](https://angular.dev/api/core/computed) is a <Color color="var(--secondary-font-color)">read-only</Color> `signal` that derive value from other `signal`
+[`computed`](https://angular.dev/api/core/computed) is a <Color color="var(--secondary-font-color)">read-only</Color> `signal` that derives its value from other signals.
 
 ```typescript title= showLineNumbers
 import { signal, computed } from "@angular/core";
@@ -49,21 +49,21 @@ const firstName = signal("Morgan");
 const firstNameCapitalized = computed(() => firstName().toUpperCase());
 ```
 
-The callback function passed to `computed` is executed whenever the parent<Color color="var(--secondary-font-color)">s</Color> signal change
+The callback function passed to `computed` runs whenever a parent signal changes.
 
 <Admonition type="note" title="note">
 
 `computed` signals are lazily evaluated and cached.
 
-Callback passed to `computed` does not run until the first time `computed` signal is read. eg. `firstNameCapitalized()`
+The callback passed to `computed` does not run until the computed signal is read for the first time, for example `firstNameCapitalized()`.
 
-Angular invalidate cache when its parent<Color color="var(--secondary-font-color)">s</Color> value change
+Angular invalidates the cache when a parent signal value changes.
 
 </Admonition>
 
 <Admonition type="info" title="info">
 
-`computed` signal has no `update`, `set` method
+A `computed` signal has no `update` or `set` method.
 
 </Admonition>
 
@@ -75,21 +75,21 @@ Angular invalidate cache when its parent<Color color="var(--secondary-font-color
 
 ## Effect
 
-is a code block that executes whenever its parent(s) signal emits changes
+An effect is a code block that executes whenever one of its parent signals changes.
 
 ```typescript title= showLineNumbers
 import { effect } from "@angular/core";
 
 effect(() => {
   console.log(
-    `log on initialization and futher when count signal change ${count()}`
+    `log on initialization and later when the count signal changes ${count()}`
   );
 });
 ```
 
-In order for `effect` to know its parent `signal`, Angular execute `effect` code block at its definition. not lazily
+For `effect` to know its parent signals, Angular executes the effect block at definition time; it is not lazy.
 
-Effect can only be create inside injection context
+Effects can only be created inside an injection context.
 
 <details>
 
@@ -116,7 +116,7 @@ export class MyComponent {
 
 </details>
 
-To create `effect` outside injection context, pass `injector` to it
+To create an `effect` outside an injection context, pass an `injector` to it.
 
 ```typescript title= showLineNumbers
 @Component({...})
@@ -147,13 +147,13 @@ So, an effect that lives inside a component, directive, or service is destroyed 
 
 <Admonition type="note" title="note">
 
-`effect` is also destroyed when it is about to be rerun
+An `effect` is also destroyed before it is rerun.
 
 </Admonition>
 
 ### Manually destroying effect
 
-use [`effect.destroy()`](https://angular.dev/api/core/EffectRef#destroy)
+Use [`effect.destroy()`](https://angular.dev/api/core/EffectRef#destroy).
 
 ```typescript title= showLineNumbers
 const effectRef = effect(() => {});
@@ -162,7 +162,7 @@ effectRef.destroy();
 
 ### Disable automatically destroyed
 
-`effect` can be config to lasts until it is manually destroyed using `manualCleanup` option
+An `effect` can be configured to last until it is manually destroyed by using the `manualCleanup` option.
 
 ```typescript title= showLineNumbers
 effect(() => {}, { manualCleanup: true });
@@ -170,7 +170,7 @@ effect(() => {}, { manualCleanup: true });
 
 ### Effect cleanup function
 
-U can execute function when the `effect` is destroyed
+You can execute a function when the `effect` is destroyed.
 
 ```typescript title= showLineNumbers
 // highlight-next-line
@@ -187,13 +187,13 @@ effect((onCleanup) => {
 
 ## Dependencies tracking
 
-Angular use term "dependencies" for parent signal
+Angular uses the term "dependencies" for parent signals.
 
 <details>
 
 <summary> example </summary>
 
-`bar` is a `computed` or `effect` that read `foo` signal, therefore `foo` is a dependencies of `bar`
+`bar` is a `computed` value or `effect` that reads the `foo` signal, so `foo` is a dependency of `bar`.
 
 ```typescript title= showLineNumbers
 const bar = effect(() => foo());
@@ -203,11 +203,11 @@ const bar = computed(() => foo());
 
 </details>
 
-Dependencies are signal(s) which being read during child code block execution regardless of signal(s) location
+Dependencies are the signals that are read during child code block execution, regardless of where those signals are defined.
 
-Dependencies are tracked in order to determine whether to re-execute child code block.
+Dependencies are tracked to determine whether the child code block should be re-executed.
 
-If dependencies change, child code block is then re-executed
+If dependencies change, the child code block is re-executed.
 
 ### Example: reading outside of child code block
 
@@ -225,7 +225,7 @@ function external() {
 }
 ```
 
-`bar` is still being tracked even it is not <Color color="var(--secondary-font-color)">directly read</Color> inside child code block
+`bar` is still being tracked even though it is not <Color color="var(--secondary-font-color)">directly read</Color> inside the child code block.
 
 ### Example: conditional reading
 
@@ -242,23 +242,23 @@ const baz = computed(() => {
 });
 ```
 
-On first evaluation of `baz`. `isFoo` is read as `false` so `bar` signal are not read
+On the first evaluation of `baz`, `isFoo` is `false`, so the `bar` signal is not read.
 
-Therefore only `isFoo` changes trigger `baz` code block execution, not `bar`
+Therefore, only changes to `isFoo` trigger the `baz` code block, not changes to `bar`.
 
-Only when `isFoo` value, later, change to `true` causing `bar` to be read then both `isFoo` and `bar` trigger `baz` code block execution
+Only after `isFoo` changes to `true`, causing `bar` to be read, do both `isFoo` and `bar` trigger the `baz` code block.
 
 <Admonition type="note" title="note">
 
-Dependencies changes do not always cause child value to change
+Dependency changes do not always cause the child value to change.
 
-It does always cause child code block re-execution but new value after re-execution could be the same as previous one
+They do, however, cause the child code block to re-execute, even if the new value ends up being the same as the previous one.
 
 </Admonition>
 
 ### Reading without tracking dependencies
 
-U can prevent signal from being tracked using [`untracked`](https://angular.dev/api/core/untracked)
+You can prevent a signal from being tracked by using [`untracked`](https://angular.dev/api/core/untracked).
 
 ```typescript title= showLineNumbers
 effect(() => {
@@ -283,13 +283,13 @@ function external() {
 }
 ```
 
-This make `effect` execute only when `fooSignal` emit change.
+This makes the `effect` execute only when `fooSignal` emits a change.
 
-While not using `untracked` would trigger `effect` execution whenever `fooSignal` <Color color="var(--secondary-font-color)">or</Color> `barSignal` emit changes
+Without `untracked`, the `effect` would execute whenever `fooSignal` <Color color="var(--secondary-font-color)">or</Color> `barSignal` emits a change.
 
 ## Linked signal
 
-[`linkedSignal`](https://angular.dev/api/core/linkedSignal) is like `computed` but a writable signal
+[`linkedSignal`](https://angular.dev/api/core/linkedSignal) is like `computed`, but it is writable.
 
 ```typescript title= showLineNumbers
 import { linkedSignal, signal } from "@angular/core";
@@ -311,9 +311,9 @@ myLinkedSignal();
 // new foo computed
 ```
 
-It recomputed its value when dependencies emit changes
+It recomputes its value when dependencies emit changes.
 
-It also can update itself a value
+It can also update its own value.
 
 <Admonition type="note" title="note">
 
@@ -323,7 +323,7 @@ It also can update itself a value
 
 ### Accessing previous value
 
-`linkedSignal` allow you to access its previous value and its dependencies's previous value
+`linkedSignal` allows you to access its previous value and the previous values of its dependencies.
 
 ```typescript title= showLineNumbers
 const foo = signal(123);
@@ -338,9 +338,9 @@ linkedSignal({
 });
 ```
 
-`computation`is a callback function that produce value for `linkedSignal`. It is the same argument when you use a normal `linkedSignal`
+`computation` is the callback function that produces the value for `linkedSignal`. It plays the same role as the callback in a normal `linkedSignal`.
 
-`source` is typically a dependency of `linkedSignal`.Its type is `function` which will be called and its return value is passed as first argument of `computation` callback (`fooNewValue`)
+`source` is typically a dependency of `linkedSignal`. It is a function that is called, and its return value is passed as the first argument to the `computation` callback (`fooNewValue`).
 
 <details>
 
@@ -358,20 +358,20 @@ linkedSignal({
 
 </details>
 
-The second argument of `computation` function, `previous`, is an object containing 2 keys:
+The second argument of the `computation` function, `previous`, is an object containing two keys:
 
-- `previous?.value` is a previous returned value of `computation` function ( previous value of `linkedSignal`)
-- `previous?.source` is a previous returned value of `source` function
+- `previous?.value` is the previous return value of the `computation` function (the previous value of `linkedSignal`)
+- `previous?.source` is the previous return value of the `source` function
 
 <Admonition type="note" title="note">
 
-Any signal(s) called from both `source` and `computation` function are tracked
+Any signals called from either the `source` or `computation` function are tracked.
 
 </Admonition>
 
 <Admonition type="note" title="note">
 
-It is necessary to provide type srgument to `linkedSignal`
+It is necessary to provide type arguments to `linkedSignal`.
 
 ```typescript title= showLineNumbers
 linkedSignal<SourceReturnedValue, ComputationReturnValue>(...)
@@ -387,7 +387,7 @@ linkedSignal<SourceReturnedValue, ComputationReturnValue>(...)
 
 <Admonition type="tip" title="tip">
 
-By making `source` return object instead of a single value, you can access multiple source value from last cycle
+By making `source` return an object instead of a single value, you can access multiple source values from the previous cycle.
 
 ```typescript title= showLineNumbers
 linkedSignal({
@@ -402,7 +402,7 @@ linkedSignal({
 
 ## Signal equality functions
 
-u can provide a function to determine whether a signal value is changed
+You can provide a function to determine whether a signal value has changed.
 
 ```typescript title= showLineNumbers
 import _ from "lodash";
@@ -418,13 +418,13 @@ linkedSignal(() => 'foo', { equal: (previousValue, newValue) => previousValue.ke
 
 <Admonition type="note" title="note">
 
-Default signal equlity function is [`Object.is`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/is)
+The default signal equality function is [`Object.is`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/is).
 
 </Admonition>
 
 <Admonition type="info" title="info">
 
-It will be used for triggering change for the signal
+It is used to determine whether the signal should trigger a change.
 
 </Admonition>
 
@@ -436,4 +436,4 @@ It will be used for triggering change for the signal
 
 - https://angular.dev/guide/signals
 
-both signals read inside source and computation code block are tracked.
+Signals read inside the `source` and `computation` code blocks are both tracked.

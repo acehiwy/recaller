@@ -1,6 +1,6 @@
 ---
 description: something
-title: Fast API
+title: FastAPI
 tags:
   - fastAPI
 last_update:
@@ -16,15 +16,15 @@ pip install 'fastapi[standard]'
 
 <Admonition type="note" title="note"> 
 
-`fastapi[standard]` package come with some optional dependencies. 
+The `fastapi[standard]` package comes with some optional dependencies.
 
-If u dont want them just use `pip install fastapi`
+If you don't want them, just use `pip install fastapi`.
 
 </Admonition>
 
 <Admonition type="info" title="info"> 
 
-Install fastAPI without FastAPI cloud cli, `pip install "fastapi[standard-no-fastapi-cloud-cli]"`
+Install FastAPI without the FastAPI Cloud CLI: `pip install "fastapi[standard-no-fastapi-cloud-cli]"`
 
 </Admonition>
 
@@ -48,9 +48,9 @@ fastapi dev main.py
 ```
 
 
-## Defind endpoint
+## Define endpoints
 
-use `<FastAPI instance>.<HTTP method name>()` decorator on function
+Use the `<FastAPI instance>.<HTTP method name>()` decorator on a function.
 
 - `@app.get()`
 - `@app.post()`
@@ -63,11 +63,11 @@ use `<FastAPI instance>.<HTTP method name>()` decorator on function
 
 <Admonition type="note" title="note"> 
 
-FastAPI call this "path operation"
+FastAPI calls this a "path operation".
 
 </Admonition>
 
-### returning response
+### Returning a response
 
 ```python title= showLineNumbers
 @app.get("/")
@@ -75,6 +75,6 @@ async def root():
     return {"message": "Hello World"}
 ```
 
-returned content can be `dict`, `list` , `str`, `int` etc
+The returned content can be a `dict`, `list`, `str`, `int`, etc.
 
-FastAPI will convert them to JSON
+FastAPI will convert it to JSON.

@@ -19,7 +19,7 @@ A---B---C---F---G
 git rebase --onto <new parent> <old parent> <until commit>
 ```
 
-Example: extract all commit after `D` to the new parent `F`. 
+Example: extract all commits after `D` to the new parent `F`.
 ```bash title= showLineNumbers
 A---B---C---F---G    
             \             
@@ -30,12 +30,12 @@ git rebase --onto F D
 ```
 <Admonition type="note" title="note"> 
 
-It delete `D`
+It deletes `D`.
 
 </Admonition>
 
 
-Example: extract all commit after `D` until `H` to the new parent `F`. 
+Example: extract all commits after `D` until `H` to the new parent `F`.
 ```bash title= showLineNumbers
 A---B---C---F---G    
             \             

@@ -16,9 +16,9 @@ async def read_item(item_id: int, user_id: int):
 
 <Admonition type="caution" title="caution"> 
 
-Path parameters name, `item_id`, defined in decorator must be align with argument name, `item_id`, defined on function.
+The path parameter name `item_id` defined in the decorator must be aligned with the argument name `item_id` defined in the function.
 
-Otherwise FastAPI would interpret function argument as query / search parameters
+Otherwise, FastAPI would interpret the function argument as a query parameter.
 
 </Admonition>
 
@@ -28,15 +28,15 @@ Otherwise FastAPI would interpret function argument as query / search parameters
 @app.get("/items/{item_id}")
 #  highlight-next-line
 async def read_item(item_id: int):
-    # item_id here is parse from string to int by FastAPI
+    # item_id is parsed from a string to an int by FastAPI
     return {"item_id": item_id}
 ```
 
-Based on argument type, FastAPI will:
+Based on the argument type, FastAPI will:
 - validate request value
-- parse request's value to that type
+- parse the request value into that type
 
-Eg. make request `GET /foo/bar`:
+For example, when making the request `GET /foo/bar`:
 ```json title= showLineNumbers
 {
   "detail": [
@@ -62,9 +62,9 @@ Data validation is performed under the hood by `Pydantic`
 
 ## Path operation defining order
 
-FastAPI read path operation in order it defined. 
+FastAPI reads path operations in the order they are defined.
 
-FastAPI will pick first one that match.
+FastAPI picks the first one that matches.
 
 eg:
 ```python title= showLineNumbers
@@ -81,7 +81,7 @@ async def read_user_me():
     return {"user_id": "the current user"}
 ```
 
-function `read_user_me` will never be executed bc request always match `/users/{user_id}`
+The `read_user_me` function will never be executed because the request always matches `/users/{user_id}`.
 
 
 
@@ -106,11 +106,11 @@ async def get_model(model_name: ModelName):
 
 ## Path parameters that contain file path
 
-U might want user to pass file path as path parameters in the request
+You might want users to pass file paths as path parameters in a request.
 
-Eg. for endpoint `/files/{file_path}`, passing `path/to/user/file` then whole url would be <Color color="var(--secondary-font-color)"> mis-interpreted </Color> as `/file/path/to/user/file`
+For the endpoint `/files/{file_path}`, passing `path/to/user/file` would cause the whole URL to be <Color color="var(--secondary-font-color)"> misinterpreted </Color> as `/file/path/to/user/file`.
 
-FastAPI allow u to extract it as a single string value
+FastAPI allows you to extract it as a single string value.
 
 ```python title= showLineNumbers
 # highlight-next-line
@@ -119,11 +119,11 @@ async def read_file(file_path: str):
     return {"file_path": file_path}
 ```
 
-So the request `GET /files/path/to/user/file` would match `read_file` function and argument `file_path` will be `/path/to/user/file`
+So the request `GET /files/path/to/user/file` would match the `read_file` function, and the `file_path` argument will be `/path/to/user/file`.
 
 <Admonition type="tip" title="tip"> 
 
-With `:path` any `/file` route would match, so it act like wildcard route `/file/**` .
+With `:path`, any `/file` route would match, so it acts like the wildcard route `/file/**`.
 
 </Admonition>
 
