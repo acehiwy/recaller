@@ -1,31 +1,29 @@
 ---
 description: How to multiple sidebar work in Docusaurus
-sidebar_position: 3000
 tags:
   - docusaurus
-last_update:
-  date: 2025-09-28T16:19:38.197Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Multiple sidebars
 
-You can create a sidebar for each <Color color="var(--secondary-font-color)"> set of Markdown </Color> files that you want to <Color color="var(--secondary-font-color)"> group together </Color>.
+You can create a sidebar for each <span style={{color: "var(--secondary-font-color)"}}> set of Markdown </span> files that you want to <span style={{color: "var(--secondary-font-color)"}}> group together </span>.
 
 <details>
 
 <summary> Example results </summary>
 
 <Tabs>
-<TabItem value="docsPageSidebar" label="Docs Page Sidebar">
+<Tab title="Docs Page Sidebar">
 
 ![](@site/docs/assets/sidebar-docs-page.png)
 
-</TabItem>
-<TabItem value="apiPageSidebar" label="Api Page Sidebar">
+</Tab>
+<Tab title="Api Page Sidebar">
 
 ![](@site/docs/assets/sidebar-api-page.png)
 
-</TabItem>
+</Tab>
 </Tabs>
 
 </details>
@@ -58,12 +56,12 @@ module.exports = {
 };
 ```
 
-How does Docusaurus know which sidebar to display when browsing `commonDoc`? Answer: it doesn't, and we <Color color="var(--secondary-font-color)"> don't guarantee which sidebar it will pick </Color>.
+How does Docusaurus know which sidebar to display when browsing `commonDoc`? Answer: it doesn't, and we <span style={{color: "var(--secondary-font-color)"}}> don't guarantee which sidebar it will pick </span>.
 
-When you add doc Y to sidebar X, it creates a <Color color="var(--secondary-font-color)"> two-way binding </Color>
+When you add doc Y to sidebar X, it creates a <span style={{color: "var(--secondary-font-color)"}}> two-way binding </span>
 sidebar X contains a link to doc Y, and when browsing doc Y, sidebar X will be displayed.
 
-<Color color="var(--not-require-but-good-to-know-font-color)">
+<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>
 
 But sometimes, we want to break either implicit binding:
 
@@ -72,11 +70,11 @@ But sometimes, we want to break either implicit binding:
 - How do I make sidebar X displayed when browsing doc Y, but sidebar X shouldn't contain the link to Y?
   - For example, when Y is a "doc home page" and the sidebar is purely used for navigation?
 
-</Color>
+</span>
 
 ### Forcibly display specific sidebar
 
-Front matter option `displayed_sidebar` will <Color color="var(--primary-font-color)"> forcibly </Color> set the sidebar association.
+Front matter option `displayed_sidebar` will <span style={{color: "var(--primary-font-color)"}}> forcibly </span> set the sidebar association.
 
 For the same example, you can still use doc shorthands without any special configuration:
 
@@ -117,11 +115,11 @@ It strictly uses the sidebar that is displayed: if no sidebar is associated, it 
 However, the docs linked as `next` and `previous` are not guaranteed to display the same sidebar:
 they are included in this sidebar, but in their front matter, they may have a different `displayed_sidebar`.
 
-<Color color="var(--not-nesary-for-now-future-font-color)">
+<span style={{color: "var(--not-nesary-for-now-future-font-color)"}}>
 
 If a sidebar is displayed by setting `displayed_sidebar` front matter, and this sidebar doesn't contain the doc itself, no pagination is displayed.
 
-</Color>
+</span>
 
 You can customize pagination with front matter `pagination_next` and `pagination_prev`. Consider this sidebar:
 
@@ -150,28 +148,28 @@ pagination_next: getting-started
 # Installation on Windows
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 You can also disable displaying a pagination link with `pagination_next: null` or `pagination_prev: null`.
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note">
+<Note>
 
-The pagination label by default is the <Color color="var(--secondary-font-color)"> sidebar label </Color>.
-You can use the <Color color="var(--secondary-font-color)"> front matter </Color> `pagination_label` to customize how this doc appears in the pagination.
+The pagination label by default is the <span style={{color: "var(--secondary-font-color)"}}> sidebar label </span>.
+You can use the <span style={{color: "var(--secondary-font-color)"}}> front matter </span> `pagination_label` to customize how this doc appears in the pagination.
 
-</Admonition>
+</Note>
 
 ## The `ref` item
 
-The `ref` type is identical to the `doc` type in every way, except that it <Color color="var(--primary-font-color)"> doesn't </Color> participate in <Color color="var(--secondary-font-color)"> generating navigation metadata </Color>. It only registers itself as a link.
+The `ref` type is identical to the `doc` type in every way, except that it <span style={{color: "var(--primary-font-color)"}}> doesn't </span> participate in <span style={{color: "var(--secondary-font-color)"}}> generating navigation metadata </span>. It only registers itself as a link.
 
-<Color color="var(--secondary-font-color)">
+<span style={{color: "var(--secondary-font-color)"}}>
 
-When [generating pagination](#generating-pagination) and [displaying sidebar](#understanding-sidebar-association), `ref` items are completely <Color color="var(--primary-font-color)"> ignored. </Color>
+When [generating pagination](#generating-pagination) and [displaying sidebar](#understanding-sidebar-association), `ref` items are completely <span style={{color: "var(--primary-font-color)"}}> ignored. </span>
 
-</Color>
+</span>
 
 It is particularly useful where you wish to link to the same document from multiple sidebars. The document only belongs to one sidebar (the one where it's registered as type: 'doc' or from an autogenerated directory), but its link will appear in all sidebars that it's registered in.
 

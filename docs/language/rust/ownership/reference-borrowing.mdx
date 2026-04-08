@@ -1,7 +1,7 @@
 ---
-sidebar_position: 20000
 tags:
   - rust
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # References and Borrowing
@@ -27,15 +27,15 @@ fn calculate_length(s: &String) -> usize { // s is a reference to a String
   // it refers to, it is not dropped.
 ```
 
-The `&s1` syntax lets us create a reference that refers to the value of `s1` but <Color color="var(--secondary-font-color)"> does not own it </Color>.
+The `&s1` syntax lets us create a reference that refers to the value of `s1` but <span style={{color: "var(--secondary-font-color)"}}> does not own it </span>.
 
-Because it does not own it, the value it <Color color="var(--primary-font-color)"> points to </Color> will not be dropped when the reference stops being used.
+Because it does not own it, the value it <span style={{color: "var(--primary-font-color)"}}> points to </span> will not be dropped when the reference stops being used.
 
-<Admonition type="info" title="info">
+<Info>
 
 We call the action of creating a reference "borrowing".
 
-</Admonition>
+</Info>
 
 References are immutable by default. You can't modify the value that you have borrowed
 
@@ -66,13 +66,13 @@ fn change(some_string: &mut String) {
 }
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 Mutable reference can only be crated from mutable variable.
 
-</Admonition>
+</Info>
 
-&#8203;<Color color="var(--primary-font-color)"> In the same scope </Color>, <Color color="var(--secondary-font-color)"> multiple mutable references to the same value are not allowed </Color>.
+&#8203;<span style={{color: "var(--primary-font-color)"}}> In the same scope </span>, <span style={{color: "var(--secondary-font-color)"}}> multiple mutable references to the same value are not allowed </span>.
 If you have a mutable reference to a value, you can have no other references to that value.
 
 This throw error:
@@ -160,11 +160,11 @@ fn dangle() -> &String { // dangle returns a reference to a String
 // highlight-error-end
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 In Rust, the compiler guarantees that references will never be dangling references
 
-</Admonition>
+</Info>
 
 <br />
 

@@ -5,7 +5,7 @@ import path from 'node:path';
 import { globSync } from 'glob';
 
 const FRONTMATTER_DELIMITER = '---';
-const LAST_UPDATE_FIELD = 'last_update';
+const LAST_UPDATE_FIELD = 'lastUpdated';
 const MARKDOWN_EXTENSIONS = new Set(['.md', '.mdx']);
 const USAGE = 'Usage: ./update-last-updated.mjs [--markdown-only] <pattern1> <pattern2> ...';
 
@@ -31,8 +31,7 @@ function getPreferredNewline(content) {
 
 function formatLastUpdateBlock(timestamp) {
   return [
-    `${LAST_UPDATE_FIELD}:`,
-    `  date: ${timestamp}`,
+    `${LAST_UPDATE_FIELD}: ${timestamp}`,
   ];
 }
 

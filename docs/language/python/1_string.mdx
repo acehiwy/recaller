@@ -1,7 +1,6 @@
 ---
 
-last_update:
-  date: 2025-10-01T13:56:30.747Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 tags:
   - python
 ---
@@ -32,7 +31,7 @@ print(s)
 # Second line.
 ```
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 use raw string if you don't want characters prefaced by \ to be interpreted as special characters
 
@@ -41,7 +40,7 @@ print(r'C:\some\name')  # note the r before the quote
 # C:\some\name
 ```
 
-</Admonition>
+</Info>
 
 ## Multiple line string 
 
@@ -54,11 +53,11 @@ Usage: thingy [OPTIONS]
 """)
 ```
 
-<Admonition type="note" title="note"> 
+<Note> 
 
-End-of-line characters are automatically <Color color="var(--secondary-font-color)"> included on each line </Color>, but you can prevent that by adding `\` at the end of the line.
+End-of-line characters are automatically <span style={{color: "var(--secondary-font-color)"}}> included on each line </span>, but you can prevent that by adding `\` at the end of the line.
 
-</Admonition>
+</Note>
 
 ## Concat string
 
@@ -67,7 +66,7 @@ End-of-line characters are automatically <Color color="var(--secondary-font-colo
 # 'unununium'
 ```
 
-Two or more <Color color="var(--primary-font-color)"> string literals </Color> next to each other are automatically concatenated.
+Two or more <span style={{color: "var(--primary-font-color)"}}> string literals </span> next to each other are automatically concatenated.
 
 ```python title= showLineNumbers
 'foo' 'bar'  'baz'
@@ -104,13 +103,13 @@ word[-2:]  # characters from the second-last (included) to the end
 # 'on'
 ```
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 Index substitution, the start is always included, and the end always excluded
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 out of range slice indexes are handled gracefully:
 
@@ -121,7 +120,7 @@ word[4:42]
 word[42:]
 # ''
 ```
-</Admonition>
+</Note>
 
 ## String length
 
@@ -138,19 +137,19 @@ len("foo")
 result = f'{var_1} is not the same as {var_2}'
 ```
 
-<Admonition type="info" title="later"> 
+<Info> 
 
 `str.format()` can be used alternatively. See more info [here](https://docs.python.org/3/library/stdtypes.html#str.format)
 
-</Admonition>
+</Info>
 
-<Admonition type="info" title="later"> 
+<Info> 
 
 The `{}` syntax can do much more than substitute a string. It can format a string in almost any way you like.
 
 see more info [here](https://docs.python.org/3/reference/lexical_analysis.html#f-strings)
 
-</Admonition>
+</Info>
 
 ## Miscellaneous
 

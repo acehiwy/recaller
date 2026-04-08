@@ -1,7 +1,7 @@
 ---
-sidebar_position: 6000
 tags:
   - openapi
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Providing Documentation and Examples
@@ -10,7 +10,7 @@ This page shows how to take full advantage of special documentation capabilities
 
 ## Documentation Fields
 
-&#8203;<Color color="var(--secondary-font-color)"> Almost </Color> every object in the OpenAPI Specification accepts a `description` field <Color color="var(--not-require-but-good-to-know-font-color)"> which can provide additional information for developers </Color>
+&#8203;<span style={{color: "var(--secondary-font-color)"}}> Almost </span> every object in the OpenAPI Specification accepts a `description` field <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> which can provide additional information for developers </span>
 
 For instance, a parameter's `name`, `type` and valid range of values are already present in the API definition.
 The `description` field can complement this information by explaining the purpose of this parameter, the effect of each value or possible interactions with other parameters:
@@ -37,17 +37,17 @@ paths:
               // highlight-end
 ```
 
-<Admonition type="tip" title="tip">
+<Tip>
 
-Additionally, the [Path Item](https://spec.openapis.org/oas/v3.1.0#path-item-object), [Operation](https://spec.openapis.org/oas/v3.1.0#operation-object) and [Example objects](https://spec.openapis.org/oas/v3.1.0#example-object), which usually have long descriptions, accept a `summary` field <Color color="var(--secondary-font-color)"> providing a short description </Color>.
+Additionally, the [Path Item](https://spec.openapis.org/oas/v3.1.0#path-item-object), [Operation](https://spec.openapis.org/oas/v3.1.0#operation-object) and [Example objects](https://spec.openapis.org/oas/v3.1.0#example-object), which usually have long descriptions, accept a `summary` field <span style={{color: "var(--secondary-font-color)"}}> providing a short description </span>.
 
-</Admonition>
+</Tip>
 
 ## Providing Long Descriptions in YAML
 
 ### Plain Mode
 
-<!-- prettier-ignore -->
+
 ```yaml title= showLineNumbers
 description: 
   Current volume for all audio output.
@@ -57,7 +57,7 @@ description:
   ...
 ```
 
-The above example uses the <Color color="var(--secondary-font-color)"> plain mode </Color> for strings. It is easy to use because it does not require any special syntax( `|` or `>`).
+The above example uses the <span style={{color: "var(--secondary-font-color)"}}> plain mode </span> for strings. It is easy to use because it does not require any special syntax( `|` or `>`).
 
 But it can confuse YAML-parsing tools if the string contains colon `:` or hash `#` characters.
 
@@ -71,7 +71,7 @@ description: "Beware of lines containing colons and hashes like this: #"
 
 Literal mode use Pipe `|` as an indicator character.
 
-Line breaks in the source YAML file <Color color="var(--secondary-font-color)"> are preserved in the output </Color>.
+Line breaks in the source YAML file <span style={{color: "var(--secondary-font-color)"}}> are preserved in the output </span>.
 
 ```yaml title= showLineNumbers
 description: |
@@ -94,7 +94,7 @@ And an extra one.
 
 Folded mode use Greater-than sign `>` as an indicator character.
 
-&#8203;<Color color="var(--secondary-font-color)"> Line breaks are removed so the output is a single string. </Color>
+&#8203;<span style={{color: "var(--secondary-font-color)"}}> Line breaks are removed so the output is a single string. </span>
 
 ```yaml title= showLineNumbers
 description: >
@@ -111,29 +111,29 @@ This is a string in multiple lines.
 And an extra one.
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 Use an empty line to force a line break.
 
-</Admonition>
+</Note>
 
-<Admonition type="info" title="info">
+<Info>
 
 The literal and folded modes do not need to use quotes.
 
-</Admonition>
+</Info>
 
 ## CommonMark Syntax
 
 `description` fields allow rich text formatting by using [CommonMark 0.27](https://spec.commonmark.org/0.27/).
 
-<Color color="var(--not-require-but-good-to-know-font-color)">
+<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>
 
 Far more features than listed below are available (including HTML tags),
 but given that OpenAPI descriptions are meant to be included inside larger auto-generated documentation,
 using more advanced formatting is typically very complicated.
 
-</Color>
+</span>
 
 ### Headings
 
@@ -147,7 +147,7 @@ using more advanced formatting is typically very complicated.
 
 ### Emphasis
 
-<!-- prettier-ignore -->
+
 ```markdown title= showLineNumbers
 *Emphasis*
 
@@ -183,7 +183,7 @@ A fenced code block
 
 ## The Example Object
 
-Some OpenAPI objects can list examples explicitly instead of having them embedded in the description field, <Color color="var(--not-require-but-good-to-know-font-color)"> enabling automated processing by tools </Color>.
+Some OpenAPI objects can list examples explicitly instead of having them embedded in the description field, <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> enabling automated processing by tools </span>.
 
 This allows, among other things:
 
@@ -195,12 +195,12 @@ Two different fields provide this functionality:
 - `example` allows one sample
 - `examples` allows multiple.
 
-<Admonition type="note" title="note">
+<Note>
 
-<Color color="var(--secondary-font-color)"> Only one </Color> of the two fields can
+<span style={{color: "var(--secondary-font-color)"}}> Only one </span> of the two fields can
 be present in each object.
 
-</Admonition>
+</Note>
 
 ### `example` field
 
@@ -216,7 +216,7 @@ schema:
     example: 1
 ```
 
-### `example`<Color color="var(--primary-font-color)">`s`</Color> field
+### `example`<span style={{color: "var(--primary-font-color)"}}>`s`</span> field
 
 The `examples` field (found in Parameter and Media Type Objects) is a map pairing an example name with an [Example Object](https://spec.openapis.org/oas/v3.1.0#example-object).
 

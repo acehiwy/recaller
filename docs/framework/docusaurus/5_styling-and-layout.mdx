@@ -1,7 +1,6 @@
 ---
 description: ""
-last_update:
-  date: 2025-09-28T16:19:38.197Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Styling and Layout
@@ -52,7 +51,7 @@ Therefore, you can scope your CSS to dark-mode-only by targeting html with a spe
 
 ## Mobile view
 
-Docusaurus uses `996px` as the <Color color="var(--secondary-font-color)"> cutoff </Color> between mobile screen width and desktop.
+Docusaurus uses `996px` as the <span style={{color: "var(--secondary-font-color)"}}> cutoff </span> between mobile screen width and desktop.
 
 If you want your layout to be different in the mobile view, you can use media queries.
 
@@ -73,7 +72,7 @@ If you want your layout to be different in the mobile view, you can use media qu
 To style your components using [CSS Modules](https://github.com/css-modules/css-modules),
 name your stylesheet files with the `.module.css` suffix (e.g. `welcome.module.css`).
 
-Webpack will load such CSS files as CSS modules and you have to reference the class names as <Color color="var(--secondary-font-color)"> properties </Color> of the <Color color="var(--secondary-font-color)"> imported CSS module </Color>.
+Webpack will load such CSS files as CSS modules and you have to reference the class names as <span style={{color: "var(--secondary-font-color)"}}> properties </span> of the <span style={{color: "var(--secondary-font-color)"}}> imported CSS module </span>.
 
 ```css title=styles.module.css showLineNumbers
 .main {
@@ -102,11 +101,11 @@ function MyComponent() {
 }
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
-The class names will be processed by webpack into a <Color color="var(--secondary-font-color)"> globally unique class name </Color> during build.
+The class names will be processed by webpack into a <span style={{color: "var(--secondary-font-color)"}}> globally unique class name </span> during build.
 
-</Admonition>
+</Info>
 
 # Sass SCSS
 
@@ -115,20 +114,20 @@ To use Sass/SCSS as your CSS preprocessor, install the unofficial Docusaurus 2 p
 This plugin works for both global styles and the CSS modules approach:
 
 <Tabs>
-<TabItem value="npm" label="npm">
+<Tab title="npm">
 
 ```bash title=
 npm install --save docusaurus-plugin-sass sass
 ```
 
-</TabItem>
-<TabItem value="yarn" label="yarn">
+</Tab>
+<Tab title="yarn">
 
 ```bash title=
 yarn add docusaurus-plugin-sass sass
 ```
 
-</TabItem>
+</Tab>
 </Tabs>
 
 Then include the plugin in your `docusaurus.config.js` file:

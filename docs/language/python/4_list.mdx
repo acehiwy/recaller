@@ -1,7 +1,6 @@
 ---
 
-last_update:
-  date: 2025-10-01T13:56:30.747Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 tags:
   - python
 ---
@@ -19,7 +18,7 @@ squares[-1]
 squares[-3:]  # slicing returns a new list
 ```
 
-## Add <Color color="var(--primary-font-color)"> a single </Color> item to the list
+## Add <span style={{color: "var(--primary-font-color)"}}> a single </span> item to the list
 
 ```python title= showLineNumbers
 foo = [1,2,3]
@@ -62,13 +61,13 @@ letters[2:5] = []
 my_list.sort() # mutate object , return None
 ```
 
-<Admonition type="caution" title="caution"> 
+<Warning> 
 
 If items in a list cannot be compared to each other (`None` with `string`, or `string` with `int`), then the list cannot be sorted.
 
 eg. `[None, 'hello', 10]`
 
-</Admonition>
+</Warning>
 
 ## List comprehensions 
 
@@ -86,7 +85,7 @@ for x in range(10):
       squares.append(x**2)
 ```
 
-### <Color color="var(--not-require-but-good-to-know-font-color)"> multiple loop </Color>
+### <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> multiple loop </span>
 
 
 ```python title= showLineNumbers

@@ -1,3 +1,7 @@
+---
+lastUpdated: 2026-04-08T09:00:42.959Z
+---
+
 # Recoverable Errors
 
 ## Result enum
@@ -11,7 +15,7 @@ enum Result<T, E> {
 }
 ```
 
-- The `Ok` variant indicates the operation was successful, and <Color color="var(--secondary-font-color)"> inside </Color> `Ok` is the successfully generated value (`T`).
+- The `Ok` variant indicates the operation was successful, and <span style={{color: "var(--secondary-font-color)"}}> inside </span> `Ok` is the successfully generated value (`T`).
 - The `Err` variant means the operation failed, and `Err` contains information (`E`) about how or why the operation failed.
 
 ## Handling Error
@@ -32,11 +36,11 @@ fn main() {
 }
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 `Result` enum and its variants are included in the prelude.
 
-</Admonition>
+</Info>
 
 ## Matching on Different Errors
 
@@ -152,15 +156,15 @@ The `?` placed after a `Result` indicating
 - If `Ok` variant: the value inside the `Ok` will get returned from this expression (return to `username_file`)
 - If `Err` variant: the `Err` will be returned as function return.
 
-<Admonition type="note" title="note">
+<Note>
 
 Error type return by `?` will be converted into the error type defined in the return type of the current function.
 
-</Admonition>
+</Note>
 
 ### Where The `?` Operator Can Be Used
 
-The `?` operator can only be used <Color color="var(--secondary-font-color)"> in a function </Color> that returns `Result` or `Option` (or another type that implements `FromResidual`)
+The `?` operator can only be used <span style={{color: "var(--secondary-font-color)"}}> in a function </span> that returns `Result` or `Option` (or another type that implements `FromResidual`)
 
 ### Use `?` after `Option<T>`
 
@@ -215,7 +219,7 @@ fn read_username_from_file() -> Result<String, io::Error> {
 
 ---
 
-### <Color color="var(--not-nesary-for-now-future-font-color)"> Main function return type </Color>
+### <span style={{color: "var(--not-nesary-for-now-future-font-color)"}}> Main function return type </span>
 
 `main` can also return a `Result<(), E>`
 
@@ -232,22 +236,22 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 When a main function returns a `Result<(), E>`, the executable will exit with a value of 0 if main returns `Ok(())` and will exit with a nonzero value if main returns an `Err` value.
 
-<Admonition type="tip" title="later">
+<Tip>
 
 The main function may return any types that implement the [std::process::Termination trait](https://doc.rust-lang.org/std/process/trait.Termination.html),
 which contains a function report that returns an `ExitCode`.
 
 Consult the standard library documentation for more information on implementing the `Termination` trait for your own types.
 
-</Admonition>
+</Tip>
 
 ---
 
-<Admonition type="caution" title="?????" icon="">
+<Warning>
 
 the `ok` method on `Result` or the `ok_or` method on `Option`
 
-</Admonition>
+</Warning>
 
 <br />
 

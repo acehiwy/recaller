@@ -1,6 +1,5 @@
 ---
-last_update:
-  date: 2026-03-08T05:30:36.255Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Lifetimes
@@ -36,13 +35,13 @@ fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
 }
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 The `longest` function definition specifying that all the references in the signature must have the same lifetime `'a`
 
-</Admonition>
+</Info>
 
-The generic lifetime `'a` will get the concrete lifetime that is equal to the <Color color="var(--secondary-font-color)"> smaller </Color> of the lifetimes of `x` and `y`.
+The generic lifetime `'a` will get the concrete lifetime that is equal to the <span style={{color: "var(--secondary-font-color)"}}> smaller </span> of the lifetimes of `x` and `y`.
 
 Because we’ve annotated the returned reference with the same lifetime parameter `'a`, the returned reference will also be valid for the length of the smaller of the lifetimes of `x` and `y`
 
@@ -92,7 +91,7 @@ fn main() {
 }
 ```
 
-This annotation means an instance of `ImportantExcerpt` can't outlive the reference it holds in its `part` field. <Color color="var(--writer-additional-note-font-color)"> //\\\ </Color> The field lifetime
+This annotation means an instance of `ImportantExcerpt` can't outlive the reference it holds in its `part` field. <span style={{color: "var(--writer-additional-note-font-color)"}}> //\\\ </span> The field lifetime
 needs to be longer than the instance lifetime.
 
 These rules apply to `fn` definitions as well as `impl` blocks.
@@ -103,9 +102,9 @@ In some cases, Rust can infer lifetimes without you explicitly specifying them.
 
 They’re a set of particular cases that the compiler will consider, if your code fits these cases, you don’t need to write the lifetimes explicitly.
 
-Lifetimes on function or method parameters are called <Color color="var(--secondary-font-color)"> input lifetimes </Color>
+Lifetimes on function or method parameters are called <span style={{color: "var(--secondary-font-color)"}}> input lifetimes </span>
 
-Lifetimes on return values are called <Color color="var(--secondary-font-color)"> output lifetimes </Color>.
+Lifetimes on return values are called <span style={{color: "var(--secondary-font-color)"}}> output lifetimes </span>.
 
 ### Rules
 
@@ -115,20 +114,20 @@ If the compiler gets to the end of the three rules and there are still reference
 
 1. The first rule is that the compiler assigns a lifetime parameter to each parameter that’s a reference.
    - from `fn foo(x: &i32, y: &i32);` to `fn foo<'a, 'b>(x: &'a i32, y: &'b i32);`
-1. The second rule is that, if there is <Color color="var(--secondary-font-color)"> exactly one input lifetime </Color> parameter, that lifetime is assigned to all <Color color="var(--secondary-font-color)"> output lifetime </Color> parameters
+1. The second rule is that, if there is <span style={{color: "var(--secondary-font-color)"}}> exactly one input lifetime </span> parameter, that lifetime is assigned to all <span style={{color: "var(--secondary-font-color)"}}> output lifetime </span> parameters
    - `fn foo<'a>(x: &'a i32) -> &'a i32`.
-1. The third rule is that, if there are <Color color="var(--secondary-font-color)"> multiple input lifetime </Color> parameters, but one of them is `&self` or `&mut self`, the lifetime of `self` is assigned to all <Color color="var(--secondary-font-color)"> output lifetime </Color> parameters.
+1. The third rule is that, if there are <span style={{color: "var(--secondary-font-color)"}}> multiple input lifetime </span> parameters, but one of them is `&self` or `&mut self`, the lifetime of `self` is assigned to all <span style={{color: "var(--secondary-font-color)"}}> output lifetime </span> parameters.
 
 ### Lifetime in method definitions
 
-Lifetime names for struct fields always need to be <Color color="var(--secondary-font-color)"> declared </Color> after the `impl` keyword
-and then <Color color="var(--secondary-font-color)"> used </Color> after the struct's name, because those lifetimes are part of the struct's type.
+Lifetime names for struct fields always need to be <span style={{color: "var(--secondary-font-color)"}}> declared </span> after the `impl` keyword
+and then <span style={{color: "var(--secondary-font-color)"}}> used </span> after the struct's name, because those lifetimes are part of the struct's type.
 
-<Admonition type="caution" title="????" icon="">
+<Warning>
 
 In method signatures inside the impl block, references might be tied to the lifetime of references in the struct’s fields, or they might be independent.
 
-</Admonition>
+</Warning>
 
 ```rust title= showLineNumbers
 impl<'a> ImportantExcerpt<'a> {
@@ -171,13 +170,13 @@ Using `'static` lifetime annotation infer that reference can live for the entire
 let s: &'static str = "I have a static lifetime.";
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
-All string literals have the `'static` lifetime.<Color color="var(--not-require-but-good-to-know-font-color)"> The text of this string is stored directly in the program’s binary, which is always available. Therefore, the lifetime of all string literals is `'static`</Color>
+All string literals have the `'static` lifetime.<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> The text of this string is stored directly in the program’s binary, which is always available. Therefore, the lifetime of all string literals is `'static`</span>
 
-</Admonition>
+</Info>
 
-## <Color color="var(--not-require-but-good-to-know-font-color)"> Example of using generic, trait bounds and lifetime together </Color>
+## <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> Example of using generic, trait bounds and lifetime together </span>
 
 ```rust title= showLineNumbers
 use std::fmt::Display;
@@ -217,7 +216,7 @@ println!("{foo}"); // used binding `foo` isn't initialized
 
 ---
 
-If an <Color color="var(--secondary-font-color)"> immutable </Color> variable has no initial value, only the first assignment is valid.
+If an <span style={{color: "var(--secondary-font-color)"}}> immutable </span> variable has no initial value, only the first assignment is valid.
 
 ```rust title= showLineNumbers
 let foo: u8;

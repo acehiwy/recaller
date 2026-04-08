@@ -8,8 +8,8 @@ services:
         - app-node-modules:/home/node/app/node_modules
         - .:/home/node/app
     ports:
-      - 22222:22222
-    command: bash -c "yarn install --immutable && yarn start"
+      - 3000:3000
+    command: bash -c "yarn install --immutable && yarn dev"
 
 
 volumes:

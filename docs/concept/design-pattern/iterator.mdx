@@ -1,7 +1,6 @@
 ---
 title: Iterator
-last_update:
-  date: 2025-09-24T12:08:02Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 tags:
   - design pattern
 ---
@@ -12,7 +11,7 @@ A collection is a container for a group of objects, such as a list, stack, tree,
 
 ## Description
 
-The iterator pattern lets you traverse <Color color="var(--primary-font-color)">a</Color> collection without knowing its traversal implementation <Color color="var(--writer-additional-note-font-color)">[[ internal method for getting a single item and the algorithm for tracking which items have already been visited ]]</Color>
+The iterator pattern lets you traverse <span style={{color: "var(--primary-font-color)"}}>a</span> collection without knowing its traversal implementation <span style={{color: "var(--writer-additional-note-font-color)"}}>[[ internal method for getting a single item and the algorithm for tracking which items have already been visited ]]</span>
 
 ## Problem without the pattern
 
@@ -105,7 +104,7 @@ The traversal algorithm and visited-item tracking are pushed into the collection
 
 
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 Client still need to know which method of the collection is used to return `iterator`
 
@@ -131,31 +130,31 @@ interface Tree{
 
 In this case, the client still needs to know the methods available on a `Tree`.
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 Different kinds of `tree` can implement the same `Tree` interface.
 
-</Admonition>
+</Info>
 
-</Admonition>
+</Note>
 
-<Admonition type="tip" title="tip"> 
+<Tip> 
 
 See [diagrams](https://refactoring.guru/design-patterns/iterator#structure) for better understanding
 
-</Admonition>
+</Tip>
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 One iterator corresponds to one traversal behavior.
 
-</Admonition>
+</Info>
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 Several iterators can traverse the same collection at the same time.
 
-</Admonition>
+</Info>
 
 
 ## When to use
@@ -167,10 +166,10 @@ Several iterators can traverse the same collection at the same time.
 - eg. computing all items at once consumes resources. With `iterator.getNextItem()`, you compute one item at a time
 - delay an iteration and continue when needed
 
-## <Color color="var(--not-nesary-for-now-future-font-color)">Example implementation</Color>
+## <span style={{color: "var(--not-nesary-for-now-future-font-color)"}}>Example implementation</span>
 
 <Tabs>
-<TabItem value="clientCode" label="Client code">
+<Tab title="Client code">
 
 ```typescript title=client.ts showLineNumbers
 const collection = new MyCollection()
@@ -187,9 +186,9 @@ while(treeIterator.hasMoreItem()){
 }
 ```
 
-</TabItem>
+</Tab>
 
-<TabItem value="interface" label="Interface">
+<Tab title="Interface">
 
 ```typescript title=interface.ts showLineNumbers
 interface _Iterator<T> {
@@ -216,9 +215,9 @@ interface Tree {
 }
 ```
 
-</TabItem>
+</Tab>
 
-<TabItem value="mycollection" label="EvenItemIterator">
+<Tab title="EvenItemIterator">
 
 ```typescript title=EvenItemIterator.ts showLineNumbers
 class EvenItemIterator implements _Iterator<number> {
@@ -251,9 +250,9 @@ class MyCollection implements NormalCollection, IterableCollection<number>{
 }
 ```
 
-</TabItem>
+</Tab>
 
-<TabItem value="tree" label="TreeIterator">
+<Tab title="TreeIterator">
 
 ```typescript title=TreeIterator.ts showLineNumbers
 class TreeIterator implements _Iterator<number>{
@@ -286,15 +285,15 @@ class TrinaryTree implements Tree, IterableTreeCollection<number>{
 }
 ```
 
-</TabItem>
+</Tab>
 
 </Tabs>
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 See more [code example](https://refactoring.guru/design-patterns/iterator#implementations) from [refactoring.guru](https://refactoring.guru/)
 
-</Admonition>
+</Info>
 
 <br/>
 

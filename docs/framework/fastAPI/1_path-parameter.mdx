@@ -1,6 +1,5 @@
 ---
-last_update:
-  date: 2025-09-28T16:19:38.197Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 tags:
   - FastAPI
   - python
@@ -14,15 +13,15 @@ async def read_item(item_id: int, user_id: int):
     return {"item_id": item_id , "user_id": user_id}
 ```
 
-<Admonition type="caution" title="caution"> 
+<Warning> 
 
 The path parameter name `item_id` defined in the decorator must be aligned with the argument name `item_id` defined in the function.
 
 Otherwise, FastAPI would interpret the function argument as a query parameter.
 
-</Admonition>
+</Warning>
 
-## <Color color="var(--secondary-font-color)"> Define argument type </Color>
+## <span style={{color: "var(--secondary-font-color)"}}> Define argument type </span>
 
 ```python title= showLineNumbers
 @app.get("/items/{item_id}")
@@ -53,11 +52,11 @@ For example, when making the request `GET /foo/bar`:
 }
 ```
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 Data validation is performed under the hood by `Pydantic`
 
-</Admonition>
+</Note>
 
 
 ## Path operation defining order
@@ -108,7 +107,7 @@ async def get_model(model_name: ModelName):
 
 You might want users to pass file paths as path parameters in a request.
 
-For the endpoint `/files/{file_path}`, passing `path/to/user/file` would cause the whole URL to be <Color color="var(--secondary-font-color)"> misinterpreted </Color> as `/file/path/to/user/file`.
+For the endpoint `/files/{file_path}`, passing `path/to/user/file` would cause the whole URL to be <span style={{color: "var(--secondary-font-color)"}}> misinterpreted </span> as `/file/path/to/user/file`.
 
 FastAPI allows you to extract it as a single string value.
 
@@ -121,11 +120,11 @@ async def read_file(file_path: str):
 
 So the request `GET /files/path/to/user/file` would match the `read_file` function, and the `file_path` argument will be `/path/to/user/file`.
 
-<Admonition type="tip" title="tip"> 
+<Tip> 
 
 With `:path`, any `/file` route would match, so it acts like the wildcard route `/file/**`.
 
-</Admonition>
+</Tip>
 
 <br/>
 

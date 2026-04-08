@@ -4,8 +4,7 @@ tags:
   - docusaurus
   - documentation
   - tool
-last_update:
-  date: 2025-09-28T16:19:38.197Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Installation
@@ -18,8 +17,8 @@ last_update:
 
 The easiest way to install Docusaurus is to use the command line tool.
 
-You can run this command anywhere in a new <Color color='var(--secondary-font-color)'> empty repository </Color>
-or within an <Color color='var(--secondary-font-color)'> existing repository </Color>
+You can run this command anywhere in a new <span style={{color: "var(--secondary-font-color)"}}> empty repository </span>
+or within an <span style={{color: "var(--secondary-font-color)"}}> existing repository </span>
 
 It will create a new directory containing the scaffolded files.
 
@@ -27,43 +26,43 @@ It will create a new directory containing the scaffolded files.
 npx create-docusaurus@latest my-website classic
 ```
 
-<Admonition type="note">
+<Note>
 
 `npx create-docusaurus@latest <name of project> <theme name> [ --typescript ]`
 
-</Admonition>
+</Note>
 
 #### or use these command
 
 <Tabs>
-<TabItem value="npm" label="npm">
+<Tab title="npm">
 
 ```bash title=
   npm init docusaurus
 ```
 
-</TabItem>
-<TabItem value="yarn" label="yarn">
+</Tab>
+<Tab title="yarn">
 
 ```bash title=
   yarn create docusaurus
 ```
 
-</TabItem>
-<TabItem value="pnpm" label="pnpm">
+</Tab>
+<Tab title="pnpm">
 
 ```bash title=
   pnpm create docusaurus
 ```
 
-</TabItem>
+</Tab>
 </Tabs>
 
-<Admonition type="tip">
+<Tip>
 
 Run npx create-docusaurus@latest --help, or check out its [API docs](https://docusaurus.io/docs/api/misc/create-docusaurus) for more information about all available flags.
 
-</Admonition>
+</Tip>
 
 ### Project Structure
 
@@ -99,11 +98,11 @@ Run npx create-docusaurus@latest --help, or check out its [API docs](https://doc
 - `/docs/` - Contains the Markdown files for the docs.
   You can delete the directory if you've disabled the docs plugin,
   or you can change its name after setting the path option.
-- `/src/` - Non-documentation files like <Color color='var(--secondary-font-color)'> pages </Color> or <Color color='var(--secondary-font-color)'> custom React components </Color>.
+- `/src/` - Non-documentation files like <span style={{color: "var(--secondary-font-color)"}}> pages </span> or <span style={{color: "var(--secondary-font-color)"}}> custom React components </span>.
 - `/src/pages` - Any `jsx` `tsx` `mdx` file within this directory will be converted into a website page.
 - `/static/` - Static directory. Any contents inside here will be copied into the root of the final build directory
 - `/docusaurus.config.js` - A config file containing the site configuration.
-- `/sidebars.js` - Used by the documentation to specify the <Color color='var(--primary-font-color)'> order </Color> <Color color='var(--secondary-font-color)'> of documents in the sidebar </Color>
+- `/sidebars.js` - Used by the documentation to specify the <span style={{color: "var(--primary-font-color)"}}> order </span> <span style={{color: "var(--secondary-font-color)"}}> of documents in the sidebar </span>
 
 ## Running Dev Server
 

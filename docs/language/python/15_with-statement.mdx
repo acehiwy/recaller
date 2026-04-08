@@ -1,7 +1,6 @@
 ---
 
-last_update:
-  date: 2025-10-01T13:56:30.747Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 tags:
   - python
 ---
@@ -31,7 +30,7 @@ Executing the `with` statement on a context manager callable allows Python to:
   1. if an exception occurs and is not handled by `__exit__`, the exception is propagated to the outer scope.
 
 
-<Admonition type="tip" title="tip"> 
+<Tip> 
 
 You can pass multiple callables to `with`:
 ```python title= showLineNumbers
@@ -49,7 +48,7 @@ with A() as a:
         pass
 ```
 
-</Admonition>
+</Tip>
 
 
 <details>
@@ -75,17 +74,17 @@ finally:
 </details>
 
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 More on [context manager](https://docs.python.org/3/reference/datamodel.html#context-managers)
 
-</Admonition>
+</Info>
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 More on [`with` statement](https://docs.python.org/3/reference/compound_stmts.html#with)
 
-</Admonition>
+</Info>
 
 ## Class-based context manager
 
@@ -122,19 +121,19 @@ with Foo('bar') as hello:
 # exception_traceback = None
 ```
 
-<Admonition type="note" title="note"> 
+<Note> 
 
-An exception raised inside a `with` block <Color color="var(--secondary-font-color)"> ends that block </Color>. [`with` ends when an exception occurs]
+An exception raised inside a `with` block <span style={{color: "var(--secondary-font-color)"}}> ends that block </span>. [`with` ends when an exception occurs]
 
 The exception is then passed to the `__exit__` method.
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 If the `__exit__` method returns `True`, the exception is suppressed. Otherwise, the exception is propagated to the outer scope.
 
-<Admonition type="tip" title="tip"> 
+<Tip> 
 
 This is useful when you want a `callable` to automatically handle a certain exception.
 
@@ -145,9 +144,9 @@ def __exit__(self, exception_type, exception_value, exception_traceback):
     return True
 ```
 
-</Admonition>
+</Tip>
 
-</Admonition>
+</Note>
 
 ## Function-based context manager
 
@@ -183,33 +182,33 @@ print('end of program')
 # end of program
 ```
 
-<Admonition type="note" title="note"> 
+<Note> 
 
-A decorated function must be a generator function. It must `yield` <Color color="var(--primary-font-color)"> exactly one value</Color>.
+A decorated function must be a generator function. It must `yield` <span style={{color: "var(--primary-font-color)"}}> exactly one value</span>.
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 At the point where the generator yields, the code inside `with` statement is executed.
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note"> 
+<Note> 
 
-An exception raised inside a `with` block <Color color="var(--secondary-font-color)"> ends that block </Color>. [`with` ends when an exception occurs]
+An exception raised inside a `with` block <span style={{color: "var(--secondary-font-color)"}}> ends that block </span>. [`with` ends when an exception occurs]
 
 The exception is then re-raised inside the generator at the point where `yield` occurs.
 
 If the generator does not re-raise the exception passed to it, the exception is suppressed.
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 If `with` ends without an exception, the code after `yield` resumes, [including the `finally` statement, of course]
 
-</Admonition>
+</Note>
 
 
 ## Async context manager
@@ -238,11 +237,11 @@ class AsyncContextManager:
         await log('exiting context')
 ```
 
-<Admonition type="tip" title="tip"> 
+<Tip> 
 
 You can define both sync and async setup / teardown methods to support both `with` and `async with`
 
-</Admonition>
+</Tip>
 
 ### Function
 

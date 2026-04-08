@@ -2,9 +2,7 @@
 
 tags:
   - python
-last_update:
-  date: 2025-10-01T13:56:30.747Z
-
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Working with file
@@ -21,7 +19,7 @@ f.closed
 
 First argument is the file name.
 
-Second <Color color="var(--secondary-font-color)"> optional </Color> argument is a string describing how the file will be used:
+Second <span style={{color: "var(--secondary-font-color)"}}> optional </span> argument is a string describing how the file will be used:
 
 optional `encoding` keyword argument, default is `utf-8`, is the name of encoding use to encode and decode the file
 
@@ -45,38 +43,38 @@ the default mode is `r` (synonym of `rt`)
 `w+` and `w+b` open and truncate the file. 
 `r+` and `r+b` open the file with no truncation.
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 Mode `b`, contents are return as [`bytes`](https://docs.python.org/3/library/stdtypes.html#bytes) object
 
 Mode `t`, contents are return as `str`
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 `with` keyword ensure that file is closed after the process is done even if an exception is raised.
 
-</Admonition>
+</Note>
 
 
-<Admonition type="info" title="later"> 
+<Info> 
 
-When <Color color="var(--secondary-font-color)"> reading </Color> in text mode, the default is to convert platform-specific line endings (`\n` on Unix, `\r\n` on Windows) to just `\n`. 
+When <span style={{color: "var(--secondary-font-color)"}}> reading </span> in text mode, the default is to convert platform-specific line endings (`\n` on Unix, `\r\n` on Windows) to just `\n`. 
 
-When <Color color="var(--secondary-font-color)"> writing </Color> in text mode, the default is to convert occurrences of `\n` <Color color="var(--secondary-font-color)"> back </Color> to platform-specific line endings. 
+When <span style={{color: "var(--secondary-font-color)"}}> writing </span> in text mode, the default is to convert occurrences of `\n` <span style={{color: "var(--secondary-font-color)"}}> back </span> to platform-specific line endings. 
 This behind-the-scenes modification to file data is fine for text files, but will corrupt binary data like that in JPEG or EXE files. 
 Be very careful to use binary mode when reading and writing such files.
 
-</Admonition>
+</Info>
 
-<Admonition type="info" title="later"> 
+<Info> 
 
 In append binary mode, `a+b`, Pointer position will be moved ahead as the amount of bytes written regardless of its position.
 
 For example, if the pointer position is at 2 in a 10-byte file and you write 3 bytes to the end, resulting in a 13-byte file, the pointer moves from 2 to 5, not from 10 to 13.
 
-</Admonition>
+</Info>
 
 ## Read file
 
@@ -114,7 +112,7 @@ with open('foo.py') as f:
 
 a newline character (`\n`) is left at the end of the string
 
-<Admonition type="tip" title="tip"> 
+<Tip> 
 
 Returning each line as a list
 
@@ -125,20 +123,20 @@ my_list = f.readlines()
 my_list = list(f)
 ```
 
-</Admonition>
+</Tip>
 
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 `read` and `readline` method return empty string if the end of the file is reached.
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 The return type of a read operation is a string. Numbers need to be cast to `int` after reading.
 
-</Admonition>
+</Note>
 
 ### Read JSON
 
@@ -157,11 +155,11 @@ f.write('This is a test\n')
 f.writelines(['what' , 'ever'])
 ```
 
-<Admonition type="note" title="note"> 
+<Note> 
 
-The `write` method returns the number of <Color color="var(--secondary-font-color)"> characters </Color> written.
+The `write` method returns the number of <span style={{color: "var(--secondary-font-color)"}}> characters </span> written.
 
-</Admonition>
+</Note>
 
 The `write` method takes a string or bytes object. Other types of objects need to be converted first.
 
@@ -182,7 +180,7 @@ with open('filepath' , 'w+') as f:
 f.seek(<offset> : int, <whence>: 0 | 1 | 2)
 ```
 
-move file pointer for `<offset>` <Color color="var(--primary-font-color)"> byte </Color> from `<whence>`
+move file pointer for `<offset>` <span style={{color: "var(--primary-font-color)"}}> byte </span> from `<whence>`
 
 `whence` argument accept
 - 0 (default): beginning of the file 
@@ -204,15 +202,15 @@ f.seek(-3,2)
 f.seek(0,2)
 ```
 
-<Admonition type="note" title="note"> 
+<Note> 
 
-The `seek` function should be used when you open a file in <Color color="var(--secondary-font-color)"> binary mode </Color>.
+The `seek` function should be used when you open a file in <span style={{color: "var(--secondary-font-color)"}}> binary mode </span>.
 
-</Admonition>
+</Note>
 
-<Admonition type="danger" title="danger"> 
+<Danger> 
 
-When you open a file <Color color="var(--secondary-font-color)"> in text mode </Color>, `open('file', 'r+t')`
+When you open a file <span style={{color: "var(--secondary-font-color)"}}> in text mode </span>, `open('file', 'r+t')`
 
 `seek`'s argument should follow these otherwise error might be raised:
 - the `offset` argument should be aligned with the value returned from `f.tell()`
@@ -223,16 +221,16 @@ When you open a file <Color color="var(--secondary-font-color)"> in text mode </
 
 
 
-<Admonition type="info" title="later"> 
+<Info> 
 
 Reason: In text mode, the read operation should return valid character data. If you move the file pointer into the middle of the bytes that make up a character, there is no reliable way to know which character it is supposed to represent.
 (If this part is unclear, read more about [character encoding](https://www.youtube.com/watch?v=GMF2Z1EZHXk).)
 
 If you want to move a file pointer in text mode, you can use `read` instead. For example, to move four characters forward, use `read(4)`.
 
-</Admonition>
+</Info>
 
-</Admonition>
+</Danger>
 
 
 ## Miscellaneous
