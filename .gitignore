@@ -5,6 +5,7 @@
 /build
 
 # Generated files
+dist/
 .docusaurus
 .cache-loader
 .astro/
