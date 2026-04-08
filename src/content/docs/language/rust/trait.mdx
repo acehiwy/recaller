@@ -1,0 +1,314 @@
+---
+title: "Traits"
+lastUpdated: 2026-04-08T06:45:26.325Z
+---
+import { Aside } from '@astrojs/starlight/components';
+import Color from '../../../../components/Color.astro';
+
+# Traits
+
+A trait is a set of signatures that must be followed by any type implementing that trait.
+
+We can use traits to define shared behavior in an abstract way.
+
+<Aside type="note" title="info">
+
+Traits are similar to a feature often called interfaces in other languages, although with some differences.
+
+</Aside>
+
+## Defining a Trait
+
+```rust showLineNumbers
+pub trait Summary {
+    fn summarize(&self) -> String;
+}
+```
+
+Each type implementing this trait must provide its own custom behavior for the body of the method.
+
+## Implementing a Trait on a Type
+
+```rust showLineNumbers
+pub trait Summary {
+    fn summarize(&self) -> String;
+}
+
+pub struct NewsArticle {
+    pub headline: String,
+    pub location: String,
+    pub author: String,
+    pub content: String,
+}
+
+// highlight-next-line
+impl Summary for NewsArticle {
+    fn summarize(&self) -> String {
+        format!("{}, by {} ({})", self.headline, self.author, self.location)
+    }
+}
+
+pub struct Tweet {
+    pub username: String,
+    pub content: String,
+    pub reply: bool,
+    pub retweet: bool,
+}
+
+// highlight-next-line
+impl Summary for Tweet {
+    fn summarize(&self) -> String {
+        format!("{}: {}", self.username, self.content)
+    }
+}
+```
+
+## Calling a Trait
+
+This is the same as calling a method on a type instance, but <Color color="var(--secondary-font-color)"> the trait must be brought into scope </Color>.
+
+```rust showLineNumbers
+// bringing Summary trait
+// highlight-next-line
+use aggregator::{Summary, Tweet};
+
+fn main() {
+    let tweet = Tweet {
+        username: String::from("horse_ebooks"),
+        content: String::from(
+            "of course, as you probably already know, people",
+        ),
+        reply: false,
+        retweet: false,
+    };
+
+    // highlight-next-line
+    println!("1 new tweet: {}", tweet.summarize());
+}
+```
+
+<Aside type="caution" title="caution">
+
+One restriction is that we can’t implement external traits on external types.
+
+In other words, either the trait or the type must be local to our crate in order to implement the trait.
+
+<Color color="var(--not-require-but-good-to-know-font-color)">
+
+For example, we can implement standard library traits like Display on a custom type like Tweet as part of our aggregator crate functionality, because the type Tweet is local to our aggregator crate.
+
+We can also implement Summary on `Vec<T>` in our aggregator crate, because the trait Summary is local to our aggregator crate.
+
+But we can’t implement external traits on external types. For example, we can’t implement the Display trait on `Vec<T>` within our aggregator crate, because Display and `Vec<T>` are both defined in the standard library and aren’t local to our aggregator crate.
+
+This rule ensures that other people's code can't break your code and vice versa. Without the rule, two crates could implement the same trait for the same type.
+
+</Color>
+
+</Aside>
+
+## Default implementation
+
+```rust showLineNumbers
+pub trait Summary {
+    fn summarize(&self) -> String {
+        String::from("(Read more...)")
+    }
+}
+```
+
+<Aside type="note" title="note">
+
+Types that implement a trait can override the default implementation.
+
+</Aside>
+
+Default implementations can call other methods in the same trait, <Color color="var(--secondary-font-color)"> even if </Color> those other methods don’t have a default implementation.
+
+```rust showLineNumbers
+pub trait Summary {
+    fn summarize_author(&self) -> String;
+
+    fn summarize(&self) -> String {
+        // highlight-next-line
+        format!("(Read more from {}...)", self.summarize_author())
+    }
+}
+```
+
+<Aside type="note" title="note">
+
+It isn’t possible to call the default implementation from an overriding implementation of that same method.
+
+**<Color color="var(--writer-additional-note-font-color)"> //\\\ </Color>** If you override method `foo`, you cannot use the default implementation of method `foo` inside it.
+
+</Aside>
+
+### Using default implementation
+
+We specify an empty `impl` block with `impl Summary for NewsArticle {}`.
+
+```rust showLineNumbers
+pub struct NewsArticle {
+    pub headline: String,
+    pub location: String,
+    pub author: String,
+    pub content: String,
+}
+
+// highlight-next-line
+impl Summary for NewsArticle {}
+```
+
+## Trait as Parameters
+
+Use the `impl` keyword followed by a trait.
+
+```rust showLineNumbers
+pub fn notify(item: impl Summary) {
+    println!("Breaking news! {}", item.summarize());
+}
+// or
+pub fn notify(item: &impl Summary) {}
+
+// or
+pub fn notify(item: &mut impl Summary) {}
+```
+
+Parameter `item` accepts any type that implements the `Summary` trait
+
+### Long syntax
+
+```rust showLineNumbers
+pub fn notify(item1: &impl Summary, item2: &impl Summary) {}
+
+// same as
+pub fn notify<T: Summary>(item1: &T, item2: &T) {}
+```
+
+<Aside type="note" title="info">
+
+Long syntax is called Trait Bounds
+
+</Aside>
+
+### Multiple trait
+
+```rust showLineNumbers
+pub fn notify(item: &(impl Summary + Display)) {}
+// or
+pub fn notify<T: Summary + Display>(item: &T) {}
+```
+
+This means parameter `item` <Color color="var(--secondary-font-color)"> must implement both </Color> `Summary` and `Display` trait
+
+### Trait bounds with `where` clause
+
+Alternate syntax for readability
+
+```rust showLineNumbers
+fn some_function<T: Display + Clone, U: Clone + Debug>(t: &T, u: &U) -> i32 {}
+// same as
+
+fn some_function<T, U>(t: &T, u: &U) -> i32
+where
+    T: Display + Clone,
+    U: Clone + Debug,
+{}
+```
+
+## Returning Types that Implement Traits
+
+We can also use the `impl Trait` syntax in the return position to return a value of some type that implements a trait,
+
+```rust showLineNumbers
+// highlight-next-line
+fn returns_summarizable() -> impl Summary {
+    Tweet {
+        // ...
+    }
+}
+```
+
+<Aside type="note" title="note">
+
+You can only use `impl Trait` if you’re returning a single type
+
+Returning multiple type wouldn't work
+
+```rust showLineNumbers
+// highlight-error-next-line
+fn returns_summarizable(foo: bool) -> impl Summary {
+    if foo {
+        NewsArticle {
+            // ...
+        }
+    } else {
+        Tweet {
+            // ...
+        }
+    }
+}
+```
+
+For more infomation, see [Using Trait Objects That Allow for Values of Different Types](https://doc.rust-lang.org/book/ch17-02-trait-objects.html#using-trait-objects-that-allow-for-values-of-different-types)
+
+</Aside>
+
+## Using trait bound with `impl<T>`
+
+Using `impl` block with generic type trait bound parameter, we can implement methods conditionally for types that implement the specified traits
+
+```rust showLineNumbers
+use std::fmt::Display;
+
+struct Pair<T> {
+    x: T,
+    y: T,
+}
+
+impl<T> Pair<T> {
+    fn new(x: T, y: T) -> Self {
+        Self { x, y }
+    }
+}
+
+// highlight-next-line
+impl<T: Display + PartialOrd> Pair<T> {
+    fn cmp_display(&self) {
+        if self.x >= self.y {
+            println!("The largest member is x = {}", self.x);
+        } else {
+            println!("The largest member is y = {}", self.y);
+        }
+    }
+}
+```
+
+This means only `Pair<T>` instance that its `T` type implement `Display` and `PartialOrd` will have `cmp_display` method.
+
+<Aside type="tip" title="later">
+
+Implementations of a trait on any type that satisfies the trait bounds are called blanket implementations
+
+For example, the standard library implements the ToString trait on any type that implements the Display trait. The impl block in the standard library looks similar to this code:
+
+```rust showLineNumbers
+impl<T: Display> ToString for T {
+    // --snip--
+}
+```
+
+Because of this, we can call the to_string method defined by the `ToString` trait on any type that implements the `Display` trait.
+
+&#8203;<Color color="var(--writer-additional-note-font-color)"> //\\\ </Color> Re-quoting above explanation with an example. Implementations of a trait(`ToString`) on any type(`T`) that satisfies the trait bounds(`Display`) are called blanket implementations
+
+</Aside>
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/book/ch10-02-traits.html

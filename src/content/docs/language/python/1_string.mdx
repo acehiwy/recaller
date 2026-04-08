@@ -1,0 +1,184 @@
+---
+title: "String"
+
+tags:
+  - python
+lastUpdated: 2026-04-08T06:45:26.325Z
+---
+import { Aside } from '@astrojs/starlight/components';
+import Color from '../../../../components/Color.astro';
+
+# String
+
+```python showLineNumbers
+some_string = "string value"
+```
+
+double quote and single quote are equivalent
+
+escape character is `\`
+```python showLineNumbers
+>>> 'doesn\'t'  # use \' to escape the single quote...
+"doesn't"
+```
+
+with `print()`, special characters are interpreted
+
+```python showLineNumbers
+s = 'First line.\n Second line.' 
+s  # without print(), special characters are included in the string
+# 'First line.\n Second line.'
+
+print(s)  
+# First line.
+# Second line.
+```
+
+<Aside type="note" title="info"> 
+
+use raw string if you don't want characters prefaced by \ to be interpreted as special characters
+
+```python showLineNumbers
+print(r'C:\some\name')  # note the r before the quote
+# C:\some\name
+```
+
+</Aside>
+
+## Multiple line string 
+
+use triple quote:
+```python showLineNumbers
+print("""\
+Usage: thingy [OPTIONS]
+     -h                        Display this usage message
+     -H hostname               Hostname to connect to
+""")
+```
+
+<Aside type="note" title="note"> 
+
+End-of-line characters are automatically <Color color="var(--secondary-font-color)"> included on each line </Color>, but you can prevent that by adding `\` at the end of the line.
+
+</Aside>
+
+## Concat string
+
+```python showLineNumbers
+3 * 'un' + 'ium'
+# 'unununium'
+```
+
+Two or more <Color color="var(--primary-font-color)"> string literals </Color> next to each other are automatically concatenated.
+
+```python showLineNumbers
+'foo' 'bar'  'baz'
+# 'foobarbaz'
+```
+
+## String indexing
+
+```python showLineNumbers
+word = 'Python'
+word[0]  # character in position 0
+# 'P'
+word[5]  # character in position 5
+# 'n'
+
+word[-2]  # second-last character
+# 'o'
+word[-6]
+# 'P'
+```
+
+## Slice (substring)
+
+```python showLineNumbers
+word = 'Python'
+word[0:2]  # characters from position 0 (included) to 2 (excluded)
+# 'Py'
+
+word[:2]   # character from the beginning to position 2 (excluded)
+# 'Py'
+word[4:]   # characters from position 4 (included) to the end
+# 'on'
+word[-2:]  # characters from the second-last (included) to the end
+# 'on'
+```
+
+<Aside type="note" title="note"> 
+
+Index substitution, the start is always included, and the end always excluded
+
+</Aside>
+
+<Aside type="note" title="note"> 
+
+out of range slice indexes are handled gracefully:
+
+```python showLineNumbers
+word = "python"
+word[4:42]
+# 'on'
+word[42:]
+# ''
+```
+</Aside>
+
+## String length
+
+use `len()`
+
+```python showLineNumbers
+len("foo")
+```
+
+
+## String interpolation
+
+```python showLineNumbers
+result = f'{var_1} is not the same as {var_2}'
+```
+
+<Aside type="note" title="later"> 
+
+`str.format()` can be used alternatively. See more info [here](https://docs.python.org/3/library/stdtypes.html#str.format)
+
+</Aside>
+
+<Aside type="note" title="later"> 
+
+The `{}` syntax can do much more than substitute a string. It can format a string in almost any way you like.
+
+see more info [here](https://docs.python.org/3/reference/lexical_analysis.html#f-strings)
+
+</Aside>
+
+## Miscellaneous
+
+Use [`str()`](https://docs.python.org/3/library/stdtypes.html#str) or [`repr()`](https://docs.python.org/3/library/functions.html#repr) function to view a string representation of an object.
+
+Convert string to byte, [`str.encode()`](https://docs.python.org/3/library/stdtypes.html#str.encode)
+
+JSON serializing and deserializing
+```python showLineNumbers
+import json
+x = [1, 'simple', 'list']
+
+# serializing
+json.dumps(x)
+
+
+# deserializing
+json_string = '...'
+json.loads(json_string)
+```
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/introduction.html#text
+- https://docs.python.org/3/tutorial/inputoutput.html#fancier-output-formatting

@@ -1,0 +1,255 @@
+---
+title: "Providing Documentation and Examples"
+tags:
+  - openapi
+sidebar:
+  order: 6000
+lastUpdated: 2026-04-08T06:45:26.325Z
+---
+import { Aside } from '@astrojs/starlight/components';
+import Color from '../../../../components/Color.astro';
+
+# Providing Documentation and Examples
+
+This page shows how to take full advantage of special documentation capabilities in OpenAPI like markdown syntax or example objects.
+
+## Documentation Fields
+
+&#8203;<Color color="var(--secondary-font-color)"> Almost </Color> every object in the OpenAPI Specification accepts a `description` field <Color color="var(--not-require-but-good-to-know-font-color)"> which can provide additional information for developers </Color>
+
+For instance, a parameter's `name`, `type` and valid range of values are already present in the API definition.
+The `description` field can complement this information by explaining the purpose of this parameter, the effect of each value or possible interactions with other parameters:
+
+```yaml showLineNumbers
+paths:
+  /audio/volume:
+    put:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: integer
+              minimum: 0
+              maximum: 11
+              // highlight-start
+              description:
+                Current volume for all audio output.
+                0 means no audio output (mute). 10 is the maximum value. 11 enables
+                the overdrive system (danger!).
+                When set to 0 all other audio settings have no effect.
+              ...
+              // highlight-end
+```
+
+<Aside type="tip" title="tip">
+
+Additionally, the [Path Item](https://spec.openapis.org/oas/v3.1.0#path-item-object), [Operation](https://spec.openapis.org/oas/v3.1.0#operation-object) and [Example objects](https://spec.openapis.org/oas/v3.1.0#example-object), which usually have long descriptions, accept a `summary` field <Color color="var(--secondary-font-color)"> providing a short description </Color>.
+
+</Aside>
+
+## Providing Long Descriptions in YAML
+
+### Plain Mode
+
+{/*  prettier-ignore  */}
+```yaml showLineNumbers
+description: 
+  Current volume for all audio output.
+  0 means no audio output (mute). 10 is the maximum value. 11 enables
+  the overdrive system (danger!).
+  When set to 0 all other audio settings have no effect.
+  ...
+```
+
+The above example uses the <Color color="var(--secondary-font-color)"> plain mode </Color> for strings. It is easy to use because it does not require any special syntax( `|` or `>`).
+
+But it can confuse YAML-parsing tools if the string contains colon `:` or hash `#` characters.
+
+In these cases, the whole string must be enclosed in single or double quotes:
+
+```yaml title=
+description: "Beware of lines containing colons and hashes like this: #"
+```
+
+### Literal Mode
+
+Literal mode use Pipe `|` as an indicator character.
+
+Line breaks in the source YAML file <Color color="var(--secondary-font-color)"> are preserved in the output </Color>.
+
+```yaml showLineNumbers
+description: |
+  This is a string
+  in multiple lines.
+
+  And an extra one.
+```
+
+Output:
+
+```txt showLineNumbers
+This is a string
+in multiple lines.
+
+And an extra one.
+```
+
+### Folded Mode
+
+Folded mode use Greater-than sign `>` as an indicator character.
+
+&#8203;<Color color="var(--secondary-font-color)"> Line breaks are removed so the output is a single string. </Color>
+
+```yaml showLineNumbers
+description: >
+  This is a string
+  in multiple lines.
+
+  And an extra one.
+```
+
+Output:
+
+```yaml showLineNumbers
+This is a string in multiple lines.
+And an extra one.
+```
+
+<Aside type="note" title="note">
+
+Use an empty line to force a line break.
+
+</Aside>
+
+<Aside type="note" title="info">
+
+The literal and folded modes do not need to use quotes.
+
+</Aside>
+
+## CommonMark Syntax
+
+`description` fields allow rich text formatting by using [CommonMark 0.27](https://spec.commonmark.org/0.27/).
+
+<Color color="var(--not-require-but-good-to-know-font-color)">
+
+Far more features than listed below are available (including HTML tags),
+but given that OpenAPI descriptions are meant to be included inside larger auto-generated documentation,
+using more advanced formatting is typically very complicated.
+
+</Color>
+
+### Headings
+
+```markdown showLineNumbers
+# Level 1
+
+## Level 2
+
+### Level 3
+```
+
+### Emphasis
+
+{/*  prettier-ignore  */}
+```markdown showLineNumbers
+*Emphasis*
+
+**Strong Emphasis**
+
+***Both***
+```
+
+### Lists
+
+```markdown showLineNumbers
+- Item 1
+- Item 2
+  - Item 2.1
+```
+
+### Code
+
+````markdown showLineNumbers
+An inline `code span`.
+
+```
+A fenced code block
+```
+````
+
+### Links
+
+```markdown showLineNumbers
+[Link text](Link URL)
+![Alt text](Image URL)
+```
+
+## The Example Object
+
+Some OpenAPI objects can list examples explicitly instead of having them embedded in the description field, <Color color="var(--not-require-but-good-to-know-font-color)"> enabling automated processing by tools </Color>.
+
+This allows, among other things:
+
+- Special rendering of the examples inside the documentation.
+- [Example objects](https://spec.openapis.org/oas/v3.1.0#example-object) can be used by mock servers as return values.
+
+Two different fields provide this functionality:
+
+- `example` allows one sample
+- `examples` allows multiple.
+
+<Aside type="note" title="note">
+
+<Color color="var(--secondary-font-color)"> Only one </Color> of the two fields can
+be present in each object.
+
+</Aside>
+
+### `example` field
+
+The content of the `example` field (found in Parameter, Media Type and Schema Objects) must match the format of its parent object:
+
+```yaml showLineNumbers
+schema:
+  coordinate:
+    type: integer
+    minimum: 1
+    maximum: 3
+    // highlight-next-line
+    example: 1
+```
+
+### `example`<Color color="var(--primary-font-color)">`s`</Color> field
+
+The `examples` field (found in Parameter and Media Type Objects) is a map pairing an example name with an [Example Object](https://spec.openapis.org/oas/v3.1.0#example-object).
+
+The Example Object can also provide a `summary` and a `description` field along with its value ( `value` or `externalValue` field ).
+
+```yaml showLineNumbers
+responses:
+  "400":
+    description: The provided parameters are incorrect
+    content:
+      text/html: # This is a Media Type Object
+        schema:
+          type: string
+        // highlight-start
+        examples:
+          illegalCoordinates:
+            value: "Illegal coordinates."
+          notEmpty:
+            value: "Square is not empty."
+          invalidMark:
+            value: "Invalid Mark (X or O)."
+        // highlight-end
+```
+
+<br />
+
+---
+
+# Sources
+
+- https://oai.github.io/Documentation/specification/docs.html

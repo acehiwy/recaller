@@ -1,0 +1,360 @@
+---
+title: "Error and Exception"
+
+tags:
+  - python
+
+lastUpdated: 2026-04-08T06:45:26.325Z
+---
+import { Aside } from '@astrojs/starlight/components';
+import Color from '../../../../components/Color.astro';
+
+# Error and Exception
+
+```python showLineNumbers
+  try:
+    # do something
+  except ReferenceError:
+    # handle error
+  except (TypeError, ValueError) as my_error:
+    # handle error
+  except BaseException as e:
+    # catch the rest error, with e variable usage
+  except:
+    # catch the rest error
+```
+
+
+<Aside type="note" title="note"> 
+
+A `except` clause only handle exception from its `try`, not from its neighbor `except`. 
+
+</Aside>
+
+
+<Aside type="note" title="info"> 
+
+See more for [built-in exceptions](https://docs.python.org/3/library/exceptions.html#bltin-exceptions)
+
+</Aside>
+
+## `raise` keyword
+
+use to manually force an exception to occur
+
+`raise` must be followed by either an exception <Color color="var(--secondary-font-color)"> instance </Color> or an exception class
+
+```python showLineNumbers
+raise BaseException('foo')
+
+raise BaseException # same as raise BaseException()
+```
+
+<Aside type="note" title="note"> 
+
+If an exception is followed `raise`, it will be automatically instantiated with no constructor arguments
+
+</Aside>
+
+### re-raise exception
+
+```python showLineNumbers
+try:
+  raise TypeError
+except:
+  print('log something')
+  raise
+```
+
+### `raise` ... `from`
+
+To indicate that an exception is cause by another exception, use:
+
+```python showLineNumbers
+def func():
+  raise ConnectionError
+
+try:
+  func()
+except ConnectionError as exc:
+  # highlight-next-line
+  raise RuntimeError('Failed to open database') from exc
+```
+
+output:
+
+```bash showLineNumbers
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+    func()
+    ~~~~^^
+  File "<stdin>", line 2, in func
+ConnectionError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "<stdin>", line 4, in <module>
+    raise RuntimeError('Failed to open database') from exc
+RuntimeError: Failed to open database
+```
+
+
+## Exception class
+
+Class as exception can be raised.
+
+<Aside type="note" title="note"> 
+
+Class must inherit `BaseException` class
+
+</Aside>
+
+```python showLineNumbers
+class ParentClassException(BaseException):
+  pass
+
+class ChildClassException(ParentClassException): # inheritance
+  pass
+
+def exception():
+  try:
+    raise ParentClassException()
+  except ChildClassException as class_instance:
+    print("not match, ParentClass is not ChildClass bc it does not have child's property")
+
+# this would match
+  try:
+    raise ChildClassException()
+  except ParentClassException:
+    print("match bc child have all properties of parent")
+```
+
+<Aside type="note" title="note"> 
+
+`BaseException` class is base class of all exception. Its subclass, `Exception`, indicate non-fatal exceptions
+
+fatal error mean program should terminate
+
+</Aside>
+
+
+### Exception arguments
+
+is a class constructor's argument passed to an exception class
+
+can access via `instance.args`
+
+```python showLineNumbers
+try:
+    raise Exception('spam', 'eggs')
+except Exception as inst:
+    print(inst.args) 
+    # ('spam', 'eggs')
+    print(inst)
+    # ('spam', 'eggs')
+```
+
+### User-define exception
+
+```python showLineNumbers
+class MyError(Exception):
+  pass
+
+class AnotherError(BaseException):
+  pass
+```
+
+## `else` clause
+
+`else` block execute when try does not raise an exception.
+
+```python showLineNumbers
+try:
+    pass
+except OSError:
+    pass
+else:
+    print('exe when no error in try')
+```
+
+
+<Aside type="tip" title="tip"> 
+
+The purpose of the `else` clause is to avoid mixing up errors in `try`.
+
+```python showLineNumbers
+try:
+  fucntion_1_might_raise_value_error()
+  function_2_might_raise_another_value_error() # <-- don't want this to be caught
+except ValueError:
+  pass
+```
+
+```python showLineNumbers
+try:
+  fucntion_1_might_raise_value_error()
+except ValueError:
+  pass
+else:
+  function_2_might_raise_another_value_error()
+```
+
+</Aside>
+
+
+## `finally` clause
+
+```python showLineNumbers
+try:
+  pass
+except:
+  pass
+else:
+  pass
+# highlight-start
+finally:
+  # do something
+# highlight-end
+```
+
+code inside `finally` block are executed, <Color color="var(--secondary-font-color)"> as the last task </Color>, in all cases whether or not an exception is raised regardless of its origin (raised from `try`, `except` or `else`)
+
+<Aside type="note" title="note"> 
+
+If the `finally` clause executes a `break`, `continue` or `return` statement, exceptions are not re-raised.
+
+</Aside>
+
+<Aside type="note" title="note"> 
+
+If the `try` statement reaches a `break`, `continue` or `return` statement, the `finally` clause will execute just prior to the `break`, `continue` or `return` statement's execution.
+
+</Aside>
+
+<Aside type="note" title="note"> 
+
+If a `finally` clause includes a return statement, the returned value will be from `finally`'s return, not `try`'s return.
+
+
+```python showLineNumbers
+def bool_return():
+    try:
+        return True
+    finally:
+        return False
+
+bool_return()
+# False
+```
+
+</Aside>
+
+
+<Aside type="tip" title="tip"> 
+
+In real world applications, the `finally` clause is useful for releasing external resources (such as files or network connections)
+
+</Aside>
+
+
+## Raising multiple exceptions
+
+exceptions can be group together then raise as a single exception using [`ExceptionGroup`](https://docs.python.org/3/library/exceptions.html#ExceptionGroup):
+```python showLineNumbers
+def f():
+    excs = [OSError('error 1'), SystemError('error 2')]
+    raise ExceptionGroup('exception group desceiption', excs)
+```
+
+output:
+
+```bash showLineNumbers
+  + Exception Group Traceback (most recent call last):
+  |   File "<stdin>", line 1, in <module>
+  |     f()
+  |     ~^^
+  |   File "<stdin>", line 3, in f
+  |     raise ExceptionGroup('exception group desceiption', excs)
+  | ExceptionGroup: exception group desceiption (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | OSError: error 1
+    +---------------- 2 ----------------
+    | SystemError: error 2
+    +------------------------------------
+```
+
+it can also be nested
+
+```python showLineNumbers
+raise ExceptionGroup('des1', [ ValueError, ExceptionGroup('des2', [ TypeError ] ) ] )
+```
+
+### Handle `ExceptionGroup`
+
+done by `except*` clause:
+
+```python showLineNumbers
+try:
+  raise ExceptionGroup('des1', [ SystemError, OSError ] )
+except* OSError as e:
+  pass
+except* SystemError as e:
+  pass
+```
+
+It mean pick the exception<Color color="var(--secondary-font-color)">(s)</Color> from the group and its nested group to handle
+
+
+<Aside type="note" title="info"> 
+
+`ExceptionGroup` often the case in concurrency frameworks, when several tasks may have failed in parallel, but there are also other use cases where it is desirable to continue execution and collect multiple errors rather than raise the first exception.
+
+Example use cases
+
+```python showLineNumbers
+excs = []
+for test in tests:
+    try:
+        test.run()
+    except Exception as e:
+        excs.append(e)
+
+if excs:
+   raise ExceptionGroup("Test Failures", excs)
+```
+
+</Aside>
+
+## Add more info to the exception
+
+Apart from desceiption / information when initialize the exception via constructor, more info can be added to the exception by `<exception>.add_note(<note> : string)` method
+
+```python showLineNumbers
+try:
+    raise TypeError('bad type')
+except Exception as e:
+    e.add_note('Add some information')
+    e.add_note('Add some more information')
+    raise
+```
+
+output:
+
+```bash showLineNumbers
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+    raise TypeError('bad type')
+TypeError: bad type
+Add some information
+Add some more information
+```
+
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/errors.html

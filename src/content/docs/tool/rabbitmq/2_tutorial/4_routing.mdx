@@ -1,0 +1,229 @@
+---
+title: "Routing"
+tags:
+  - rabbitmq
+lastUpdated: 2026-04-08T06:45:26.325Z
+---
+import { Aside } from '@astrojs/starlight/components';
+import Color from '../../../../../components/Color.astro';
+
+# Routing
+
+In this tutorial we're going to make it possible to subscribe only to a <Color color="var(--secondary-font-color)"> subset of the messages </Color>.
+
+For example, we will be able to direct <Color color="var(--secondary-font-color)"> only critical </Color> error <Color color="var(--secondary-font-color)"> messages </Color> to the log file (to save disk space),
+while still being able to print <Color color="var(--secondary-font-color)"> all </Color> of the <Color color="var(--secondary-font-color)"> log messages on the console </Color>.
+
+## Bindings
+
+A binding is a relationship between an exchange and a queue. This can be simply read as: the queue is interested in messages from this exchange.
+
+Bindings can take an extra binding key parameter:
+
+```javascript showLineNumbers
+channel.bindQueue(
+  queue_name,
+  exchange_name,
+  // highlight-next-line
+  "black"
+);
+```
+
+The meaning of a binding key depends on the exchange type.
+
+<Aside type="note" title="note">
+
+The fanout exchanges simply ignored binding key value.
+
+</Aside>
+
+## Direct exchange
+
+Our logging system from the previous tutorial broadcasts all messages to all consumers.
+We want to extend that to allow <Color color="var(--secondary-font-color)"> filtering messages </Color> based on their severity.
+
+We will use a `direct` exchange. The routing algorithm behind a direct exchange is simple
+
+- A message goes to the queues whose <Color color="var(--primary-font-color)"> binding key </Color> <Color color="var(--secondary-font-color)"> exactly matches </Color> the <Color color="var(--primary-font-color)"> routing key </Color> of the message.
+
+![direct exchange](../assets/direct-exchange.png)
+
+In this setup, we can see the direct exchange `X` with two queues bound to it.
+
+The first queue is bound with binding key `orange`, and the second has two bindings, `black` and `green`.
+
+In such a setup a message published to the exchange with a routing key `orange` will be routed to queue `Q1`.
+
+Messages with a routing key of `black` or `green` will go to `Q2`.
+
+<Aside type="caution" title="caution">
+
+In this setup, all other messages without binding key will be discarded.
+
+</Aside>
+
+## Multiple bindings
+
+![Direct Exchange Multiple Binding](../assets/direct-exchange-multiple-binding.png)
+
+It is perfectly legal to <Color color="var(--secondary-font-color)"> bind multiple queues </Color> with the <Color color="var(--secondary-font-color)"> same binding key </Color>.
+
+In our example we could add a binding between `X` and `Q1` with binding key `black`.
+
+In that case, the direct exchange will <Color color="var(--secondary-font-color)"> behave like fanout </Color> and will <Color color="var(--secondary-font-color)"> broadcast the message to all the <Color color="var(--primary-font-color)"> matching </Color> queues </Color>.
+
+## Publishing / Subscribing messages
+
+We'll use this model for our logging system. Instead of `fanout` we'll send messages to a `direct` exchange.
+
+We will supply the log severity as a routing key. That way the receiving script will be able to select the severity it wants to receive.
+
+### Publishing
+
+Creating exchange:
+
+```javascript showLineNumbers
+var exchange = "direct_logs";
+
+channel.assertExchange(exchange, "direct", {
+  durable: false,
+});
+```
+
+Publishing message:
+
+```javascript showLineNumbers
+var exchange = "direct_logs";
+
+channel.assertExchange(exchange, "direct", {
+  durable: false,
+});
+// highlight-next-line
+channel.publish(exchange, severity, Buffer.from(msg));
+```
+
+To simplify things we will assume that `severity` can be one of `info`, `warning`, `error`.
+
+All code of publisher:
+
+```javascript title=emit_log_direct.js showLineNumbers
+var amqp = require("amqplib/callback_api");
+
+amqp.connect("amqp://localhost", function (error0, connection) {
+  if (error0) {
+    throw error0;
+  }
+  connection.createChannel(function (error1, channel) {
+    if (error1) {
+      throw error1;
+    }
+    var exchange = "direct_logs";
+    var args = process.argv.slice(2);
+    var msg = args.slice(1).join(" ") || "Hello World!";
+    var severity = args.length > 0 ? args[0] : "info";
+
+    channel.assertExchange(exchange, "direct", {
+      durable: false,
+    });
+    channel.publish(exchange, severity, Buffer.from(msg));
+    console.log(" [x] Sent %s: '%s'", severity, msg);
+  });
+
+  setTimeout(function () {
+    connection.close();
+    process.exit(0);
+  }, 500);
+});
+```
+
+### Subscribing
+
+Receiving messages will work just like in the previous tutorial, with one exception - we're going to create a new binding for each severity we're interested in.
+
+```javascript title=receive_logs_direct.js showLineNumbers
+var amqp = require("amqplib/callback_api");
+
+var args = process.argv.slice(2);
+
+if (args.length == 0) {
+  console.log("Usage: receive_logs_direct.js [info] [warning] [error]");
+  process.exit(1);
+}
+
+amqp.connect("amqp://localhost", function (error0, connection) {
+  if (error0) {
+    throw error0;
+  }
+  connection.createChannel(function (error1, channel) {
+    if (error1) {
+      throw error1;
+    }
+    var exchange = "direct_logs";
+
+    channel.assertExchange(exchange, "direct", {
+      durable: false,
+    });
+
+    channel.assertQueue(
+      "",
+      {
+        exclusive: true,
+      },
+      function (error2, q) {
+        if (error2) {
+          throw error2;
+        }
+        console.log(" [*] Waiting for logs. To exit press CTRL+C");
+
+        // highlight-start
+        args.forEach(function (severity) {
+          channel.bindQueue(q.queue, exchange, severity);
+        });
+        // highlight-end
+
+        channel.consume(
+          q.queue,
+          function (msg) {
+            console.log(
+              " [x] %s: '%s'",
+              msg.fields.routingKey,
+              msg.content.toString()
+            );
+          },
+          {
+            noAck: true,
+          }
+        );
+      }
+    );
+  });
+});
+```
+
+## Running tutorial code
+
+If you want to save only `warning` and `error` (and not `info`) log messages to a file, just open a console and type:
+
+```bash title=
+node receive_logs_direct.js warning error > logs_from_rabbit.log
+```
+
+If you'd like to see all the log messages on your screen, open a new terminal and do:
+
+```bash title=
+node receive_logs_direct.js info warning error
+```
+
+publishing messages run:
+
+```bash title=
+node emit_log_direct.js error
+```
+
+<br />
+
+---
+
+# Sources
+
+- https://www.rabbitmq.com/tutorials/tutorial-four-javascript.html

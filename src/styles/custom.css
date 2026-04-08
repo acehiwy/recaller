@@ -1,0 +1,30 @@
+/* Custom Starlight styles for Recaller */
+:root {
+  /* Accent color - orange theme matching original Docusaurus site */
+  --sl-color-accent-low: #3d1800;
+  --sl-color-accent: #ed4c07;
+  --sl-color-accent-high: #ffb88c;
+
+  /* Custom color variables from original site */
+  --primary-font-color: #ff577f;
+  --secondary-font-color: rgb(0, 128, 255);
+  --not-require-but-good-to-know-font-color: purple;
+  --can-not-understand-font-color: rgb(249, 249, 110);
+  --writer-additional-note-font-color: rgb(0, 128, 255);
+  --not-nesary-for-now-future-font-color: rgb(0, 175, 30);
+}
+
+:root[data-theme='light'] {
+  --sl-color-accent-low: #ffe2cc;
+  --sl-color-accent: #c73e00;
+  --sl-color-accent-high: #5c1e00;
+}
+
+/* Error highlighting for code blocks */
+.code-block-error-line {
+  background-color: #ff000020;
+  display: block;
+  margin: 0 -24px;
+  padding: 0 24px;
+  border-left: 3px solid #ef4444;
+}

@@ -1,0 +1,45 @@
+---
+title: "`match` statement"
+# 
+tags:
+  - python
+
+lastUpdated: 2026-04-08T06:45:26.325Z
+---
+import { Aside } from '@astrojs/starlight/components';
+import Color from '../../../../../components/Color.astro';
+
+# `match` statement
+
+```python showLineNumbers
+def http_error(status):
+  match status:
+      case 400:
+          return "Bad request"
+      case 404:
+          return "Not found"
+      case "this" | "that":
+          return "Match either this or that"
+      case (0, 0):
+        print("Match a tuple 0,0")
+      case _:
+          return "Something's wrong with the internet"
+```
+
+Only the first pattern that matches gets executed
+
+<Aside type="note" title="note"> 
+
+the variable `_` acts as a wildcard and never fails to match
+
+</Aside>
+
+<Color color="var(--can-not-understand-font-color)"> it can also extract components (sequence elements or object attributes) from the value into variables. </Color>
+<br/>
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/controlflow.html#match-statements
+- https://peps.python.org/pep-0636/

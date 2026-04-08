@@ -1,0 +1,58 @@
+---
+title: "Rebase"
+tags:
+  - git
+lastUpdated: 2026-04-08T06:45:26.325Z
+---
+import { Aside } from '@astrojs/starlight/components';
+
+# Rebase
+
+```bash showLineNumbers
+A---B---C---F---G    
+         \             
+          D---E---H---I (HEAD)
+```
+
+## `onto` option
+
+```bash showLineNumbers
+git rebase --onto <new parent> <old parent> <until commit>
+```
+
+Example: extract all commits after `D` to the new parent `F`.
+```bash showLineNumbers
+A---B---C---F---G    
+            \             
+              E---H---I (HEAD)
+```
+```bash showLineNumbers
+git rebase --onto F D
+```
+<Aside type="note" title="note"> 
+
+It deletes `D`.
+
+</Aside>
+
+
+Example: extract all commits after `D` until `H` to the new parent `F`.
+```bash showLineNumbers
+A---B---C---F---G    
+            \             
+              E---H (HEAD)
+```
+```bash showLineNumbers
+git rebase --onto F D H
+```
+
+
+
+<br/>
+
+---
+
+# Sources
+
+- https://stackoverflow.com/questions/29914052/how-to-git-rebase-a-branch-with-the-onto-command
+- https://git-scm.com/docs/git-rebase
