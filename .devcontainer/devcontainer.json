@@ -34,7 +34,18 @@
 				"unifiedjs.vscode-mdx",
 				"yzhang.markdown-all-in-one",
 				"esbenp.prettier-vscode"
-			]
+			],
+			"mcp": {
+				"servers": {
+					"chrome-devtools": {
+						"command": "npx",
+						"args": [
+							"chrome-devtools-mcp@latest",
+							"--browser-url=http://127.0.0.1:28000"
+						]
+					}
+				}
+			}
 		}
 	}
 	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
