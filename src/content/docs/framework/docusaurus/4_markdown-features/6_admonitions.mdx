@@ -1,0 +1,213 @@
+---
+title: "Admonitions"
+description: Docusaurus Admonitions
+tags:
+  - docusaurus
+sidebar:
+  order: 6000
+lastUpdated: 2026-04-08T06:45:26.325Z
+---
+import { Aside } from '@astrojs/starlight/components';
+import Color from '../../../../../components/Color.astro';
+
+# Admonitions
+
+We have a special admonitions syntax by wrapping content <Color color="var(--secondary-font-color)"> ( text , markdown , jsx ) </Color> with a set of 3 colons,
+followed by a label denoting its type.
+
+```markdown showLineNumbers
+:::note
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+
+:::tip
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+
+:::note
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+
+:::caution
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+
+:::danger
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+:::
+```
+
+<Aside type="note">
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+</Aside>
+
+<Aside type="tip">
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+</Aside>
+
+<Aside type="note">
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+</Aside>
+
+<Aside type="caution">
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+</Aside>
+
+<Aside type="danger">
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+</Aside>
+
+## Usage with Prettier
+
+If you use [Prettier](https://prettier.io/) to format your Markdown files, Prettier might auto-format your code to <Color color="var(--secondary-font-color)"> invalid admonition syntax </Color>.
+
+To avoid this problem, add empty lines around the starting and ending directives.
+
+{/*  prettier-ignore  */}
+```markdown showLineNumbers
+{/*  Prettier doesn't change this  */}
+:::note
+
+Hello world
+
+:::
+
+{/*  Prettier changes this  */}
+:::note
+Hello world
+:::
+
+{/*  to this  */}
+::: note Hello world:::
+```
+
+## Specifying title
+
+You may also specify an <Color color="var(--secondary-font-color)"> optional </Color> title.
+
+```markdown showLineNumbers
+:::note[Your Title]
+
+Some **content** with _Markdown_ `syntax`.
+
+:::
+```
+
+<Aside type="note" title="Your Title">
+
+Some **content** with _Markdown_ `syntax`.
+
+</Aside>
+
+## Usage in JSX
+
+Outside of Markdown, you can use the @theme/Admonition component to get the same output.
+
+The types that are accepted are the same as above:
+
+- `note`
+- `tip`
+- `danger`
+- `info`
+- `warning`
+
+Optionally, you can specify an icon by passing a JSX element or a string, or a title
+
+```jsx title=foo.jsx showLineNumbers
+
+export default function MyReactPage() {
+  return (
+    <div>
+      <Aside type="tip" icon="💡" title="Did you know...">
+        <p>Some information</p>
+      </Aside>
+    </div>
+  );
+}
+```
+
+## <Color color="var(--not-nesary-for-now-future-font-color)"> Customizing admonitions </Color>
+
+### Customizing rendering behavior
+
+You can customize how each individual admonition type is rendered through [swizzling](https://docusaurus.io/docs/swizzling).
+
+You can often achieve your goal through a simple wrapper. For example, in the follow example, we swap out the icon for info admonitions only.
+
+```javascript title=src/theme/Admonition.js showLineNumbers
+import React from "react";
+import Admonition from "@theme-original/Admonition";
+
+export default function AdmonitionWrapper(props) {
+  if (props.type !== "info") {
+    return <Aside {...props} />;
+  }
+  return <Aside icon={<MyIcon />} {...props} />;
+}
+```
+
+### Customizing parsing behavior
+
+Admonitions are implemented with a [Remark plugin](https://docusaurus.io/docs/markdown-features/plugins).
+
+The plugin is designed to be configurable.
+
+To customize the Remark plugin for a specific content plugin (docs, blog, pages), pass the options through the admonitions key.
+
+```javascript title=docusaurus.config.js showLineNumbers
+export default {
+  presets: [
+    [
+      "@docusaurus/preset-classic",
+      {
+        docs: {
+          admonitions: {
+            keywords: ["note", "tip", "info", "warning", "danger"],
+            extendDefaults: true,
+          },
+        },
+      },
+    ],
+  ],
+};
+```
+
+The plugin accepts two options:
+
+- `keywords`: An array of keywords that can be used as the type for the admonition.
+- `extendDefaults`: Whether the provided options should be merged into the existing defaults. Defaults to `true`.
+
+The `keyword` will be passed as the `type` prop of the Admonition component.
+
+If you register <Color color="var(--secondary-font-color)"> more types than the default </Color>,
+you are also responsible for providing their implementation—including the container's style, icon, default title text, etc.
+
+You would usually need to [eject](https://docusaurus.io/docs/swizzling#ejecting) the `@theme/Admonition` component, so you could re-use the same infrastructure as the other types.
+
+<br />
+
+---
+
+# Sources
+
+- https://docusaurus.io/docs/markdown-features/admonitions

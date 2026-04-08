@@ -1,0 +1,73 @@
+---
+title: "Image Optimization"
+lastUpdated: 2026-04-08T06:45:26.325Z
+---
+import { Aside } from '@astrojs/starlight/components';
+
+# Image Optimization
+
+Built-in image optimization feature.
+
+
+&#8203;Import [NgOptimizedImage](https://angular.dev/api/common/NgOptimizedImage) into the component.
+```typescript showLineNumbers
+import { NgOptimizedImage } from '@angular/common'
+
+imports: [
+  NgOptimizedImage,
+  // ...
+],
+```
+
+Use `ngSrc` instead of `src`.
+```jsx showLineNumbers
+<img ngSrc="cat.jpg">
+```
+
+## Set image `fetchpriority` to `high` 
+
+Use the `priority` attribute.
+
+```jsx showLineNumbers
+<img ngSrc="cat.jpg" priority>
+```
+
+
+
+
+## Miscellaneous
+
+The `fetchpriority` attribute tells the browser that the resource should be loaded before resources with the default or `low` `fetchpriority`.
+
+<Aside type="tip" title="tip"> 
+
+`fetchpriority=high` should not be overused; marking too many resources as `high` makes none of them meaningfully high priority.
+
+It should be used for LCP resources, typically one to three of them.
+
+</Aside>
+
+The `loading=lazy` attribute tells the browser not to load an image when it is outside the viewport.
+
+The browser loads the image when it is about to become visible in the viewport.
+
+
+```jsx showLineNumbers
+<picture>
+  <source type="image/avif"  sizes="(width<= 1000px) 150px, 800px" srcset="300.avif 300w, 500.avif 500w, 700.avif 700w"/>
+
+  <source type="image/png" srcset="300.png 300w, 500.png 500w, 700.png 700w"/>
+  <img src="cat.png" width="100%">
+</picture>
+```
+`sizes="(<at this screen width>): <reserve this much space for an image>"`
+This lets the browser choose the most appropriate image file from `srcset` for the reserved space.
+<br/>
+
+---
+
+# Sources
+
+- https://angular.dev/guide/image-optimization#
+- https://web.dev/articles/fetch-priority
+- https://web.dev/articles/browser-level-image-lazy-loading

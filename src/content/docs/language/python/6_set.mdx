@@ -1,0 +1,60 @@
+---
+title: "Set"
+tags:
+  - python
+lastUpdated: 2026-04-08T06:45:26.325Z
+---
+import { Aside } from '@astrojs/starlight/components';
+import Color from '../../../../components/Color.astro';
+
+# Set
+
+A set is an <Color color="var(--secondary-font-color)"> unordered </Color> collection with no duplicate elements.
+
+```python showLineNumbers
+basket = {'apple', 'orange', 'apple', 'pear', 'orange', 'banana'}
+
+empty_set = set() 
+```
+
+## union, intersection, difference, and symmetric difference
+
+```python showLineNumbers
+a = set('abcdr')
+b = set('acmlz')
+
+a - b # left join. letters in a but not in b
+# {'r', 'd', 'b'}
+
+a | b # full join. letters in a or b or both
+# {'a', 'c', 'r', 'd', 'b', 'm', 'z', 'l'}
+
+a & b # inner join. letters in both a and b
+# {'a', 'c'}
+
+a ^ b # outer join. letters in a or b but not both
+# {'r', 'd', 'b', 'm', 'z', 'l'}
+```
+
+## Set comprehensions
+
+```python showLineNumbers
+a = {x for x in 'abracadabra' if x not in 'abc'}
+# {'r', 'd'}
+```
+
+## Miscellaneous
+
+<Aside type="note" title="info"> 
+
+More info on set [here](https://docs.python.org/3/library/stdtypes.html#set-types-set-frozenset)
+
+</Aside>
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/datastructures.html#sets

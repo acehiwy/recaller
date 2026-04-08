@@ -1,0 +1,98 @@
+---
+title: "Markdown Features"
+description: Docusaurus Markdown Features
+tags:
+  - docusaurus
+lastUpdated: 2026-04-08T06:45:26.325Z
+---
+import { Aside } from '@astrojs/starlight/components';
+import Color from '../../../../../components/Color.astro';
+
+# Markdown Features
+
+## Standard features
+
+We use [MDX](https://mdxjs.com/) as the parsing engine,
+which can do much more than just parsing [standard Markdown syntax](https://daringfireball.net/projects/markdown/syntax),
+like rendering React components inside your documents as well.
+
+<Aside type="note">
+
+MDX is JSX + Markdown
+
+</Aside>
+
+## Front matter
+
+Front matter is used to <Color color="var(--secondary-font-color)"> add metadata to your Markdown file </Color>.
+All content <Color color="var(--secondary-font-color)"> plugins </Color> have <Color color="var(--primary-font-color)"> their own </Color> <Color color="var(--secondary-font-color)"> front matter schema </Color>,
+and use the front matter to enrich the default metadata inferred from the content or other configuration.
+
+Front matter is provided at the very top of the file, enclosed by three dashes `---`.The content is parsed as [YAML](https://yaml.org/spec/).
+
+```markdown showLineNumbers
+---
+title: My Doc Title
+more_data:
+  - Can be provided
+  - as: objects
+    or: arrays
+---
+```
+
+## Quotes
+
+```markdown showLineNumbers
+> Easy to maintain open source documentation websites.
+>
+> — Docusaurus
+```
+
+## Details
+
+Markdown can embed HTML elements, and details HTML elements are beautifully styled:
+
+```markdown showLineNumbers
+### Details element example
+
+<details>
+  <summary>Toggle me!</summary>
+  <div>
+    <div>This is the detailed content</div>
+    <br/>
+    <details>
+      <summary>
+        Nested toggle! Some surprise inside...
+      </summary>
+      <div>
+        😲😲😲😲😲
+      </div>
+    </details>
+  </div>
+</details>
+```
+#### Result
+
+<details>
+  <summary>Toggle me!</summary>
+  <div>
+    <div>This is the detailed content</div>
+    <br/>
+    <details>
+      <summary>
+        Nested toggle! Some surprise inside...
+      </summary>
+      <div>
+        😲😲😲😲😲
+      </div>
+    </details>
+  </div>
+</details>
+
+<br />
+
+---
+
+# Sources
+
+- https://docusaurus.io/docs/markdown-features

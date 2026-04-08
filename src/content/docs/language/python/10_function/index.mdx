@@ -1,0 +1,287 @@
+---
+title: "Function"
+lastUpdated: 2026-04-08T06:45:26.325Z
+---
+import { Aside } from '@astrojs/starlight/components';
+import Color from '../../../../../components/Color.astro';
+
+# Function
+
+```python showLineNumbers
+def function_name(first_arg, second_arg):
+  # fucntion logic
+  return "something"
+```
+
+call a function
+
+```python showLineNumbers
+function_name('foo', 'bar')
+```
+
+
+## Default Argument
+
+```python showLineNumbers
+def foo(required_arg, optional_arg="default value"):
+  pass
+```
+
+<Aside type="caution" title="caution"> 
+
+The default values are evaluated <Color color="var(--primary-font-color)"> once </Color> at the point of function definition in the defining scope. not each time the function is called.
+
+
+```python showLineNumbers
+i = 5
+
+def f(arg=i):
+    print(arg)
+
+f()
+# output: 6
+```
+
+```python showLineNumbers
+def add_item(item, items=[]):  # BAD
+    items.append(item)
+    return items
+
+print(add_item(1))  # [1]
+print(add_item(2))  # [1, 2]  ← surprise!
+```
+
+Solution:
+```python showLineNumbers
+def add_item(item, items=None):
+    # highlight-start
+    if items is None:
+        items = []
+    # highlight-end
+    items.append(item)
+    return items
+
+```
+</Aside>
+
+
+## Keyword argument
+
+Instead of remembering which argument should be in which position when a function is called, you can use the parameter name to pass an argument regardless of its position.
+
+```python showLineNumbers
+def foo(arg_1, arg_2, arg_3, optional_arg="default value"):
+    pass
+
+foo(arg_2=2, arg_3=3, arg_1=1)
+foo(1, optional_arg=4, arg_3 = 3, arg_2 = 2)
+```
+
+<Aside type="note" title="note"> 
+
+keyword arguments must follow positional arguments
+
+```python
+# highlight-error-next-line
+foo(arg_2 = 2, 1, 3) # SyntaxError: positional argument follows keyword argument
+```
+
+</Aside>
+
+### `**` syntax
+
+`**` allows the caller to pass any number of keyword arguments to the function.
+
+```python showLineNumbers
+def foo(arg_1, arg_2, **keywords):
+  print("arg_1:", arg_1)
+  print("arg_2:", arg_2)
+  print("keywords:", keywords)
+
+
+foo("1", arg_2='2', other="other1", other2="other2")
+# arg_1: 1
+# arg_2: 2
+# keywords: {'other': 'other1', 'other2': 'other2'}
+```
+
+`**` represents all <Color color="var(--primary-font-color)"> other keyword arguments </Color> passed to the function.
+
+<Aside type="note" title="info"> 
+
+`**` 's type is Mapping Type
+
+</Aside>
+
+<Aside type="note" title="note"> 
+
+The order of the keyword arguments is guaranteed to match the order they were provided in the function call.
+
+</Aside>
+
+## `*` syntax (Arbitrary Argument Lists)
+
+`*` allows the caller to pass any number of arguments to the function.
+
+```python showLineNumbers
+def foo(pos1, pos2, *the_rest, kw="kw1"):
+  pass
+
+def concat(*args, sep="/"):
+    return sep.join(args)
+
+concat("earth", "mars", "venus", sep=".")
+```
+
+<Aside type="note" title="info"> 
+
+`*` 's type is Tuple 
+
+</Aside>
+
+## Unpacking argument (`*foo`, `**bar`)
+
+A list can be passed to function as arbitrary argument list using `*<list variable name>` syntax
+
+```python showLineNumbers
+def foo(pos1 , *args):
+  pass
+
+existing_list = [2,3,4]
+# highlight-next-line
+foo("1" , *existing_list)
+# this would be unpacked to
+# foo("1" , 2,3,4)
+```
+
+---
+
+A dictionary can be passed to function as keyword arguments using `**<list variable name>` syntax
+
+```python showLineNumbers
+def foo(pos1 , **keywords):
+  pass
+
+existing_dict = {"key1" : 1 , "key2": 2}
+# highlight-next-line
+foo("1" , **existing_dict)
+# this would be unpacked to
+# foo("1" , key1 = 1, key2 = 2 )
+```
+
+## Lambda Expression
+
+```python showLineNumbers
+lambda a, b: a+b
+```
+
+sugar syntax to define a function
+
+```python showLineNumbers
+result = lambda argument1, argument2: "single expression act as return statement"
+
+# equivalent to
+def anonymous_function(argument1, argument2):
+  return "single expression act as return statement"
+
+result = anonymous_function
+```
+
+## Special parameter
+
+```python showLineNumbers
+def f(pos1, pos2, /, pos_or_kwd, *, kwd1, kwd2):
+  pass
+```
+
+parameter syntax `/` and '*' restrict the way argument passed to the function.
+
+```python showLineNumbers
+def f(pos1, pos2, /, pos_or_kwd, *, kwd1, kwd2):
+      -----------    ----------     ----------
+        |             |                  |
+        |        Positional or keyword   |
+        |                                - Keyword only
+         -- Positional only
+```
+
+`/` restrict its left-side parameter to be positional only
+
+```python showLineNumbers
+def foo(pos1, pos2, /, pos_or_key): # force pos1 and pos2 to be positional. pos_or_key isn't affected , it can be either positional or keyword
+  pass
+
+
+foo(1,2, 3) # valid
+foo(1,2, pos_or_key=3) # valid
+# highlight-error-start
+foo(pos2=2, pos1=1, pos_or_key=3) # invalid
+# TypeError: foo() got some positional-only arguments passed as keyword arguments: 'pos1, pos2'
+# highlight-error-end
+```
+
+
+`*` restrict its right-side parameter to be keyword only
+
+```python showLineNumbers
+def foo(pos1, * , key1, key2):
+  pass
+
+foo(1, key1=1, key2=2) # valid
+# highlight-error-start
+foo(1, 2, 3) # invalid
+# TypeError: foo() takes 1 positional argument but 3 were given
+# highlight-error-end
+```
+
+<Aside type="tip" title="tip"> 
+
+For an API, use positional-only to prevent breaking API changes if the parameter’s name is modified in the future.
+
+</Aside>
+
+## Function Annotations
+
+A info about function parameter's type and its return type
+
+```python showLineNumbers
+def f(ham: str, eggs: str = 'eggs') -> str:
+    print("Annotations:", f.__annotations__)  
+```
+
+<Aside type="note" title="info"> 
+
+The type have no effect on any other part of the function
+
+</Aside>
+
+
+## <Color color="var(--not-require-but-good-to-know-font-color)"> Documentation String </Color>
+
+```python showLineNumbers
+def foo():
+  """Documentation String title.
+  
+  Function description paragraph 1.
+
+  Function description paragraph 1.
+  """
+  pass
+```
+
+### Convention
+
+- First line should be short, concise summary of the function purpose.
+  - Begin with cappital letter
+  - Start after `"""` syntax
+- Second line should be a blank line, If there is more line than the first
+- The following lines should be one or more paragraphs describing a function
+- All non-empty line end with "."
+
+<br/>
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/controlflow.html#defining-functions

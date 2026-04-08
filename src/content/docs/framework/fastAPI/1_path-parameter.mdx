@@ -1,0 +1,138 @@
+---
+title: "Path Parameters"
+tags:
+  - FastAPI
+  - python
+lastUpdated: 2026-04-08T06:45:26.325Z
+---
+import { Aside } from '@astrojs/starlight/components';
+import Color from '../../../../components/Color.astro';
+
+# Path Parameters
+
+```python showLineNumbers
+@app.get("/users/{user_id}/items/{item_id}/")
+async def read_item(item_id: int, user_id: int):
+    return {"item_id": item_id , "user_id": user_id}
+```
+
+<Aside type="caution" title="caution"> 
+
+The path parameter name `item_id` defined in the decorator must be aligned with the argument name `item_id` defined in the function.
+
+Otherwise, FastAPI would interpret the function argument as a query parameter.
+
+</Aside>
+
+## <Color color="var(--secondary-font-color)"> Define argument type </Color>
+
+```python showLineNumbers
+@app.get("/items/{item_id}")
+#  highlight-next-line
+async def read_item(item_id: int):
+    # item_id is parsed from a string to an int by FastAPI
+    return {"item_id": item_id}
+```
+
+Based on the argument type, FastAPI will:
+- validate request value
+- parse the request value into that type
+
+For example, when making the request `GET /foo/bar`:
+```json showLineNumbers
+{
+  "detail": [
+    {
+      "type": "int_parsing",
+      "loc": [
+        "path",
+        "foo_id"
+      ],
+      "msg": "Input should be a valid integer, unable to parse string as an integer",
+      "input": "bar"
+    }
+  ]
+}
+```
+
+<Aside type="note" title="note"> 
+
+Data validation is performed under the hood by `Pydantic`
+
+</Aside>
+
+
+## Path operation defining order
+
+FastAPI reads path operations in the order they are defined.
+
+FastAPI picks the first one that matches.
+
+eg:
+```python showLineNumbers
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/users/{user_id}")
+async def read_user(user_id: str):
+    return {"user_id": user_id}
+
+@app.get("/users/me") # never match
+async def read_user_me():
+    return {"user_id": "the current user"}
+```
+
+The `read_user_me` function will never be executed because the request always matches `/users/{user_id}`.
+
+
+
+## Define set of valid values for path parameters
+
+```python showLineNumbers
+from enum import Enum
+
+# highlight-start
+# must inherit `str` and `Enum`
+class ModelName(str, Enum):
+# highlight-end
+    foo_key = "foo"
+    bar_key = "bar"
+    baz_key = "baz"
+
+@app.get("/models/{model_name}")
+async def get_model(model_name: ModelName):
+    # value here can only be 'foo', 'bar' or 'baz'
+    value = model_name.value
+```
+
+## Path parameters that contain file path
+
+You might want users to pass file paths as path parameters in a request.
+
+For the endpoint `/files/{file_path}`, passing `path/to/user/file` would cause the whole URL to be <Color color="var(--secondary-font-color)"> misinterpreted </Color> as `/file/path/to/user/file`.
+
+FastAPI allows you to extract it as a single string value.
+
+```python showLineNumbers
+# highlight-next-line
+@app.get("/files/{file_path:path}")
+async def read_file(file_path: str):
+    return {"file_path": file_path}
+```
+
+So the request `GET /files/path/to/user/file` would match the `read_file` function, and the `file_path` argument will be `/path/to/user/file`.
+
+<Aside type="tip" title="tip"> 
+
+With `:path`, any `/file` route would match, so it acts like the wildcard route `/file/**`.
+
+</Aside>
+
+<br/>
+
+---
+
+# Sources
+
+- https://fastapi.tiangolo.com/tutorial/path-params

@@ -1,0 +1,303 @@
+---
+title: "Rust"
+tags:
+  - rust
+
+sidebar:
+  order: 10000
+lastUpdated: 2026-04-08T06:45:26.325Z
+---
+import { Aside } from '@astrojs/starlight/components';
+import Color from '../../../../components/Color.astro';
+
+# Rust
+
+## Hello World
+
+### Create Hello World file
+
+```rust title=main.rs showLineNumbers
+fn main() {
+    println!("Hello, world!");
+}
+```
+
+### Compile
+
+Use `rustc` to compile a Rust file.
+
+```bash title=
+rustc main.rs
+```
+
+It will output binary file `main`.
+
+### Run
+
+Executing the output binary file:
+
+```bash title=
+./main
+```
+
+The main function is special: it is always the first code that runs in every executable Rust program
+
+<Aside type="note" title="info">
+
+`println!` calls a Rust macro. If it had called a function instead, it would be entered as println (without the !).
+
+For now, you just need to know that using a ! means that you’re calling a macro instead of a normal function and that macros don’t always follow the same rules as functions.
+
+</Aside>
+
+<Aside type="note" title="info">
+
+Rust is an ahead-of-time compiled language, meaning you can compile a program and give the executable to someone else, and they can run it even without having Rust installed.
+
+</Aside>
+
+## Printing
+
+```rust title=
+println!("foo bar");
+```
+
+### Content replacement
+
+Content replacement uses `{}` as placeholders, and the arguments passed to `println!` provide the values for those placeholders.
+
+```rust title=
+println!("Hello {} from {}", "World" , "Rust");
+// Hello World from Rust
+```
+
+#### Specifying replacement position
+
+Integer and named arguments can be used as placeholders.
+
+```rust title=
+println!("{0}, this is {1}. {1}, this is {0}", "Alice", "Bob");
+// Alice, this is Bob. Bob, this is Alice
+```
+
+```rust title=
+println!("{foo}, this is {bar}. {bar}, this is {foo}", foo="Alice", bar="Bob");
+// Alice, this is Bob. Bob, this is Alice
+```
+
+#### Variable replacement
+
+Variable name can be used as a placeholder
+
+```rust showLineNumbers
+let foo = 50;
+let bar = 100;
+println!("{foo} and {bar}", bar="bar from print argument");
+// 50 and bar from print argument
+```
+
+### <Color color="var(--not-require-but-good-to-know-font-color)"> Formatting </Color>
+
+```rust showLineNumbers
+// Different formatting can be invoked by specifying the format character
+// after a `:`.
+println!("Base 10:               {}",   69420); // 69420
+println!("Base 2 (binary):       {:b}", 69420); // 10000111100101100
+println!("Base 8 (octal):        {:o}", 69420); // 207454
+println!("Base 16 (hexadecimal): {:x}", 69420); // 10f2c
+println!("Base 16 (hexadecimal): {:X}", 69420); // 10F2C
+
+
+// You can right-justify text with a specified width. This will
+// output "    1". (Four white spaces and a "1", for a total width of 5.)
+println!("{number:>5}", number=1);
+
+// You can pad numbers with extra zeroes,
+// and left-adjust by flipping the sign. This will output "10000".
+println!("{number:0<5}", number=1);
+
+let number: f64 = 1.0;
+let width: usize = 5;
+println!("{number:>width$}");
+```
+
+To obtain user input and then print the result as output, we need to bring the io input/output library into scope. The io library comes from the standard library, known as std:
+
+```rust title=
+use std::io;
+```
+
+<Aside type="tip" title="later" icon="">
+
+By default, Rust has a set of items defined in the standard library that it brings into the scope of every program. This set is called the prelude, and you can see everything in it in the [standard library documentation](https://doc.rust-lang.org/std/prelude/index.html).
+
+</Aside>
+
+If a type you want to use isn’t in the prelude, you have to bring that type into scope explicitly with a use statement.
+
+# Create Variable
+
+assigning value
+
+```rust title=
+let guess = String::new();
+```
+
+The `::` syntax in the `::new` line indicates that new is an <Color color="var(--secondary-font-color)"> associated function of </Color> the `String` type.
+
+An associated function is a function that’s implemented on a type, in this case `String`.
+
+`String::new()` returns a new empty instance of a [String](https://doc.rust-lang.org/std/string/struct.String.html)
+
+Calling function of a module
+
+```rust showLineNumbers
+    io::stdin()
+        .read_line(&mut guess)
+        .expect("Failed to read line");
+```
+
+call the stdin function from the io module
+
+<Aside type="tip" title="tip">
+
+If we hadn’t imported the io library with use std::io; at the beginning of the program, we could still use the function by writing this function call as std::io::stdin. The stdin function returns an instance of std::io::Stdin, which is a type that represents a handle to the standard input for your terminal.
+
+</Aside>
+
+<Aside type="danger" title="clean up">
+
+Next, the line .read_line(&mut guess) calls the read_line method on the standard input handle to get input from the user. We’re also passing &mut guess as the argument to read_line to tell it what string to store the user input in. The full job of read_line is to take whatever the user types into standard input and append that into a string (without overwriting its contents), so we therefore pass that string as an argument. The string argument needs to be mutable so the method can change the string’s content.
+
+</Aside>
+
+The `&` indicates that this argument is a reference, which gives you a way to let multiple parts of your code access one piece of data without needing to copy that data into memory multiple times.
+
+References are <Color color="var(--primary-font-color)"> immutable </Color> <Color color="var(--secondary-font-color)"> by default </Color>.
+Hence, you need to write `&mut` guess rather than `&guess` to make it mutable.
+
+## Handling Potential Failure with Result
+
+```rust showLineNumbers
+    io::stdin()
+        .read_line(&mut guess)
+        // highlight-next-line
+        .expect("Failed to read line");
+```
+
+`read_line` return [Result](https://doc.rust-lang.org/std/result/enum.Result.html)
+
+<Aside type="tip" title="later" icon="">
+
+If the `read_line` method returns an `Err`, it would likely be the result of an error coming from the underlying operating system.
+
+</Aside>
+
+<Aside type="tip" title="later" icon="">
+
+If you don’t call `expect`, the program <Color color="var(--secondary-font-color)"> will compile </Color>, but you’ll get a warning:
+
+```text showLineNumbers
+$ cargo build
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+warning: unused `Result` that must be used
+  --> src/main.rs:10:5
+   |
+10 |     io::stdin().read_line(&mut guess);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_must_use)]` on by default
+   = note: this `Result` may be an `Err` variant, which should be handled
+
+warning: `guessing_game` (bin "guessing_game") generated 1 warning
+    Finished dev [unoptimized + debuginfo] target(s) in 0.59s
+```
+
+Rust warns that you haven’t used the `Result` value returned from `read_line`, indicating that the program hasn’t handled a possible error.
+
+</Aside>
+
+The project we’ve been building is a <Color color="var(--secondary-font-color)"> binary crate </Color>, which is an executable.
+
+The [rand crate](https://crates.io/crates/rand) is a <Color color="var(--secondary-font-color)"> library crate </Color>, which contains code that is intended to be used in other programs and <Color color="var(--secondary-font-color)"> can’t be executed on its own </Color>.
+
+The specifier `0.8.5` is actually shorthand for `^0.8.5`
+
+&#8203;<Color color="var(--primary-font-color)"> An update is allowed if the new version number does not modify the left-most non-zero digit in the major, minor, patch grouping. </Color>
+
+```text showLineNumbers
+1.2.3  :=  >=1.2.3, <2.0.0
+1.2    :=  >=1.2.0, <2.0.0
+1      :=  >=1.0.0, <2.0.0
+0.2.3  :=  >=0.2.3, <0.3.0
+0.2    :=  >=0.2.0, <0.3.0
+0.0.3  :=  >=0.0.3, <0.0.4
+0.0    :=  >=0.0.0, <0.1.0
+0      :=  >=0.0.0, <1.0.0
+```
+
+after adding dependencies run `cargo build` will
+
+- download the crates
+- compiles crates and its dependencies
+- compiles current project
+
+update local crates versions
+
+update all dependencies
+
+```bash title=
+cargo update
+```
+
+update specific dependency
+
+```bash title=
+cargo update -p <crate name> -p <another crate name>
+```
+
+Set a specific dependency to a specific version:
+
+```bash title=
+cargo update -p <crate name> --precise 1.2.3
+```
+
+range expression as an argument
+
+```rust showLineNumbers
+rand::thread_rng()
+    // highlight-next-line
+    .gen_range(1..=100);
+```
+
+we’re using here takes the form `start..=end` and is <Color color="var(--secondary-font-color)"> inclusive </Color> on the lower and upper bounds
+
+The `cmp` method compares two values and can be called on anything that can be compared.
+
+```rust showLineNumbers
+let foo = 5;
+foo.cmp( /** reference of value to be compared  */ );
+```
+
+Rust default number type is `i32`
+
+`String` instance have `.trim()` method
+
+The `loop` keyword creates an infinite loop.
+
+The underscore, `_`, is a catchall value:
+
+```rust showLineNumbers
+let guess: u32 = match guess.trim().parse() {
+    Ok(num) => num,
+    Err(_) => continue,
+};
+```
+
+<br />
+
+---
+
+# Sources
+
+- https://doc.rust-lang.org/rust-by-example/hello/print.html
