@@ -12,9 +12,11 @@ RUN apt-get update -y && apt-get install --no-install-recommends -y \
   vim \
   # for handle Linux signals
   dumb-init \
-  # for Gemini Code Assist
+  # for tools to make requests
   curl \
   ca-certificates \
+  # for port forwarding
+  socat \
   && rm -rf /var/lib/apt/lists/*
 
 # create user if not exist

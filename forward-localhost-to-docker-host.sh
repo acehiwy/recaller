@@ -1,0 +1,1 @@
+socat TCP4-LISTEN:28000,fork,bind=127.0.0.1 TCP4:host.docker.internal:28000 &
