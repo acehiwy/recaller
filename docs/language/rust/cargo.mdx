@@ -1,7 +1,7 @@
 ---
-sidebar_position: 20000
 tags:
   - rust
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Cargo
@@ -14,29 +14,29 @@ Cargo is Rust's build tool and package manager.
 cargo new <project name>
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 Use `--lib` option to create library crate.
 
 Eg. `cargo new restaurant --lib`
 
-</Admonition>
+</Info>
 
 ![](assets/cargo-created-project-structure.png)
 
 Cargo also initialize a new Git repository along with a `.gitignore` file.
 
-<Admonition type="info" title="info">
+<Info>
 
 Git files won’t be generated if you run cargo new within an existing Git repository.
 
 You can override this behavior by using `--vcs=git` option
 
-</Admonition>
+</Info>
 
 ## `Cargo.toml`
 
-`Cargo.toml` is the manifest file for Rust. It's where you keep <Color color="var(--secondary-font-color)"> metadata for your project </Color>, as well as <Color color="var(--secondary-font-color)"> dependencies </Color>.
+`Cargo.toml` is the manifest file for Rust. It's where you keep <span style={{color: "var(--secondary-font-color)"}}> metadata for your project </span>, as well as <span style={{color: "var(--secondary-font-color)"}}> dependencies </span>.
 
 ```toml title=Cargo.toml showLineNumbers
 [package]
@@ -61,13 +61,13 @@ cargo add <crate name>[@<crate version>]
 cargo add ferris-says@0.2
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 In Rust, packages of code are referred to as crates.
 
 [crates.io](https://crates.io/) is a Rust package registry
 
-</Admonition>
+</Info>
 
 ## Project structure
 
@@ -89,15 +89,15 @@ cargo build
 
 This command creates an executable file in `target/debug/hello_cargo` rather than in your current directory.
 
-Because the <Color color="var(--secondary-font-color)"> default build is a debug build </Color>, Cargo puts the binary in a directory named `debug`.
+Because the <span style={{color: "var(--secondary-font-color)"}}> default build is a debug build </span>, Cargo puts the binary in a directory named `debug`.
 
-<Admonition type="info" title="info">
+<Info>
 
 Running cargo build for the first time also causes Cargo to create a new file at the top level: `Cargo.lock`.
 
-This file keeps track of the <Color color="var(--secondary-font-color)"> exact versions of dependencies </Color> in your project.
+This file keeps track of the <span style={{color: "var(--secondary-font-color)"}}> exact versions of dependencies </span> in your project.
 
-</Admonition>
+</Info>
 
 ### Run
 
@@ -119,13 +119,13 @@ cargo run
 cargo check
 ```
 
-This command quickly checks your code to make sure it compiles but <Color color="var(--secondary-font-color)"> doesn't produce an executable </Color>
+This command quickly checks your code to make sure it compiles but <span style={{color: "var(--secondary-font-color)"}}> doesn't produce an executable </span>
 
 Cargo check is much faster than `cargo build` because it skips the step of producing an executable
 
 ## Build for Release
 
-When your project is finally ready for release, you can use `cargo build --release` to compile it <Color color="var(--secondary-font-color)"> with optimizations </Color>.
+When your project is finally ready for release, you can use `cargo build --release` to compile it <span style={{color: "var(--secondary-font-color)"}}> with optimizations </span>.
 
 This command will create an executable in `target/release` instead of `target/debug`. The optimizations make your Rust code run faster,
 

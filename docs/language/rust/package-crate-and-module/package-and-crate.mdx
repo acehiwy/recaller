@@ -1,3 +1,7 @@
+---
+lastUpdated: 2026-04-08T09:00:42.959Z
+---
+
 # Packages and Crates
 
 ## Crate
@@ -15,35 +19,35 @@ A crate can come in one of two forms:
 
 ### Binary crate
 
-Binary crates are programs you can <Color color="var(--secondary-font-color)"> compile to an executable </Color> that you can run.
+Binary crates are programs you can <span style={{color: "var(--secondary-font-color)"}}> compile to an executable </span> that you can run.
 
 It must have `main` function.
 
 ### Library crate
 
-Library crates don’t have a `main` function, and they <Color color="var(--secondary-font-color)"> don’t compile to an executable </Color>.
+Library crates don’t have a `main` function, and they <span style={{color: "var(--secondary-font-color)"}}> don’t compile to an executable </span>.
 
-Instead, they define functionality <Color color="var(--secondary-font-color)"> intended to be shared </Color> with multiple projects.
+Instead, they define functionality <span style={{color: "var(--secondary-font-color)"}}> intended to be shared </span> with multiple projects.
 
-<Admonition type="info" title="info">
+<Info>
 
 The crate root is a file that the Rust compiler starts compliing code from and makes up the root module of your crate.
 
-</Admonition>
+</Info>
 
 ## Packages
 
-A package is a <Color color="var(--secondary-font-color)"> bundle of one or more crates </Color> (Binary / Library crate) that provides a set of functionality.
+A package is a <span style={{color: "var(--secondary-font-color)"}}> bundle of one or more crates </span> (Binary / Library crate) that provides a set of functionality.
 
 A package contains a `Cargo.toml` file that describes how to build those crates.
 
 `cargo` command line is a package that contains binary crate for CLI and a library crate that binary crate depends on
 
-<Admonition type="caution" title="???">
+<Warning>
 
 A package can contain as many binary crates as you like, but at most only one library crate.
 
-</Admonition>
+</Warning>
 
 `src/main.rs` is the crate root of a binary crate.
 

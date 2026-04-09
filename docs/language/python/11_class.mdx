@@ -1,6 +1,5 @@
 ---
-last_update:
-  date: 2025-10-01T13:56:30.747Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 tags:
   - python
 ---
@@ -9,7 +8,7 @@ tags:
 
 class is an object bundling state and functionality to manipulate its state.
 
-&#8203;<Color color="var(--not-require-but-good-to-know-font-color)">Code below is used as reference on futher section on this page</Color>
+&#8203;<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>Code below is used as reference on futher section on this page</span>
 
 ```python title= showLineNumbers
 class MyClass:
@@ -41,7 +40,7 @@ first argument, `self`, refer to instance of a class itself
 instance = MyClass('foo')
 ```
 
-When method is called, <Color color="var(--secondary-font-color)">an instance is passed as the first argument</Color>
+When method is called, <span style={{color: "var(--secondary-font-color)"}}>an instance is passed as the first argument</span>
 
 ```python title= showLineNumbers
 instance.f()
@@ -50,15 +49,15 @@ instance.f()
 MyClass.f(instance)
 ```
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 Word `self` has no special meaning in python
 
 `self` is just convention. It can be any name
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 An instance is still attached to the method even if the method is called sometime later
 
@@ -74,7 +73,7 @@ print(temp_f('bar'))
 # barfoo
 ```
 
-</Admonition>
+</Note>
 
 
 ## Class variable and instance variable
@@ -94,7 +93,7 @@ class Dog:
 ```
 
 
-<Admonition type="caution" title="caution">
+<Warning>
 
 After class definition or instantiation
 
@@ -129,7 +128,7 @@ print(ins.i)
 
 </details>
 
-</Admonition>
+</Warning>
 
 ## Inheritance
 ```python title= showLineNumbers
@@ -184,12 +183,12 @@ class DerivedClassName(Base1, Base2, Base3):
 
 This means `DerivedClassName` class has all attribute of `Base1`, `Base2` and `Base3` combined
 
-When attribute is referenced, Python does depth-first / left-to-right search and <Color color="var(--secondary-font-color)">not searching for same class twice</Color>
+When attribute is referenced, Python does depth-first / left-to-right search and <span style={{color: "var(--secondary-font-color)"}}>not searching for same class twice</span>
 
 Eg. if attribute `foo` is called, python will search from
 1. `DerivedClassName`
 1. `Base1` class
-    1. Parent class of `Base1` and continue <Color color="var(--secondary-font-color)">recursivly</Color> through its grandparent class using same left-to-right searching
+    1. Parent class of `Base1` and continue <span style={{color: "var(--secondary-font-color)"}}>recursivly</span> through its grandparent class using same left-to-right searching
 1. `Base2` class
 1. `Base3` class
 
@@ -206,11 +205,11 @@ Notice that `Base2` inherit `Bar` but `Bar` has already been searched in `Base1`
 </details>
 
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 More info on [Method Resolution Order](https://docs.python.org/3/howto/mro.html#python-2-3-mro)
 
-</Admonition>
+</Info>
 
 
 ## Private variable
@@ -260,7 +259,7 @@ Foo._Foo__2under1_
 ```
 
 
-## <Color color="var(--not-require-but-good-to-know-font-color)">Attribute references</Color>
+## <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>Attribute references</span>
 
 is accessing class's attribute or class's method (apply for both a static class and class instance)
 

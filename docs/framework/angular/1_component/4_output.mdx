@@ -1,6 +1,5 @@
 ---
-last_update:
-  date: 2025-11-15T07:21:35.229Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Custom event
@@ -20,14 +19,14 @@ export class Foo {
 <app-foo (bar)="dosomethingWithEvent($event)" />
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 Angular custom events do not bubble up the DOM
 
-</Admonition>
+</Info>
 
-<!--##########################################################################################-->
-<!--##########################################################################################-->
+
+
 
 ## Emiting event
 
@@ -52,8 +51,8 @@ export class App {
 }
 ```
 
-<!--##########################################################################################-->
-<!--##########################################################################################-->
+
+
 
 
 ## Output alias
@@ -65,18 +64,18 @@ export class CustomSlider {
 }
 ```
 
-<Admonition type="tip" title="tip"> 
+<Tip> 
 
 Avoid prefixing output names with "on"
 
-</Admonition>
+</Tip>
 
 
-<!--##########################################################################################-->
-<!--##########################################################################################-->
 
 
-## <Color color="var(--not-require-but-good-to-know-font-color)">Subscribing to outputs programmatically</Color>
+
+
+## <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>Subscribing to outputs programmatically</span>
 
 When creating component dynamically, you can subscribe to output by
 ```typescript title= showLineNumbers

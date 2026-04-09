@@ -1,7 +1,6 @@
 ---
 
-last_update:
-  date: 2025-10-01T13:56:30.747Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 tags:
   - python
 ---
@@ -28,11 +27,11 @@ for i in range(5): # or range(2,5) -> 2,3,4
 
 </details>
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 The `range()` function returns an [iterable](https://docs.python.org/3/glossary.html#term-iterable).
 
-</Admonition>
+</Info>
 
 
 
@@ -61,11 +60,11 @@ for key, value in users.copy().items():
     # do something
 ```
 
-<Admonition type="caution" title="caution"> 
+<Warning> 
 
 Modifying and iterating over the same collection should be avoided. Use a copy instead, for example `<collection>.copy()`.
 
-</Admonition>
+</Warning>
 
 ### `break` and `continue`
 
@@ -81,14 +80,14 @@ for ... :
     break
 ```
 
-The `break` statement exits the <Color color="var(--secondary-font-color)"> innermost enclosing </Color> `for` or `while` loop.
+The `break` statement exits the <span style={{color: "var(--secondary-font-color)"}}> innermost enclosing </span> `for` or `while` loop.
 
 ---
 
 ### `else` on Loop
 
 
-If the loop <Color color="var(--secondary-font-color)"> finishes without </Color> executing the `break`, the `else` clause executes.
+If the loop <span style={{color: "var(--secondary-font-color)"}}> finishes without </span> executing the `break`, the `else` clause executes.
 
 ```python title= showLineNumbers
 for ... :

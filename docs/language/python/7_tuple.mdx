@@ -1,13 +1,12 @@
 ---
-last_update:
-  date: 2025-10-01T13:56:30.747Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 tags:
   - python
 ---
 
 # Tuple
 
-Tuples are <Color color="var(--primary-font-color)"> immutable </Color> sequences
+Tuples are <span style={{color: "var(--primary-font-color)"}}> immutable </span> sequences
 
 ```python title= showLineNumbers
 t = (12345, 54321, 'hello!')  # or declare without (). eg, t = 12345, 54321, 'hello!'
@@ -30,7 +29,7 @@ u
 # ((12345, 54321, 'hello!'), (1, 2, 3, 4, 5))
 ```
 
-<Admonition type="caution" title="caution"> 
+<Warning> 
 
 Single item tuple is constructed with trailing comma, `,`
 
@@ -41,13 +40,13 @@ this_is_tuple = ("hello",) # notice trailing comma
 this_is_also_tuple = "hello", # notice trailing comma
 ```
 
-</Admonition>
+</Warning>
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 Empty tuple syntax: `empty = ()`
 
-</Admonition>
+</Info>
 
 
 ## Tuple comprehension
@@ -84,17 +83,17 @@ print(my_tuple_instance[0] , my_tuple_instance[1])
 
 Each field name needs to be a valid string that can be used to create an attribute name.
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 Field names cannot start with an underscore, `_`.
 
-</Admonition>
+</Note>
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 `namedtuple` is a subclass of tuple.
 
-</Admonition>
+</Info>
 
 ### Methods
 

@@ -1,7 +1,7 @@
 ---
-sidebar_position: 3000
 tags:
   - openapi
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Content of Message Bodies
@@ -12,15 +12,15 @@ This field can be found both in [Response Objects](https://spec.openapis.org/oas
 
 ![response object](assets/response-object.png)
 
-This allows returning / accepting content in <Color color="var(--secondary-font-color)"> different formats </Color>, each one with a different structure described by the [Media Type Object](https://spec.openapis.org/oas/v3.1.0#media-type-object).
+This allows returning / accepting content in <span style={{color: "var(--secondary-font-color)"}}> different formats </span>, each one with a different structure described by the [Media Type Object](https://spec.openapis.org/oas/v3.1.0#media-type-object).
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 Wildcards are accepted for the media types, with the more specific ones taking precedence over the generic ones.
 
-</Admonition>
+</Note>
 
-<!-- prettier-ignore -->
+
 ```yaml title= showLineNumbers
 content:
   application/json:
@@ -33,11 +33,11 @@ content:
 
 ## Media Type Object
 
-The [Media Type Object](https://spec.openapis.org/oas/v3.1.0#media-type-object) describes the <Color color="var(--secondary-font-color)"> structure of the content </Color> and <Color color="var(--secondary-font-color)"> provides examples </Color> for documentation and mocking purposes.
+The [Media Type Object](https://spec.openapis.org/oas/v3.1.0#media-type-object) describes the <span style={{color: "var(--secondary-font-color)"}}> structure of the content </span> and <span style={{color: "var(--secondary-font-color)"}}> provides examples </span> for documentation and mocking purposes.
 
 The structure is described in the `schema` field
 
-<!-- prettier-ignore -->
+
 ```yaml title= showLineNumbers
 content:
   application/json:
@@ -47,7 +47,7 @@ content:
 
 ## Schema Object
 
-The [Schema Object](https://spec.openapis.org/oas/v3.1.0#schema-object) <Color color="var(--secondary-font-color)"> defines a data type </Color> which can be a primitive (integer, string, …), an array or an object depending on its `type` field.
+The [Schema Object](https://spec.openapis.org/oas/v3.1.0#schema-object) <span style={{color: "var(--secondary-font-color)"}}> defines a data type </span> which can be a primitive (integer, string, …), an array or an object depending on its `type` field.
 
 `type` is a string(YAML format) and its possible values are:
 
@@ -98,23 +98,23 @@ content:
         type: integer
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
-**<Color color="var(--writer-additional-note-font-color)"> //\\\\ </Color>** All items inside array have to be the same type.
+**<span style={{color: "var(--writer-additional-note-font-color)"}}> //\\\\ </span>** All items inside array have to be the same type.
 
 It means you can only define a single `items`'s type per array.
 
-</Admonition>
+</Note>
 
-<Admonition type="info" title="info">
+<Info>
 
 The size of the array can be limited with `minItems` and `maxItems`.
 
-</Admonition>
+</Info>
 
 ### Object type
 
-Object types <Color color="var(--secondary-font-color)"> must have </Color> a `properties` field listing the properties of the object.
+Object types <span style={{color: "var(--secondary-font-color)"}}> must have </span> a `properties` field listing the properties of the object.
 
 This field is a key-value pairing property names (as a key) with a [Schema Object](https://spec.openapis.org/oas/v3.1.0#schema-object)(as a value).
 
@@ -132,7 +132,7 @@ content:
           type: number
 ```
 
-### <Color color="var(--not-require-but-good-to-know-font-color)"> Example </Color>
+### <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> Example </span>
 
 From [Tic Tac Toe sample API](https://oai.github.io/Documentation/examples/tictactoe.yaml)
 

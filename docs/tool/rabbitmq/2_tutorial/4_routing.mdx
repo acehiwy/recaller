@@ -1,14 +1,15 @@
 ---
 tags:
   - rabbitmq
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Routing
 
-In this tutorial we're going to make it possible to subscribe only to a <Color color="var(--secondary-font-color)"> subset of the messages </Color>.
+In this tutorial we're going to make it possible to subscribe only to a <span style={{color: "var(--secondary-font-color)"}}> subset of the messages </span>.
 
-For example, we will be able to direct <Color color="var(--secondary-font-color)"> only critical </Color> error <Color color="var(--secondary-font-color)"> messages </Color> to the log file (to save disk space),
-while still being able to print <Color color="var(--secondary-font-color)"> all </Color> of the <Color color="var(--secondary-font-color)"> log messages on the console </Color>.
+For example, we will be able to direct <span style={{color: "var(--secondary-font-color)"}}> only critical </span> error <span style={{color: "var(--secondary-font-color)"}}> messages </span> to the log file (to save disk space),
+while still being able to print <span style={{color: "var(--secondary-font-color)"}}> all </span> of the <span style={{color: "var(--secondary-font-color)"}}> log messages on the console </span>.
 
 ## Bindings
 
@@ -27,20 +28,20 @@ channel.bindQueue(
 
 The meaning of a binding key depends on the exchange type.
 
-<Admonition type="note" title="note">
+<Note>
 
 The fanout exchanges simply ignored binding key value.
 
-</Admonition>
+</Note>
 
 ## Direct exchange
 
 Our logging system from the previous tutorial broadcasts all messages to all consumers.
-We want to extend that to allow <Color color="var(--secondary-font-color)"> filtering messages </Color> based on their severity.
+We want to extend that to allow <span style={{color: "var(--secondary-font-color)"}}> filtering messages </span> based on their severity.
 
 We will use a `direct` exchange. The routing algorithm behind a direct exchange is simple
 
-- A message goes to the queues whose <Color color="var(--primary-font-color)"> binding key </Color> <Color color="var(--secondary-font-color)"> exactly matches </Color> the <Color color="var(--primary-font-color)"> routing key </Color> of the message.
+- A message goes to the queues whose <span style={{color: "var(--primary-font-color)"}}> binding key </span> <span style={{color: "var(--secondary-font-color)"}}> exactly matches </span> the <span style={{color: "var(--primary-font-color)"}}> routing key </span> of the message.
 
 ![direct exchange](../assets/direct-exchange.png)
 
@@ -52,21 +53,21 @@ In such a setup a message published to the exchange with a routing key `orange` 
 
 Messages with a routing key of `black` or `green` will go to `Q2`.
 
-<Admonition type="caution" title="caution">
+<Warning>
 
 In this setup, all other messages without binding key will be discarded.
 
-</Admonition>
+</Warning>
 
 ## Multiple bindings
 
 ![Direct Exchange Multiple Binding](../assets/direct-exchange-multiple-binding.png)
 
-It is perfectly legal to <Color color="var(--secondary-font-color)"> bind multiple queues </Color> with the <Color color="var(--secondary-font-color)"> same binding key </Color>.
+It is perfectly legal to <span style={{color: "var(--secondary-font-color)"}}> bind multiple queues </span> with the <span style={{color: "var(--secondary-font-color)"}}> same binding key </span>.
 
 In our example we could add a binding between `X` and `Q1` with binding key `black`.
 
-In that case, the direct exchange will <Color color="var(--secondary-font-color)"> behave like fanout </Color> and will <Color color="var(--secondary-font-color)"> broadcast the message to all the <Color color="var(--primary-font-color)"> matching </Color> queues </Color>.
+In that case, the direct exchange will <span style={{color: "var(--secondary-font-color)"}}> behave like fanout </span> and will <span style={{color: "var(--secondary-font-color)"}}> broadcast the message to all the <span style={{color: "var(--primary-font-color)"}}> matching </span> queues </span>.
 
 ## Publishing / Subscribing messages
 

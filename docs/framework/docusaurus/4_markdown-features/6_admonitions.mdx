@@ -1,15 +1,13 @@
 ---
 description: Docusaurus Admonitions
-sidebar_position: 6000
 tags:
   - docusaurus
-last_update:
-  date: 2025-09-28T16:19:38.197Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Admonitions
 
-We have a special admonitions syntax by wrapping content <Color color="var(--secondary-font-color)"> ( text , markdown , jsx ) </Color> with a set of 3 colons,
+We have a special admonitions syntax by wrapping content <span style={{color: "var(--secondary-font-color)"}}> ( text , markdown , jsx ) </span> with a set of 3 colons,
 followed by a label denoting its type.
 
 ```markdown title= showLineNumbers
@@ -44,43 +42,42 @@ Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
 :::
 ```
 
-<Admonition type="note">
+<Note>
 
 Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
 
-</Admonition>
+</Note>
 
-<Admonition type="tip">
-
-Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
-
-</Admonition>
-
-<Admonition type="info">
+<Tip>
 
 Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
 
-</Admonition>
+</Tip>
 
-<Admonition type="warning">
-
-Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
-
-</Admonition>
-
-<Admonition type="danger">
+<Info>
 
 Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
 
-</Admonition>
+</Info>
+
+<Warning>
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+</Warning>
+
+<Danger>
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+</Danger>
 
 ## Usage with Prettier
 
-If you use [Prettier](https://prettier.io/) to format your Markdown files, Prettier might auto-format your code to <Color color="var(--secondary-font-color)"> invalid admonition syntax </Color>.
+If you use [Prettier](https://prettier.io/) to format your Markdown files, Prettier might auto-format your code to <span style={{color: "var(--secondary-font-color)"}}> invalid admonition syntax </span>.
 
 To avoid this problem, add empty lines around the starting and ending directives.
 
-<!-- prettier-ignore -->
 ```markdown title= showLineNumbers
 <!-- Prettier doesn't change this -->
 :::note
@@ -100,7 +97,7 @@ Hello world
 
 ## Specifying title
 
-You may also specify an <Color color="var(--secondary-font-color)"> optional </Color> title.
+You may also specify an <span style={{color: "var(--secondary-font-color)"}}> optional </span> title.
 
 ```markdown title= showLineNumbers
 :::note[Your Title]
@@ -110,11 +107,11 @@ Some **content** with _Markdown_ `syntax`.
 :::
 ```
 
-<Admonition type="note" title="Your Title">
+<Note>
 
 Some **content** with _Markdown_ `syntax`.
 
-</Admonition>
+</Note>
 
 ## Usage in JSX
 
@@ -136,15 +133,15 @@ import Admonition from "@theme/Admonition";
 export default function MyReactPage() {
   return (
     <div>
-      <Admonition type="tip" icon="💡" title="Did you know...">
+      <Tip>
         <p>Some information</p>
-      </Admonition>
+      </Tip>
     </div>
   );
 }
 ```
 
-## <Color color="var(--not-nesary-for-now-future-font-color)"> Customizing admonitions </Color>
+## <span style={{color: "var(--not-nesary-for-now-future-font-color)"}}> Customizing admonitions </span>
 
 ### Customizing rendering behavior
 
@@ -198,7 +195,7 @@ The plugin accepts two options:
 
 The `keyword` will be passed as the `type` prop of the Admonition component.
 
-If you register <Color color="var(--secondary-font-color)"> more types than the default </Color>,
+If you register <span style={{color: "var(--secondary-font-color)"}}> more types than the default </span>,
 you are also responsible for providing their implementation—including the container's style, icon, default title text, etc.
 
 You would usually need to [eject](https://docusaurus.io/docs/swizzling#ejecting) the `@theme/Admonition` component, so you could re-use the same infrastructure as the other types.

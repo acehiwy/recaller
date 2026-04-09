@@ -1,10 +1,7 @@
 ---
-sidebar_position: 40000
 tags:
   - rust
-last_update:
-  date: 2026-03-08T05:30:36.255Z
-
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Data Types
@@ -33,13 +30,13 @@ An integer is a number without a fractional component.
 
 Signed and unsigned refer to whether it's possible for the number to be negative(signed).
 
-<Color color="var(--not-require-but-good-to-know-font-color)">
+<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>
 
 In other words, whether the number needs to have a sign with it (signed) or
 whether it will only ever be positive and can therefore be represented without
 a sign (unsigned)
 
-</Color>
+</span>
 
 | Length  | Signed | Unsigned |
 | ------- | ------ | -------- |
@@ -50,14 +47,14 @@ a sign (unsigned)
 | 128-bit | i128   | u128     |
 | arch    | isize  | usize    |
 
-<Admonition type="note" title="note">
+<Note>
 
 `isize` and `usize` type are
 
 - 64-bits integer length on 64bit computer architecture
 - 32-bits integer length for 32bit computer architecture
 
-</Admonition>
+</Note>
 
 <details>
 
@@ -88,19 +85,19 @@ a sign (unsigned)
 - Signed: -170,141,183,460,469,231,731,687,303,715,884,105,728 to 170,141,183,460,469,231,731,687,303,715,884,105,727
 - Unsigned: 0 to 340,282,366,920,938,463,463,374,607,431,768,211,455
 
-&#8203;<Color color="var(--secondary-font-color)"> Signed </Color> variant can store numbers
+&#8203;<span style={{color: "var(--secondary-font-color)"}}> Signed </span> variant can store numbers
 from $-(2^{n - 1})$ to $(2^{n - 1})-1$ inclusive, where `n` is the number of bits.
 
-&#8203;<Color color="var(--secondary-font-color)"> Unsigned </Color> variants can store
+&#8203;<span style={{color: "var(--secondary-font-color)"}}> Unsigned </span> variants can store
 numbers from 0 to $2n - 1$
 
 </details>
 
-<Admonition type="note" title="note">
+<Note>
 
 Integer types default to `i32`.
 
-</Admonition>
+</Note>
 
 Integer can also be represent in these format
 
@@ -112,7 +109,7 @@ Integer can also be represent in these format
 | Binary          | 0b1111_0000    |
 | Byte            | (u8 only) b'A' |
 
-<Admonition type="note" title="note">
+<Note>
 
 Integer division will be rounded down
 
@@ -123,13 +120,13 @@ println!("{}, {}", 9/5, -9/8);
 // -9/8 = -1.125 which round down to -1
 ```
 
-</Admonition>
+</Note>
 
-<Admonition type="tip" title="later" icon="">
+<Tip>
 
 [Integer Overflow](https://doc.rust-lang.org/book/ch03-02-data-types.html#integer-overflow)
 
-</Admonition>
+</Tip>
 
 ### Floating-Point
 
@@ -142,17 +139,17 @@ let y: f32 = 3.0; // f32
 
 `f64`, 64 bits in size
 
-<Admonition type="note" title="note">
+<Note>
 
 The default type is f64
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note">
+<Note>
 
 All floating-point types are signed
 
-</Admonition>
+</Note>
 
 ### Booleans
 
@@ -161,7 +158,7 @@ let foo = true;
 let bar: bool = false;
 ```
 
-Booleans are one <Color color="var(--secondary-font-color)"> byte </Color> in size
+Booleans are one <span style={{color: "var(--secondary-font-color)"}}> byte </span> in size
 
 ### Character Type
 
@@ -171,19 +168,19 @@ let z: char = 'ℤ'; // with explicit type annotation
 let heart_eyed_cat = '😻';
 ```
 
-`char` type use <Color color="var(--secondary-font-color)"> single </Color> quote.
+`char` type use <span style={{color: "var(--secondary-font-color)"}}> single </span> quote.
 
 `char` type is 4 bytes in size and represents a Unicode Scalar Value.
 
-<Admonition type="note" title="note">
+<Note>
 
 zero-width spaces are valid `char` values
 
-</Admonition>
+</Note>
 
 ## Compound Types
 
-Compound types can group <Color color="var(--secondary-font-color)"> multiple values </Color> into one type.
+Compound types can group <span style={{color: "var(--secondary-font-color)"}}> multiple values </span> into one type.
 
 ### Tuple Type
 
@@ -206,7 +203,7 @@ let six_point_four = x.1;
 let one = x.2;
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 The tuple without any values has a special name, `unit`.
 
@@ -218,15 +215,15 @@ let fooUnit: () = ();
 
 Expressions implicitly return the `unit` value if they don't return any other value.
 
-</Admonition>
+</Info>
 
 ### Array
 
-&#8203;<Color color="var(--not-require-but-good-to-know-font-color)"> An array is a collection of multiple values. </Color>
+&#8203;<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> An array is a collection of multiple values. </span>
 
-Every element of an array must have the <Color color="var(--secondary-font-color)"> same type </Color>.
+Every element of an array must have the <span style={{color: "var(--secondary-font-color)"}}> same type </span>.
 
-Arrays have a <Color color="var(--secondary-font-color)"> fixed </Color> length.
+Arrays have a <span style={{color: "var(--secondary-font-color)"}}> fixed </span> length.
 
 ```rust title= showLineNumbers
 let a = [1, 2, 3, 4, 5];
@@ -248,15 +245,15 @@ let foo = a[0];
 let bar = a[1];
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 Rust will `panic` if you access an invalid index.
 
-</Admonition>
+</Note>
 
 ---
 
-<Admonition type="info" title="info">
+<Info>
 
 In cases when many types are possible, we must add a type annotation
 
@@ -264,7 +261,7 @@ In cases when many types are possible, we must add a type annotation
 let bar: u32 = "42".parse().expect("Not a number!");
 ```
 
-</Admonition>
+</Info>
 
 <br />
 

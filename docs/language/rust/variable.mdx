@@ -1,7 +1,7 @@
 ---
-sidebar_position: 30000
 tags:
   - rust
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Variables and Mutability
@@ -35,21 +35,21 @@ Constants is like variable but they are always immutable. `mut` is not allowed t
 
 When defining constants, its type must be declared.
 
-Constants can be declared in <Color color="var(--secondary-font-color)"> any scope </Color>, including the global scope.
+Constants can be declared in <span style={{color: "var(--secondary-font-color)"}}> any scope </span>, including the global scope.
 
-Constants may be set only to a constant expression, <Color color="var(--secondary-font-color)"> not the result of a value that could only be computed at runtime </Color>.
+Constants may be set only to a constant expression, <span style={{color: "var(--secondary-font-color)"}}> not the result of a value that could only be computed at runtime </span>.
 
-<Admonition type="info" title="info">
+<Info>
 
 Rust’s naming convention for constants is to use all uppercase with underscores between words.
 
-</Admonition>
+</Info>
 
 Constants are valid for the entire time a program runs, within the scope in which they were declared.
 
 ## Shadowing
 
-You can declare a new variable <Color color="var(--secondary-font-color)"> with the same name </Color> as a previous variable.
+You can declare a new variable <span style={{color: "var(--secondary-font-color)"}}> with the same name </span> as a previous variable.
 
 Rustaceans say that the first variable is shadowed by the second. The second variable is valid until it itself is shadowed(by another variable) or the scope ends.
 

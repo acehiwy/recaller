@@ -1,6 +1,5 @@
 ---
-last_update:
-  date: 2025-09-28T16:19:38.197Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 tags:
   - FastAPI
   - python
@@ -10,7 +9,7 @@ tags:
 
 FastAPI can execte "callable" object (function , class) that should be exectued before path operation function.
 
-Callable's argument, including sub-dependencies, will <Color color="var(--secondary-font-color)"> be treated as they are the path operation argument </Color> themselvees.
+Callable's argument, including sub-dependencies, will <span style={{color: "var(--secondary-font-color)"}}> be treated as they are the path operation argument </span> themselvees.
 
 ```python title= showLineNumbers
 def call_this_first(query_param1: str, query_param2: int, request_body: RequestBodyClass):
@@ -89,11 +88,11 @@ View it as a reusable block of code
 
 </details>
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 Return value of dependency function can be anything. Its type better match with `Annotated`
 
-</Admonition>
+</Note>
 
 ## Class as dependency
 
@@ -118,7 +117,7 @@ async def read_items(commons: Annotated[CommonQueryParams, Depends(CommonQueryPa
     pass
 ```
 
-<Admonition type="tip" title="tip"> 
+<Tip> 
 
 Shorthand style
 
@@ -131,7 +130,7 @@ async def read_items(commons: Annotated[CommonQueryParams, Depends(CommonQueryPa
   pass
 ```
 
-</Admonition>
+</Tip>
 
 ## Sub dependencies
 
@@ -149,7 +148,7 @@ async def foo(bar: Annotated[dict, Depends(bar)]):
     pass
 ```
 
-<Admonition type="tip" title="tip"> 
+<Tip> 
 
 In a single request cycle, if a dependency function is used multiple time. FastAPI will call it only once.
 
@@ -162,7 +161,7 @@ def foo(fresh_value: Annotated[str, Depends(get_value, use_cache=False)]):
     pass
 ```
 
-</Admonition>
+</Tip>
 
 ## Declare dependencies in path operation decorator
 
@@ -210,11 +209,11 @@ FastAPI accepts any function that is valid for use with the [`contextmanager`](h
 
 The value yielded from the dependency function is passed to the path operation.
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 The dependency function does not need to be decorated with a context manager decorator.
 
-</Admonition>
+</Note>
 
 ```python title= showLineNumbers
 def foo():
@@ -283,15 +282,15 @@ If an exception is raised inside the caller, it then will be passed to a context
 
 Context manager dependency can handle it with `except` clause or reraise the exception
 
-<Admonition type="caution" title="caution"> 
+<Warning> 
 
 The application will throw error, (user will get 500 Internal Server Error response) when an exception is passed from the caller to dependency function and it decide to
 - not reraise an exception
 - raising a non-[HTTP-like exception](https://fastapi.tiangolo.com/tutorial/handling-errors/#use-httpexception) (one that does not trigger response to be returned)
 
-</Admonition>
+</Warning>
 
-<Admonition type="tip" title="tip"> 
+<Tip> 
 
 You should always reraised an exception on context manager
 
@@ -305,7 +304,7 @@ def foo():
         raise
 ```
 
-</Admonition>
+</Tip>
 
 
 <br/>

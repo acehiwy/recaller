@@ -1,12 +1,16 @@
+---
+lastUpdated: 2026-04-08T09:00:42.959Z
+---
+
 # Generic Types
 
 Generics allow us to replace specific types with a placeholder that represents multiple types to remove code duplication.
 
-<Admonition type="info" title="info">
+<Info>
 
 Rust’s type-naming convention is UpperCamelCase
 
-</Admonition>
+</Info>
 
 ## Generic in Function Definition
 
@@ -14,7 +18,7 @@ Rust’s type-naming convention is UpperCamelCase
 fn largest<T: std::cmp::PartialOrd>(list: &[T]) -> &T {
 ```
 
-`<T: std::cmp::PartialOrd>` mean `T` can only be a type that implement `std::cmp::PartialOrd` <Color color="var(--primary-font-color)"> trait </Color>
+`<T: std::cmp::PartialOrd>` mean `T` can only be a type that implement `std::cmp::PartialOrd` <span style={{color: "var(--primary-font-color)"}}> trait </span>
 
 ## In Struct definition
 
@@ -121,7 +125,7 @@ fn main() {
 }
 ```
 
-## <Color color="var(--not-nesary-for-now-future-font-color)"> Performance of Code Using Generics </Color>
+## <span style={{color: "var(--not-nesary-for-now-future-font-color)"}}> Performance of Code Using Generics </span>
 
 Using generic types won't make your program run any slower than it would with concrete types.
 
@@ -129,7 +133,7 @@ Rust compiles generic code into code that specifies the type in each instance.
 
 When the code runs, it performs just as it would if we had duplicated each definition by hand.
 
-<Color color="var(--not-require-but-good-to-know-font-color)">
+<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>
 
 Rust accomplishes this by performing monomorphization of the code using generics at compile time.
 
@@ -137,7 +141,7 @@ Monomorphization is the process of turning generic code into specific code by fi
 
 The compiler looks at all the places where generic code is called and generates code for the concrete types the generic code is called with.
 
-</Color>
+</span>
 
 <br />
 

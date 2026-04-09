@@ -1,3 +1,7 @@
+---
+lastUpdated: 2026-04-08T09:00:42.959Z
+---
+
 # Unrecoverable Errors
 
 ## Calling panic!
@@ -28,7 +32,7 @@ A backtrace is a list of all the functions that have been called to get to the p
 To see backtrace
 
 - set `RUST_BACKTRACE` environment variable to any value except 0
-- debug symbols must be enabled. Debug symbols are <Color color="var(--secondary-font-color)"> enabled by default </Color> when using `cargo build` or `cargo run` <Color color="var(--secondary-font-color)"> without </Color> the `--release` flag
+- debug symbols must be enabled. Debug symbols are <span style={{color: "var(--secondary-font-color)"}}> enabled by default </span> when using `cargo build` or `cargo run` <span style={{color: "var(--secondary-font-color)"}}> without </span> the `--release` flag
 
 From this code:
 
@@ -68,14 +72,14 @@ stack backtrace:
 note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
 ```
 
-<Admonition type="tip" title="tip">
+<Tip>
 
 The key to reading the backtrace is to start from the top and read until you see files you wrote. Then
 
 - The lines above are code that your code has called
 - The lines below are code that called your code
 
-</Admonition>
+</Tip>
 
 ## Unwinding and Aborting
 
@@ -89,11 +93,11 @@ So Rust allows you to immediately aborting which ends the program without cleani
 panic = 'abort'
 ```
 
-<Admonition type="tip" title="tip">
+<Tip>
 
 Switch to `panic = 'abort'` if you need to make the resulting binary as small as possible
 
-</Admonition>
+</Tip>
 
 <br />
 

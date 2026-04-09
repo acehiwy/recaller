@@ -4,8 +4,7 @@ tags:
   - docusaurus
   - documentation
   - tool
-last_update:
-  date: 2025-09-28T16:19:38.197Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Deployment
@@ -25,7 +24,7 @@ The following parameters are required in docusaurus.config.js to optimize routin
 | Name      | Description                                                                                                                                                                                                     |
 | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `url`     | URL for your site. For a site deployed at `https://my-org.com/my-project/`, `url` is `https://my-org.com/`.                                                                                                     |
-| `baseUrl` | Base URL for your project, <Color color='var(--secondary-font-color)'> with a trailing slash </Color>. For a site deployed at `https://my-org.com/my-project/`, `baseUrl` is `/my-project/`. `/` if no pathname |
+| `baseUrl` | Base URL for your project, <span style={{color: "var(--secondary-font-color)"}}> with a trailing slash </span>. For a site deployed at `https://my-org.com/my-project/`, `baseUrl` is `/my-project/`. `/` if no pathname |
 
 ## Testing your build locally
 
@@ -40,13 +39,13 @@ By default, this will load your site at [http://localhost:3000/](http://localhos
 Docusaurus has a [trailingSlash config](https://docusaurus.io/docs/api/docusaurus-config#trailingSlash),
 to allow customizing URLs/links and emitted filename patterns.
 
-The default value generally works fine. Unfortunately, <Color color='var(--secondary-font-color)'> each static hosting provider </Color> has a <Color color='var(--secondary-font-color)'> different behavior </Color>,
+The default value generally works fine. Unfortunately, <span style={{color: "var(--secondary-font-color)"}}> each static hosting provider </span> has a <span style={{color: "var(--secondary-font-color)"}}> different behavior </span>,
 and deploying the exact same site to various hosts can lead to distinct results.
 
 Depending on your host, it can be useful to change this config.
 
-<Admonition type="tip">
+<Tip>
 
 Use [slorber/trailing-slash-guide](https://github.com/slorber/trailing-slash-guide) to understand better the behavior of your host and configure trailingSlash appropriately.
 
-</Admonition>
+</Tip>

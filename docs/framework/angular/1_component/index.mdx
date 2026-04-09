@@ -1,6 +1,5 @@
 ---
-last_update:
-  date: 2025-10-09T11:21:56.857Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Component
@@ -20,14 +19,14 @@ import { Component } from "@angular/core";
 export class App {}
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 `:host` selector refers to the HTML element of a component
 
-</Admonition>
+</Note>
 
-<!--##########################################################################################-->
-<!--##########################################################################################-->
+
+
 
 ## Component metadata
 
@@ -47,20 +46,20 @@ Separate HTML and CSS files using `templateUrl` and `styleUrl` fields
 
 Component style only affect element inside its HTML template
 
-<Admonition type="note" title="note">
+<Note>
 
 `style` and `styleUrl` fields are optional
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note">
+<Note>
 
 `templateUrl` and `styleUrl` are relative to its component location
 
-</Admonition>
+</Note>
 
-<!--##########################################################################################-->
-<!--##########################################################################################-->
+
+
 
 ## Component state
 
@@ -81,11 +80,11 @@ export class App {
 
 Angular evaluates contents inside `{{}}`
 
-<Admonition type="info" title="info">
+<Info>
 
 The DOM rendered by component is called component's view
 
-</Admonition>
+</Info>
 
 ## Component control flow
 
@@ -129,16 +128,16 @@ export class App {
 }
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 `track` is required
 
 It is like the `key` attribute in React
 
-</Admonition>
+</Note>
 
-<!--##########################################################################################-->
-<!--##########################################################################################-->
+
+
 
 ## Property binding
 
@@ -167,7 +166,7 @@ export class App {
 
 Angular updates the DOM when bound value changes
 
-<Admonition type="info" title="info">
+<Info>
 
 bind to HTML attributes by prefixing with `attr.`
 
@@ -175,10 +174,10 @@ bind to HTML attributes by prefixing with `attr.`
 <ul [attr.role]="foo"></ul>
 ```
 
-</Admonition>
+</Info>
 
-<!--##########################################################################################-->
-<!--##########################################################################################-->
+
+
 
 ## Event handling
 
@@ -198,14 +197,14 @@ export class App {
 }
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 `$event` keyword in HTML template represents DOM [`event`](https://developer.mozilla.org/en-US/docs/Web/API/Event) object
 
-</Admonition>
+</Note>
 
-<!--##########################################################################################-->
-<!--##########################################################################################-->
+
+
 
 ## Services
 
