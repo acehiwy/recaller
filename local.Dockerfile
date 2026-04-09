@@ -36,5 +36,6 @@ yarn --version
 EOF
 
 RUN mkdir node_modules
+RUN mkdir -p /home/${CONTAINER_USER}/worktrees
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
