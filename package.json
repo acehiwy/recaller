@@ -14,7 +14,9 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc",
+    "wt": "./scripts/setup-worktree",
+    "wt:teardown": "./scripts/teardown-worktree",
+    "test:teardown": "./scripts/test-teardown-worktree",
     "prepare": "husky"
   },
   "dependencies": {
