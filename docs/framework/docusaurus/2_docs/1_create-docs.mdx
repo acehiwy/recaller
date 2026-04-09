@@ -4,8 +4,7 @@ tags:
   - docusaurus
   - documentation
   - tool
-last_update:
-  date: 2025-09-28T16:19:38.197Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Create Docs
@@ -28,9 +27,9 @@ Headers will show up on the table of contents on the upper right
 
 So that your users will know what this page is all about without scrolling down or even without reading too much.
 
-<Color color="var(--secondary-font-color)">
+<span style={{color: "var(--secondary-font-color)"}}>
   Only h2 and h3 will be in the TOC by default.
-</Color>
+</span>
 
 You can configure the TOC heading levels either per-document or in the theme configuration.
 
@@ -42,26 +41,26 @@ With `{#custom-id}` syntax you can set your own header ID.
 # Foo Header {#custom-id}
 ```
 
-<Admonition type="note">
+<Note>
 
-All files prefixed with an underscore (`_`) <Color color='var(--secondary-font-color)'> under the docs directory </Color> are treated as "partial" pages
-and <Color color='var(--secondary-font-color)'> will be ignored by default </Color>.
+All files prefixed with an underscore (`_`) <span style={{color: "var(--secondary-font-color)"}}> under the docs directory </span> are treated as "partial" pages
+and <span style={{color: "var(--secondary-font-color)"}}> will be ignored by default </span>.
 
 Read more about [importing partial pages](https://docusaurus.io/docs/markdown-features/react#importing-markdown).
 
-</Admonition>
+</Note>
 
 ## Doc Front Matter
 
-The front matter is used to <Color color='var(--secondary-font-color)'> provide additional metadata for your doc </Color> page.
+The front matter is used to <span style={{color: "var(--secondary-font-color)"}}> provide additional metadata for your doc </span> page.
 
 Front matter is optional. Docusaurus will be able to infer all necessary metadata without the front matter.
 
-<Admonition type="tip" title="API reference">
+<Tip>
 
 For all possible fields, see the [API documentation](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs#markdown-front-matter).
 
-</Admonition>
+</Tip>
 
 ## Doc tags
 
@@ -79,7 +78,7 @@ tags:
 ---
 ```
 
-<Admonition type="info">
+<Info>
 
 <details>
 
@@ -91,7 +90,7 @@ tags:
 
 when tag is clicked, Docusaurus filter all docs containing it.
 
-</Admonition>
+</Info>
 
 ## Docs Folder Structure
 
@@ -101,7 +100,7 @@ However, most of them can be decoupled from the file structure.
 
 ### Document ID
 
-Every document has a unique id. By default, a document id is the <Color color='var(--secondary-font-color)'> name of the document </Color> (without the extension) relative to the root docs directory.
+Every document has a unique id. By default, a document id is the <span style={{color: "var(--secondary-font-color)"}}> name of the document </span> (without the extension) relative to the root docs directory.
 
 For example, the ID of `greeting.md` is "greeting", and the ID of `guide/hello.md` is "guide/hello".
 
@@ -113,7 +112,7 @@ website # Root directory of your site
       └── hello.md
 ```
 
-However, the <Color color='var(--secondary-font-color)'> last part </Color> of the id can be <Color color='var(--secondary-font-color)'> defined </Color> by the user in the <Color color='var(--secondary-font-color)'> front matter. </Color>
+However, the <span style={{color: "var(--secondary-font-color)"}}> last part </span> of the id can be <span style={{color: "var(--secondary-font-color)"}}> defined </span> by the user in the <span style={{color: "var(--secondary-font-color)"}}> front matter. </span>
 
 For example, if `guide/hello.md`'s content is defined as below, its final id is "guide/part1".
 
@@ -125,14 +124,14 @@ id: part1
 Lorem ipsum
 ```
 
-<Color color="var(--not-require-but-good-to-know-font-color)">
+<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>
   The ID is used to refer to a document when hand-writing (manually configure)
   sidebars, or when using docs-related layout components or hooks.
-</Color>
+</span>
 
 ### Doc URLs
 
-By default, a document's <Color color='var(--secondary-font-color)'> URL location is its file path <Color color='var(--primary-font-color)'> relative </Color> </Color> to the docs folder.
+By default, a document's <span style={{color: "var(--secondary-font-color)"}}> URL location is its file path <span style={{color: "var(--primary-font-color)"}}> relative </span> </span> to the docs folder.
 
 Use the `slug` front matter to change a document's URL.
 
@@ -157,7 +156,7 @@ slug: /bonjour
 Lorem ipsum
 ```
 
-<Admonition type="note">
+<Note>
 
 `slug` will be appended to the doc plugin's routeBasePath, which is `/docs` by default.
 
@@ -166,7 +165,7 @@ It is possible to use:
 - absolute slugs: slug: /mySlug, slug: /...
 - relative slugs: slug: mySlug, slug: ./../mySlug...
 
-</Admonition>
+</Note>
 
 <br />
 

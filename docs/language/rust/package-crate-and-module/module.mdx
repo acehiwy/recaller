@@ -1,12 +1,16 @@
+---
+lastUpdated: 2026-04-08T09:00:42.959Z
+---
+
 # Modules
 
 Modules let us organize code within a crate for readability and easy reuse.
 
-Modules also allow us to control the privacy <Color color="var(--secondary-font-color)"> of items </Color>.
+Modules also allow us to control the privacy <span style={{color: "var(--secondary-font-color)"}}> of items </span>.
 
 ## Cheatsheet
 
-- **Start from the crate root:** When compiling a crate, the compiler <Color color="var(--secondary-font-color)"> first looks in the crate root file </Color> (usually src/lib.rs for a library crate or src/main.rs for a binary crate) for code to compile.
+- **Start from the crate root:** When compiling a crate, the compiler <span style={{color: "var(--secondary-font-color)"}}> first looks in the crate root file </span> (usually src/lib.rs for a library crate or src/main.rs for a binary crate) for code to compile.
 - **Declaring modules:** In the crate root file if you declare `mod garden`. The compiler will look for the module’s code in these places:
   - Inline, within curly brackets that replace the semicolon following mod garden
   - In the file `src/garden.rs`
@@ -53,18 +57,18 @@ crate
          └── take_payment
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 Sibling modules are modules defined in the same parent module. `hosting` and `serving` are siblings defined within `front_of_house`.
 
-</Admonition>
+</Info>
 
 ## Referring Module Tree with Path
 
 A path can take two forms:
 
-- An absolute path is the full path starting <Color color="var(--secondary-font-color)"> from a crate root </Color>;
-  - for code from an external crate, the absolute path <Color color="var(--secondary-font-color)"> begins with the crate name </Color>
+- An absolute path is the full path starting <span style={{color: "var(--secondary-font-color)"}}> from a crate root </span>;
+  - for code from an external crate, the absolute path <span style={{color: "var(--secondary-font-color)"}}> begins with the crate name </span>
     - eg. `<library name>::<library module>::<library funtion>`
   - for code from the current crate, it starts with the literal `crate`.
     - eg. `crate::<internal module>::<internal function>`
@@ -99,17 +103,17 @@ But items in child modules can use the items in their ancestor modules (ancestor
 
 Use `pub` keyword to mark items / module public which can be accessed by their outer ancestor.
 
-<Admonition type="note" title="note">
+<Note>
 
 If the module itself is not marked public, the items it contains are still private even if the item itself is marked public.
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note">
+<Note>
 
 Sibling modules and items can access each other without being marked public themselves.
 
-</Admonition>
+</Note>
 
 ## Relative path using `super`
 
@@ -178,7 +182,7 @@ pub fn eat_at_restaurant() {
 }
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 Because the `Breakfast` struct has private fields,
 
@@ -186,13 +190,13 @@ The struct needs to provide a public associated function (`summer`) that constru
 
 Otherwise client wouldn't be able to create `Breakfast` instance.
 
-</Admonition>
+</Note>
 
-<Admonition type="info" title="info">
+<Info>
 
 `struct` fields are private by default
 
-</Admonition>
+</Info>
 
 ### `pub` `enum`
 
@@ -212,17 +216,17 @@ pub fn eat_at_restaurant() {
 }
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 `enum` variants are public by default
 
-</Admonition>
+</Info>
 
 ## Bringing Paths into Scope with `use` keyword
 
 We can create a shortcut to a path with the `use` keyword
 
-`use` makes the path valid <Color color="var(--primary-font-color)"> in the scope </Color> where `use` is declared.
+`use` makes the path valid <span style={{color: "var(--primary-font-color)"}}> in the scope </span> where `use` is declared.
 
 ```rust title=src/lib.rs showLineNumbers
 mod front_of_house {
@@ -242,15 +246,15 @@ pub fn something_else(){
 }
 ```
 
-<Admonition type="tip" title="tip">
+<Tip>
 
-When bringing <Color color="var(--secondary-font-color)"> function </Color> into scope, preferably bringing its parent module rather than the function
+When bringing <span style={{color: "var(--secondary-font-color)"}}> function </span> into scope, preferably bringing its parent module rather than the function
 
 So calling function would be `<Parent>::<function name>`. Eg. `hosting::add_to_waitlist`
 
-Specifying the parent module when calling the function <Color color="var(--secondary-font-color)"> makes it clear </Color> that the function <Color color="var(--secondary-font-color)"> isn’t locally defined </Color>
+Specifying the parent module when calling the function <span style={{color: "var(--secondary-font-color)"}}> makes it clear </span> that the function <span style={{color: "var(--secondary-font-color)"}}> isn’t locally defined </span>
 
-</Admonition>
+</Tip>
 
 ## Providing new name
 
@@ -363,11 +367,11 @@ Modules can also hold definitions for other items, such as structs, enums, const
 
 making the module public doesn’t make its contents public. The pub keyword on a module only lets code in its ancestor modules refer to it, not access its inner code.
 
-<Admonition type="tip" title="later">
+<Tip>
 
 If you plan on sharing your library crate, see [Rust API guidelines](https://rust-lang.github.io/api-guidelines/)
 
-</Admonition>
+</Tip>
 
 <br />
 

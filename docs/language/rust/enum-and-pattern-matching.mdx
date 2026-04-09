@@ -1,12 +1,12 @@
 ---
-sidebar_position: 90000
 tags:
   - rust
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Enums and Pattern Matching
 
-Enums allow you to <Color color="var(--secondary-font-color)"> define a type </Color> by enumerating its possible variants.
+Enums allow you to <span style={{color: "var(--secondary-font-color)"}}> define a type </span> by enumerating its possible variants.
 
 ```rust title= showLineNumbers
 enum IpAddrKind {
@@ -76,7 +76,7 @@ let baz_discriminant = Foo::Baz as u32;
 assert_eq!(baz_discriminant, 123);
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 You can put any kind of data inside an enum variant:
 
@@ -85,13 +85,13 @@ You can put any kind of data inside an enum variant:
 - structs
 - enum
 
-</Admonition>
+</Info>
 
-<Color color="var(--not-require-but-good-to-know-font-color)">
+<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>
 
 Defining `Enum` with different type of its variants is similar to defining different kind of struct. Different is that all variants are grouped under the Enum type
 
-</Color>
+</span>
 
 ```rust title= showLineNumbers
 struct QuitMessage; // unit struct
@@ -103,13 +103,13 @@ struct WriteMessage(String); // tuple struct
 struct ChangeColorMessage(i32, i32, i32); // tuple struct
 ```
 
-<Color color="var(--not-require-but-good-to-know-font-color)">
+<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>
 
 Also if we used the different structs, each of which has its own type, we
 couldn’t as easily define a function to take any of these kinds of messages as
 we could with the Message enum, which is a single type.
 
-</Color>
+</span>
 
 ```rust title= showLineNumbers
 fn foo(bar: Message){
@@ -161,7 +161,7 @@ let some_char = Some('e'); // type of some_char is Option<char>
 let absent_number: Option<i32> = None;
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 `Option` enum is an enum defined by the standard library.
 
@@ -169,7 +169,7 @@ let absent_number: Option<i32> = None;
 
 You can use directly without the `Option::` prefix.
 
-</Admonition>
+</Info>
 
 ## `match` Expression
 
@@ -198,16 +198,16 @@ fn value_in_cents(coin: Coin) -> u8 {
 
 ```
 
-The code associated with each arm is <Color color="var(--secondary-font-color)"> an expression </Color>,
-and the resultant value of the expression in the matching arm is the value that gets <Color color="var(--secondary-font-color)"> returned for </Color> the entire <Color color="var(--secondary-font-color)"> match expression </Color>.
+The code associated with each arm is <span style={{color: "var(--secondary-font-color)"}}> an expression </span>,
+and the resultant value of the expression in the matching arm is the value that gets <span style={{color: "var(--secondary-font-color)"}}> returned for </span> the entire <span style={{color: "var(--secondary-font-color)"}}> match expression </span>.
 
 `match` end when a particular pattern is matched.
 
-<Admonition type="info" title="info">
+<Info>
 
 Every possible case of `match` need to be handled.
 
-</Admonition>
+</Info>
 
 ### Tuple variant enum with `match`
 
@@ -348,11 +348,11 @@ if let Coin::Quarter(state) = coin {
 };
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 `if let` does not have the exhaustive checking that `match` enforces.
 
-</Admonition>
+</Note>
 
 <br />
 

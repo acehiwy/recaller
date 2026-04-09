@@ -1,6 +1,5 @@
 ---
-last_update:
-  date: 2025-11-16T09:48:07.815Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Responsive images
@@ -23,7 +22,7 @@ Second image, `500-dog.png`, has an intrinsic width of 500 pixels.
 
 The browser calculates the appropriate space for an image and then picks the right one to display.
 
-<Admonition type="note" title="note">
+<Note>
 
 Images' [intrinsic size](https://developer.mozilla.org/en-US/docs/Glossary/Intrinsic_Size) is the real size / dimensions of an image file in pixels
 
@@ -33,10 +32,10 @@ file some-image.webp
 # -------------------------------------------------------------------------HERE----------------------------------------------------------
 ```
 
-</Admonition>
+</Note>
 
-<!--##########################################################################################-->
-<!--##########################################################################################-->
+
+
 
 ## Device pixel ratio
 
@@ -54,8 +53,8 @@ So it treats 1 x 1 logical pixels as 2 x 2 physical pixels, which makes the cont
 
 That is an example of a 2x display. The device pixel ratio is 2 (`1:2` logical pixels to physical pixels).
 
-<!--##########################################################################################-->
-<!--##########################################################################################-->
+
+
 
 ## Appropriate space
 
@@ -80,14 +79,14 @@ On 2X device:
 - when an image would take 1000 logical px in width, the reserved space is `1000 * 2 = 2000`, so `1000-dog.png` is displayed
 - when an image would take 250 logical px in width, `500-dog.png` is displayed
 
-<Admonition type="info" title="info">
+<Info>
 
 The browser takes screen size, pixel density, zoom level, screen orientation, and network speed into account when reserving space.
 
-</Admonition>
+</Info>
 
-<!--##########################################################################################-->
-<!--##########################################################################################-->
+
+
 
 ## Set amount of space that image would take
 
@@ -109,11 +108,11 @@ This means
 - when the viewport is less than or equal to 500px, the image will take 300px
 - otherwise, the image will take 70vw
 
-<Admonition type="note" title="note">
+<Note>
 
 The browser matches the first condition that is true, so order matters.
 
-</Admonition>
+</Note>
 
 ## Picture element
 

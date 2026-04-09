@@ -1,9 +1,7 @@
 ---
 tags:
   - angular
-last_update:
-  date: 2025-10-05T13:01:20.148Z
-
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Signals
@@ -32,15 +30,15 @@ firstName.set("Jaime");
 firstName.update((name) => name.toUpperCase());
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 A writable signal has the [`WritableSignal`](https://angular.dev/api/core/WritableSignal) type.
 
-</Admonition>
+</Info>
 
 ## Computed signal
 
-[`computed`](https://angular.dev/api/core/computed) is a <Color color="var(--secondary-font-color)">read-only</Color> `signal` that derives its value from other signals.
+[`computed`](https://angular.dev/api/core/computed) is a <span style={{color: "var(--secondary-font-color)"}}>read-only</span> `signal` that derives its value from other signals.
 
 ```typescript title= showLineNumbers
 import { signal, computed } from "@angular/core";
@@ -51,7 +49,7 @@ const firstNameCapitalized = computed(() => firstName().toUpperCase());
 
 The callback function passed to `computed` runs whenever a parent signal changes.
 
-<Admonition type="note" title="note">
+<Note>
 
 `computed` signals are lazily evaluated and cached.
 
@@ -59,19 +57,19 @@ The callback passed to `computed` does not run until the computed signal is read
 
 Angular invalidates the cache when a parent signal value changes.
 
-</Admonition>
+</Note>
 
-<Admonition type="info" title="info">
+<Info>
 
 A `computed` signal has no `update` or `set` method.
 
-</Admonition>
+</Info>
 
-<Admonition type="info" title="info">
+<Info>
 
 `computed` signal has [`Signal`](https://angular.dev/api/core/Signal) type
 
-</Admonition>
+</Info>
 
 ## Effect
 
@@ -133,11 +131,11 @@ export class EffectiveCounterComponent {
 }
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 Effects always execute asynchronously during the change detection process.
 
-</Admonition>
+</Info>
 
 ### Destroying effect
 
@@ -145,11 +143,11 @@ Effects always execute asynchronously during the change detection process.
 
 So, an effect that lives inside a component, directive, or service is destroyed whenever the component, directive, or service is destroyed.
 
-<Admonition type="note" title="note">
+<Note>
 
 An `effect` is also destroyed before it is rerun.
 
-</Admonition>
+</Note>
 
 ### Manually destroying effect
 
@@ -225,7 +223,7 @@ function external() {
 }
 ```
 
-`bar` is still being tracked even though it is not <Color color="var(--secondary-font-color)">directly read</Color> inside the child code block.
+`bar` is still being tracked even though it is not <span style={{color: "var(--secondary-font-color)"}}>directly read</span> inside the child code block.
 
 ### Example: conditional reading
 
@@ -248,13 +246,13 @@ Therefore, only changes to `isFoo` trigger the `baz` code block, not changes to 
 
 Only after `isFoo` changes to `true`, causing `bar` to be read, do both `isFoo` and `bar` trigger the `baz` code block.
 
-<Admonition type="note" title="note">
+<Note>
 
 Dependency changes do not always cause the child value to change.
 
 They do, however, cause the child code block to re-execute, even if the new value ends up being the same as the previous one.
 
-</Admonition>
+</Note>
 
 ### Reading without tracking dependencies
 
@@ -285,7 +283,7 @@ function external() {
 
 This makes the `effect` execute only when `fooSignal` emits a change.
 
-Without `untracked`, the `effect` would execute whenever `fooSignal` <Color color="var(--secondary-font-color)">or</Color> `barSignal` emits a change.
+Without `untracked`, the `effect` would execute whenever `fooSignal` <span style={{color: "var(--secondary-font-color)"}}>or</span> `barSignal` emits a change.
 
 ## Linked signal
 
@@ -315,11 +313,11 @@ It recomputes its value when dependencies emit changes.
 
 It can also update its own value.
 
-<Admonition type="note" title="note">
+<Note>
 
 `linkedSignal` is also lazily evaluated and cached.
 
-</Admonition>
+</Note>
 
 ### Accessing previous value
 
@@ -363,13 +361,13 @@ The second argument of the `computation` function, `previous`, is an object cont
 - `previous?.value` is the previous return value of the `computation` function (the previous value of `linkedSignal`)
 - `previous?.source` is the previous return value of the `source` function
 
-<Admonition type="note" title="note">
+<Note>
 
 Any signals called from either the `source` or `computation` function are tracked.
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note">
+<Note>
 
 It is necessary to provide type arguments to `linkedSignal`.
 
@@ -377,15 +375,15 @@ It is necessary to provide type arguments to `linkedSignal`.
 linkedSignal<SourceReturnedValue, ComputationReturnValue>(...)
 ```
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note">
+<Note>
 
 `previous` could be `undefined`
 
-</Admonition>
+</Note>
 
-<Admonition type="tip" title="tip">
+<Tip>
 
 By making `source` return an object instead of a single value, you can access multiple source values from the previous cycle.
 
@@ -398,7 +396,7 @@ linkedSignal({
 });
 ```
 
-</Admonition>
+</Tip>
 
 ## Signal equality functions
 
@@ -416,17 +414,17 @@ signal(sample, { equal: (previousValue, newValue) => previousValue.key1 === newV
 linkedSignal(() => 'foo', { equal: (previousValue, newValue) => previousValue.key1 === newValue.key1);
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 The default signal equality function is [`Object.is`](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/is).
 
-</Admonition>
+</Note>
 
-<Admonition type="info" title="info">
+<Info>
 
 It is used to determine whether the signal should trigger a change.
 
-</Admonition>
+</Info>
 
 <br />
 

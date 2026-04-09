@@ -1,7 +1,7 @@
 ---
-sidebar_position: 80000
 tags:
   - rust
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Struct
@@ -40,7 +40,7 @@ let foo = user.username;
 
 ## Set field value
 
-If an <Color color="var(--primary-font-color)"> instance </Color> is mutable:
+If an <span style={{color: "var(--primary-font-color)"}}> instance </span> is mutable:
 
 ```rust title= showLineNumbers
 fn main() {
@@ -56,13 +56,13 @@ fn main() {
 }
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 The entire instance must be mutable.
 
 Rust doesn’t allow us to mark only certain fields as mutable.
 
-</Admonition>
+</Note>
 
 ## Defining Shorthand
 
@@ -98,11 +98,11 @@ fn main() {
 }
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 The `..` syntax must come last.
 
-</Admonition>
+</Note>
 
 "Moved value" concept are applied to any unknown-size field assignment
 
@@ -147,19 +147,19 @@ fn main() {
 }
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 Two Different tuple struct with exact element types are not the same type.
 
 A function that takes a parameter of type `Color` cannot take a `Point` as an argument
 
-</Admonition>
+</Note>
 
-<Admonition type="info" title="info">
+<Info>
 
 Tuple structs are useful when you want to give the whole tuple a name
 
-</Admonition>
+</Info>
 
 ## Unit-like Struct
 
@@ -175,13 +175,13 @@ fn main() {
 }
 ```
 
-&#8203;<Color color="var(--not-require-but-good-to-know-font-color)"> These are called unit-like structs because they behave similarly to unit `()`. </Color>
+&#8203;<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> These are called unit-like structs because they behave similarly to unit `()`. </span>
 
 ## Method Syntax
 
 Methods are defined within the context of a struct, an enum or a trait object.
 
-Their first parameter is always `self` which represents the <Color color="var(--secondary-font-color)"> instance of the struct </Color> the method is being called on.
+Their first parameter is always `self` which represents the <span style={{color: "var(--secondary-font-color)"}}> instance of the struct </span> the method is being called on.
 
 ### Defining Methods
 
@@ -217,25 +217,25 @@ The `&self` is actually short for `self: &Self`.
 
 Within an `impl` block, the type `Self` is an alias for the type that the `impl` block is for
 
-Methods <Color color="var(--secondary-font-color)"> must have a parameter named </Color> `self` of type `Self` for their first parameter.
+Methods <span style={{color: "var(--secondary-font-color)"}}> must have a parameter named </span> `self` of type `Self` for their first parameter.
 
-<Admonition type="note" title="note">
+<Note>
 
 When the first method parameter is `self` with type `&Self`, it borrows an instance of `Self`.
 
-<Admonition type="info" title="info">
+<Info>
 
 It can also be `Self`, which takes ownership of the struct instance.
 
 Having a method that takes ownership of the instance by using just self as the first parameter is rare
 
-This technique is usually used when the method transforms self into something else <Color color="var(--secondary-font-color)"> and </Color> you want to prevent the caller from using the original instance after the transformation.
+This technique is usually used when the method transforms self into something else <span style={{color: "var(--secondary-font-color)"}}> and </span> you want to prevent the caller from using the original instance after the transformation.
 
-</Admonition>
+</Info>
 
 You can also use a mutable reference to `Self`, for example `&mut Self`, but the struct instance must be mutable.
 
-</Admonition>
+</Note>
 
 Method can have the same name as one of its struct field. `getter` is one of this usecase.
 
@@ -258,7 +258,7 @@ fn main() {
 }
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 When calling a method, Rust automatically adds in `&,` `&mut`, or `*` so object matches the signature of the method.
 
@@ -269,7 +269,7 @@ rect1.area();
 (&rect1).area();
 ```
 
-</Admonition>
+</Info>
 
 ### Associated Functions
 
@@ -294,11 +294,11 @@ fn main(){
 }
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 Rust doesn't have a `new` keyword.
 
-</Admonition>
+</Info>
 
 ### Multiple `impl` block
 
@@ -334,7 +334,7 @@ impl Rectangle {
 
 ## Miscellaneous
 
-### print `struct` in <Color color="var(--secondary-font-color)"> `Debug` </Color> format
+### print `struct` in <span style={{color: "var(--secondary-font-color)"}}> `Debug` </span> format
 
 #### using pretty println and `#[derive(Debug)]` attribute
 
@@ -387,7 +387,7 @@ fn main() {
 }
 ```
 
-`dbg!` <Color color="var(--secondary-font-color)"> takes ownership </Color> of <Color color="var(--primary-font-color)"> an expression </Color> and returns ownership of the <Color color="var(--secondary-font-color)"> value </Color>.
+`dbg!` <span style={{color: "var(--secondary-font-color)"}}> takes ownership </span> of <span style={{color: "var(--primary-font-color)"}}> an expression </span> and returns ownership of the <span style={{color: "var(--secondary-font-color)"}}> value </span>.
 
 It also prints the file and line number along with result of value passed to `dbg!`
 

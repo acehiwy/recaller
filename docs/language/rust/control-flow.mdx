@@ -1,14 +1,14 @@
 ---
-sidebar_position: 60000
 tags:
   - rust
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Control Flow
 
 Executing code base on conditions(`if`, `loop`)
 
-## `if` <Color color="var(--primary-font-color)"> Expressions </Color>
+## `if` <span style={{color: "var(--primary-font-color)"}}> Expressions </span>
 
 ```rust title= showLineNumbers
 fn main() {
@@ -24,7 +24,7 @@ fn main() {
 }
 ```
 
-<Admonition type="caution" title="caution">
+<Warning>
 
 The condition in this code must evaluate to a `bool` value; otherwise, Rust will throw a compile-time error.
 
@@ -39,7 +39,7 @@ fn main() {
 }
 ```
 
-</Admonition>
+</Warning>
 
 ## Using `if` in a `let` Statement
 
@@ -54,7 +54,7 @@ fn main() {
 }
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 The type of values return from each `if` branchs must be the same type.
 
@@ -66,7 +66,7 @@ fn main() {
 }
 ```
 
-</Admonition>
+</Note>
 
 ## `loop`
 
@@ -103,17 +103,17 @@ fn main() {
 }
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 When using multiple `break` to return value in a loop, their return type also need to be the compatible.
 
-</Admonition>
+</Note>
 
 ### `break` and `continue` inside nested loop
 
 `break` and `continue` apply to the innermost loop.
 
-You can optionally specify a <Color color="var(--secondary-font-color)"> loop label </Color> on a loop that you can then use with `break` or `continue` to specify that those keywords apply to the labeled loop instead of the innermost loop.
+You can optionally specify a <span style={{color: "var(--secondary-font-color)"}}> loop label </span> on a loop that you can then use with `break` or `continue` to specify that those keywords apply to the labeled loop instead of the innermost loop.
 
 ```rust title= showLineNumbers
 fn main() {
@@ -142,13 +142,13 @@ fn main() {
 }
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 Loop labels must begin with a single quote.
 
-</Admonition>
+</Note>
 
-<Admonition type="info" title="info">
+<Info>
 
 Use return value `break` with loop label
 
@@ -156,7 +156,7 @@ Use return value `break` with loop label
 break 'counting_up 123;
 ```
 
-</Admonition>
+</Info>
 
 ### `while` loop
 
@@ -202,7 +202,7 @@ fn main() {
 }
 ```
 
-&#8203;<Color color="var(--not-require-but-good-to-know-font-color)"> use `.rev()` to reverse `Range` </Color>
+&#8203;<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> use `.rev()` to reverse `Range` </span>
 
 ```rust title= showLineNumbers
 fn main() {

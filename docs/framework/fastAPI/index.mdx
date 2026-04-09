@@ -3,8 +3,7 @@ description: something
 title: FastAPI
 tags:
   - fastAPI
-last_update:
-  date: 2025-09-28T16:19:38.197Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 
@@ -14,19 +13,19 @@ last_update:
 pip install 'fastapi[standard]'
 ```
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 The `fastapi[standard]` package comes with some optional dependencies.
 
 If you don't want them, just use `pip install fastapi`.
 
-</Admonition>
+</Note>
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 Install FastAPI without the FastAPI Cloud CLI: `pip install "fastapi[standard-no-fastapi-cloud-cli]"`
 
-</Admonition>
+</Info>
 
 
 ## Hello world
@@ -61,11 +60,11 @@ Use the `<FastAPI instance>.<HTTP method name>()` decorator on a function.
 - `@app.patch()`
 - `@app.trace()`
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 FastAPI calls this a "path operation".
 
-</Admonition>
+</Note>
 
 ### Returning a response
 

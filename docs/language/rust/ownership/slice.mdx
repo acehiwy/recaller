@@ -1,17 +1,14 @@
 ---
-sidebar_position: 30000
 tags:
   - rust
-last_update:
-  date: 2026-03-08T05:30:36.255Z
-
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Slice
 
 ## String Slice
 
-A string slice is a <Color color="var(--secondary-font-color)"> reference </Color> to part of a `String`:
+A string slice is a <span style={{color: "var(--secondary-font-color)"}}> reference </span> to part of a `String`:
 
 ```rust title= showLineNumbers
 let s = String::from("hello world");
@@ -20,19 +17,19 @@ let hello: &str = &s[0..5]; // exclusive upper bound
 let world = &s[6..11];
 ```
 
-The slice data structure stores the <Color color="var(--secondary-font-color)"> starting position </Color> and the <Color color="var(--secondary-font-color)"> length </Color> of the slice
+The slice data structure stores the <span style={{color: "var(--secondary-font-color)"}}> starting position </span> and the <span style={{color: "var(--secondary-font-color)"}}> length </span> of the slice
 
 In the case of `let world = &s[6..11];`, `world` would be a slice that contains a pointer to the byte at index 6 of `s` with a length value of 5.
 
 ![slice](../assets/slice.svg)
 
-<Admonition type="caution" title="caution">
+<Warning>
 
 String slice range indices must occur at valid UTF-8 character boundaries.
 
 If you attempt to create a string slice in the middle of a multibyte character, your program will exit with an error.
 
-</Admonition>
+</Warning>
 
 ### Syntax short hand
 
@@ -71,13 +68,13 @@ string literals being stored inside the binary.
 let s = "Hello, world!";
 ```
 
-The type of `s` here is `&str`: <Color color="var(--secondary-font-color)"> it's a slice </Color> pointing to that specific point of the binary.
+The type of `s` here is `&str`: <span style={{color: "var(--secondary-font-color)"}}> it's a slice </span> pointing to that specific point of the binary.
 
-<Admonition type="info" title="info">
+<Info>
 
 Type `&String` is compatible with `&str`
 
-</Admonition>
+</Info>
 
 ## Miscellaneous
 

@@ -2,9 +2,7 @@
 
 tags:
   - python
-last_update:
-  date: 2025-10-01T13:56:30.747Z
-
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Error and Exception
@@ -23,24 +21,24 @@ last_update:
 ```
 
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 A `except` clause only handle exception from its `try`, not from its neighbor `except`. 
 
-</Admonition>
+</Note>
 
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 See more for [built-in exceptions](https://docs.python.org/3/library/exceptions.html#bltin-exceptions)
 
-</Admonition>
+</Info>
 
 ## `raise` keyword
 
 use to manually force an exception to occur
 
-`raise` must be followed by either an exception <Color color="var(--secondary-font-color)"> instance </Color> or an exception class
+`raise` must be followed by either an exception <span style={{color: "var(--secondary-font-color)"}}> instance </span> or an exception class
 
 ```python title= showLineNumbers
 raise BaseException('foo')
@@ -48,11 +46,11 @@ raise BaseException('foo')
 raise BaseException # same as raise BaseException()
 ```
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 If an exception is followed `raise`, it will be automatically instantiated with no constructor arguments
 
-</Admonition>
+</Note>
 
 ### re-raise exception
 
@@ -102,11 +100,11 @@ RuntimeError: Failed to open database
 
 Class as exception can be raised.
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 Class must inherit `BaseException` class
 
-</Admonition>
+</Note>
 
 ```python title= showLineNumbers
 class ParentClassException(BaseException):
@@ -128,13 +126,13 @@ def exception():
     print("match bc child have all properties of parent")
 ```
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 `BaseException` class is base class of all exception. Its subclass, `Exception`, indicate non-fatal exceptions
 
 fatal error mean program should terminate
 
-</Admonition>
+</Note>
 
 
 ### Exception arguments
@@ -177,7 +175,7 @@ else:
 ```
 
 
-<Admonition type="tip" title="tip"> 
+<Tip> 
 
 The purpose of the `else` clause is to avoid mixing up errors in `try`.
 
@@ -198,7 +196,7 @@ else:
   function_2_might_raise_another_value_error()
 ```
 
-</Admonition>
+</Tip>
 
 
 ## `finally` clause
@@ -216,21 +214,21 @@ finally:
 # highlight-end
 ```
 
-code inside `finally` block are executed, <Color color="var(--secondary-font-color)"> as the last task </Color>, in all cases whether or not an exception is raised regardless of its origin (raised from `try`, `except` or `else`)
+code inside `finally` block are executed, <span style={{color: "var(--secondary-font-color)"}}> as the last task </span>, in all cases whether or not an exception is raised regardless of its origin (raised from `try`, `except` or `else`)
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 If the `finally` clause executes a `break`, `continue` or `return` statement, exceptions are not re-raised.
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 If the `try` statement reaches a `break`, `continue` or `return` statement, the `finally` clause will execute just prior to the `break`, `continue` or `return` statement's execution.
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 If a `finally` clause includes a return statement, the returned value will be from `finally`'s return, not `try`'s return.
 
@@ -246,14 +244,14 @@ bool_return()
 # False
 ```
 
-</Admonition>
+</Note>
 
 
-<Admonition type="tip" title="tip"> 
+<Tip> 
 
 In real world applications, the `finally` clause is useful for releasing external resources (such as files or network connections)
 
-</Admonition>
+</Tip>
 
 
 ## Raising multiple exceptions
@@ -301,10 +299,10 @@ except* SystemError as e:
   pass
 ```
 
-It mean pick the exception<Color color="var(--secondary-font-color)">(s)</Color> from the group and its nested group to handle
+It mean pick the exception<span style={{color: "var(--secondary-font-color)"}}>(s)</span> from the group and its nested group to handle
 
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 `ExceptionGroup` often the case in concurrency frameworks, when several tasks may have failed in parallel, but there are also other use cases where it is desirable to continue execution and collect multiple errors rather than raise the first exception.
 
@@ -322,7 +320,7 @@ if excs:
    raise ExceptionGroup("Test Failures", excs)
 ```
 
-</Admonition>
+</Info>
 
 ## Add more info to the exception
 

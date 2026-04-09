@@ -1,14 +1,18 @@
+---
+lastUpdated: 2026-04-08T09:00:42.959Z
+---
+
 # To panic or Not to panic
 
 ## Use panic when
 
-- You’re making the decision that a situation is unrecoverable <Color color="var(--primary-font-color)"> on behalf of </Color> the calling code.
+- You’re making the decision that a situation is unrecoverable <span style={{color: "var(--primary-font-color)"}}> on behalf of </span> the calling code.
 - Your code could end up in the bad state
-  - The bad state is something that is unexpected, <Color color="var(--primary-font-color)"> as opposed to </Color> something that will likely <Color color="var(--secondary-font-color)"> happen occasionally </Color>, like a user entering data in the wrong format.
-- Your code after this point needs to rely on <Color color="var(--secondary-font-color)"> not being </Color> in this bad state.
+  - The bad state is something that is unexpected, <span style={{color: "var(--primary-font-color)"}}> as opposed to </span> something that will likely <span style={{color: "var(--secondary-font-color)"}}> happen occasionally </span>, like a user entering data in the wrong format.
+- Your code after this point needs to rely on <span style={{color: "var(--secondary-font-color)"}}> not being </span> in this bad state.
 - Continuing could be insecure or harmful
 - Your code behavior is only guaranteed if input meet particular requirement but calling code does not meet the requirements(invalid input).
-- It is <Color color="var(--secondary-font-color)"> not make sense </Color> for calling code to <Color color="var(--primary-font-color)"> explicitly </Color> handle the error
+- It is <span style={{color: "var(--secondary-font-color)"}}> not make sense </span> for calling code to <span style={{color: "var(--primary-font-color)"}}> explicitly </span> handle the error
 
 ## Use Result when
 
@@ -17,15 +21,15 @@
 
 ---
 
-<Admonition type="tip" title="tip">
+<Tip>
 
 Returning `Result` is a good default choice
 
-</Admonition>
+</Tip>
 
-<Admonition type="note" title="note">
+<Note>
 
-If you can ensure by manually inspecting the code that you’ll <Color color="var(--secondary-font-color)"> never </Color> have an `Err` variant, it’s perfectly acceptable to call `unwrap`,
+If you can ensure by manually inspecting the code that you’ll <span style={{color: "var(--secondary-font-color)"}}> never </span> have an `Err` variant, it’s perfectly acceptable to call `unwrap`,
 and even better to document the reason you think you’ll never have an `Err` variant in the expect text.
 
 Here’s an example:
@@ -38,7 +42,7 @@ Here’s an example:
      .expect("Hardcoded IP address should be valid");
 ```
 
-</Admonition>
+</Note>
 
 ## Miscellaneous
 

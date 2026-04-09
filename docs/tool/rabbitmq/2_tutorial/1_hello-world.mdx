@@ -3,6 +3,7 @@ tags:
   - rabbitmq
   - message broker
   - tool
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Hello World
@@ -20,17 +21,17 @@ In the diagram below:
 
 ![Producer Queue Consumer](../assets/producer-queue-consumer.png)
 
-<Admonition type="info" title="info">
+<Info>
 
 RabbitMQ speaks multiple protocols. This tutorial uses AMQP 0-9-1, which is an open, general-purpose protocol for messaging.
 
-</Admonition>
+</Info>
 
-<Admonition type="tip" title="later">
+<Tip>
 
 RabbitMQ clients are available in [many different languages](http://rabbitmq.com/devtools.html).
 
-</Admonition>
+</Tip>
 
 here we will use [amqp.node](https://amqp-node.github.io/amqplib/):
 
@@ -103,17 +104,17 @@ amqp.connect("amqp://localhost", function (error0, connection) {
 });
 ```
 
-<Admonition type="note" title="note">
+<Note>
 
 Declaring a queue is idempotent - it will only be created if it doesn't exist already.
 
-</Admonition>
+</Note>
 
-<Admonition type="note" title="note">
+<Note>
 
 The message content is a byte array, so you can encode whatever you like there.
 
-</Admonition>
+</Note>
 
 Lastly, we close the connection and exit:
 
@@ -149,23 +150,23 @@ amqp.connect("amqp://localhost", function (error0, connection) {
 });
 ```
 
-<Admonition type="tip" title="later">
+<Tip>
 
 Sending doesn't work!
 
 If this is your first time using RabbitMQ and you don't see the "Sent" message then you may be left scratching your head wondering what could be wrong.
 
-Maybe the broker was started <Color color="var(--secondary-font-color)"> without enough free disk space </Color> (by default it needs at least 200 MB free) and is therefore refusing to accept messages.
+Maybe the broker was started <span style={{color: "var(--secondary-font-color)"}}> without enough free disk space </span> (by default it needs at least 200 MB free) and is therefore refusing to accept messages.
 
 Check the broker logfile to confirm and reduce the limit if necessary.
 
 The [configuration file documentation](https://www.rabbitmq.com/configure.html#config-items) will show you how to set `disk_free_limit`.
 
-</Admonition>
+</Tip>
 
 ## Consuming message
 
-Unlike the publisher which publishes a single message, we'll <Color color="var(--secondary-font-color)"> keep the consumer running </Color> to listen for messages and print them out.
+Unlike the publisher which publishes a single message, we'll <span style={{color: "var(--secondary-font-color)"}}> keep the consumer running </span> to listen for messages and print them out.
 
 Setting up is the same as the publisher; we open a connection and a channel, and declare the queue from which we're going to consume.
 
@@ -193,12 +194,12 @@ amqp.connect("amqp://localhost", function (error0, connection) {
 });
 ```
 
-We <Color color="var(--secondary-font-color)"> declare the queue here, as well </Color>. Because we might start the consumer before the publisher,
+We <span style={{color: "var(--secondary-font-color)"}}> declare the queue here, as well </span>. Because we might start the consumer before the publisher,
 we want to make sure the queue exists before we try to consume messages from it.
 
 We're about to tell the server to deliver us the messages from the queue.
 
-Since it will <Color color="var(--primary-font-color)"> push </Color> us messages asynchronously,
+Since it will <span style={{color: "var(--primary-font-color)"}}> push </span> us messages asynchronously,
 we provide a callback that will be executed when RabbitMQ pushes messages to our consumer.
 
 This is what `Channel.consume` does.
@@ -250,28 +251,28 @@ node send.js
 node receive.js
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 You may wish to see what queues RabbitMQ has and how many messages are in them. You can do it (as a privileged user) using the `rabbitmqctl` tool:
 
 <Tabs>
-<TabItem value="linux" label="linux">
+<Tab title="linux">
 
 ```bash title=
 sudo rabbitmqctl.bat list_queues
 ```
 
-</TabItem>
-<TabItem value="window" label="window">
+</Tab>
+<Tab title="window">
 
 ```bash title=
 rabbitmqctl.bat list_queues
 ```
 
-</TabItem>
+</Tab>
 </Tabs>
 
-</Admonition>
+</Info>
 
 <br />
 

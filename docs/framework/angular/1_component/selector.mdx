@@ -1,6 +1,5 @@
 ---
-last_update:
-  date: 2025-10-09T11:21:56.857Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Selector
@@ -27,7 +26,7 @@ Example. with class selector
 - The `Foo` component content replaces the original content defined in `App`
 
 <Tabs>
-<TabItem value="foo" label="Foo component">
+<Tab title="Foo component">
 
 ```typescript title=foo.ts showLineNumbers
 @Component({
@@ -37,8 +36,8 @@ Example. with class selector
 export class Foo {}
 ```
 
-</TabItem>
-<TabItem value="app" label="App component">
+</Tab>
+<Tab title="App component">
 
 ```typescript title=app.ts showLineNumbers
 @Component({
@@ -56,8 +55,8 @@ export class Foo {}
 export class App {
 ```
 
-</TabItem>
-<TabItem value="html" label="Rendered HTML">
+</Tab>
+<Tab title="Rendered HTML">
 
 ```html title= HTML showLineNumbers
 <div class="some-css-class">
@@ -65,18 +64,18 @@ export class App {
 </div>
 ```
 
-</TabItem>
+</Tab>
 </Tabs>
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 The CSS class still applies to the HTML element even if it is matched.
 
-</Admonition>
+</Note>
 
 
-<!--##########################################################################################-->
-<!--##########################################################################################-->
+
+
 
 ## Type selector
 
@@ -114,21 +113,21 @@ export class User {}
 export class App {}
 ```
 
-&#8203;<Color color="var(--can-not-understand-font-color)">Angular matches selectors statically at compile-time. Changing the DOM at run-time, either via Angular bindings or with DOM APIs, does not affect the components rendered.</Color>
+&#8203;<span style={{color: "var(--can-not-understand-font-color)"}}>Angular matches selectors statically at compile-time. Changing the DOM at run-time, either via Angular bindings or with DOM APIs, does not affect the components rendered.</span>
 
-<Admonition type="note" title="note">
+<Note>
 
 Components are "standalone" by default. This means another component can add them to its `imports`.
 
 The `standalone: false` metadata can be specified to indicate that a component belongs to a module and needs to be imported through its `NgModule` instead.
 
-</Admonition>
+</Note>
 
-<Admonition type="info" title="info">
+<Info>
 
 Angular throws an error when component selectors are duplicated.
 
-</Admonition>
+</Info>
 
 <br />
 

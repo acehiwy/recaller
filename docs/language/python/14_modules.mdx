@@ -2,9 +2,7 @@
 
 tags:
   - python
-last_update:
-  date: 2025-10-01T13:56:30.747Z
-
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Modules
@@ -17,7 +15,7 @@ Eg. from the same directory:
 
 <Tabs>
 
-<TabItem value="some_other_file" label="some_other_file.py">
+<Tab title="some_other_file.py">
 
 ```python title=some_other_file.py showLineNumbers
 import my_module
@@ -31,16 +29,16 @@ print(__name__)
 ```
 
 
-<Admonition type="note" title="note"> 
+<Note> 
 
 Within a module, the module's name (as string) is available as a value of global variable `__name__`
 
-</Admonition>
+</Note>
 
 
-</TabItem>
+</Tab>
 
-<TabItem value="my_module" label="my_module.py">
+<Tab title="my_module.py">
 
 ```python title=my_module.py showLineNumbers
 def foo():
@@ -50,7 +48,7 @@ def foo():
 
 
 
-</TabItem>
+</Tab>
 
 </Tabs>
 
@@ -84,10 +82,10 @@ something.something_else()
 
 ## Module initialization
 
-Each module is only <Color color="var(--secondary-font-color)"> imported once per interpreter session </Color>. Meaning, statements define in module are executed once on imported whether one or multiple file importing it.
+Each module is only <span style={{color: "var(--secondary-font-color)"}}> imported once per interpreter session </span>. Meaning, statements define in module are executed once on imported whether one or multiple file importing it.
 
 <Tabs>
-<TabItem value="main" label="main">
+<Tab title="main">
 
 ```python title=main.py showLineNumbers
 print('init:' , __name__)
@@ -103,9 +101,9 @@ print('exec from', __name__ , deepest_module.deepest())
 # exec from __main__ deepest
 ```
 
-</TabItem>
+</Tab>
 
-<TabItem value="middle" label="middle module">
+<Tab title="middle module">
 
 ```python title=middle_module.py showLineNumbers
 print('init:' , __name__)
@@ -115,9 +113,9 @@ import deepest_module
 print('exec from', __name__ , deepest_module.deepest())
 ```
 
-</TabItem>
+</Tab>
 
-<TabItem value="deepest" label="deepest module">
+<Tab title="deepest module">
 
 ```python title=deepest_module.py showLineNumbers
 print('init:' , __name__)
@@ -126,11 +124,11 @@ def deepest():
   return 'deepest'
 ```
 
-</TabItem>
+</Tab>
 
 </Tabs>
 
-### <Color color="var(--not-nesary-for-now-future-font-color)"> Re-importing module </Color>
+### <span style={{color: "var(--not-nesary-for-now-future-font-color)"}}> Re-importing module </span>
 
 ```python title= showLineNumbers
 import importlib
@@ -175,17 +173,17 @@ if __name__ == '__main__':
 
 Lets say module `foo` is imported, the interpreter start search from:
 
-- build-in module name `foo`. <Color color="var(--not-require-but-good-to-know-font-color)"> build-in module are listed in `sys.builtin_module_names` </Color>
+- build-in module name `foo`. <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> build-in module are listed in `sys.builtin_module_names` </span>
 - a file named `foo.py` from a list of dictionaries given by `sys.path` which are:
   - the directory containing the input script (current dir if no file input)
   - `PYTHONPATH` environment variable
-  - <Color color="var(--can-not-understand-font-color)"> installation-dependent default </Color>
+  - <span style={{color: "var(--can-not-understand-font-color)"}}> installation-dependent default </span>
 
-<Admonition type="note" title="note"> 
+<Note> 
 
-If the input script is symlinked, the interpreter adds the original file location to the search path, <Color color="var(--secondary-font-color)"> not the symlinked file directory </Color>.
+If the input script is symlinked, the interpreter adds the original file location to the search path, <span style={{color: "var(--secondary-font-color)"}}> not the symlinked file directory </span>.
 
-</Admonition>
+</Note>
 
 <details>
 
@@ -211,7 +209,7 @@ Gives you a list of definition names (variables, modules, functions) contained i
 
 
 <Tabs>
-<TabItem value="main" label="main.py">
+<Tab title="main.py">
 
 ```python title= showLineNumbers
 import foo
@@ -239,8 +237,8 @@ print(dir(foo))
 # ]
 ```
 
-</TabItem>
-<TabItem value="foo" label="foo.py">
+</Tab>
+<Tab title="foo.py">
 
 ```python title= showLineNumbers
 import sys
@@ -251,7 +249,7 @@ def foo():
 variable_from_foo = "foo"
 ```
 
-</TabItem>
+</Tab>
 </Tabs>
 
 Calling `dir` without any arguments gives you a list of names in the current module.
@@ -275,11 +273,11 @@ eg. `dir()` from `main.py` file above will give:
 ]
 ```
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 Built-in definitions can be listed by `import builtins; dir(builtins)`
 
-</Admonition>
+</Info>
 
 
 ## Packages
@@ -306,22 +304,22 @@ import sound.formats.wavread
 from sound.formats.wavread import some_definition_inside_wavread
 ```
 
-<Admonition type="info" title="info"> 
+<Info> 
 
 `__init__.py` makes its directory a module by using the definitions inside the `__init__.py` file.
 
 eg. the `import sound` statement would import definitions from a file `sound.py` or  `__init__.py` which live inside `sound` directory
 
-</Admonition>
+</Info>
 
 
-<Admonition type="tip" title="later"> 
+<Tip> 
 
 When using syntax like `import item.subitem.subsubitem`, each item except for the last must be a package.
 
 The last item can be a module or a package but can't be a class or function or variable defined in the previous item.
 
-</Admonition>
+</Tip>
 
 ### Importing `*` from package
 

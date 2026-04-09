@@ -1,10 +1,8 @@
 ---
 description: Docusaurus's Code Blocks
-sidebar_position: 5000
 tags:
   - docusaurus
-last_update:
-  date: 2025-09-28T16:19:38.197Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Code blocks
@@ -25,11 +23,11 @@ function HelloCodeTitle(props) {
 
 Code blocks are text blocks wrapped around by strings of 3 backticks.
 
-<Admonition type="tip" title="Reference">
+<Tip>
 
 You may check out [this reference](https://github.com/mdx-js/specification) for the specifications of MDX.
 
-</Admonition>
+</Tip>
 
 ````markdown title= showLineNumbers
 ```js
@@ -45,11 +43,11 @@ console.log("Every repo must come with a mascot.");
 
 ---
 
-<Color color="var(--not-require-but-good-to-know-font-color)">
+<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>
 
 ### Theming
 
-</Color>
+</span>
 
 By default, the Prism [syntax highlighting theme](https://github.com/FormidableLabs/prism-react-renderer#theming) we use is [Palenight](https://github.com/FormidableLabs/prism-react-renderer/blob/master/src/themes/palenight.js).
 
@@ -97,17 +95,17 @@ module.exports = {
 
 After adding `additionalLanguages`, restart Docusaurus.
 
-<Admonition type="note">
+<Note>
 
 Each additional language has to be a valid Prism component name.
 
-For example, Prism would map the language `cs` to `csharp`, but only `prism-csharp.js` <Color color="var(--primary-font-color)"> exists </Color> as a component
+For example, Prism would map the language `cs` to `csharp`, but only `prism-csharp.js` <span style={{color: "var(--primary-font-color)"}}> exists </span> as a component
 
 So you need to use `additionalLanguages: ['csharp']`.
 
 You can look into `node_modules/prismjs/components` to find all components (languages) available.
 
-</Admonition>
+</Note>
 
 ## Line Highlighting
 
@@ -176,11 +174,11 @@ function HighlightMoreText(highlight) {
 
 ---
 
-<Color color="var(--not-require-but-good-to-know-font-color)">
+<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>
 
 ### Config highlighted code background
 
-</Color>
+</span>
 
 You can set your own background color for highlighted code line in your `src/css/custom.css`
 
@@ -202,14 +200,14 @@ If you also need to style the highlighted code line in some other way, you can t
 
 ### Custom magic comments
 
-`// highlight-next-line` and `// highlight-start` etc. are called <Color color="var(--secondary-font-color)"> "magic comments" </Color>.
+`// highlight-next-line` and `// highlight-start` etc. are called <span style={{color: "var(--secondary-font-color)"}}> "magic comments" </span>.
 
 You can declare custom magic comments through theme config.
 
 For example, you can register another magic comment that adds a `code-block-error-line` class name:
 
 <Tabs>
-<TabItem value="config" label="docusaurus.config.js">
+<Tab title="docusaurus.config.js">
 
 ```javascript title= showLineNumbers
 module.exports = {
@@ -232,8 +230,8 @@ module.exports = {
 };
 ```
 
-</TabItem>
-<TabItem value="customCss" label="src/css/custom.css">
+</Tab>
+<Tab title="src/css/custom.css">
 
 ```css title= showLineNumbers
 .code-block-error-line {
@@ -245,8 +243,8 @@ module.exports = {
 }
 ```
 
-</TabItem>
-<TabItem value="foo.md" label="foo.md">
+</Tab>
+<Tab title="foo.md">
 
 ````markdown title= showLineNumbers
 In JavaScript, trying to access properties on `null` will error.
@@ -259,7 +257,7 @@ console.log(name.toUpperCase());
 ```
 ````
 
-</TabItem>
+</Tab>
 </Tabs>
 
 ```javascript title=foo.md showLineNumbers
@@ -269,7 +267,7 @@ console.log(name.toUpperCase());
 // Uncaught TypeError: Cannot read properties of null (reading 'toUpperCase')
 ```
 
-<Admonition type="note">
+<Note>
 
 Every magic comment entry will contain three keys
 
@@ -277,42 +275,42 @@ Every magic comment entry will contain three keys
 - `line` which applies to the directly next line
 - `block` (containing start and end), which applies to the entire block enclosed by the two comments.
 
-</Admonition>
+</Note>
 
-<Admonition type="note">
+<Note>
 
 You can disable the default line highlighting comments with `magicComments: []`.
 
-</Admonition>
+</Note>
 
-<Admonition type="tip" title="Swizzling">
+<Tip>
 
 Using CSS to target the class can already do a lot, but you can unlock the full potential of this feature through swizzling.
 
 <Tabs>
-<TabItem value="npm" label="npm">
+<Tab title="npm">
 
 ```bash title=
 npm run swizzle @docusaurus/theme-classic CodeBlock/Line
 ```
 
-</TabItem>
-<TabItem value="yarn" label="yarn">
+</Tab>
+<Tab title="yarn">
 
 ```bash title=
 yarn run swizzle @docusaurus/theme-classic CodeBlock/Line
 ```
 
-</TabItem>
+</Tab>
 </Tabs>
 
 The `Line` component will receive the list of class names, based on which you can conditionally render different markup.
 
-</Admonition>
+</Tip>
 
 ## Line numbering
 
-You can enable line numbering for your code block by using `showLineNumbers` key within the language meta string <Color color="var(--secondary-font-color)"> (don't forget to add space directly before the key) </Color>.
+You can enable line numbering for your code block by using `showLineNumbers` key within the language meta string <span style={{color: "var(--secondary-font-color)"}}> (don't forget to add space directly before the key) </span>.
 
 ````markdown title=
 ```jsx showLineNumbers
@@ -344,11 +342,11 @@ function MyComponent(props) {
 export default MyComponent;
 ```
 
-<Color color="var(--not-nesary-for-now-future-font-color)">
+<span style={{color: "var(--not-nesary-for-now-future-font-color)"}}>
 
 ## Interactive code editor
 
-</Color>
+</span>
 
 You can create an interactive coding editor with the `@docusaurus/theme-live-codeblock` plugin (Powered by React Live).
 

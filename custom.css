@@ -1,0 +1,42 @@
+/* Custom styles for Recaller documentation */
+
+/* Color highlight classes - replacing the custom Color component */
+.color-secondary {
+  color: rgb(0, 128, 255);
+}
+
+.color-primary {
+  color: #ff577f;
+}
+
+.color-not-required {
+  color: purple;
+}
+
+.color-cannot-understand {
+  color: rgb(249, 249, 110);
+}
+
+.color-not-necessary {
+  color: green;
+}
+
+.color-writer-note {
+  color: rgb(0, 128, 255);
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  .color-secondary {
+    color: cyan;
+  }
+}
+
+/* Code block error line highlighting */
+.code-block-error-line {
+  background-color: #ff000020;
+  display: block;
+  margin: 0 -24px;
+  padding: 0 24px;
+  border-left: 3px solid #ff0000;
+}

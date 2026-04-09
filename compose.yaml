@@ -9,8 +9,8 @@ services:
         - app-git-worktrees:/home/node/worktrees
         - .:/home/node/app
     ports:
-      - 22222:22222
-    command: bash -c "yarn install --immutable && yarn start"
+      - 3000:3000
+    command: bash -c "yarn install --immutable && yarn dev"
 
 
 volumes:

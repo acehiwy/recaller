@@ -4,8 +4,7 @@ tags:
   - docusaurus
   - documentation
   - tool
-last_update:
-  date: 2025-09-28T16:19:38.197Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Docs
@@ -61,7 +60,7 @@ module.exports = {
 All that routeBasePath: '/' does is that instead of serving the docs through `https://example.com/docs/some-doc`,
 they are now at the site root: `https://example.com/some-doc`.
 
-<Admonition type="note">
+<Note>
 
 Don't forget to put some page at the root (https://example.com/) through adding the front matter:
 
@@ -73,13 +72,13 @@ slug: /
 This page will be the home page when users visit https://example.com/.
 ```
 
-</Admonition>
+</Note>
 
-<Admonition type="warning">
+<Warning>
 
 If you added slug: / to a doc to make it the homepage, you should delete the existing homepage at `./src/pages/index.js`, or else there will be two files mapping to the same route!
 
-</Admonition>
+</Warning>
 
 Now, the site's structure will be like the following:
 
@@ -88,11 +87,11 @@ example.com/                       -> generated from `docs/intro.md`
 example.com/tutorial-basics/...    -> generated from `docs/tutorial-basics/...`
 ```
 
-<Admonition type="tip" title="Docs config API reference">
+<Tip>
 
 Check the [Docs Plugin API Reference documentation](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs) for an exhaustive list of options.
 
-</Admonition>
+</Tip>
 
 <br />
 

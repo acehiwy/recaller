@@ -1,29 +1,29 @@
 ---
-sidebar_position: 7000
 tags:
   - openapi
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # API Servers
 
-This page shows how to <Color color="var(--secondary-font-color)"> specify the server </Color> where the API can be accessed,
+This page shows how to <span style={{color: "var(--secondary-font-color)"}}> specify the server </span> where the API can be accessed,
 which can contain multiple URLs and even variable portions.
 
 ## Server Object
 
-The [Server Object](https://spec.openapis.org/oas/v3.1.0#server-object) provides the <Color color="var(--secondary-font-color)"> base URLs where the API is being served </Color>.
+The [Server Object](https://spec.openapis.org/oas/v3.1.0#server-object) provides the <span style={{color: "var(--secondary-font-color)"}}> base URLs where the API is being served </span>.
 
 It can be found in the `servers` array present in the root [OpenAPI Object](https://spec.openapis.org/oas/v3.1.0#oasServers), the [Path Item Object](https://spec.openapis.org/oas/v3.1.0#pathItemServers) and the [Operation Object](https://spec.openapis.org/oas/v3.1.0#operationServers).
 
 ![server object](assets/server-object.png)
 
-<Admonition type="note" title="note">
+<Note>
 
 The edges marked with an asterisk are arrays.
 
-</Admonition>
+</Note>
 
-Each element in a `servers` array is a Server Object providing, at least, a `url` field <Color color="var(--secondary-font-color)"> with the </Color> <Color color="var(--primary-font-color)"> base URL </Color> for that server.
+Each element in a `servers` array is a Server Object providing, at least, a `url` field <span style={{color: "var(--secondary-font-color)"}}> with the </span> <span style={{color: "var(--primary-font-color)"}}> base URL </span> for that server.
 
 An optional `description` aids in keeping server lists organized:
 
@@ -37,7 +37,7 @@ servers:
     description: Server located in Shenzhen
 ```
 
-Individual API endpoints (as specified in the [Paths Object](https://spec.openapis.org/oas/v3.1.0#paths-object)) are then <Color color="var(--secondary-font-color)"> appended to this URL </Color> to construct the full endpoint URL.
+Individual API endpoints (as specified in the [Paths Object](https://spec.openapis.org/oas/v3.1.0#paths-object)) are then <span style={{color: "var(--secondary-font-color)"}}> appended to this URL </span> to construct the full endpoint URL.
 
 For example:
 
@@ -49,7 +49,7 @@ paths:
     get:
 ```
 
-When <Color color="var(--secondary-font-color)"> multiple </Color> `servers` arrays are specified at different levels for a given operation, <Color color="var(--secondary-font-color)"> only the lowest level </Color> one is taken into account.
+When <span style={{color: "var(--secondary-font-color)"}}> multiple </span> `servers` arrays are specified at different levels for a given operation, <span style={{color: "var(--secondary-font-color)"}}> only the lowest level </span> one is taken into account.
 
 For example:
 
@@ -65,19 +65,19 @@ paths:
 
 GET requests to the `/users` endpoint are served from `https://server2.com` and not from `https://server1.com`.
 
-<Admonition type="info" title="info">
+<Info>
 
 If no servers are provided, it is assumed that all API endpoints are relative to the location where the OpenAPI document is being served.
 
-</Admonition>
+</Info>
 
-<Admonition type="tip" title="tip">
+<Tip>
 
-If the servers are used for different environments, chances are that their APIs will be different and <Color color="var(--secondary-font-color)"> describing them in </Color> <Color color="var(--primary-font-color)"> a single document </Color> <Color color="var(--secondary-font-color)"> will be complicated </Color>.
+If the servers are used for different environments, chances are that their APIs will be different and <span style={{color: "var(--secondary-font-color)"}}> describing them in </span> <span style={{color: "var(--primary-font-color)"}}> a single document </span> <span style={{color: "var(--secondary-font-color)"}}> will be complicated </span>.
 
 In these cases it is probably better to use different documents, and even different API versions.
 
-</Admonition>
+</Tip>
 
 ## Server Variables
 
@@ -94,8 +94,8 @@ The `variables` field is a map pairing `variable` names and [Server Variable Obj
 
 The Server Variable Object has the following fields:
 
-- `default` (string): A <Color color="var(--secondary-font-color)"> mandatory field </Color> and it is the value that should be used if there is no other value to provide.
-- `enum` (array of strings): If present, this array lists the valid values for the variable ( <Color color="var(--primary-font-color)"> the default value must be in the array </Color> ).
+- `default` (string): A <span style={{color: "var(--secondary-font-color)"}}> mandatory field </span> and it is the value that should be used if there is no other value to provide.
+- `enum` (array of strings): If present, this array lists the valid values for the variable ( <span style={{color: "var(--primary-font-color)"}}> the default value must be in the array </span> ).
 - `description` (string): Descriptions of the variable.
 
 ```yaml title= showLineNumbers

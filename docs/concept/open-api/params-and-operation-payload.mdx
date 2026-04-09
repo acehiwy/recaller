@@ -1,33 +1,33 @@
 ---
-sidebar_position: 4000
 tags:
   - openapi
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Parameters and Operation Payload
 
 OpenAPI provides two mechanisms to specify input data, parameters and request body (message payload).
 
-&#8203;<Color color="var(--not-require-but-good-to-know-font-color)"> Parameters are typically used to identify a resource, whereas the message payload provides content for that resource. </Color>
+&#8203;<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> Parameters are typically used to identify a resource, whereas the message payload provides content for that resource. </span>
 
 ![Parameters And Operation Payload](assets/parameters-and-operation-payload.png)
 
-<Admonition type="info" title="info">
+<Info>
 
 The edges marked with an asterisk(\*) are arrays.
 
-</Admonition>
+</Info>
 
 ## Parameter Object
 
 The `parameters` field in the [Path Item](https://spec.openapis.org/oas/v3.1.0#path-item-object) and [Operation Objects](https://spec.openapis.org/oas/v3.1.0#operation-object) is an array containing [Parameter Objects](https://spec.openapis.org/oas/v3.1.0#parameter-object).
 
-When <Color color="var(--secondary-font-color)"> provided in the Path Item Object </Color>, the <Color color="var(--secondary-font-color)"> parameters are shared by all operations on that path </Color> (which can override individual parameters at the Operation Object level but not remove them).
+When <span style={{color: "var(--secondary-font-color)"}}> provided in the Path Item Object </span>, the <span style={{color: "var(--secondary-font-color)"}}> parameters are shared by all operations on that path </span> (which can override individual parameters at the Operation Object level but not remove them).
 
 Each Parameter Object describes one parameter with the following mandatory fields:
 
 - `in` (string): [Location of the parameter](#parameter-location)
-- `name` (string): Case-sensitive. <Color color="var(--primary-font-color)"> Must be unique in each location </Color>.
+- `name` (string): Case-sensitive. <span style={{color: "var(--primary-font-color)"}}> Must be unique in each location </span>.
 
 Additional optional fields include:
 
@@ -40,9 +40,9 @@ Parameters can reside in different locations, indicated by the `in` field. The m
 
 #### `path`
 
-The parameter is <Color color="var(--secondary-font-color)"> part of the route </Color> of this operation.
+The parameter is <span style={{color: "var(--secondary-font-color)"}}> part of the route </span> of this operation.
 
-The <Color color="var(--secondary-font-color)"> parameter's name must appear in the path as a [template expression](https://spec.openapis.org/oas/v3.1.0#path-templating) </Color>, i.e., delimited by curly braces `{}`.
+The <span style={{color: "var(--secondary-font-color)"}}> parameter's name must appear in the path as a [template expression](https://spec.openapis.org/oas/v3.1.0#path-templating) </span>, i.e., delimited by curly braces `{}`.
 
 For example, the path `/users/{id}` must contain at least one parameter described with:
 
@@ -58,15 +58,15 @@ paths:
           // highlight-end
 ```
 
-<Admonition type="caution" title="caution">
+<Warning>
 
 When using `path` parameters, the `required` field must be present and its value must be `true`.
 
-</Admonition>
+</Warning>
 
 #### `query`
 
-The parameter is appended to the <Color color="var(--secondary-font-color)"> query string </Color> part of the operation's URL.
+The parameter is appended to the <span style={{color: "var(--secondary-font-color)"}}> query string </span> part of the operation's URL.
 
 For example, the URL `/users?id=1234` can be parsed using:
 
@@ -84,11 +84,11 @@ paths:
 
 The parameter is sent in a custom HTTP header as part of the request.
 
-<Admonition type="note" title="note">
+<Note>
 
-Header names are case-<Color color="var(--secondary-font-color)">in</Color>sensitive.
+Header names are case-<span style={{color: "var(--secondary-font-color)"}}>in</span>sensitive.
 
-</Admonition>
+</Note>
 
 ### Parameter Type
 
@@ -106,37 +106,37 @@ parameters:
     // highlight-end
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 The [Content of Message Bodies](message-body-content#schema-object) page describes Schema objects in greater detail.
 
-</Admonition>
+</Info>
 
 In more advanced scenarios the `content` field can be used instead.
 
-It provides a <Color color="var(--secondary-font-color)"> single-entry map </Color>(map that have only 1 key-value) of Media Types(as a key) to [Media Type Objects](https://spec.openapis.org/oas/v3.1.0#media-type-object)(as a value).
+It provides a <span style={{color: "var(--secondary-font-color)"}}> single-entry map </span>(map that have only 1 key-value) of Media Types(as a key) to [Media Type Objects](https://spec.openapis.org/oas/v3.1.0#media-type-object)(as a value).
 
-<Admonition type="note" title="note">
+<Note>
 
-&#8203;<Color color="var(--secondary-font-color)">Exactly one</Color> of `schema` or `content` must be present. They cannot appear at the same time.
+&#8203;<span style={{color: "var(--secondary-font-color)"}}>Exactly one</span> of `schema` or `content` must be present. They cannot appear at the same time.
 
-</Admonition>
+</Note>
 
-### <Color color="var(--can-not-understand-font-color)"> Parameter Serialization Control </Color>
+### <span style={{color: "var(--can-not-understand-font-color)"}}> Parameter Serialization Control </span>
 
-<Admonition type="caution" title="??????">
+<Warning>
 
 https://oai.github.io/Documentation/specification/parameters.html#parameter-serialization-control
 
-</Admonition>
+</Warning>
 
 ## Request Body Object
 
-&#8203;<Color color="var(--not-require-but-good-to-know-font-color)"> When updating a record on a database, the parameters are typically used to identify the record whereas the message body provides its new content. </Color>
+&#8203;<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> When updating a record on a database, the parameters are typically used to identify the record whereas the message body provides its new content. </span>
 
 The [Request Body Object](https://spec.openapis.org/oas/v3.1.0#request-body-object) is specified through the `requestBody` field in the [Operation Object](https://spec.openapis.org/oas/v3.1.0#operationRequestBody).
 
-<!-- prettier-ignore -->
+
 ```yaml title= showLineNumbers
 paths:
   /board:
@@ -147,19 +147,19 @@ paths:
       // highlight-end
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 The only mandatory field in the Request Body Object is `content` which is described in detail in the [Content of Message Bodies](message-body-content#schema-object) page.
 
-</Admonition>
+</Info>
 
-<Admonition type="note" title="note">
+<Note>
 
 The Request Body Object also has a `description` string and a `required` boolean to state whether the message payload is mandatory.
 
-</Admonition>
+</Note>
 
-&#8203;<Color color="var(--not-require-but-good-to-know-font-color)"> As a reminder, the snippet below describes an operation with a JSON request body containing a single integer with values between 1 and 100. </Color>
+&#8203;<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> As a reminder, the snippet below describes an operation with a JSON request body containing a single integer with values between 1 and 100. </span>
 
 ```yaml title= showLineNumbers
 requestBody:
@@ -171,14 +171,14 @@ requestBody:
         maximum: 100
 ```
 
-## <Color color="var(--not-require-but-good-to-know-font-color)"> Example </Color>
+## <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> Example </span>
 
 The [Tic Tac Toe sample API](https://oai.github.io/Documentation/examples/tictactoe.yaml) contains two endpoints
 
 - one without parameters or request body (`/board`)
 - another one with both (`/board/{row}/{column}`).
 
-<!-- prettier-ignore -->
+
 ```yaml title= showLineNumbers
 paths:
   # Single square operations

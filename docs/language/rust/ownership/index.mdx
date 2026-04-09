@@ -1,7 +1,7 @@
 ---
-sidebar_position: 10000
 tags:
   - rust
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Ownership
@@ -10,17 +10,17 @@ A set of rules that the compiler checks.It enables Rust to make memory safety gu
 
 ## Stack and Heap
 
-Both the stack and the heap are parts of memory available to your code to use <Color color="var(--secondary-font-color)"> at runtime </Color>, but they are structured in different ways.
+Both the stack and the heap are parts of memory available to your code to use <span style={{color: "var(--secondary-font-color)"}}> at runtime </span>, but they are structured in different ways.
 
 All data stored on the stack must have a known, fixed size.
 
 Data with an unknown size at compile time or a size that might change must be stored on the heap instead.
 
-<Admonition type="tip" title="later" icon="">
+<Tip>
 
 More info: https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#the-stack-and-the-heap
 
-</Admonition>
+</Tip>
 
 ## Ownership Rules
 
@@ -28,8 +28,8 @@ More info: https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#the-sta
 - There can only be one owner at a time.
 - When the owner goes out of scope, the value will be dropped.
 
-&#8203;<Color color="var(--not-require-but-good-to-know-font-color)"> The types covered previously are of a known size, can be stored on the stack and popped off the stack when their scope is over
-and can be quickly copied as an instance if another part of code needs to use it in a different scope. </Color>
+&#8203;<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> The types covered previously are of a known size, can be stored on the stack and popped off the stack when their scope is over
+and can be quickly copied as an instance if another part of code needs to use it in a different scope. </span>
 
 ## `String` type
 
@@ -54,22 +54,22 @@ On the left:
 - a length
 - a capacity.
 
-This group of data is <Color color="var(--secondary-font-color)"> stored on the stack </Color>.
+This group of data is <span style={{color: "var(--secondary-font-color)"}}> stored on the stack </span>.
 
-On the right is the memory <Color color="var(--secondary-font-color)"> on the heap </Color> that <Color color="var(--secondary-font-color)"> holds the contents </Color>.
+On the right is the memory <span style={{color: "var(--secondary-font-color)"}}> on the heap </span> that <span style={{color: "var(--secondary-font-color)"}}> holds the contents </span>.
 
 ## Memory and Allocation
 
-In the case of a string literal, we know the contents at compile time, so <Color color="var(--secondary-font-color)"> the text </Color> <Color color="var(--primary-font-color)"> is hardcoded directly into the final executable </Color>.
+In the case of a string literal, we know the contents at compile time, so <span style={{color: "var(--secondary-font-color)"}}> the text </span> <span style={{color: "var(--primary-font-color)"}}> is hardcoded directly into the final executable </span>.
 
 However, in order to create `String` we need to allocate an amount of memory on the heap (unknown at compile time) to hold the contents.
 
 This means:
 
-- The memory must be requested from the memory allocator at <Color color="var(--secondary-font-color)"> runtime </Color>.
+- The memory must be requested from the memory allocator at <span style={{color: "var(--secondary-font-color)"}}> runtime </span>.
 - We need a way of returning this memory (free memory) back to the allocator when we're done with our `String`.
 
-When a variable goes out of scope, Rust automatically calls a special `drop` function and <Color color="var(--secondary-font-color)"> cleans up the heap memory for that variable </Color>.
+When a variable goes out of scope, Rust automatically calls a special `drop` function and <span style={{color: "var(--secondary-font-color)"}}> cleans up the heap memory for that variable </span>.
 
 ```rust title= showLineNumbers
 {
@@ -112,13 +112,13 @@ let s1 = String::from("hello");
 let s2 = s1;
 ```
 
-<Admonition type="info" title="info">
+<Info>
 
 The unknow-size value that are copied are called "moved value"
 
 `s1` was moved into `s2`
 
-</Admonition>
+</Info>
 
 ## Variables and Data Interacting with Clone
 
@@ -135,7 +135,7 @@ will get this:
 
 ![cloned variable](../assets/cloned-variable.svg)
 
-<Admonition type="note" title="note">
+<Note>
 
 Calling `clone` on known-size variable are the same as direct assignment. They are stored entirely on the stack.
 
@@ -151,7 +151,7 @@ let y = x.clone();
 println!("x = {}, y = {}", x, y);
 ```
 
-</Admonition>
+</Note>
 
 ## `Copy` and `Drop` trait
 
@@ -161,7 +161,7 @@ println!("x = {}, y = {}", x, y);
 
 If a type implements the `Copy` trait, variables are copied instead of moved.
 
-You <Color color="var(--secondary-font-color)"> cannot </Color> annotate a type that implements the `Drop` trait with the `Copy` trait.
+You <span style={{color: "var(--secondary-font-color)"}}> cannot </span> annotate a type that implements the `Drop` trait with the `Copy` trait.
 
 Example of types that implement `Copy`:
 
@@ -226,7 +226,7 @@ fn takes_and_gives_back(a_string: String) -> String { // a_string comes into
 }
 ```
 
-When a variable that includes data on the heap goes out of scope, the value will be cleaned up by `drop` unless ownership of the data has been moved to <Color color="var(--primary-font-color)"> another variable </Color>.
+When a variable that includes data on the heap goes out of scope, the value will be cleaned up by `drop` unless ownership of the data has been moved to <span style={{color: "var(--primary-font-color)"}}> another variable </span>.
 
 <br />
 

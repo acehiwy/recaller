@@ -1,10 +1,8 @@
 ---
 description: Docusaurus Heading and Table of contents
-sidebar_position: 2000
 tags:
   - docusaurus
-last_update:
-  date: 2025-09-28T16:19:38.197Z
+lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 # Heading and Table of contents
@@ -27,7 +25,7 @@ Each Markdown heading will appear as a table of contents ( TOC ) entry.
 
 <summary> Table of contents </summary>
 
-![](@site/docs/assets/table-of-content.png)
+![](/docs/assets/table-of-content.png)
 
 </details>
 
@@ -56,11 +54,11 @@ toc_max_heading_level: 5
 # Foo Bar heading
 ```
 
-<Admonition type="tip">
+<Tip>
 
 See [Front matter API spec](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs#markdown-front-matter) for more details
 
-</Admonition>
+</Tip>
 
 ---
 
@@ -77,17 +75,17 @@ module.exports = {
 };
 ```
 
-<Admonition type="tip">
+<Tip>
 
 See [configuration reference](https://docusaurus.io/docs/api/themes/configuration#table-of-contents) for more details
 
-</Admonition>
+</Tip>
 
 ---
 
 ### Heading IDs
 
-Each heading has an ID that can be <Color color="var(--secondary-font-color)"> automatically generated </Color> or <Color color="var(--secondary-font-color)"> explicitly specified </Color>.
+Each heading has an ID that can be <span style={{color: "var(--secondary-font-color)"}}> automatically generated </span> or <span style={{color: "var(--secondary-font-color)"}}> explicitly specified </span>.
 Heading IDs allow you to link to a specific document heading in Markdown or JSX:
 
 ```jsx title= showLineNumbers
@@ -116,23 +114,23 @@ A special Markdown syntax lets you set an explicit heading id:
 
 ---
 
-<Admonition type="tip">
+<Tip>
 
 Use the [write-heading-ids](https://docusaurus.io/docs/cli#docusaurus-write-heading-ids-sitedir) CLI command to add explicit IDs to all your Markdown documents.
 
-</Admonition>
+</Tip>
 
-<Admonition type="warning">
+<Warning>
 
-<Color color="var(--primary-font-color)"> Generated </Color> heading IDs will be <Color color="var(--secondary-font-color)">
+<span style={{color: "var(--primary-font-color)"}}> Generated </span> heading IDs will be <span style={{color: "var(--secondary-font-color)"}}>
   guaranteed to be unique
-</Color> on each page.
+</span> on each page.
 
-But if you use <Color color="var(--secondary-font-color)"> custom IDs </Color>, make sure <Color color="var(--secondary-font-color)"> each one appears exactly once on each page </Color>
+But if you use <span style={{color: "var(--secondary-font-color)"}}> custom IDs </span>, make sure <span style={{color: "var(--secondary-font-color)"}}> each one appears exactly once on each page </span>
 
-</Admonition>
+</Warning>
 
-## <Color color="var(--not-nesary-for-now-future-font-color)"> Inline table of contents </Color>
+## <span style={{color: "var(--not-nesary-for-now-future-font-color)"}}> Inline table of contents </span>
 
 see : https://docusaurus.io/docs/markdown-features/toc#inline-table-of-contents
 
