@@ -9,6 +9,8 @@
     "export": "mint export --output export.zip",
     "update-last-updated": "node update-last-updated.mjs",
     "wt": "./scripts/setup-worktree",
+    "wt:teardown": "./scripts/teardown-worktree",
+    "test:teardown": "./scripts/test-teardown-worktree",
     "prepare": "husky"
   },
   "devDependencies": {
