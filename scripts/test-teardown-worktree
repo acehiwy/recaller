@@ -1,0 +1,312 @@
+#!/usr/bin/env bash
+# =============================================================================
+# test-teardown-worktree
+#
+# Integration tests for the setup-worktree and teardown-worktree scripts.
+# Uses a disposable git repository and a temporary worktree base so the tests
+# exercise real git behavior without mutating this repository.
+# =============================================================================
+
+set -euo pipefail
+
+
+# =============================================================================
+# CONFIGURATION
+# =============================================================================
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+SETUP_SCRIPT="$SCRIPT_DIR/setup-worktree"
+TEARDOWN_SCRIPT="$SCRIPT_DIR/teardown-worktree"
+
+TEST_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/worktree-tests.XXXXXX")"
+REMOTE_REPO="$TEST_ROOT/remote.git"
+REPO_PATH="$TEST_ROOT/repo"
+WORKTREES_BASE="$TEST_ROOT/worktrees"
+
+TESTS_RUN=0
+
+
+# =============================================================================
+# HELPER FUNCTIONS
+# =============================================================================
+
+cleanup() {
+    rm -rf "$TEST_ROOT"
+}
+
+trap cleanup EXIT
+
+info() {
+    printf '%s\n' "$*"
+}
+
+fail() {
+    printf '%s\n' "FAIL: $1" >&2
+    if [[ $# -gt 1 ]]; then
+        printf '%s\n' "$2" >&2
+    fi
+    exit 1
+}
+
+pass() {
+    TESTS_RUN=$((TESTS_RUN + 1))
+    info "PASS: $1"
+}
+
+worktree_path() {
+    printf '%s\n' "$WORKTREES_BASE/$1"
+}
+
+run_setup() {
+    (
+        cd "$REPO_PATH"
+        "$SETUP_SCRIPT" --no-open --no-setup --base-dir "$WORKTREES_BASE" "$@"
+    ) > /dev/null 2>&1
+}
+
+run_teardown() {
+    (
+        cd "$REPO_PATH"
+        "$TEARDOWN_SCRIPT" --base-dir "$WORKTREES_BASE" "$@"
+    )
+}
+
+assert_path_exists() {
+    local path="$1"
+    local label="$2"
+
+    if [[ ! -e "$path" ]]; then
+        fail "$label" "Expected path to exist: $path"
+    fi
+}
+
+assert_path_missing() {
+    local path="$1"
+    local label="$2"
+
+    if [[ -e "$path" ]]; then
+        fail "$label" "Expected path to be removed: $path"
+    fi
+}
+
+assert_local_branch_exists() {
+    local branch="$1"
+    local label="$2"
+
+    if ! git -C "$REPO_PATH" rev-parse --verify "$branch" > /dev/null 2>&1; then
+        fail "$label" "Expected local branch to exist: $branch"
+    fi
+}
+
+assert_local_branch_missing() {
+    local branch="$1"
+    local label="$2"
+
+    if git -C "$REPO_PATH" rev-parse --verify "$branch" > /dev/null 2>&1; then
+        fail "$label" "Expected local branch to be deleted: $branch"
+    fi
+}
+
+expect_failure_contains() {
+    local label="$1"
+    local expected_text="$2"
+    shift 2
+
+    local output=""
+    local status=0
+
+    set +e
+    output="$($@ 2>&1)"
+    status=$?
+    set -e
+
+    if [[ $status -eq 0 ]]; then
+        fail "$label" "Command unexpectedly succeeded."
+    fi
+
+    if [[ "$output" != *"$expected_text"* ]]; then
+        fail "$label" "Expected output to contain '$expected_text' but got:\n$output"
+    fi
+}
+
+expect_success() {
+    local label="$1"
+    shift
+
+    local output=""
+
+    if ! output="$($@ 2>&1)"; then
+        fail "$label" "Command failed unexpectedly:\n$output"
+    fi
+}
+
+commit_in_worktree() {
+    local branch="$1"
+    local file_name="$2"
+    local message="$3"
+    local path
+
+    path="$(worktree_path "$branch")"
+    printf '%s\n' "$message" > "$path/$file_name"
+    git -C "$path" add "$file_name"
+    git -C "$path" commit --no-verify -m "$message" > /dev/null 2>&1
+}
+
+push_branch() {
+    local branch="$1"
+    local path
+
+    path="$(worktree_path "$branch")"
+    git -C "$path" push -u upstream "$branch" > /dev/null 2>&1
+}
+
+merge_branch_into_main() {
+    local branch="$1"
+
+    git -C "$REPO_PATH" merge --no-ff --no-edit "$branch" > /dev/null 2>&1
+}
+
+cleanup_branch() {
+    local branch="$1"
+    local path
+
+    path="$(worktree_path "$branch")"
+    git -C "$REPO_PATH" worktree remove --force "$path" > /dev/null 2>&1 || true
+    git -C "$REPO_PATH" branch -D "$branch" > /dev/null 2>&1 || true
+    git -C "$REPO_PATH" push upstream --delete "$branch" > /dev/null 2>&1 || true
+}
+
+setup_test_repo() {
+    mkdir -p "$WORKTREES_BASE"
+
+    git init --bare --initial-branch=main "$REMOTE_REPO" > /dev/null 2>&1
+    git init --initial-branch=main "$REPO_PATH" > /dev/null 2>&1
+
+    git -C "$REPO_PATH" config user.name "GitHub Copilot"
+    git -C "$REPO_PATH" config user.email "copilot@example.com"
+
+    printf '%s\n' "initial" > "$REPO_PATH/README.md"
+    git -C "$REPO_PATH" add README.md
+    git -C "$REPO_PATH" commit --no-verify -m "chore: initial commit" > /dev/null 2>&1
+    git -C "$REPO_PATH" remote add upstream "$REMOTE_REPO"
+    git -C "$REPO_PATH" push -u upstream main > /dev/null 2>&1
+}
+
+
+# =============================================================================
+# TESTS
+# =============================================================================
+
+test_dirty_worktree_blocks() {
+    local branch="dirty-worktree-blocks"
+    local path
+
+    path="$(worktree_path "$branch")"
+    run_setup "$branch"
+    printf '%s\n' "unsaved" > "$path/.dirty-state"
+
+    expect_failure_contains "dirty worktree blocks" "has uncommitted changes" run_teardown "$branch"
+    assert_path_exists "$path" "dirty worktree blocks"
+    assert_local_branch_exists "$branch" "dirty worktree blocks"
+
+    cleanup_branch "$branch"
+    pass "dirty worktree blocks"
+}
+
+test_unmerged_unpushed_branch_blocks() {
+    local branch="unmerged-unpushed-blocks"
+    local path
+
+    path="$(worktree_path "$branch")"
+    run_setup "$branch"
+    commit_in_worktree "$branch" "local-only.txt" "test: local-only commit"
+
+    expect_failure_contains "unmerged and unpushed branch blocks" "work is not preserved yet" run_teardown "$branch"
+    assert_path_exists "$path" "unmerged and unpushed branch blocks"
+    assert_local_branch_exists "$branch" "unmerged and unpushed branch blocks"
+
+    cleanup_branch "$branch"
+    pass "unmerged and unpushed branch blocks"
+}
+
+test_remote_preserved_branch_succeeds() {
+    local branch="remote-preserved-succeeds"
+    local path
+
+    path="$(worktree_path "$branch")"
+    run_setup "$branch"
+    commit_in_worktree "$branch" "remote-preserved.txt" "test: remote preserved"
+    push_branch "$branch"
+
+    expect_success "remote preserved branch succeeds" run_teardown "$branch"
+    assert_path_missing "$path" "remote preserved branch succeeds"
+    assert_local_branch_missing "$branch" "remote preserved branch succeeds"
+
+    pass "remote preserved branch succeeds"
+}
+
+test_merged_branch_succeeds() {
+    local branch="merged-into-main-succeeds"
+    local path
+
+    path="$(worktree_path "$branch")"
+    run_setup "$branch"
+    commit_in_worktree "$branch" "merged-preserved.txt" "test: merged preserved"
+    merge_branch_into_main "$branch"
+
+    expect_success "merged branch succeeds" run_teardown "$branch"
+    assert_path_missing "$path" "merged branch succeeds"
+    assert_local_branch_missing "$branch" "merged branch succeeds"
+
+    pass "merged branch succeeds"
+}
+
+test_keep_branch_removes_only_worktree() {
+    local branch="keep-branch-preserves-branch"
+    local path
+
+    path="$(worktree_path "$branch")"
+    run_setup "$branch"
+    commit_in_worktree "$branch" "keep-branch.txt" "test: keep branch"
+    push_branch "$branch"
+
+    expect_success "keep branch removes only worktree" run_teardown --keep-branch "$branch"
+    assert_path_missing "$path" "keep branch removes only worktree"
+    assert_local_branch_exists "$branch" "keep branch removes only worktree"
+
+    cleanup_branch "$branch"
+    pass "keep branch removes only worktree"
+}
+
+test_dry_run_keeps_branch_and_worktree() {
+    local branch="dry-run-keeps-state"
+    local path
+
+    path="$(worktree_path "$branch")"
+    run_setup "$branch"
+    commit_in_worktree "$branch" "dry-run.txt" "test: dry run"
+    push_branch "$branch"
+
+    expect_success "dry run keeps branch and worktree" run_teardown --dry-run "$branch"
+    assert_path_exists "$path" "dry run keeps branch and worktree"
+    assert_local_branch_exists "$branch" "dry run keeps branch and worktree"
+
+    cleanup_branch "$branch"
+    pass "dry run keeps branch and worktree"
+}
+
+
+# =============================================================================
+# RUN TESTS
+# =============================================================================
+
+setup_test_repo
+
+test_dirty_worktree_blocks
+test_unmerged_unpushed_branch_blocks
+test_remote_preserved_branch_succeeds
+test_merged_branch_succeeds
+test_keep_branch_removes_only_worktree
+test_dry_run_keeps_branch_and_worktree
+
+info "✅  Completed $TESTS_RUN worktree teardown integration tests."
