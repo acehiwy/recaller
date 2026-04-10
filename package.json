@@ -9,6 +9,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "update-last-updated": "node update-last-updated.mjs",
+    "wt": "./scripts/setup-worktree",
     "prepare": "husky"
   },
   "dependencies": {
