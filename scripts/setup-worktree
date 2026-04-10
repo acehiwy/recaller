@@ -1,0 +1,365 @@
+#!/usr/bin/env bash
+# =============================================================================
+# setup-worktree
+#
+# Automates the git worktree workflow for task-based development.
+# Creates a new worktree (or reuses an existing one), runs a setup
+# command inside it, then optionally opens it in VS Code.
+#
+# Usage:
+#   ./setup-worktree [OPTIONS] WORKTREE_NAME
+#
+# See `--help` for full usage.
+
+set -euo pipefail
+
+# =============================================================================
+# CONFIGURATION & DEFAULTS
+# =============================================================================
+
+SCRIPT_NAME="$(basename "$0")"
+
+# The git remote to look for existing branches on.
+REMOTE="upstream"
+
+# Default base directory under which new worktrees are created.
+DEFAULT_WORKTREES_BASE="$HOME/worktrees"
+
+# Raw base directory input. This may be overridden by --base-dir.
+WORKTREES_BASE_INPUT="$DEFAULT_WORKTREES_BASE"
+
+# Default setup command run inside the new worktree.
+# Stored as an array so spaces in arguments are preserved safely.
+SETUP_COMMAND=("yarn" "install" "--immutable")
+
+# Whether to run the setup command inside the new worktree.
+RUN_SETUP=true
+
+# Whether to open the worktree in VS Code after setup.
+OPEN_IN_VSCODE=true
+
+# The branch / directory name provided by the caller.
+WORKTREE_NAME=""
+
+
+# =============================================================================
+# HELPER FUNCTIONS
+# =============================================================================
+
+# Print to stderr so it does not pollute stdout (important if this script's
+# output is ever piped or captured).
+err() {
+    printf '%s\n' "❌  Error: $*" >&2
+}
+
+info() {
+    printf '%s\n' "$*"
+}
+
+usage() {
+    cat << EOF
+Usage: $SCRIPT_NAME [OPTIONS] WORKTREE_NAME
+       $SCRIPT_NAME -h | --help
+
+Automates the git worktree workflow for a given worktree name.
+
+OPTIONS:
+  -n, --no-open        Do NOT open the worktree directory in VS Code.
+  -s, --no-setup       Skip the setup command entirely.
+  -d, --base-dir DIR    Base directory for created worktrees.
+                        Final path: DIR/WORKTREE_NAME
+                        Default: ~/worktrees
+  -r, --remote NAME  Git remote to check for existing branches.
+                     Default: $REMOTE
+  -c, --command CMD  Custom setup command to run inside the worktree.
+                     Everything after -c is treated as the command, so
+                     this flag must come LAST among the options.
+                     Default: ${SETUP_COMMAND[*]}
+  -h, --help         Show this help message and exit.
+
+ARGUMENTS:
+  WORKTREE_NAME      Name of the branch and worktree directory to create.
+                     Allowed characters: letters, digits, hyphens, and
+                     forward slashes (for branch namespacing, e.g. feat/foo).
+                     Must not start with a hyphen or contain '..'.
+
+EXAMPLES:
+  $SCRIPT_NAME feat-ui-logic
+  $SCRIPT_NAME -n feat-ui-logic
+    $SCRIPT_NAME -d ~/worktrees feat-ui-logic
+    $SCRIPT_NAME -d /tmp/worktrees -n feat-ui-logic
+    $SCRIPT_NAME -d ~/scratch-worktrees -n feat-ui-logic -c pnpm install
+  $SCRIPT_NAME -n feat-ui-logic -c pnpm install
+  $SCRIPT_NAME -n feat-ui-logic -c echo "Skipping install"
+  $SCRIPT_NAME -r origin feat-ui-logic
+EOF
+}
+
+
+# =============================================================================
+# INPUT VALIDATION
+# =============================================================================
+
+# Validate WORKTREE_NAME against characters that are safe for both git branch
+# names and file-system paths.
+#
+# Security rationale:
+#   • Reject ".." to prevent path traversal (e.g. "../../etc/passwd").
+#   • Reject leading hyphens to avoid accidental flag injection.
+#   • Allow only a conservative set of characters; anything outside
+#     [a-zA-Z0-9._/-] is unusual for a branch name and likely a mistake.
+validate_worktree_name() {
+    local name="$1"
+
+    if [[ "$name" == *..* ]]; then
+        err "WORKTREE_NAME must not contain '..' (path traversal is not allowed)."
+        return 1
+    fi
+
+    if [[ "$name" == -* ]]; then
+        err "WORKTREE_NAME must not start with a hyphen."
+        return 1
+    fi
+
+    # Only permit characters that are universally safe across git and common
+    # file systems (Linux, macOS, Windows/WSL).
+    if [[ ! "$name" =~ ^[a-zA-Z0-9._/-]+$ ]]; then
+        err "WORKTREE_NAME contains unsupported characters."
+        err "Allowed: letters, digits, hyphens (-), dots (.), underscores (_), slashes (/)."
+        return 1
+    fi
+}
+
+resolve_directory_path() {
+    local path="$1"
+
+    if [[ -z "$path" ]]; then
+        err "The worktree base directory must not be empty."
+        return 1
+    fi
+
+    case "$path" in
+        "~")
+            path="$HOME"
+            ;;
+        "~/"*)
+            path="$HOME/${path#"~/"}"
+            ;;
+    esac
+
+    if [[ "$path" != /* ]]; then
+        path="$REPO_ROOT/$path"
+    fi
+
+    if [[ -e "$path" && ! -d "$path" ]]; then
+        err "Worktree base path exists but is not a directory: $path"
+        return 1
+    fi
+
+    mkdir -p "$path"
+    (
+        cd "$path"
+        pwd -P
+    )
+}
+
+ensure_worktree_path_is_outside_repo() {
+    local path="$1"
+
+    if [[ "$path" == "$REPO_ROOT" || "$path" == "$REPO_ROOT/"* ]]; then
+        err "Worktree path must be outside the repository root."
+        return 1
+    fi
+}
+
+
+# =============================================================================
+# FLAG PARSING
+# =============================================================================
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+
+        -h|--help)
+            usage
+            exit 0
+            ;;
+
+        -n|--no-open)
+            OPEN_IN_VSCODE=false
+            shift
+            ;;
+
+        -s|--no-setup)
+            RUN_SETUP=false
+            shift
+            ;;
+
+        -d|--base-dir)
+            shift
+            if [[ $# -eq 0 ]]; then
+                err "-d / --base-dir requires a value (e.g. -d ~/worktrees)."
+                exit 1
+            fi
+            WORKTREES_BASE_INPUT="$1"
+            shift
+            ;;
+
+        -r|--remote)
+            shift
+            if [[ $# -eq 0 ]]; then
+                err "-r / --remote requires a value (e.g. -r origin)."
+                exit 1
+            fi
+            REMOTE="$1"
+            shift
+            ;;
+
+        # -c must be the last flag; everything that follows becomes the command.
+        # This mirrors how tools like `env` and `xargs -I` handle trailing args.
+        -c|--command)
+            shift
+            if [[ $# -eq 0 ]]; then
+                err "-c / --command requires at least one argument."
+                exit 1
+            fi
+            SETUP_COMMAND=("$@")   # capture remaining args as the command
+            shift $#               # consume them all so the loop terminates
+            ;;
+
+        # Positional argument: the worktree name.
+        *)
+            if [[ -z "$WORKTREE_NAME" ]]; then
+                WORKTREE_NAME="$1"
+                shift
+            else
+                err "Unexpected argument: '$1'"
+                usage >&2
+                exit 1
+            fi
+            ;;
+    esac
+done
+
+
+# =============================================================================
+# PRE-FLIGHT CHECKS
+# =============================================================================
+
+# Ensure WORKTREE_NAME was provided.
+if [[ -z "$WORKTREE_NAME" ]]; then
+    err "Missing required argument: WORKTREE_NAME."
+    usage >&2
+    exit 1
+fi
+
+# Validate the worktree name before using it in any git or file-system call.
+validate_worktree_name "$WORKTREE_NAME"
+
+# Confirm we are inside a git repository before doing anything else.
+if ! git rev-parse --git-dir > /dev/null 2>&1; then
+    err "Not inside a git repository. Please run this script from within a git project."
+    exit 1
+fi
+
+# Ensure 'git worktree' is available (requires Git 2.5+).
+if ! git worktree list > /dev/null 2>&1; then
+    err "'git worktree' is not supported by the version of git on this system."
+    err "Please upgrade to Git 2.5 or later."
+    exit 1
+fi
+
+# Resolve the worktree base relative to the repository root, not the
+# current working directory. This keeps --base-dir predictable when the
+# script is invoked from any subdirectory inside the repo.
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+WORKTREES_BASE="$(resolve_directory_path "$WORKTREES_BASE_INPUT")"
+
+if [[ -e "$WORKTREES_BASE" && ! -d "$WORKTREES_BASE" ]]; then
+    err "Worktree base path exists but is not a directory: $WORKTREES_BASE"
+    exit 1
+fi
+
+WORKTREE_PATH="$WORKTREES_BASE/$WORKTREE_NAME"
+
+if [[ -e "$WORKTREE_PATH" && ! -d "$WORKTREE_PATH" ]]; then
+    err "Worktree path exists but is not a directory: $WORKTREE_PATH"
+    exit 1
+fi
+
+if ! ensure_worktree_path_is_outside_repo "$WORKTREE_PATH"; then
+    exit 1
+fi
+
+
+# =============================================================================
+# WORKTREE CREATION
+# =============================================================================
+
+if [[ -d "$WORKTREE_PATH" ]]; then
+    # The worktree directory already exists — nothing to create.
+    info "📂  Worktree already exists at: $WORKTREE_PATH"
+    info "    Skipping creation and setup."
+
+else
+    # Create the parent directory for all worktrees if it does not yet exist.
+    # -p suppresses errors when the directory already exists.
+    mkdir -p "$WORKTREES_BASE"
+
+    # Decide where the new branch comes from:
+    #
+    #   1. Branch exists locally  → reuse it as-is.
+    #   2. Branch exists remotely → create a local branch tracking the remote.
+    #   3. Neither                → create a fresh branch from HEAD.
+    #
+    # `git rev-parse --verify` is a cheap, porcelain-free way to test for
+    # a ref without producing user-visible output.
+
+    if git rev-parse --verify "$WORKTREE_NAME" > /dev/null 2>&1; then
+        info "🌿  Local branch '$WORKTREE_NAME' found — creating worktree."
+        git worktree add "$WORKTREE_PATH" "$WORKTREE_NAME"
+
+    elif git rev-parse --verify "$REMOTE/$WORKTREE_NAME" > /dev/null 2>&1; then
+        info "🌐  Remote branch '$REMOTE/$WORKTREE_NAME' found — creating tracking worktree."
+        git worktree add -b "$WORKTREE_NAME" "$WORKTREE_PATH" "$REMOTE/$WORKTREE_NAME"
+
+    else
+        info "✨  No existing branch found — creating a new branch '$WORKTREE_NAME'."
+        git worktree add -b "$WORKTREE_NAME" "$WORKTREE_PATH"
+    fi
+
+    # -------------------------------------------------------------------------
+    # Run setup inside the worktree.
+    #
+    # We change directory explicitly so relative paths inside the setup
+    # command (e.g. package.json lookups) resolve correctly.
+    # -------------------------------------------------------------------------
+    cd "$WORKTREE_PATH"
+
+    if [[ "$RUN_SETUP" == true ]]; then
+    info "🛠   Running setup: ${SETUP_COMMAND[*]}"
+    "${SETUP_COMMAND[@]}"
+    else
+        info "⏭   Skipping setup (--no-setup was set)."
+    fi
+fi
+
+
+# =============================================================================
+# OPEN IN VS CODE (optional)
+# =============================================================================
+
+if [[ "$OPEN_IN_VSCODE" == true ]]; then
+    # `code` may not be on PATH on all systems. Check before calling it.
+    if ! command -v code > /dev/null 2>&1; then
+        info "⚠️   'code' command not found — skipping VS Code launch."
+        info "    You can open the worktree manually: $WORKTREE_PATH"
+    else
+        info "🚀  Opening VS Code at: $WORKTREE_PATH"
+        # Pass the absolute path rather than '.' so the script works
+        # regardless of whether `cd` was reached earlier in this run.
+        code "$WORKTREE_PATH"
+    fi
+else
+    info "✅  Done. Worktree is ready at: $WORKTREE_PATH"
+fi
