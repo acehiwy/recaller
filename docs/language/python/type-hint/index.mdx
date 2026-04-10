@@ -1,0 +1,67 @@
+---
+title: "Type hint"
+sidebarTitle: "Type hint"
+lastUpdated: 2026-04-08T09:00:42.959Z
+---
+
+Python supports an optional typing system.
+
+Python does not validate the types written in source code.
+
+It depends on other tools whether they make use of the types written in the Python file. For example, an IDE can suggest string methods if a variable's type is declared as `str`.
+
+
+## Simple type
+
+```python title= showLineNumbers
+def foo(a: str, b: int, c: float, d: bool, e: bytes) -> int:
+  pass
+```
+
+## Object type
+
+```python title= showLineNumbers
+my_list: list[str] = []
+
+my_tuple: tuple[int, str, bool] = ()
+
+my_set: set[bytes] = {}
+
+my_dict: dict[str, int] = {"foo": 123}
+```
+
+## Union type (or)
+
+```python title= showLineNumbers
+either_int_or_str: int | str
+```
+
+## None type
+
+```python title= showLineNumbers
+value_is_none: None = None
+```
+
+### Possibly None
+
+```python title= showLineNumbers
+either_str_or_none: str | None
+```
+
+
+## Class type
+
+```python title= showLineNumbers
+class Person:
+    def __init__(self, name: str):
+        self.name = name
+
+def get_person_name(one_person: Person):
+    return one_person.name
+```
+
+<Note> 
+
+A `Person` value is an instance of the class, not the class itself.
+
+</Note>
