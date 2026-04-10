@@ -1,0 +1,176 @@
+---
+title: "Create Docs"
+sidebarTitle: "Create Docs"
+description: How to create documentation using Docusaurus
+tags:
+  - docusaurus
+  - documentation
+  - tool
+lastUpdated: 2026-04-08T09:00:42.959Z
+---
+
+Create a Markdown file, `greeting.md`, and place it under the docs directory.
+
+```title= showLineNumbers
+website # root directory of your site
+├── docs
+│   └── greeting.md
+├── src
+│   └── pages
+├── docusaurus.config.js
+├── ...
+```
+
+## Headers And Table Of Content (TOC)
+
+Headers will show up on the table of contents on the upper right
+
+So that your users will know what this page is all about without scrolling down or even without reading too much.
+
+<span style={{color: "var(--secondary-font-color)"}}>
+  Only h2 and h3 will be in the TOC by default.
+</span>
+
+You can configure the TOC heading levels either per-document or in the theme configuration.
+
+## Custom ID headers
+
+With `{#custom-id}` syntax you can set your own header ID.
+
+```markdown title=foo.md
+# Foo Header {#custom-id}
+```
+
+<Note>
+
+All files prefixed with an underscore (`_`) <span style={{color: "var(--secondary-font-color)"}}> under the docs directory </span> are treated as "partial" pages
+and <span style={{color: "var(--secondary-font-color)"}}> will be ignored by default </span>.
+
+Read more about [importing partial pages](https://docusaurus.io/docs/markdown-features/react#importing-markdown).
+
+</Note>
+
+## Doc Front Matter
+
+The front matter is used to <span style={{color: "var(--secondary-font-color)"}}> provide additional metadata for your doc </span> page.
+
+Front matter is optional. Docusaurus will be able to infer all necessary metadata without the front matter.
+
+<Tip>
+
+For all possible fields, see the [API documentation](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs#markdown-front-matter).
+
+</Tip>
+
+## Doc tags
+
+Optionally, you can add tags to your doc pages, which introduces another dimension of categorization.
+
+Tags are passed in the front matter as a list of labels:
+
+```markdown title= showLineNumbers
+---
+id: doc-with-tags
+title: A doc with tags
+tags:
+  - Demo
+  - Getting started
+---
+```
+
+<Info>
+
+<details>
+
+<summary> tags will be displayed at the end of each doc page. </summary>
+
+![](@site/docs/assets/tags-demo.png)
+
+</details>
+
+when tag is clicked, Docusaurus filter all docs containing it.
+
+</Info>
+
+## Docs Folder Structure
+
+How the Markdown files are arranged under the docs folder can have multiple impacts on Docusaurus content generation.
+
+However, most of them can be decoupled from the file structure.
+
+### Document ID
+
+Every document has a unique id. By default, a document id is the <span style={{color: "var(--secondary-font-color)"}}> name of the document </span> (without the extension) relative to the root docs directory.
+
+For example, the ID of `greeting.md` is "greeting", and the ID of `guide/hello.md` is "guide/hello".
+
+```title= showLineNumbers
+website # Root directory of your site
+└── docs
+   ├── greeting.md
+   └── guide
+      └── hello.md
+```
+
+However, the <span style={{color: "var(--secondary-font-color)"}}> last part </span> of the id can be <span style={{color: "var(--secondary-font-color)"}}> defined </span> by the user in the <span style={{color: "var(--secondary-font-color)"}}> front matter. </span>
+
+For example, if `guide/hello.md`'s content is defined as below, its final id is "guide/part1".
+
+```markdown title= showLineNumbers
+---
+id: part1
+---
+
+Lorem ipsum
+```
+
+<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>
+  The ID is used to refer to a document when hand-writing (manually configure)
+  sidebars, or when using docs-related layout components or hooks.
+</span>
+
+### Doc URLs
+
+By default, a document's <span style={{color: "var(--secondary-font-color)"}}> URL location is its file path <span style={{color: "var(--primary-font-color)"}}> relative </span> </span> to the docs folder.
+
+Use the `slug` front matter to change a document's URL.
+
+For example, suppose your site structure looks like this:
+
+```markdown title= showLineNumbers
+website # Root directory of your site
+└── docs
+└── guide
+└── hello.md
+```
+
+By default hello.md will be available at /docs/guide/hello.
+
+With `slug`, you can change its URL location to /docs/bonjour:
+
+```markdown title= showLineNumbers
+---
+slug: /bonjour
+---
+
+Lorem ipsum
+```
+
+<Note>
+
+`slug` will be appended to the doc plugin's routeBasePath, which is `/docs` by default.
+
+It is possible to use:
+
+- absolute slugs: slug: /mySlug, slug: /...
+- relative slugs: slug: mySlug, slug: ./../mySlug...
+
+</Note>
+
+<br />
+
+---
+
+# Sources
+
+- https://docusaurus.io/docs/create-doc

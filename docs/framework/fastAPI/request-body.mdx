@@ -1,0 +1,50 @@
+---
+title: "Request Body"
+sidebarTitle: "Request Body"
+description: FastAPI Request Body
+tags:
+  - python
+  - web
+  - framework
+  - api
+  - fastAPI
+lastUpdated: 2026-04-08T09:00:42.959Z
+---
+
+Declare the request body type by using `Pydantic`'s <span style={{color: "var(--secondary-font-color)"}}> `BaseModel` </span>.
+
+```python title= showLineNumbers
+from fastapi import FastAPI
+#  highlight-next-line
+from pydantic import BaseModel
+
+
+#  highlight-next-line
+class Item(BaseModel):
+    name: str
+    description: str | None = None
+    price: float
+    tax: float | None = None
+
+
+app = FastAPI()
+
+@app.post("/items/")
+async def create_item(item: Item):
+    # item is an Item instance
+    return item
+```
+
+<Note> 
+
+Like query and path parameters, attributes with default values are not required when making a request.
+
+</Note>
+
+<br/>
+
+---
+
+# Sources
+
+- https://fastapi.tiangolo.com/tutorial/body/

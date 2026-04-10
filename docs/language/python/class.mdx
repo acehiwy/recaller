@@ -1,0 +1,283 @@
+---
+title: "Class"
+sidebarTitle: "Class"
+lastUpdated: 2026-04-08T09:00:42.959Z
+tags:
+  - python
+---
+
+class is an object bundling state and functionality to manipulate its state.
+
+&#8203;<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>Code below is used as reference on futher section on this page</span>
+
+```python title= showLineNumbers
+class MyClass:
+    """A simple example class"""
+    i = 12345
+
+    def __init__(self, arg1):
+      self.arg1 = arg1
+
+    def f(self, bar):
+        return bar + self.arg1
+```
+
+## Class object
+
+is static class. eg `MyClass`
+
+## Instance object
+
+is a class instance
+
+`__init__` method is a constructor method
+
+first argument, `self`, refer to instance of a class itself
+
+### Instantiate
+
+```python title= showLineNumbers
+instance = MyClass('foo')
+```
+
+When method is called, <span style={{color: "var(--secondary-font-color)"}}>an instance is passed as the first argument</span>
+
+```python title= showLineNumbers
+instance.f()
+
+# equivalent to
+MyClass.f(instance)
+```
+
+<Note> 
+
+Word `self` has no special meaning in python
+
+`self` is just convention. It can be any name
+
+</Note>
+
+<Note> 
+
+An instance is still attached to the method even if the method is called sometime later
+
+
+```python title= showLineNumbers
+ins = MyClass('foo')
+temp_f = ins.f
+
+# highlight-start
+# no need to provide `self`
+print(temp_f('bar'))
+# highlight-end
+# barfoo
+```
+
+</Note>
+
+
+## Class variable and instance variable
+
+A class variable is attributes that shared across all instances (static attribute / properties)
+
+A instance variable is attributes that unique to each instance
+
+```python title= showLineNumbers
+class Dog:
+    # class variable shared by all instances
+    kind = 'canine'  
+
+    def __init__(self, name):
+        # instance variable unique to each instance
+        self.name = name 
+```
+
+
+<Warning>
+
+After class definition or instantiation
+
+- a class attribute can be reassigned
+- a new attribute can be set / added
+
+<details>
+
+<summary> Example </summary>
+
+```python title= showLineNumbers
+class MyClass:
+    """A simple example class"""
+    i = 12345
+
+    def f(self):
+        return 'hello world'
+
+MyClass.i = 999
+print(MyClass.i)
+# 999
+
+MyClass.new_attr = 'new attr'
+
+ins = MyClass()
+print(ins.i , ins.new_attr)
+# 999 , new attr
+ins.i = 'ins value'
+print(ins.i)
+# ins value
+```
+
+</details>
+
+</Warning>
+
+## Inheritance
+```python title= showLineNumbers
+class DerivedClassName(BaseClassName):
+    pass
+```
+
+### Calling base class method while overriding
+
+use `<BaseClass>.<method>(<instance> , ...arguments)`
+
+```python title= showLineNumbers
+class BaseClass:
+  def foo(self, arg1):
+    return 'foo' + arg1
+  
+
+class Derived(BaseClass):
+  # highlight-start
+  def foo(self):
+    return BaseClass.foo(self, 'bar') + 'overrided'
+  # highlight-end
+
+ins = Derived()
+print(ins.foo())
+# foobaroverrided
+```
+
+### [`isinstance`](https://docs.python.org/3/library/functions.html#isinstance) function
+```python title= showLineNumbers
+isinstance(obj, int)
+```
+
+Check whether `obj` is an instance or a derived instance of `int`
+
+### [`issubclass`](https://docs.python.org/3/library/functions.html#issubclass) function
+
+```python title= showLineNumbers
+issubclass(Derived, BaseClass)
+```
+
+Check whether class object, `Derived`, is derived from another class object, `BaseClass`
+
+
+
+### Multiple inheritance
+
+```python title= showLineNumbers
+class DerivedClassName(Base1, Base2, Base3):
+    pass
+```
+
+This means `DerivedClassName` class has all attribute of `Base1`, `Base2` and `Base3` combined
+
+When attribute is referenced, Python does depth-first / left-to-right search and <span style={{color: "var(--secondary-font-color)"}}>not searching for same class twice</span>
+
+Eg. if attribute `foo` is called, python will search from
+1. `DerivedClassName`
+1. `Base1` class
+    1. Parent class of `Base1` and continue <span style={{color: "var(--secondary-font-color)"}}>recursivly</span> through its grandparent class using same left-to-right searching
+1. `Base2` class
+1. `Base3` class
+
+<details>
+
+<summary> "not searching for same class twice" example </summary>
+
+Assuming `Base1`'s parent class is `Bar` and `Base2` also has same parent class `Bar`
+
+Search path would be `DerivedClassName` -> `Base1` -> `Bar` -> `Base2` -> ~~`Bar`~~ -> `Base3`
+
+Notice that `Base2` inherit `Bar` but `Bar` has already been searched in `Base1` path so it is skipped 
+
+</details>
+
+
+<Info> 
+
+More info on [Method Resolution Order](https://docs.python.org/3/howto/mro.html#python-2-3-mro)
+
+</Info>
+
+
+## Private variable
+
+private instance variable does not exist in Python
+
+People conventionally prepend variable name with single underscore `_` to indicate that it is for internal usage. eg `_foo`
+
+
+### Name mangling
+
+Class attributes that begin with >= 2 underscore and does not end with >= 2 underscore are not acceesible outside class definition
+
+```python title= showLineNumbers
+class Foo:
+  _1under = 10
+  __2under = 20
+  __2under1_ = 21
+  ___3under2__ = 32
+
+ins = Foo()
+
+Foo._1under # no runtime error
+ins._1under # no runtime error
+ins.___3under2__ # no runtime error
+
+
+# highlight-error-start
+Foo.__2under
+ins.__2under
+Foo.__2under1_
+# AttributeError: type object 'Foo' has no attribute '__2under'
+# highlight-error-end
+```
+
+This effect is [Name Mangling](https://docs.python.org/3/reference/expressions.html#index-5)
+
+Python change attribute name from `__<attr name>` to `_<its class name>__<attr name>`
+
+```python title= showLineNumbers
+ins = Foo()
+
+# no error
+Foo._Foo__2under
+ins._Foo__2under
+Foo._Foo__2under1_
+```
+
+
+## <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>Attribute references</span>
+
+is accessing class's attribute or class's method (apply for both a static class and class instance)
+
+```python title= showLineNumbers
+instance = MyClass()
+
+# attr reference
+MyClass.i
+MyClass.f
+instance.i
+instance.f
+```
+
+<br />
+
+---
+
+# Sources
+
+- https://docs.python.org/3/tutorial/classes.html
+- https://docs.python.org/3/reference/expressions.html#private-name-mangling
