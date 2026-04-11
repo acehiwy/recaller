@@ -9,17 +9,22 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Tree } from "mintlify/components";
+
 Create a Markdown file, `greeting.md`, and place it under the docs directory.
 
-``` title= lines
-website # root directory of your site
-├── docs
-│   └── greeting.md
-├── src
-│   └── pages
-├── docusaurus.config.js
-├── ...
-```
+<Tree>
+  <Tree.Folder name="root directory of your site" defaultOpen>
+    <Tree.Folder name="docs" defaultOpen>
+      <Tree.File name="greeting.md" />
+    </Tree.Folder>
+    <Tree.Folder name="src" defaultOpen>
+      <Tree.File name="pages" />
+    </Tree.Folder>
+    <Tree.File name="docusaurus.config.js" />
+    <Tree.File name="..." />
+  </Tree.Folder>
+</Tree>
 
 ## Headers And Table Of Content (TOC)
 
@@ -37,7 +42,7 @@ You can configure the TOC heading levels either per-document or in the theme con
 
 With `{#custom-id}` syntax you can set your own header ID.
 
-``` markdown title="foo.md"
+```markdown title="foo.md"
 # Foo Header {#custom-id}
 ```
 
@@ -68,7 +73,7 @@ Optionally, you can add tags to your doc pages, which introduces another dimensi
 
 Tags are passed in the front matter as a list of labels:
 
-``` markdown lines
+```markdown lines
 ---
 id: doc-with-tags
 title: A doc with tags
@@ -102,19 +107,20 @@ Every document has a unique id. By default, a document id is the <span style={{c
 
 For example, the ID of `greeting.md` is "greeting", and the ID of `guide/hello.md` is "guide/hello".
 
-``` title= lines
-website # Root directory of your site
-└── docs
-   ├── greeting.md
-   └── guide
-      └── hello.md
-```
+<Tree>
+  <Tree.File name="website # Root directory of your site" />
+  <Tree.File name="docs" />
+  <Tree.File name="greeting.md" />
+  <Tree.Folder name="guide" defaultOpen>
+    <Tree.File name="hello.md" />
+  </Tree.Folder>
+</Tree>
 
 However, the <span style={{color: "var(--secondary-font-color)"}}> last part </span> of the id can be <span style={{color: "var(--secondary-font-color)"}}> defined </span> by the user in the <span style={{color: "var(--secondary-font-color)"}}> front matter. </span>
 
 For example, if `guide/hello.md`'s content is defined as below, its final id is "guide/part1".
 
-``` markdown lines
+```markdown lines
 ---
 id: part1
 ---
@@ -135,18 +141,18 @@ Use the `slug` front matter to change a document's URL.
 
 For example, suppose your site structure looks like this:
 
-``` markdown lines
-website # Root directory of your site
-└── docs
-└── guide
-└── hello.md
-```
+<Tree>
+  <Tree.File name="website # Root directory of your site" />
+  <Tree.File name="docs" />
+  <Tree.File name="guide" />
+  <Tree.File name="hello.md" />
+</Tree>
 
 By default hello.md will be available at /docs/guide/hello.
 
 With `slug`, you can change its URL location to /docs/bonjour:
 
-``` markdown lines
+```markdown lines
 ---
 slug: /bonjour
 ---

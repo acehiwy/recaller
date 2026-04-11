@@ -8,6 +8,8 @@ tags:
   - tool
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
+import { Tree } from "mintlify/components";
+
 
 ## Requirements
 
@@ -65,32 +67,38 @@ Run npx create-docusaurus@latest --help, or check out its [API docs](https://doc
 </Tip>
 
 ### Project Structure
-
-``` title= lines
-<Project Directory>
-├── blog
-│   ├── 2019-05-28-hola.md
-│   ├── 2019-05-29-hello-world.md
-│   └── 2020-05-30-welcome.md
-├── docs
-│   ├── doc1.md
-│   ├── doc2.md
-│   ├── doc3.md
-│   └── mdx.md
-├── src
-│   ├── css
-│   │   └── custom.css
-│   └── pages
-│       ├── styles.module.css
-│       └── index.js
-├── static
-│   └── img
-├── docusaurus.config.js
-├── package.json
-├── README.md
-├── sidebars.js
-└── yarn.lock
-```
+<Tree>
+  <Tree.Folder name="Project Directory" defaultOpen>
+    <Tree.Folder name="blog">
+      <Tree.File name="2019-05-28-hola.md" />
+      <Tree.File name="2019-05-29-hello-world.md" />
+      <Tree.File name="2020-05-30-welcome.md" />
+    </Tree.Folder>
+    <Tree.Folder name="docs">
+      <Tree.File name="doc1.md" />
+      <Tree.File name="doc2.md" />
+      <Tree.File name="doc3.md" />
+      <Tree.File name="mdx.md" />
+    </Tree.Folder>
+    <Tree.Folder name="src">
+      <Tree.Folder name="css">
+        <Tree.File name="custom.css" />
+      </Tree.Folder>
+      <Tree.Folder name="pages">
+        <Tree.File name="styles.module.css" />
+        <Tree.File name="index.js" />
+      </Tree.Folder>
+    </Tree.Folder>
+    <Tree.Folder name="static">
+      <Tree.File name="img" />
+    </Tree.Folder>
+    <Tree.File name="docusaurus.config.js" />
+    <Tree.File name="package.json" />
+    <Tree.File name="README.md" />
+    <Tree.File name="sidebars.js" />
+    <Tree.File name="yarn.lock" />
+  </Tree.Folder>
+</Tree>
 
 - `/blog/` - Contains the blog Markdown files.
   You can delete the directory if you've disabled the blog plugin,

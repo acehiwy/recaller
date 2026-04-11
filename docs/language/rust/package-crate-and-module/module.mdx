@@ -4,6 +4,8 @@ sidebarTitle: "Modules"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Tree } from "mintlify/components";
+
 Modules let us organize code within a crate for readability and easy reuse.
 
 Modules also allow us to control the privacy <span style={{color: "var(--secondary-font-color)"}}> of items </span>.
@@ -25,7 +27,7 @@ Modules also allow us to control the privacy <span style={{color: "var(--seconda
 
 ## Defining an inline module
 
-``` rust title="src/lib.rs" lines
+```rust title="src/lib.rs" lines
 mod front_of_house {
     mod hosting {
         fn add_to_waitlist() {}
@@ -45,17 +47,21 @@ mod front_of_house {
 
 The module definition above produces this module tree.
 
-``` text lines
-crate
- └── front_of_house
-     ├── hosting
-     │   ├── add_to_waitlist
-     │   └── seat_at_table
-     └── serving
-         ├── take_order
-         ├── serve_order
-         └── take_payment
-```
+<Tree>
+  <Tree.Folder name="crate" defaultOpen>
+    <Tree.Folder name="front_of_house" defaultOpen>
+      <Tree.Folder name="hosting">
+        <Tree.File name="add_to_waitlist" />
+        <Tree.File name="seat_at_table" />
+      </Tree.Folder>
+      <Tree.Folder name="serving">
+        <Tree.File name="take_order" />
+        <Tree.File name="serve_order" />
+        <Tree.File name="take_payment" />
+      </Tree.Folder>
+    </Tree.Folder>
+  </Tree.Folder>
+</Tree>
 
 <Info>
 
@@ -77,7 +83,7 @@ A path can take two forms:
   - `super`
   - an identifier in the current module
 
-``` rust lines
+```rust lines
 mod front_of_house {
     pub mod hosting {
         pub fn add_to_waitlist() {}
@@ -121,7 +127,7 @@ Sibling modules and items can access each other without being marked public them
 
 It is like `..` in filesystem.
 
-``` rust title="src/lib.rs" lines highlight={6}
+```rust title="src/lib.rs" lines highlight={6}
 fn deliver_order() {}
 
 mod back_of_house {
@@ -144,7 +150,7 @@ Using `pub` on a `struct` definition only makes the `struct` public, not its fie
 
 `pub` must be used explicitly on each `struct` field.
 
-``` rust lines highlight={2-3,8}
+```rust lines highlight={2-3,8}
 mod back_of_house {
     pub struct Breakfast {
         pub toast: String,
@@ -198,7 +204,7 @@ Otherwise client wouldn't be able to create `Breakfast` instance.
 
 Using `pub` on `enum` make it and its variants public.
 
-``` rust title="src/lib.rs" lines
+```rust title="src/lib.rs" lines
 mod back_of_house {
     pub enum Appetizer {
         Soup,
@@ -224,7 +230,7 @@ We can create a shortcut to a path with the `use` keyword
 
 `use` makes the path valid <span style={{color: "var(--primary-font-color)"}}> in the scope </span> where `use` is declared.
 
-``` rust title="src/lib.rs" lines highlight={13}
+```rust title="src/lib.rs" lines highlight={13}
 mod front_of_house {
     pub mod hosting {
         pub fn add_to_waitlist() {}
@@ -255,7 +261,7 @@ Specifying the parent module when calling the function <span style={{color: "var
 
 Rust doesn't allow you to bring multiple types with the same name into scope.
 
-``` rust lines highlight={2}
+```rust lines highlight={2}
 use std::fmt::Result;
 use std::io::Result as IoResult;
 
@@ -274,7 +280,7 @@ The shortcut brought into scope is private by default. This means outer ancestor
 
 Marking a shortcut with `pub` to allow outer ancestor to also use the shortcut.
 
-``` rust title="restaurant/src/lib.rs" lines
+```rust title="restaurant/src/lib.rs" lines
 mod front_of_house {
     pub mod hosting {
         pub fn add_to_waitlist() {}
@@ -292,7 +298,7 @@ Instead of lib user calling `restaurant::front_of_house::hosting::add_to_waitlis
 
 ## Shared `use` paths
 
-``` rust lines
+```rust lines
 use std::cmp::Ordering;
 use std::io;
 
@@ -304,7 +310,7 @@ this bring `std::io` and `std::cmp::Ordering` into scope
 
 ### Using `self`
 
-``` rust lines
+```rust lines
 use std::io;
 use std::io::Write;
 
@@ -316,7 +322,7 @@ this brings `std::io` and `std::io::Write` into scope.
 
 ## Separating Modules into Different Files
 
-``` rust title="src/lib.rs" lines
+```rust title="src/lib.rs" lines
 mod front_of_house;
 mod back_of_house;
 
@@ -333,13 +339,13 @@ pub fn eat_at_restaurant() {
 }
 ```
 
-``` rust title="src/front_of_house.rs" lines
+```rust title="src/front_of_house.rs" lines
 pub mod hosting;
 
 pub fn foo_in_front_of_house() {}
 ```
 
-``` rust title="src/front_of_house/hosting.rs" lines highlight={4-9}
+```rust title="src/front_of_house/hosting.rs" lines highlight={4-9}
 pub fn add_to_waitlist() {}
 
 
@@ -351,7 +357,7 @@ pub fn bar_in_hosting() {
 }
 ```
 
-``` rust title="src/back_of_house.rs" lines
+```rust title="src/back_of_house.rs" lines
 fn foo_in_back_of_house(){}
 ```
 
