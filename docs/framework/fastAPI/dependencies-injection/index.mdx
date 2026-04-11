@@ -67,26 +67,24 @@ FastAPI will execute it and pass its return value to path operation
 
 FastAPI will also interpret its argument, (`request_body`, `q` `skip` and `limit`), as request properties (header, query, body)
 
-<details>
-
-<summary> Code above can be written similarly this way </summary>
+<Accordion title="Code above can be written similarly this way">
 
 ```python title= showLineNumbers
 # .....
 
 @app.get("/items/")
 async def read_items(request_body: CommonRequestBody,  q: str | None = None, skip: int = 0, limit: int = 100):
-    pass
+  pass
 
 
 @app.get("/users/")
 async def read_users(request_body: CommonRequestBody,  q: str | None = None, skip: int = 0, limit: int = 100):
-    pass
+  pass
 ```
 
 View it as a reusable block of code
 
-</details>
+</Accordion>
 
 <Note> 
 
@@ -234,34 +232,32 @@ def read_items(foo: Annotated[dict, Depends(foo)]):
 
 The code after `yield` statement is executed after creating the HTTP response but before sending it.
 
-<details>
-
-<summary> see multiple context manager dependencies chanined together  </summary>
+<Accordion title="see multiple context manager dependencies chanined together">
 
 ```python title= showLineNumbers
 def first():
-    name = first.__name__
-    print(name)
-    yield name
-    print('teardown' , name)
+  name = first.__name__
+  print(name)
+  yield name
+  print('teardown' , name)
 
 def second(first: Annotated[any, Depends(first)]):
-    name = second.__name__
-    print(name)
-    yield name
-    print('teardown' , name)
+  name = second.__name__
+  print(name)
+  yield name
+  print('teardown' , name)
     
 def third(second: Annotated[any, Depends(second)]):
-    name = third.__name__
-    print(name)
-    yield name
-    print('teardown' , name)
+  name = third.__name__
+  print(name)
+  yield name
+  print('teardown' , name)
 
 
 @app.get("/items/")
 async def read_items(third: Annotated[dict, Depends(third)]):
-    print('path operation')
-    return third
+  print('path operation')
+  return third
 
 # output:
 # first
@@ -273,7 +269,7 @@ async def read_items(third: Annotated[dict, Depends(third)]):
 # teardown first
 ```
 
-</details>
+</Accordion>
 
 
 ### Handling error inside context manager dependencies

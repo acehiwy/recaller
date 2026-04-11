@@ -89,9 +89,7 @@ For `effect` to know its parent signals, Angular executes the effect block at de
 
 Effects can only be created inside an injection context.
 
-<details>
-
-<summary> example </summary>
+<Accordion title="example">
 
 ```typescript title= showLineNumbers
 @Component({...})
@@ -112,7 +110,7 @@ export class MyComponent {
 }
 ```
 
-</details>
+</Accordion>
 
 To create an `effect` outside an injection context, pass an `injector` to it.
 
@@ -187,9 +185,7 @@ effect((onCleanup) => {
 
 Angular uses the term "dependencies" for parent signals.
 
-<details>
-
-<summary> example </summary>
+<Accordion title="example">
 
 `bar` is a `computed` value or `effect` that reads the `foo` signal, so `foo` is a dependency of `bar`.
 
@@ -199,7 +195,7 @@ const bar = effect(() => foo());
 const bar = computed(() => foo());
 ```
 
-</details>
+</Accordion>
 
 Dependencies are the signals that are read during child code block execution, regardless of where those signals are defined.
 
@@ -340,9 +336,7 @@ linkedSignal({
 
 `source` is typically a dependency of `linkedSignal`. It is a function that is called, and its return value is passed as the first argument to the `computation` callback (`fooNewValue`).
 
-<details>
-
-<summary> example </summary>
+<Accordion title="example">
 
 ```typescript title= showLineNumbers
 linkedSignal({
@@ -354,7 +348,7 @@ linkedSignal({
 });
 ```
 
-</details>
+</Accordion>
 
 The second argument of the `computation` function, `previous`, is an object containing two keys:
 

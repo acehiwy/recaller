@@ -70,21 +70,17 @@ Markdown can embed HTML elements, and details HTML elements are beautifully styl
 ```
 #### Result
 
-<details>
-  <summary>Toggle me!</summary>
+<Accordion title="Toggle me!">
   <div>
     <div>This is the detailed content</div>
     <br/>
-    <details>
-      <summary>
-        Nested toggle! Some surprise inside...
-      </summary>
+    <Accordion title="Nested toggle! Some surprise inside...">
       <div>
         😲😲😲😲😲
       </div>
-    </details>
+    </Accordion>
   </div>
-</details>
+</Accordion>
 
 <br />
 
