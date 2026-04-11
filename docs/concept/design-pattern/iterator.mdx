@@ -33,7 +33,7 @@ It also adds more complexity when the client has to track visited items, which c
 ## With pattern
 
 The iterator pattern introduces an `iterator` object that contains the traversal algorithm and the methods required for iteration.
-```typescript title= showLineNumbers
+``` typescript lines
 interface Iterator<T> {
   getNextItem(): T;
   hasMoreItem(): boolean;
@@ -48,7 +48,7 @@ The collection then needs to return an `iterator` object to the client by implem
 
 <Accordion title="Collection implementation example">
 
-```typescript title=FooCollection.ts showLineNumbers
+``` typescript title="FooCollection.ts" lines
 class FooCollection {
   // simplified
   add(){}
@@ -61,7 +61,7 @@ class FooCollection {
 }
 ```
 
-```typescript title=EvenItemIterator.ts showLineNumbers
+``` typescript title="EvenItemIterator.ts" lines
 class EvenItemIterator implements Iterator<number> {
   private index = 0;
 
@@ -89,7 +89,7 @@ class EvenItemIterator implements Iterator<number> {
 
 The client then uses the `iterator` object to iterate.
 
-```typescript title= showLineNumbers
+``` typescript lines
 const iterator: Iterator = collection.getIterator()
 
 while (iterator.hasMoreItem()){
@@ -109,7 +109,7 @@ The traversal algorithm and visited-item tracking are pushed into the collection
 Client still need to know which method of the collection is used to return `iterator`
 
 Some designs have all collections implement the same interface for returning an `iterator`. For example:
-```typescript title= showLineNumbers
+``` typescript lines
 interface IterableCollection<T>{
   getIterator(): Iterator<T>
 }
@@ -120,7 +120,7 @@ Then, regardless of which collection the client is dealing with, it can just cal
 But returning just one `iterator` might not be enough for some collections.
 
 For example, a tree collection may need both depth-first and breadth-first traversal algorithms, so it needs more than one iterator method.
-```typescript title= showLineNumbers
+``` typescript lines
 interface Tree{
   // ...
   getDepthFirstIterator(): Iterator;
@@ -171,7 +171,7 @@ Several iterators can traverse the same collection at the same time.
 <Tabs>
 <Tab title="Client code">
 
-```typescript title=client.ts showLineNumbers
+``` typescript title="client.ts" lines
 const collection = new MyCollection()
 const iterator = collection.getIterator()
 while(iterator.hasMoreItem()){
@@ -190,7 +190,7 @@ while(treeIterator.hasMoreItem()){
 
 <Tab title="Interface">
 
-```typescript title=interface.ts showLineNumbers
+``` typescript title="interface.ts" lines
 interface _Iterator<T> {
   getNextItem(): T;
   hasMoreItem(): boolean;
@@ -219,7 +219,7 @@ interface Tree {
 
 <Tab title="EvenItemIterator">
 
-```typescript title=EvenItemIterator.ts showLineNumbers
+``` typescript title="EvenItemIterator.ts" lines
 class EvenItemIterator implements _Iterator<number> {
   private index = 0;
 
@@ -254,7 +254,7 @@ class MyCollection implements NormalCollection, IterableCollection<number>{
 
 <Tab title="TreeIterator">
 
-```typescript title=TreeIterator.ts showLineNumbers
+``` typescript title="TreeIterator.ts" lines
 class TreeIterator implements _Iterator<number>{
   constructor(private tree: Tree){}
 

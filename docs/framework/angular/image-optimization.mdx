@@ -8,7 +8,7 @@ Built-in image optimization feature.
 
 
 &#8203;Import [NgOptimizedImage](https://angular.dev/api/common/NgOptimizedImage) into the component.
-```typescript title= showLineNumbers
+``` typescript lines
 import { NgOptimizedImage } from '@angular/common'
 
 imports: [
@@ -18,7 +18,7 @@ imports: [
 ```
 
 Use `ngSrc` instead of `src`.
-```jsx title= showLineNumbers
+``` jsx lines
 <img ngSrc="cat.jpg">
 ```
 
@@ -26,7 +26,7 @@ Use `ngSrc` instead of `src`.
 
 Use the `priority` attribute.
 
-```jsx title= showLineNumbers
+``` jsx lines
 <img ngSrc="cat.jpg" priority>
 ```
 
@@ -50,7 +50,7 @@ The `loading=lazy` attribute tells the browser not to load an image when it is o
 The browser loads the image when it is about to become visible in the viewport.
 
 
-```jsx title= showLineNumbers
+``` jsx lines
 <picture>
   <source type="image/avif"  sizes="(width<= 1000px) 150px, 800px" srcset="300.avif 300w, 500.avif 500w, 700.avif 700w"/>
 

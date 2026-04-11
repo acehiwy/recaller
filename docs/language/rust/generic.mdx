@@ -14,7 +14,7 @@ Rust’s type-naming convention is UpperCamelCase
 
 ## Generic in Function Definition
 
-```rust title= showLineNumbers
+``` rust lines
 fn largest<T: std::cmp::PartialOrd>(list: &[T]) -> &T {
 ```
 
@@ -22,7 +22,7 @@ fn largest<T: std::cmp::PartialOrd>(list: &[T]) -> &T {
 
 ## In Struct definition
 
-```rust title= showLineNumbers
+``` rust lines
 struct Point<T, U> {
     x: T,
     y: U,
@@ -37,7 +37,7 @@ fn main() {
 
 ## In Enum definition
 
-```rust title= showLineNumbers
+``` rust lines
 enum Result<T, E> {
     Ok(T),
     Err(E),
@@ -46,7 +46,7 @@ enum Result<T, E> {
 
 ## In `impl` block
 
-```rust title= showLineNumbers
+``` rust lines
 struct Point<T> {
     x: T,
     y: T,
@@ -62,7 +62,7 @@ impl<FooBar> Point<FooBar> {
 
 We can define method for subset of generic type
 
-```rust title= showLineNumbers
+``` rust lines highlight={12-16}
 struct Point<T> {
     x: T,
     y: T,
@@ -74,13 +74,11 @@ impl<T> Point<T> {
     }
 }
 
-// highlight-start
 impl Point<f32> {
     fn distance_from_origin(&self) -> f32 {
         (self.x.powi(2) + self.y.powi(2)).sqrt()
     }
 }
-// highlight-end
 
 fn main() {
     let p = Point { x: 5.5, y: 10.5 };
@@ -99,14 +97,13 @@ Each method definition can have it own generic type which are unrelated to struc
 
 It can still access generic of `impl` block
 
-```rust title= showLineNumbers
+``` rust lines highlight={7}
 struct Point<X1, Y1> {
     x: X1,
     y: Y1,
 }
 
 impl<X1, Y1> Point<X1, Y1> {
-    // highlight-next-line
     fn mixup<X2, Y2>(self, other: Point<X2, Y2>) -> Point<X1, Y2> {
         Point {
             x: self.x,

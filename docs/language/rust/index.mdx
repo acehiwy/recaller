@@ -10,7 +10,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 ### Create Hello World file
 
-```rust title=main.rs showLineNumbers
+``` rust title="main.rs" lines
 fn main() {
     println!("Hello, world!");
 }
@@ -20,7 +20,7 @@ fn main() {
 
 Use `rustc` to compile a Rust file.
 
-```bash title=
+``` bash
 rustc main.rs
 ```
 
@@ -30,7 +30,7 @@ It will output binary file `main`.
 
 Executing the output binary file:
 
-```bash title=
+``` bash
 ./main
 ```
 
@@ -52,7 +52,7 @@ Rust is an ahead-of-time compiled language, meaning you can compile a program an
 
 ## Printing
 
-```rust title=
+``` rust
 println!("foo bar");
 ```
 
@@ -60,7 +60,7 @@ println!("foo bar");
 
 Content replacement uses `{}` as placeholders, and the arguments passed to `println!` provide the values for those placeholders.
 
-```rust title=
+``` rust
 println!("Hello {} from {}", "World" , "Rust");
 // Hello World from Rust
 ```
@@ -69,12 +69,12 @@ println!("Hello {} from {}", "World" , "Rust");
 
 Integer and named arguments can be used as placeholders.
 
-```rust title=
+``` rust
 println!("{0}, this is {1}. {1}, this is {0}", "Alice", "Bob");
 // Alice, this is Bob. Bob, this is Alice
 ```
 
-```rust title=
+``` rust
 println!("{foo}, this is {bar}. {bar}, this is {foo}", foo="Alice", bar="Bob");
 // Alice, this is Bob. Bob, this is Alice
 ```
@@ -83,7 +83,7 @@ println!("{foo}, this is {bar}. {bar}, this is {foo}", foo="Alice", bar="Bob");
 
 Variable name can be used as a placeholder
 
-```rust title= showLineNumbers
+``` rust lines
 let foo = 50;
 let bar = 100;
 println!("{foo} and {bar}", bar="bar from print argument");
@@ -92,7 +92,7 @@ println!("{foo} and {bar}", bar="bar from print argument");
 
 ### <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> Formatting </span>
 
-```rust title= showLineNumbers
+``` rust lines
 // Different formatting can be invoked by specifying the format character
 // after a `:`.
 println!("Base 10:               {}",   69420); // 69420
@@ -117,7 +117,7 @@ println!("{number:>width$}");
 
 To obtain user input and then print the result as output, we need to bring the io input/output library into scope. The io library comes from the standard library, known as std:
 
-```rust title=
+``` rust
 use std::io;
 ```
 
@@ -133,7 +133,7 @@ If a type you want to use isn’t in the prelude, you have to bring that type in
 
 assigning value
 
-```rust title=
+``` rust
 let guess = String::new();
 ```
 
@@ -145,7 +145,7 @@ An associated function is a function that’s implemented on a type, in this cas
 
 Calling function of a module
 
-```rust title= showLineNumbers
+``` rust lines
     io::stdin()
         .read_line(&mut guess)
         .expect("Failed to read line");
@@ -172,10 +172,9 @@ Hence, you need to write `&mut` guess rather than `&guess` to make it mutable.
 
 ## Handling Potential Failure with Result
 
-```rust title= showLineNumbers
+``` rust lines highlight={3}
     io::stdin()
         .read_line(&mut guess)
-        // highlight-next-line
         .expect("Failed to read line");
 ```
 
@@ -191,7 +190,7 @@ If the `read_line` method returns an `Err`, it would likely be the result of an 
 
 If you don’t call `expect`, the program <span style={{color: "var(--secondary-font-color)"}}> will compile </span>, but you’ll get a warning:
 
-```text title= showLineNumbers
+``` text lines
 $ cargo build
    Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
 warning: unused `Result` that must be used
@@ -219,7 +218,7 @@ The specifier `0.8.5` is actually shorthand for `^0.8.5`
 
 &#8203;<span style={{color: "var(--primary-font-color)"}}> An update is allowed if the new version number does not modify the left-most non-zero digit in the major, minor, patch grouping. </span>
 
-```text title= showLineNumbers
+``` text lines
 1.2.3  :=  >=1.2.3, <2.0.0
 1.2    :=  >=1.2.0, <2.0.0
 1      :=  >=1.0.0, <2.0.0
@@ -240,27 +239,26 @@ update local crates versions
 
 update all dependencies
 
-```bash title=
+``` bash
 cargo update
 ```
 
 update specific dependency
 
-```bash title=
+``` bash
 cargo update -p <crate name> -p <another crate name>
 ```
 
 Set a specific dependency to a specific version:
 
-```bash title=
+``` bash
 cargo update -p <crate name> --precise 1.2.3
 ```
 
 range expression as an argument
 
-```rust title= showLineNumbers
+``` rust lines highlight={2}
 rand::thread_rng()
-    // highlight-next-line
     .gen_range(1..=100);
 ```
 
@@ -268,7 +266,7 @@ we’re using here takes the form `start..=end` and is <span style={{color: "var
 
 The `cmp` method compares two values and can be called on anything that can be compared.
 
-```rust title= showLineNumbers
+``` rust lines
 let foo = 5;
 foo.cmp( /** reference of value to be compared  */ );
 ```
@@ -281,7 +279,7 @@ The `loop` keyword creates an infinite loop.
 
 The underscore, `_`, is a catchall value:
 
-```rust title= showLineNumbers
+``` rust lines
 let guess: u32 = match guess.trim().parse() {
     Ok(num) => num,
     Err(_) => continue,

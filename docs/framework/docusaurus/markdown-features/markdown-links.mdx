@@ -12,7 +12,7 @@ There are two ways of adding a link to another page through
 - URL path
 - file path.
 
-```markdown title= showLineNumbers
+``` markdown lines
 - [URL path to another document](./installation)
 - [file path to another document](./installation.md)
 ```
@@ -42,7 +42,7 @@ For example, if you are in `docs/folder/doc1.md` and you want to reference
 - `docs/folder/subfolder/doc3.md`
 - `docs/otherFolder/doc4.md`:
 
-```markdown title=docs/floder/doc1.md showLineNumbers
+``` markdown title="docs/floder/doc1.md" lines
 I am referencing a [document](doc2.md).
 
 Reference to another [document in a subfolder](subfolder/doc3.md).
@@ -63,7 +63,7 @@ However, beware that links that begin with `/docs/` or `/blog/` are not portable
 
 </Note>
 
-```markdown title= showLineNumbers
+``` markdown lines
 You can write [links](/otherFolder/doc4.md) relative to the content root (`/docs/`).
 
 You can also write [links](/docs/otherFolder/doc4.md) relative to the site directory, but it's not recommended.

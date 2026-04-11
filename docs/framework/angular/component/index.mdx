@@ -4,7 +4,7 @@ sidebarTitle: "Component"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
-```typescript title= showLineNumbers
+``` typescript lines
 import { Component } from "@angular/core";
 
 @Component({
@@ -36,7 +36,7 @@ These fields are provide to `@Component` decorator
 
 Separate HTML and CSS files using `templateUrl` and `styleUrl` fields
 
-```typescript title= showLineNumbers
+``` typescript lines
 @Component({
   selector: 'user-profile',
   templateUrl: 'user-profile.html',
@@ -65,15 +65,13 @@ Component style only affect element inside its HTML template
 
 `HTML template` can reference to class'properties using `{{ <properties name> }}` syntax
 
-```typescript title= showLineNumbers
+``` typescript lines highlight={5,7}
 import { Component } from "@angular/core";
 
 @Component({
   selector: "app-root",
-  template: ` // highlight-next-line Hello {{ city }} {{ 1 + 1 }} `,
 })
 export class App {
-  // highlight-next-line
   city = "San Francisco";
 }
 ```
@@ -90,7 +88,7 @@ The DOM rendered by component is called component's view
 
 use `@if` , `@else`
 
-```typescript title= showLineNumbers
+``` typescript lines
 @Component({
   ...
   template: `
@@ -113,11 +111,10 @@ export class App {
 
 use `@for (<item> of <iterable> ; track <unique identifier>) {}`
 
-```typescript title= showLineNumbers
+``` typescript lines highlight={4}
 @Component({
   ...
   template: `
-    // highlight-next-line
     @for (os of operatingSystems; track os.id) {
       {{ os.name }}
     }
@@ -145,21 +142,18 @@ Bind component property values to HTML attributes or other component parameters
 
 Use `[]` syntax
 
-```typescript title= showLineNumbers
+``` typescript lines highlight={7-8,12}
 import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
   import: [FooComponent]
   template: `
-    // highlight-start
     <div [contentEditable]="isEditable"></div>
     <foo-component [prop1]="isEditable" />
-    // highlight-end
   `,
 })
 export class App {
-  // highlight-next-line
   isEditable = true;
 }
 ```
@@ -170,7 +164,7 @@ Angular updates the DOM when bound value changes
 
 bind to HTML attributes by prefixing with `attr.`
 
-```html title= showLineNumbers
+``` html lines
 <ul [attr.role]="foo"></ul>
 ```
 
@@ -185,7 +179,7 @@ To add an event listener, use `()`
 
 e.g., register `greet` function as a callback for a click event
 
-```typescript title= showLineNumbers
+``` typescript lines
 @Component({
   ...
   template: `<button (click)="greet($event)">`
@@ -214,7 +208,7 @@ Angular has dependency injection feature
 
 Register a class to DI container by using `Injectable` decorator
 
-```typescript title= showLineNumbers
+``` typescript lines
 import { Injectable } from "@angular/core";
 
 @Injectable({ providedIn: "root" })
@@ -227,7 +221,7 @@ export class Calculator {
 
 Use `service` by calling `inject(<inject_token>)`
 
-```typescript title= showLineNumbers
+``` typescript lines highlight={8}
 import { Component, inject } from "@angular/core";
 import { Calculator } from "./calculator";
 
@@ -235,7 +229,6 @@ import { Calculator } from "./calculator";
   // ...
 })
 export class Receipt {
-  // highlight-next-line
   private calculator = inject(Calculator);
   totalCost = this.calculator.add(50, 25);
 }

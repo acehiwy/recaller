@@ -6,7 +6,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 ## Calling panic!
 
-```rust title= showLineNumbers
+``` rust lines
 fn main() {
     panic!("crash and burn");
 }
@@ -14,15 +14,13 @@ fn main() {
 
 will result:
 
-```text title= showLineNumbers
+``` text lines highlight={5-6}
 $ cargo run
    Compiling panic v0.1.0 (file:///projects/panic)
     Finished dev [unoptimized + debuginfo] target(s) in 0.25s
      Running `target/debug/panic`
-// highlight-start
 thread 'main' panicked at 'crash and burn', src/main.rs:2:5
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-// highlight-end
 ```
 
 ## Using `panic!` Backtrace
@@ -36,7 +34,7 @@ To see backtrace
 
 From this code:
 
-```rust title=src/main.rs showLineNumbers
+``` rust title="src/main.rs" lines
 fn main() {
     let v = vec![1, 2, 3];
 
@@ -46,8 +44,7 @@ fn main() {
 
 Then run:
 
-```text title= showLineNumbers
-// highlight-next-line
+``` text lines highlight={1,16-17}
 $ RUST_BACKTRACE=1 cargo run
 thread 'main' panicked at 'index out of bounds: the len is 3 but the index is 99', src/main.rs:4:5
 stack backtrace:
@@ -63,10 +60,8 @@ stack backtrace:
              at /rustc/e092d0b6b43f2de967af0887873151bb1c0b18d3/library/core/src/slice/index.rs:18:9
    5: <alloc::vec::Vec<T,A> as core::ops::index::Index<I>>::index
              at /rustc/e092d0b6b43f2de967af0887873151bb1c0b18d3/library/alloc/src/vec/mod.rs:2591:9
-   // highlight-start
    6: panic::main
              at ./src/main.rs:4:5
-   // highlight-end
    7: core::ops::function::FnOnce::call_once
              at /rustc/e092d0b6b43f2de967af0887873151bb1c0b18d3/library/core/src/ops/function.rs:248:5
 note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
@@ -87,7 +82,7 @@ By default, when a panic occurs, the program starts "unwinding" which means Rust
 
 So Rust allows you to immediately aborting which ends the program without cleaning up. Memory that the program was using will then need to be cleaned up by the operating system.
 
-```toml title=Cargo.toml showLineNumbers
+``` toml title="Cargo.toml" lines
 # if you want to abort on panic in release mode
 [profile.release]
 panic = 'abort'

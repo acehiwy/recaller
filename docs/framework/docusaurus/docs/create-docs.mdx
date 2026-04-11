@@ -11,7 +11,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 Create a Markdown file, `greeting.md`, and place it under the docs directory.
 
-```title= showLineNumbers
+``` title= lines
 website # root directory of your site
 ├── docs
 │   └── greeting.md
@@ -37,7 +37,7 @@ You can configure the TOC heading levels either per-document or in the theme con
 
 With `{#custom-id}` syntax you can set your own header ID.
 
-```markdown title=foo.md
+``` markdown title="foo.md"
 # Foo Header {#custom-id}
 ```
 
@@ -68,7 +68,7 @@ Optionally, you can add tags to your doc pages, which introduces another dimensi
 
 Tags are passed in the front matter as a list of labels:
 
-```markdown title= showLineNumbers
+``` markdown lines
 ---
 id: doc-with-tags
 title: A doc with tags
@@ -102,7 +102,7 @@ Every document has a unique id. By default, a document id is the <span style={{c
 
 For example, the ID of `greeting.md` is "greeting", and the ID of `guide/hello.md` is "guide/hello".
 
-```title= showLineNumbers
+``` title= lines
 website # Root directory of your site
 └── docs
    ├── greeting.md
@@ -114,7 +114,7 @@ However, the <span style={{color: "var(--secondary-font-color)"}}> last part </s
 
 For example, if `guide/hello.md`'s content is defined as below, its final id is "guide/part1".
 
-```markdown title= showLineNumbers
+``` markdown lines
 ---
 id: part1
 ---
@@ -135,7 +135,7 @@ Use the `slug` front matter to change a document's URL.
 
 For example, suppose your site structure looks like this:
 
-```markdown title= showLineNumbers
+``` markdown lines
 website # Root directory of your site
 └── docs
 └── guide
@@ -146,7 +146,7 @@ By default hello.md will be available at /docs/guide/hello.
 
 With `slug`, you can change its URL location to /docs/bonjour:
 
-```markdown title= showLineNumbers
+``` markdown lines
 ---
 slug: /bonjour
 ---

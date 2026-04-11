@@ -21,7 +21,7 @@ Rust has four primary scalar types:
 
 ### Integer
 
-```rust title= showLineNumbers
+``` rust lines
 let foo = 5;
 let bar: i8 = -10;
 ```
@@ -111,7 +111,7 @@ Integer can also be represent in these format
 
 Integer division will be rounded down
 
-```rust title=
+``` rust
 println!("{}, {}", 9/5, -9/8);
 // output: 1, -1
 // 9/5 = 1.8 which round down to 1
@@ -128,7 +128,7 @@ println!("{}, {}", 9/5, -9/8);
 
 ### Floating-Point
 
-```rust title= showLineNumbers
+``` rust lines
 let x = 2.0; // f64
 let y: f32 = 3.0; // f32
 ```
@@ -151,7 +151,7 @@ All floating-point types are signed
 
 ### Booleans
 
-```rust title= showLineNumbers
+``` rust lines
 let foo = true;
 let bar: bool = false;
 ```
@@ -160,7 +160,7 @@ Booleans are one <span style={{color: "var(--secondary-font-color)"}}> byte </sp
 
 ### Character Type
 
-```rust title= showLineNumbers
+``` rust lines
 let c = 'z';
 let z: char = 'ℤ'; // with explicit type annotation
 let heart_eyed_cat = '😻';
@@ -184,17 +184,16 @@ Compound types can group <span style={{color: "var(--secondary-font-color)"}}> m
 
 Tuples have a fixed length: once declared, they cannot grow or shrink in size.
 
-```rust title=
+``` rust highlight={3}
 let foo: (i32, f64, u8) = (500, 6.4, 1);
 let tup = (500, 6.4, 1);
-// highlight-next-line
 let (x, y, z) = tup; // Destructuring tuple
 println!("The value of y is: {y}");
 ```
 
 access a tuple element directly by using a period `.` followed by the index of the value we want to access.
 
-```rust title=
+``` rust
 let x: (i32, f64, u8) = (500, 6.4, 1);
 let five_hundred = x.0;
 let six_point_four = x.1;
@@ -207,7 +206,7 @@ The tuple without any values has a special name, `unit`.
 
 This value and its corresponding type are both written `()` and represent an empty value or an empty return type.
 
-```rust title=
+``` rust
 let fooUnit: () = ();
 ```
 
@@ -223,7 +222,7 @@ Every element of an array must have the <span style={{color: "var(--secondary-fo
 
 Arrays have a <span style={{color: "var(--secondary-font-color)"}}> fixed </span> length.
 
-```rust title= showLineNumbers
+``` rust lines
 let a = [1, 2, 3, 4, 5];
 
 // i32 is type definition ; 5 is array's length
@@ -237,7 +236,7 @@ let bar = [3,3,3,3,3];
 
 Accessing array element:
 
-```rust title= showLineNumbers
+``` rust lines
 let a = [1,2,3];
 let foo = a[0];
 let bar = a[1];
@@ -255,7 +254,7 @@ Rust will `panic` if you access an invalid index.
 
 In cases when many types are possible, we must add a type annotation
 
-```rust title=
+``` rust
 let bar: u32 = "42".parse().expect("Not a number!");
 ```
 

@@ -13,13 +13,13 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 Function parameters, that are not part of path parameter, are interpret as query params 
 
-```python title= showLineNumbers
+``` python lines
 @app.get("/items/")
 async def read_item(skip: int = 0, limit: int = 10):
     pass
 ```
 
-```bash title= showLineNumbers
+``` bash lines
 GET /items/?skip=0&limit=10
 ```
 
@@ -35,7 +35,7 @@ Defining function argument without default value will make query required
 
 Adding default value will make it optional
 
-```python title= showLineNumbers
+``` python lines
 @app.get("/items/")
 async def read_item(skip: int = 0, limit: int | None = None):
     pass
@@ -47,7 +47,7 @@ async def read_item(skip: int = 0, limit: int | None = None):
 If argument type is Boolean, FastAPI will convert a boolean-like string to Boolean
 
 eg.
-```python title= showLineNumbers
+``` python lines
 @app.get("/foo")
 def foo(bar: bool):
   return bar

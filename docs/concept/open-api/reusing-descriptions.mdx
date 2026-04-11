@@ -26,7 +26,7 @@ Each field in the Components Object is a map pairing <span style={{color: "var(-
 
 The <span style={{color: "var(--secondary-font-color)"}}> type of these objects must match the parent field </span>, e.g. objects in the `schemas` map must be Schema Objects.
 
-```yaml title= showLineNumbers
+``` yaml lines
 components:
   schemas:
     coordinate:
@@ -53,19 +53,19 @@ Reference Objects are actually [JSON References](https://tools.ietf.org/html/dra
 
 They contain <span style={{color: "var(--secondary-font-color)"}}> a single field </span> named `$ref` and its string value is a <span style={{color: "var(--secondary-font-color)"}}> URI pointing to the referenced object </span>:
 
-```yaml title= showLineNumbers
+``` yaml lines
 $ref: "https://gigantic-server.com/schemas/Monster/schema.yaml"
 ```
 
 References can be absolute or relative, and they can include a fragment identifier
 
-```yaml title= showLineNumbers
+``` yaml lines
 $ref: "./another_file.yaml#rowParam"
 ```
 
 ### Example
 
-```yaml title= showLineNumbers
+``` yaml lines
 components:
   schemas:
     coordinate:

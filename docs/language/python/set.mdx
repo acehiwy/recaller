@@ -8,7 +8,7 @@ tags:
 
 A set is an <span style={{color: "var(--secondary-font-color)"}}> unordered </span> collection with no duplicate elements.
 
-```python title= showLineNumbers
+``` python lines
 basket = {'apple', 'orange', 'apple', 'pear', 'orange', 'banana'}
 
 empty_set = set() 
@@ -16,7 +16,7 @@ empty_set = set()
 
 ## union, intersection, difference, and symmetric difference
 
-```python title= showLineNumbers
+``` python lines
 a = set('abcdr')
 b = set('acmlz')
 
@@ -35,7 +35,7 @@ a ^ b # outer join. letters in a or b but not both
 
 ## Set comprehensions
 
-```python title= showLineNumbers
+``` python lines
 a = {x for x in 'abracadabra' if x not in 'abc'}
 # {'r', 'd'}
 ```

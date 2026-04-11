@@ -10,7 +10,7 @@ Both `String` and string slices are UTF-8 encoded.
 
 ## Creating a new String
 
-```rust title= showLineNumbers
+``` rust lines
 let s = String::from("initial contents");
 
 // same as
@@ -34,7 +34,7 @@ A String can grow in size and its contents can change, <span style={{color: "var
 
 ### Using `push_str`
 
-```rust title= showLineNumbers
+``` rust lines
 let mut s = String::from("foo");
 s.push_str("bar");
 ```
@@ -45,14 +45,14 @@ The `push_str` method takes a string slice as an argument. It does not take owne
 
 The `push` method takes <span style={{color: "var(--secondary-font-color)"}}> a single </span> <span style={{color: "var(--primary-font-color)"}}> character </span> as a parameter.
 
-```rust title= showLineNumbers
+``` rust lines
 let mut s = String::from("lo");
 s.push('l'); // char use single quote
 ```
 
 ### Concatenation with `+`
 
-```rust title= showLineNumbers
+``` rust lines
 let s1 = String::from("Hello, ");
 let s2 = String::from("world!");
 let s3 = s1 + &s2; // note s1 has been moved here and can no longer be used
@@ -62,7 +62,7 @@ When concatenate String, left most (`s1`) `String`'s <span style={{color: "var(-
 
 Because `+` operator use `add` method
 
-```rust title= showLineNumbers
+``` rust lines
 fn add(self, s: &str) -> String { // also returning ownership
   // ...
 }
@@ -86,7 +86,7 @@ This statement actually takes ownership of `s1`, <span style={{color: "var(--sec
 
 ### Combining with `format!`
 
-```rust title= showLineNumbers
+``` rust lines
 let s1 = String::from("tic");
 let s2 = String::from("tac");
 let s3 = String::from("toe");
@@ -112,7 +112,7 @@ Take word `नमस्ते` as an example
 
 ### As bytes
 
-```rust title= showLineNumbers
+``` rust lines
 // store as vector<u8>
 [224, 164, 168, 224, 164, 174, 224, 164, 184, 224, 165, 141, 224, 164, 164,
 224, 165, 135]
@@ -122,7 +122,7 @@ Take word `नमस्ते` as an example
 
 Rust's `char` type represent unicode scalar value ( value that correspond to its codepoint ).
 
-```rust title= showLineNumbers
+``` rust lines
 ['न', 'म', 'स', '्', 'त', 'े']
 ```
 
@@ -130,7 +130,7 @@ Rust's `char` type represent unicode scalar value ( value that correspond to its
 
 Grapheme is <span style={{color: "var(--primary-font-color)"}}> a single</span> unit of human writing ( can be compose of 1 or more codepoint )
 
-```rust title= showLineNumbers
+``` rust lines
 ["न", "म", "स्", "ते"]
 ```
 
@@ -140,10 +140,9 @@ A String is a wrapper over a `Vec<u8>`.
 
 Rust strings don't support indexing.
 
-```rust title= showLineNumbers
+``` rust lines highlight={3}
 fn main(){
     let hello = "Здравствуйте";
-    // highlight-error-next-line
     let answer = hello[0]; // the type `str` cannot be indexed by `{integer}`
 }
 ```
@@ -154,7 +153,7 @@ Getting a single byte of encoded UTF-8 might result in invalid UTF-8 value (UTF-
 
 See this example:
 
-```rust title= showLineNumbers
+``` rust lines
 // highlight-error-start
 let hello = String::from("дравствуйте");
 let first = &hello[0];
@@ -168,7 +167,7 @@ let first = &hello[0];
 
 Slicing `Strings` could lead to panic at runtime if you to try to slice only part of a character’s bytes
 
-```rust title= showLineNumbers
+``` rust lines
 let hello = "дравствуйте";
 
 // highlight-error-start
@@ -186,7 +185,7 @@ println!("{s}");
 
 Use `String.chars()` to get unicode scalar value
 
-```rust title= showLineNumbers
+``` rust lines
 for c in "Зд".chars() {
     println!("{c}");
 }
@@ -196,7 +195,7 @@ for c in "Зд".chars() {
 
 Use `String.bytes()` to get raw byte
 
-```rust title= showLineNumbers
+``` rust lines
 for b in "Зд".bytes() {
     println!("{b}");
 }

@@ -10,7 +10,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 A string slice is a <span style={{color: "var(--secondary-font-color)"}}> reference </span> to part of a `String`:
 
-```rust title= showLineNumbers
+``` rust lines
 let s = String::from("hello world");
 
 let hello: &str = &s[0..5]; // exclusive upper bound
@@ -35,7 +35,7 @@ If you attempt to create a string slice in the middle of a multibyte character, 
 
 #### First char of String
 
-```rust title= showLineNumbers
+``` rust lines
 let s = String::from("hello");
 
 let slice = &s[0..2];
@@ -44,7 +44,7 @@ let slice = &s[..2];
 
 #### Last char of String
 
-```rust title= showLineNumbers
+``` rust lines
 let s = String::from("hello");
 
 let len = s.len();
@@ -55,7 +55,7 @@ let slice = &s[3..];
 
 #### Entire string slice
 
-```rust title= showLineNumbers
+``` rust lines
 let slice = &s[..];
 let slice = &s;
 ```
@@ -64,7 +64,7 @@ let slice = &s;
 
 string literals being stored inside the binary.
 
-```rust title=
+``` rust
 let s = "Hello, world!";
 ```
 
@@ -80,18 +80,18 @@ Type `&String` is compatible with `&str`
 
 string to bytes array:
 
-```rust title= showLineNumbers
+``` rust lines
 let s = String::from("foo");
 let bytes = s.as_bytes();
 ```
 
 set `String` to empty (`""`):
 
-```rust title=
+``` rust
 <String>.clear();
 ```
 
-```rust title= showLineNumbers
+``` rust lines
 fn slice_out_of_array() {
     let a = [1, 2, 3, 4, 5];
 

@@ -11,7 +11,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 You can use regular Markdown headings.
 
-```markdown title= showLineNumbers
+``` markdown lines
 ## Level 2 title
 
 ### Level 3 title
@@ -43,7 +43,7 @@ You can config this behaviour by using
 - Use `toc_min_heading_level` for minimun heading level shown in TOC.
 - Use `toc_max_heading_level` for maximum heading level shown in TOC
 
-```markdown title=foo.md showLineNumbers
+``` markdown title="foo.md" lines
 ---
 toc_min_heading_level: 3
 toc_max_heading_level: 5
@@ -62,7 +62,7 @@ See [Front matter API spec](https://docusaurus.io/docs/api/plugins/@docusaurus/p
 
 #### With `docusaurus.config.js`
 
-```javascript title=docusaurus.config.js showLineNumbers
+``` javascript title="docusaurus.config.js" lines
 module.exports = {
   themeConfig: {
     tableOfContents: {
@@ -86,7 +86,7 @@ See [configuration reference](https://docusaurus.io/docs/api/themes/configuratio
 Each heading has an ID that can be <span style={{color: "var(--secondary-font-color)"}}> automatically generated </span> or <span style={{color: "var(--secondary-font-color)"}}> explicitly specified </span>.
 Heading IDs allow you to link to a specific document heading in Markdown or JSX:
 
-```jsx title= showLineNumbers
+``` jsx lines
 [link](#heading-id)
 
 <Link to="#heading-id">link</Link>
@@ -106,7 +106,7 @@ For example, `### Hello World` will have ID `hello-world`.
 
 A special Markdown syntax lets you set an explicit heading id:
 
-```markdown title= showLineNumbers
+``` markdown lines
 ### Hello World {#my-explicit-id}
 ```
 

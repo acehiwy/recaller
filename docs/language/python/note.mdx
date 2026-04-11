@@ -12,7 +12,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 Script arguments can be accessed with
 
-```python title= showLineNumbers
+``` python lines
 import sys
 
 sys.argv # list of string
@@ -26,7 +26,7 @@ When the script name is given as `-` (meaning standard input), `sys.argv[0]` is 
 
 In interactive mode, the last printed expression is assigned to the variable `_`
 
-```python title= 
+``` python
 2+3
 # 5
 _ * 2
@@ -47,15 +47,15 @@ By default, Python source files are treated as encoded in UTF-8.
 
 declaring other encoding other than default one use special comment should be added as the first line of the file
 
-```python title=foo.py showLineNumbers
+``` python title="foo.py" lines
 # -*- coding: <encoding> -*-
 ```
 
-```python title=foo.py showLineNumbers
+``` python title="foo.py" lines
 # -*- coding: cp1252 -*-
 ```
 
-```bash title=foo.sh showLineNumbers
+``` bash title="foo.sh" lines
 #!/usr/bin/env python3
 # -*- coding: cp1252 -*-
 ```
@@ -72,7 +72,7 @@ where `<encoding>` is one of [codecs](https://docs.python.org/3/library/codecs.h
 
 Division `/` always returns a float. To do floor division and get an integer result you can use the `//` operator;
 
-```python title=
+``` python
 1273/3
 # 424.3333333333333
 1273//3
@@ -80,7 +80,7 @@ Division `/` always returns a float. To do floor division and get an integer res
 ```
 
 Simple assignment in Python never copies data
-```python title= showLineNumbers
+``` python lines
 var1 = "foo"
 var2 = "foo"
 var1 == var2
@@ -90,7 +90,7 @@ id(var1) == id(var2)
 ```
 
 `print()` accept `end=` argument for specifying end of the line characters
-```python title= showLineNumbers
+``` python lines
 print("foo", end="something not new line")
 ```
 

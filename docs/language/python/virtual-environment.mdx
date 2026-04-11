@@ -15,7 +15,7 @@ Each project can have its own Python version and its own modules without interfe
 
 ## Create Virtual environment
 
-```bash title= showLineNumbers
+``` bash lines
 python -m venv <dir path>
 
 # eg
@@ -36,7 +36,7 @@ python -m venv /foo
 
 ## Activate and deactivate virtual environment
 
-```bash title= showLineNumbers
+``` bash lines
 source <dir path>/bin/activate
 
 # eg
@@ -46,7 +46,7 @@ source /foo/bin/activate
 ### Deactivate
 
 While the virtual environment is active, run this command:
-```bash title= showLineNumbers
+``` bash lines
 deactivate 
 ```
 
@@ -54,24 +54,24 @@ deactivate
 
 After activating the virtual environment
 
-```bash title= showLineNumbers
+``` bash lines
 python -m pip install requests==2.6.0 pandas
 ```
 
 ## Uninstall packages in virtual environment
 
-```bash title= showLineNumbers
+``` bash lines
 python -m pip uninstall requests==2.6.0 pandas
 ```
 
 ## Show installed package information
 
-```bash title= showLineNumbers
+``` bash lines
 python -m pip show request
 ```
 
 output:
-```bash title= showLineNumbers
+``` bash lines
 Name: requests
 Version: 2.6.0
 Summary: Python HTTP for Humans.
@@ -86,7 +86,7 @@ Required-by:
 
 ## List all packages installed in virtual environment
 
-```bash title= showLineNumbers
+``` bash lines
 python -m pip list
 ```
 

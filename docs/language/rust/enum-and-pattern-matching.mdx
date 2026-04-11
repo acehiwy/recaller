@@ -8,7 +8,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 Enums allow you to <span style={{color: "var(--secondary-font-color)"}}> define a type </span> by enumerating its possible variants.
 
-```rust title= showLineNumbers
+``` rust lines
 enum IpAddrKind {
     V4,
     V6,
@@ -17,7 +17,7 @@ enum IpAddrKind {
 
 ## Enum value
 
-```rust title= showLineNumbers
+``` rust lines
 enum IpAddrKind {
     V4, // 0
     V6, // 1
@@ -39,7 +39,7 @@ fn route(ip_kind: IpAddrKind) {
 
 We attach data to each variant of the enum directly
 
-```rust title= showLineNumbers
+``` rust lines
 enum Message {
     Quit, // value will be integer (in this case 0)
     Move { x: i32, y: i32 }, // struct as a value
@@ -93,7 +93,7 @@ Defining `Enum` with different type of its variants is similar to defining diffe
 
 </span>
 
-```rust title= showLineNumbers
+``` rust lines
 struct QuitMessage; // unit struct
 struct MoveMessage {
     x: i32,
@@ -111,7 +111,7 @@ we could with the Message enum, which is a single type.
 
 </span>
 
-```rust title= showLineNumbers
+``` rust lines
 fn foo(bar: Message){
     // do something
 }
@@ -121,7 +121,7 @@ fn foo(bar: Message){
 
 We can also define method on enums using `impl`
 
-```rust title= showLineNumbers
+``` rust lines
 fn main() {
     enum Message {
         Quit,
@@ -147,14 +147,14 @@ Variable that have type `Option<T>` means it either contain `T` or `None` (a val
 
 In order to use a value `T`, you are required to explicitly handle the case when the value is null.
 
-```rust title= showLineNumbers
+``` rust lines
 enum Option<T> {
     None,
     Some(T),
 }
 ```
 
-```rust title= showLineNumbers
+``` rust lines
 let some_number = Some(5); // type of some_number is Option<i32>
 let some_char = Some('e'); // type of some_char is Option<char>
 
@@ -175,7 +175,7 @@ You can use directly without the `Option::` prefix.
 
 `match` allows you to compare a value against a series of patterns and then execute code based on which pattern matches.
 
-```rust title= showLineNumbers
+``` rust lines
 enum Coin {
     Penny,
     Nickel,
@@ -213,7 +213,7 @@ Every possible case of `match` need to be handled.
 
 If your enum variant have a tuple as a value, you can use this syntax to access the variant's value:
 
-```rust title= showLineNumbers
+``` rust lines
 #[derive(Debug)]
 enum UsState {
     Alabama,
@@ -256,7 +256,7 @@ fn value_in_cents(coin: Coin) -> u8 {
 
 ### Matching with `Option<T>`
 
-```rust title= showLineNumbers
+``` rust lines
 fn plus_one(x: Option<i32>) -> Option<i32> {
     match x {
         None => None,
@@ -273,15 +273,13 @@ let none = plus_one(None);
 
 Defining a variable as a pattern in `match` will match all values not specifically listed.
 
-```rust title= showLineNumbers
+``` rust lines highlight={5-6}
 let dice_roll = 9;
 match dice_roll {
     3 => add_fancy_hat(),
     7 => remove_fancy_hat(),
-    // highlight-start
     // other value that are not handled will be binded to `some_variable_name`
     some_variable_name => move_player(some_variable_name),
-    // highlight-end
 }
 
 fn add_fancy_hat() {}
@@ -291,20 +289,18 @@ fn move_player(num_spaces: u8) {}
 
 If the value will not be used, prepend variable name with `_` or use `_` as a variable name
 
-```rust title= showLineNumbers
+``` rust lines highlight={4}
 match dice_roll {
     3 => add_fancy_hat(),
     7 => remove_fancy_hat(),
-    // highlight-next-line
     _ => reroll(),
 }
 ```
 
-```rust title= showLineNumbers
+``` rust lines highlight={4}
 match dice_roll {
     3 => add_fancy_hat(),
     7 => remove_fancy_hat(),
-    // highlight-next-line
     _will_not_be_used => reroll(),
 }
 ```
@@ -313,7 +309,7 @@ match dice_roll {
 
 `if let` is a syntax sugar of `match` but it can express only 1 pattern per `if let`
 
-```rust title= showLineNumbers
+``` rust lines
 let config_max = Some(3u8);
 match config_max {
     Some(max) => println!("The maximum is configured to be {}", max),
@@ -327,7 +323,7 @@ if let Some(max) = config_max {
 }
 ```
 
-```rust title= showLineNumbers
+``` rust lines
 let coin = Coin::Quarter(UsState::Alaska);
 let mut bar = 0;
 

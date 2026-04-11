@@ -30,7 +30,7 @@ We'll use the number of dots in the string to represent one second of work. For 
 
 We will create `new_task.js` file. This program will schedule tasks to our work queue:
 
-```javascript title=new_task.js showLineNumbers
+``` javascript title="new_task.js" lines highlight={12-21}
 var amqp = require("amqplib/callback_api");
 
 amqp.connect("amqp://localhost", function (error0, connection) {
@@ -42,7 +42,6 @@ amqp.connect("amqp://localhost", function (error0, connection) {
       throw error1;
     }
 
-    // highlight-start
     var queue = "task_queue";
     var msg = process.argv.slice(2).join(" ") || "Hello World!";
 
@@ -53,7 +52,6 @@ amqp.connect("amqp://localhost", function (error0, connection) {
       persistent: true,
     });
     console.log(" [x] Sent '%s'", msg);
-    // highlight-end
   });
   setTimeout(function () {
     connection.close();
@@ -66,7 +64,7 @@ amqp.connect("amqp://localhost", function (error0, connection) {
 
 We will create a `worker.js` file. It will simulate one second of work for every dot in the message body.
 
-```javascript title=worker.js showLineNumbers
+``` javascript title="worker.js" lines highlight={14-32}
 var amqp = require("amqplib/callback_api");
 
 amqp.connect("amqp://localhost", function (error0, connection) {
@@ -80,7 +78,6 @@ amqp.connect("amqp://localhost", function (error0, connection) {
     var queue = "task_queue";
 
     // This makes sure the queue is declared before attempting to consume from it
-    // highlight-start
     channel.assertQueue(queue, {
       durable: true,
     });
@@ -100,18 +97,17 @@ amqp.connect("amqp://localhost", function (error0, connection) {
         noAck: true,
       }
     );
-    // highlight-end
   });
 });
 ```
 
 ### Running them
 
-```bash title=shell_1
+``` bash title="shell_1"
 node worker.js
 ```
 
-```bash title=shell_2
+``` bash title="shell_2"
 node new_task.js
 ```
 
@@ -127,17 +123,17 @@ They will both get messages from the queue, but how exactly? Let's see.
 
 You need three shells open. Two will run the `worker.js` script.
 
-```bash title=shell_1
+``` bash title="shell_1"
 node worker.js
 ```
 
-```bash title=shell_2
+``` bash title="shell_2"
 node new_task.js
 ```
 
 In the third shell, we'll publish new tasks.
 
-```bash title=shell_2
+``` bash title="shell_2"
 node new_task.js First message.
 node new_task.js Second message..
 node new_task.js Third message...
@@ -147,13 +143,13 @@ node new_task.js Fifth message.....
 
 Let's see what is delivered to our workers:
 
-```text title=shell_1 showLineNumbers
+``` text title="shell_1" lines
 => [x] Received 'First message.'
 => [x] Received 'Third message...'
 => [x] Received 'Fifth message.....'
 ```
 
-```text title=shell_2 showLineNumbers
+``` text title="shell_2" lines
 => [x] Received 'Second message..'
 => [x] Received 'Fourth message....'
 ```
@@ -184,7 +180,7 @@ This helps detect buggy (stuck) consumers that never acknowledge deliveries. You
 Manual consumer acknowledgments have been turned off in previous examples.
 It's time to turn them on using the `{noAck: false}` option and send a proper acknowledgment from the worker, once we're done with a task.
 
-```javascript title=worker.js showLineNumbers
+``` javascript title="worker.js" lines highlight={18-33}
 var amqp = require("amqplib/callback_api");
 
 amqp.connect("amqp://localhost", function (error0, connection) {
@@ -202,7 +198,6 @@ amqp.connect("amqp://localhost", function (error0, connection) {
       durable: true,
     });
 
-    // highlight-start
     channel.consume(
       queue,
       function (msg) {
@@ -219,7 +214,6 @@ amqp.connect("amqp://localhost", function (error0, connection) {
         noAck: false,
       }
     );
-    // highlight-end
   });
 });
 ```
@@ -251,14 +245,14 @@ In order to debug this kind of mistake you can use `rabbitmqctl` to print the `m
 <Tabs>
 <Tab title="linux">
 
-```bash title=
+``` bash
 sudo rabbitmqctl list_queues name messages_ready messages_unacknowledged
 ```
 
 </Tab>
 <Tab title="windows">
 
-```bash title=
+``` bash
 rabbitmqctl list_queues name messages_ready messages_unacknowledged
 ```
 
@@ -280,7 +274,7 @@ First, we need to make sure that the <span style={{color: "var(--secondary-font-
 
 In order to do so, we need to declare it as durable:
 
-```javascript title=
+``` javascript
 channel.assertQueue("hello", { durable: true });
 ```
 
@@ -291,7 +285,7 @@ and will return an error to any program that tries to do that.
 
 But there is a quick workaround - let's declare a queue with different name, for example `task_queue`:
 
-```javascript title=
+``` javascript
 channel.assertQueue("task_queue", { durable: true });
 ```
 
@@ -307,7 +301,7 @@ At this point we're sure that the `task_queue` queue won't be lost even if Rabbi
 
 Now we need to mark our messages as persistent - by using the `persistent` option `Channel.sendToQueue` takes.
 
-```javascript title=producer.js
+``` javascript title="producer.js"
 channel.sendToQueue(queue, Buffer.from(msg), { persistent: true });
 ```
 
@@ -344,7 +338,7 @@ In other words, don't dispatch a new message to a worker until it has processed 
 
 Instead, it will dispatch it to the next worker that is not still busy.
 
-```javascript title=consumer.js
+``` javascript title="consumer.js"
 channel.prefetch(1);
 ```
 

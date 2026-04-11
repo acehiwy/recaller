@@ -7,7 +7,7 @@ tags:
   - python
 ---
 
-```python title= showLineNumbers
+``` python lines
 @app.get("/users/{user_id}/items/{item_id}/")
 async def read_item(item_id: int, user_id: int):
     return {"item_id": item_id , "user_id": user_id}
@@ -23,9 +23,8 @@ Otherwise, FastAPI would interpret the function argument as a query parameter.
 
 ## <span style={{color: "var(--secondary-font-color)"}}> Define argument type </span>
 
-```python title= showLineNumbers
+``` python lines highlight={2}
 @app.get("/items/{item_id}")
-#  highlight-next-line
 async def read_item(item_id: int):
     # item_id is parsed from a string to an int by FastAPI
     return {"item_id": item_id}
@@ -36,7 +35,7 @@ Based on the argument type, FastAPI will:
 - parse the request value into that type
 
 For example, when making the request `GET /foo/bar`:
-```json title= showLineNumbers
+``` json lines
 {
   "detail": [
     {
@@ -66,7 +65,7 @@ FastAPI reads path operations in the order they are defined.
 FastAPI picks the first one that matches.
 
 eg:
-```python title= showLineNumbers
+``` python lines
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -86,13 +85,11 @@ The `read_user_me` function will never be executed because the request always ma
 
 ## Define set of valid values for path parameters
 
-```python title= showLineNumbers
+``` python lines highlight={3-4}
 from enum import Enum
 
-# highlight-start
 # must inherit `str` and `Enum`
 class ModelName(str, Enum):
-# highlight-end
     foo_key = "foo"
     bar_key = "bar"
     baz_key = "baz"
@@ -111,8 +108,7 @@ For the endpoint `/files/{file_path}`, passing `path/to/user/file` would cause t
 
 FastAPI allows you to extract it as a single string value.
 
-```python title= showLineNumbers
-# highlight-next-line
+``` python lines highlight={1}
 @app.get("/files/{file_path:path}")
 async def read_file(file_path: str):
     return {"file_path": file_path}

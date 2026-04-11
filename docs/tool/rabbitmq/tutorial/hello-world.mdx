@@ -35,7 +35,7 @@ RabbitMQ clients are available in [many different languages](http://rabbitmq.com
 
 here we will use [amqp.node](https://amqp-node.github.io/amqplib/):
 
-```bash title=
+``` bash
 npm install amqplib
 ```
 
@@ -49,36 +49,34 @@ The publisher will connect to RabbitMQ, send a single message, then exit.
 
 In `send.js`, we need to require the library first:
 
-```javascript title=send.js showLineNumbers
+``` javascript title="send.js" lines
 var amqp = require("amqplib/callback_api");
 ```
 
 then connect to RabbitMQ server:
 
-```javascript title=send.js showLineNumbers
+``` javascript title="send.js" lines highlight={3}
 var amqp = require("amqplib/callback_api");
 
-// highlight-next-line
 amqp.connect("amqp://localhost", function (error0, connection) {});
 ```
 
 Next we create a channel, which is where most of the API for getting things done resides:
 
-```javascript title=send.js showLineNumbers
+``` javascript title="send.js" lines highlight={7}
 var amqp = require("amqplib/callback_api");
 
 amqp.connect("amqp://localhost", function (error0, connection) {
   if (error0) {
     throw error0;
   }
-  // highlight-next-line
   connection.createChannel(function (error1, channel) {});
 });
 ```
 
 To send, we must declare a queue for us to send to; then we can publish a message to the queue:
 
-```javascript title=send.js showLineNumbers
+``` javascript title="send.js" lines highlight={11-18}
 var amqp = require("amqplib/callback_api");
 
 amqp.connect("amqp://localhost", function (error0, connection) {
@@ -89,7 +87,6 @@ amqp.connect("amqp://localhost", function (error0, connection) {
     if (error1) {
       throw error1;
     }
-    // highlight-start
     var queue = "hello";
     var msg = "Hello world";
 
@@ -98,7 +95,6 @@ amqp.connect("amqp://localhost", function (error0, connection) {
     });
 
     channel.sendToQueue(queue, Buffer.from(msg)); // message content is byte array
-    // highlight-end
     console.log(" [x] Sent %s", msg);
   });
 });
@@ -118,7 +114,7 @@ The message content is a byte array, so you can encode whatever you like there.
 
 Lastly, we close the connection and exit:
 
-```javascript title=
+``` javascript highlight={23-26}
 var amqp = require("amqplib/callback_api");
 
 amqp.connect("amqp://localhost", function (error0, connection) {
@@ -141,12 +137,10 @@ amqp.connect("amqp://localhost", function (error0, connection) {
     console.log(" [x] Sent %s", msg);
   });
 
-  // highlight-start
   setTimeout(function () {
     connection.close();
     process.exit(0);
   }, 500);
-  // highlight-end
 });
 ```
 
@@ -172,7 +166,7 @@ Setting up is the same as the publisher; we open a connection and a channel, and
 
 Note this matches up with the queue that `sendToQueue` publishes to.
 
-```javascript title=receive.js showLineNumbers
+``` javascript title="receive.js" lines highlight={13-15}
 var amqp = require("amqplib/callback_api");
 
 amqp.connect("amqp://localhost", function (error0, connection) {
@@ -185,11 +179,9 @@ amqp.connect("amqp://localhost", function (error0, connection) {
     }
     var queue = "hello";
 
-    // highlight-start
     channel.assertQueue(queue, {
       durable: false,
     });
-    // highlight-end
   });
 });
 ```
@@ -204,7 +196,7 @@ we provide a callback that will be executed when RabbitMQ pushes messages to our
 
 This is what `Channel.consume` does.
 
-```javascript title=receive.js showLineNumbers
+``` javascript title="receive.js" lines highlight={18-28}
 var amqp = require("amqplib/callback_api");
 
 amqp.connect("amqp://localhost", function (error0, connection) {
@@ -222,7 +214,6 @@ amqp.connect("amqp://localhost", function (error0, connection) {
       durable: false,
     });
 
-    // highlight-start
     console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
 
     channel.consume(
@@ -234,7 +225,6 @@ amqp.connect("amqp://localhost", function (error0, connection) {
         noAck: true,
       }
     );
-    // highlight-end
   });
 });
 ```
@@ -243,11 +233,11 @@ amqp.connect("amqp://localhost", function (error0, connection) {
 
 Now we can run both scripts.
 
-```bash title=
+``` bash
 node send.js
 ```
 
-```bash title=
+``` bash
 node receive.js
 ```
 
@@ -258,14 +248,14 @@ You may wish to see what queues RabbitMQ has and how many messages are in them. 
 <Tabs>
 <Tab title="linux">
 
-```bash title=
+``` bash
 sudo rabbitmqctl.bat list_queues
 ```
 
 </Tab>
 <Tab title="window">
 
-```bash title=
+``` bash
 rabbitmqctl.bat list_queues
 ```
 

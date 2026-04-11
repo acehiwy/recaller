@@ -8,7 +8,7 @@ The type `HashMap<K, V>` stores a mapping of keys of type `K` to values of type 
 
 ## Creating Hash Map
 
-```rust title= showLineNumbers
+``` rust lines
 use std::collections::HashMap;
 
 let mut scores = HashMap::new();
@@ -27,7 +27,7 @@ Just like vectors, hash maps store their data on the heap.
 
 `HashMap<K,V>` `get` method return `Option<&V>`
 
-```rust title= showLineNumbers
+``` rust lines
 use std::collections::HashMap;
 
 let mut scores = HashMap::new();
@@ -45,7 +45,7 @@ You can handles the Option by calling `copied` to get an `Option<i32>` rather th
 
 Then `unwrap_or` to set score to zero if scores doesn't have an entry for the key.
 
-```rust title= showLineNumbers
+``` rust lines
 let team_name = String::from("Blue");
 let score = scores.get(&team_name).copied().unwrap_or(0);
 ```
@@ -56,7 +56,7 @@ let score = scores.get(&team_name).copied().unwrap_or(0);
 
 Similar to vectors
 
-```rust title= showLineNumbers
+``` rust lines highlight={8}
 use std::collections::HashMap;
 
 let mut scores = HashMap::new();
@@ -64,7 +64,6 @@ let mut scores = HashMap::new();
 scores.insert(String::from("Blue"), 10);
 scores.insert(String::from("Yellow"), 50);
 
-// highlight-next-line
 for (key, value) in &scores {
     println!("{key}: {value}");
 }
@@ -82,7 +81,7 @@ For `Drop` trait value, Hash map take their ownership when inserted into hash ma
 
 For `Copy` trait value, the values are copied into hash map.
 
-```rust title= showLineNumbers
+``` rust lines
 use std::collections::HashMap;
 
 let field_name = String::from("Favorite color");
@@ -113,7 +112,7 @@ The values that the references point to must be valid for at least as long as th
 
 ### Overwriting a value
 
-```rust title= showLineNumbers
+``` rust lines
 use std::collections::HashMap;
 
 let mut scores = HashMap::new();
@@ -129,16 +128,14 @@ println!("{:?}", scores);
 
 Hash map have `entry` method that take key you want to check and return `Entry` enum representing a value might or might not exist.
 
-```rust title= showLineNumbers
+``` rust lines highlight={6-7}
 use std::collections::HashMap;
 
 let mut scores = HashMap::new();
 scores.insert(String::from("Blue"), 10);
 
-// highlight-start
 scores.entry(String::from("Yellow")).or_insert(50);
 scores.entry(String::from("Blue")).or_insert(50);
-// highlight-end
 
 println!("{:?}", scores);
 // {"Yellow": 50, "Blue": 10}
@@ -154,7 +151,7 @@ println!("{:?}", scores);
 
 ### Updating a value based on the old value
 
-```rust title= showLineNumbers
+``` rust lines highlight={8-9}
 use std::collections::HashMap;
 
 let text = "hello world wonderful world";
@@ -162,10 +159,8 @@ let text = "hello world wonderful world";
 let mut map = HashMap::new();
 
 for word in text.split_whitespace() {
-    // highlight-start
     let count = map.entry(word).or_insert(0); // return mutable reference of the value
     *count += 1; // update value
-    // highlight-end
 }
 
 println!("{:?}", map);

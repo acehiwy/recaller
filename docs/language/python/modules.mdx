@@ -16,7 +16,7 @@ Eg. from the same directory:
 
 <Tab title="some_other_file.py">
 
-```python title=some_other_file.py showLineNumbers
+``` python title="some_other_file.py" lines
 import my_module
 
 print(my_module.__name___)
@@ -39,7 +39,7 @@ Within a module, the module's name (as string) is available as a value of global
 
 <Tab title="my_module.py">
 
-```python title=my_module.py showLineNumbers
+``` python title="my_module.py" lines
 def foo():
   return 'foo'
 ```
@@ -55,7 +55,7 @@ def foo():
 
 ## Import definitions from a module
 
-```python title=main.py showLineNumbers
+``` python title="main.py" lines
 from my_module import foo, bar as something_else
 
 foo()
@@ -64,7 +64,7 @@ something_else()
 
 ### Import all definitions
 
-```python title=main.py showLineNumbers
+``` python title="main.py" lines
 from my_module import * # not recommended
 
 foo()
@@ -86,7 +86,7 @@ Each module is only <span style={{color: "var(--secondary-font-color)"}}> import
 <Tabs>
 <Tab title="main">
 
-```python title=main.py showLineNumbers
+``` python title="main.py" lines
 print('init:' , __name__)
 
 import deepest_module
@@ -104,7 +104,7 @@ print('exec from', __name__ , deepest_module.deepest())
 
 <Tab title="middle module">
 
-```python title=middle_module.py showLineNumbers
+``` python title="middle_module.py" lines
 print('init:' , __name__)
 
 import deepest_module
@@ -116,7 +116,7 @@ print('exec from', __name__ , deepest_module.deepest())
 
 <Tab title="deepest module">
 
-```python title=deepest_module.py showLineNumbers
+``` python title="deepest_module.py" lines
 print('init:' , __name__)
 
 def deepest():
@@ -129,7 +129,7 @@ def deepest():
 
 ### <span style={{color: "var(--not-nesary-for-now-future-font-color)"}}> Re-importing module </span>
 
-```python title= showLineNumbers
+``` python lines
 import importlib
 
 importlib.reload(modulename)
@@ -142,7 +142,7 @@ When Python executing a module file, its module name, `__name__`, will be replac
 
 Eg. from this module file:
 
-```python title=my_module.py showLineNumbers
+``` python title="my_module.py" lines
 print('init:', __name__)
 ```
 
@@ -152,7 +152,7 @@ If imported by another file. The output will be output: `init: my_module`
 
 ### Run something only when executed as a script
 
-```python title=my_module.py showLineNumbers
+``` python title="my_module.py" lines
 def foo():
   return 'foo'
 
@@ -186,7 +186,7 @@ If the input script is symlinked, the interpreter adds the original file locatio
 
 <Accordion title="`sys.path` example">
 
-```bash title= showLineNumbers
+``` bash lines
 [
   '', # directory containing the script being run
   '/usr/local/lib/python313.zip', 
@@ -208,7 +208,7 @@ Gives you a list of definition names (variables, modules, functions) contained i
 <Tabs>
 <Tab title="main.py">
 
-```python title= showLineNumbers
+``` python lines highlight={10-12}
 import foo
 
 def f1():
@@ -218,11 +218,9 @@ main_var = 'main'
 
 print(dir(foo))
 # [
-# highlight-start
 #   'foo',
 #   'sys',
 #   'variable_from_foo',
-# highlight-end
 #   '__builtins__',
 #   '__cached__',
 #   '__doc__',
@@ -237,7 +235,7 @@ print(dir(foo))
 </Tab>
 <Tab title="foo.py">
 
-```python title= showLineNumbers
+``` python lines
 import sys
 
 def foo():
@@ -252,13 +250,11 @@ variable_from_foo = "foo"
 Calling `dir` without any arguments gives you a list of names in the current module.
 
 eg. `dir()` from `main.py` file above will give:
-```bash title= showLineNumbers
+``` bash lines highlight={2-4}
 [
-  # highlight-start
   'f1',
   'foo',
   'main_var',
-  # highlight-end
   '__annotations__',
   '__builtins__',
   '__doc__',
@@ -283,7 +279,7 @@ Package is a collection of modules
 
 With these file structure:
 
-```python title= showLineNumbers
+``` python lines
 sound/                          Top-level package
       __init__.py               Initialize the sound package
       formats/                  Subpackage for file format conversions
@@ -294,7 +290,7 @@ sound/                          Top-level package
 
 Users can then use this module and its submodules.
 
-```python title= showLineNumbers
+``` python lines
 import sound
 import sound.formats
 import sound.formats.wavread
@@ -324,7 +320,7 @@ The statement `from sound.formats import *` only import definitions defined in `
 
 If you want submodules to be included, you have to add submodules' name in side `__all__` global variable of a module's `__init__` file
 
-```python title=formats/__init__.py showLineNumbers
+``` python title="formats/__init__.py" lines
 __all__ = [
   'waveread',
   'wavewrite'
@@ -333,7 +329,7 @@ __all__ = [
 
 ### Relative import
 
-```python title= showLineNumbers
+``` python lines
 from . import foo # from current module directory, import foo
 from .. import bar # move out from current module directory 1 level, import bar
 from ... import bar # move out from current module directory 2 level, import bar

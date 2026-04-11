@@ -6,7 +6,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 Component can define custom event it emit by using [`output`](https://angular.dev/api/core/output)
 
-```typescript title=foo.component.ts showLineNumbers
+``` typescript title="foo.component.ts" lines
 @Component({
   /*...*/
 })
@@ -15,7 +15,7 @@ export class Foo {
 }
 ```
 
-```jsx title=parent.component.ts showLineNumbers
+``` jsx title="parent.component.ts" lines
 <app-foo (bar)="dosomethingWithEvent($event)" />
 ```
 
@@ -32,7 +32,7 @@ Angular custom events do not bubble up the DOM
 
 by calling `<output>.emit`
 
-```typescript title= showLineNumbers
+``` typescript lines
 this.bar.emit("some value");
 this.bar.emit({
   k1: 1,
@@ -42,7 +42,7 @@ this.bar.emit({
 
 ## Consuming event
 
-```typescript title= showLineNumbers
+``` typescript lines
 @Component({
   template: `<app-foo (bar)="dosomething($event)"></app-foo>`,
 })
@@ -57,7 +57,7 @@ export class App {
 
 ## Output alias
 
-```typescript title= showLineNumbers
+``` typescript lines
 @Component({/*...*/})
 export class CustomSlider {
   changed = output({alias: 'valueChanged'});
@@ -78,7 +78,7 @@ Avoid prefixing output names with "on"
 ## <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>Subscribing to outputs programmatically</span>
 
 When creating component dynamically, you can subscribe to output by
-```typescript title= showLineNumbers
+``` typescript lines
 const someComponentRef: ComponentRef<SomeComponent> = viewContainerRef.createComponent(/*...*/);
 
 someComponentRef.instance.someEventProperty.subscribe(eventData => {

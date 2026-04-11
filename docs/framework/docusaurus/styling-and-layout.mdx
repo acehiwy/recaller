@@ -12,7 +12,7 @@ A Docusaurus site is a single-page React application. You can style it the way y
 If you're using `@docusaurus/preset-classic`, you can create your own CSS files (`e.g. /src/css/custom.css`)
 and import them globally by passing them as an option of the classic theme.
 
-```javascript title=docusaurus.config.js showLineNumbers
+``` javascript title="docusaurus.config.js" lines
 module.exports = {
   // ...
   presets: [
@@ -38,7 +38,7 @@ In dark mode, it's `data-theme="dark"`.
 
 Therefore, you can scope your CSS to dark-mode-only by targeting html with a specific attribute.
 
-```css title= showLineNumbers
+``` css lines
 /* Overriding root Infima variables */
 [data-theme="dark"] {
   --ifm-color-primary: #4e89e8;
@@ -55,7 +55,7 @@ Docusaurus uses `996px` as the <span style={{color: "var(--secondary-font-color)
 
 If you want your layout to be different in the mobile view, you can use media queries.
 
-```css title= showLineNumbers
+``` css lines
 .banner {
   padding: 4rem;
 }
@@ -74,7 +74,7 @@ name your stylesheet files with the `.module.css` suffix (e.g. `welcome.module.c
 
 Webpack will load such CSS files as CSS modules and you have to reference the class names as <span style={{color: "var(--secondary-font-color)"}}> properties </span> of the <span style={{color: "var(--secondary-font-color)"}}> imported CSS module </span>.
 
-```css title=styles.module.css showLineNumbers
+``` css title="styles.module.css" lines
 .main {
   padding: 12px;
 }
@@ -88,7 +88,7 @@ Webpack will load such CSS files as CSS modules and you have to reference the cl
 }
 ```
 
-```jsx title=foo.jsx showLineNumbers
+``` jsx title="foo.jsx" lines
 import styles from "./styles.module.css";
 
 function MyComponent() {
@@ -116,14 +116,14 @@ This plugin works for both global styles and the CSS modules approach:
 <Tabs>
 <Tab title="npm">
 
-```bash title=
+``` bash
 npm install --save docusaurus-plugin-sass sass
 ```
 
 </Tab>
 <Tab title="yarn">
 
-```bash title=
+``` bash
 yarn add docusaurus-plugin-sass sass
 ```
 
@@ -132,7 +132,7 @@ yarn add docusaurus-plugin-sass sass
 
 Then include the plugin in your `docusaurus.config.js` file:
 
-```javascript title=docusaurus.config.js showLineNumbers
+``` javascript title="docusaurus.config.js" lines
 module.exports = {
   // ...
   plugins: ["docusaurus-plugin-sass"],
@@ -144,7 +144,7 @@ module.exports = {
 
 You can now set the customCss property of `@docusaurus/preset-classic` to point to your Sass/SCSS file:
 
-```javascript title=docusaurus.config.js showLineNumbers
+``` javascript title="docusaurus.config.js" lines
 module.exports = {
   presets: [
     [

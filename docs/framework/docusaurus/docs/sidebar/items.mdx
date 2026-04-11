@@ -20,7 +20,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 Use the doc type to link to a doc page and assign that doc to a sidebar:
 
-```typescript title= showLineNumbers
+``` typescript lines
 type SidebarItemDoc =
   // Normal syntax
   | {
@@ -37,7 +37,7 @@ type SidebarItemDoc =
 
 ### Example
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines
 module.exports = {
   mySidebar: [
     // Normal syntax:
@@ -58,7 +58,7 @@ An item with type doc can be simply a string representing its ID:
 <Tabs>
 <Tab title="Longhand">
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines
 module.exports = {
   sidebar: [
     {
@@ -72,7 +72,7 @@ module.exports = {
 </Tab>
 <Tab title="Shorthand">
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines
 module.exports = {
   sidebar: ["myDoc"],
 };
@@ -91,7 +91,7 @@ Similarly, you can use `sidebar_custom_props` to declare custom metadata for a d
 
 Use the `link` type to link to any page (internal or external) that is not a doc.
 
-```typescript title= showLineNumbers
+``` typescript lines
 type SidebarItemLink = {
   type: "link";
   label: string;
@@ -102,7 +102,7 @@ type SidebarItemLink = {
 
 Example:
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines
 module.exports = {
   myLinksSidebar: [
     // External link
@@ -134,7 +134,7 @@ html value will be rendered inside `li` tag
 
 This can be useful for inserting custom items such as dividers, section titles, ads, and images.
 
-```typescript title= showLineNumbers
+``` typescript lines
 type SidebarItemHtml = {
   type: "html";
   value: string;
@@ -145,7 +145,7 @@ type SidebarItemHtml = {
 
 Example:
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines
 module.exports = {
   myHtmlSidebar: [
     {
@@ -161,7 +161,7 @@ module.exports = {
 
 Use the category type to create a hierarchy ( expandable group ) of sidebar items.
 
-```typescript title= showLineNumbers
+``` typescript lines
 type SidebarItemCategory = {
   type: "category";
   label: string; // Sidebar label text.
@@ -177,7 +177,7 @@ type SidebarItemCategory = {
 
 ### Example
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines
 module.exports = {
   docs: [
     {
@@ -204,7 +204,7 @@ and the <span style={{color: "var(--secondary-font-color)"}}> value is an array 
 <Tabs>
 <Tab title="Longhand">
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines
 module.exports = {
   sidebar: [
     {
@@ -219,7 +219,7 @@ module.exports = {
 </Tab>
 <Tab title="Shorthand">
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines
 module.exports = {
   sidebar: [
     {
@@ -235,7 +235,7 @@ module.exports = {
 <Tabs>
 <Tab title="Longhand">
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines
 module.exports = {
   mySidebar: [
     {
@@ -276,17 +276,15 @@ module.exports = {
 </Tab>
 <Tab title="Simplified">
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines highlight={3-8}
 module.exports = {
   mySidebar: [
-    // highlight-start
     {
       "Getting started": ["doc1"],
     },
     {
       Docusaurus: ["doc2", "doc3"],
     },
-    // highlight-end
     {
       type: "link",
       label: "Learn more",
@@ -299,15 +297,13 @@ module.exports = {
 </Tab>
 <Tab title="Further Simplified">
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines highlight={3-6}
 module.exports = {
   mySidebar: [
-    // highlight-start
     {
       "Getting started": ["doc1"],
       Docusaurus: ["doc2", "doc3"],
     },
-    // highlight-end
     {
       type: "link",
       label: "Learn more",
@@ -334,19 +330,17 @@ You can also omit that enclosing array wherever you have an array of items that 
 <Tabs>
 <Tab title="Before">
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines highlight={5-10}
 module.exports = {
   sidebar: [
     {
       "Getting started": ["doc1"],
-      // highlight-start
       Docusaurus: [
         {
           "Basic guides": ["doc2", "doc3"],
           "Advanced guides": ["doc4", "doc5"],
         },
       ],
-      // highlight-end
     },
   ],
 };
@@ -355,16 +349,14 @@ module.exports = {
 </Tab>
 <Tab title="After">
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines highlight={4-7}
 module.exports = {
   sidebar: {
     "Getting started": ["doc1"],
-    // highlight-start
     Docusaurus: {
       "Basic guides": ["doc2", "doc3"],
       "Advanced guides": ["doc4", "doc5"],
     },
-    // highlight-end
   },
 };
 ```
@@ -383,13 +375,12 @@ The slug allows you to customize the generated page's route, which defaults to `
 
 <Accordion title="Example">
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines highlight={6-13}
 module.exports = {
   docs: [
     {
       type: "category",
       label: "Guides",
-      // highlight-start
       link: {
         type: "generated-index",
         title: "Docusaurus Guides",
@@ -398,7 +389,6 @@ module.exports = {
         keywords: ["guides"],
         image: "/img/docusaurus.png",
       },
-      // highlight-end
       items: ["pages", "docs", "blog", "search"],
     },
   ],
@@ -415,13 +405,12 @@ result :
 
 A category can link to an existing document.
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines highlight={6}
 module.exports = {
   docs: [
     {
       type: "category",
       label: "Guides",
-      // highlight-next-line
       link: { type: "doc", id: "introduction" },
       items: ["pages", "docs", "blog", "search"],
     },
@@ -439,7 +428,7 @@ To do so, you need to use the DocCardList component, paired with the useCurrentS
 <Tabs>
 <Tab title="Example">
 
-```jsx title=a-category-index-page.md showLineNumbers
+``` jsx title="a-category-index-page.md" lines
 import DocCardList from '@theme/DocCardList';
 import {useCurrentSidebarCategory} from '@docusaurus/theme-common';
 
@@ -460,7 +449,7 @@ In this section, we will introduce the following concepts:
 
 We support the option to expand/collapse categories. Categories are collapsible by default, but you can disable collapsing with `collapsible: false`.
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines highlight={10}
 module.exports = {
   docs: [
     {
@@ -470,7 +459,6 @@ module.exports = {
         "creating-pages",
         {
           type: "category",
-          // highlight-next-line
           collapsible: false,
           label: "Docs",
           items: ["introduction", "sidebar", "markdown-features", "versioning"],
@@ -483,14 +471,13 @@ module.exports = {
 
 To make all categories non-collapsible by default, set the sidebarCollapsible option in plugin-content-docs to false:
 
-```javascript title=docusaurus.config.js showLineNumbers
+``` javascript title="docusaurus.config.js" lines highlight={7}
 module.exports = {
   presets: [
     [
       "@docusaurus/preset-classic",
       {
         docs: {
-          // highlight-next-line
           sidebarCollapsible: false,
         },
       },
@@ -509,7 +496,7 @@ The option in sidebars.js takes precedence over plugin configuration
 
 Collapsible categories are collapsed by default. If you want them to be expanded on the first render, you can set collapsed to `false`:
 
-```javascript title=sidebars.js showLineNumbers
+``` javascript title="sidebars.js" lines highlight={8}
 module.exports = {
   docs: {
     Guides: [
@@ -517,7 +504,6 @@ module.exports = {
       {
         type: "category",
         label: "Docs",
-        // highlight-next-line
         collapsed: false,
         items: ["markdown-features", "sidebar", "versioning"],
       },
@@ -528,14 +514,13 @@ module.exports = {
 
 global config
 
-```javascript title=docusaurus.config.js  showLineNumbers
+``` javascript title="docusaurus.config.js" lines highlight={7}
 module.exports = {
   presets: [
     [
       "@docusaurus/preset-classic",
       {
         docs: {
-          // highlight-next-line
           sidebarCollapsed: false,
         },
       },
