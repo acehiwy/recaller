@@ -232,13 +232,7 @@ export default function FooterWrapper(props) {
 }
 ```
 
-<details>
-
-<summary>
-  <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>
-    What is this @theme-original thing?
-  </span>
-</summary>
+<Accordion title="What is this @theme-original thing?">
 
 Docusaurus uses [theme aliases](https://docusaurus.io/docs/advanced/client#theme-aliases) to resolve the theme components to use.
 
@@ -246,7 +240,7 @@ The newly created wrapper <span style={{color: "var(--secondary-font-color)"}}> 
 
 `@theme-original/SomeComponent` allows to import original component that the wrapper shadows without creating an infinite import loop where the wrapper imports itself.
 
-</details>
+</Accordion>
 
 <Tip>
 

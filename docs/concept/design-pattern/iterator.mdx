@@ -43,11 +43,10 @@ interface Iterator<T> {
 
 `hasMoreItem()` checks whether all items have been traversed.
 
+
 The collection then needs to return an `iterator` object to the client by implementing an additional method such as `collection.getIterator`.
 
-<details>
-
-<summary>  Collection implementation example</summary>
+<Accordion title="Collection implementation example">
 
 ```typescript title=FooCollection.ts showLineNumbers
 class FooCollection {
@@ -85,7 +84,7 @@ class EvenItemIterator implements Iterator<number> {
 }
 ```
 
-</details>
+</Accordion>
 
 
 The client then uses the `iterator` object to iterate.

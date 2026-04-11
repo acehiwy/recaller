@@ -100,17 +100,15 @@ After class definition or instantiation
 - a class attribute can be reassigned
 - a new attribute can be set / added
 
-<details>
-
-<summary> Example </summary>
+<Accordion title="Example">
 
 ```python title= showLineNumbers
 class MyClass:
-    """A simple example class"""
-    i = 12345
+  """A simple example class"""
+  i = 12345
 
-    def f(self):
-        return 'hello world'
+  def f(self):
+    return 'hello world'
 
 MyClass.i = 999
 print(MyClass.i)
@@ -126,7 +124,7 @@ print(ins.i)
 # ins value
 ```
 
-</details>
+</Accordion>
 
 </Warning>
 
@@ -192,9 +190,7 @@ Eg. if attribute `foo` is called, python will search from
 1. `Base2` class
 1. `Base3` class
 
-<details>
-
-<summary> "not searching for same class twice" example </summary>
+<Accordion title="not searching for same class twice example">
 
 Assuming `Base1`'s parent class is `Bar` and `Base2` also has same parent class `Bar`
 
@@ -202,7 +198,7 @@ Search path would be `DerivedClassName` -> `Base1` -> `Bar` -> `Base2` -> ~~`Bar
 
 Notice that `Base2` inherit `Bar` but `Bar` has already been searched in `Base1` path so it is skipped 
 
-</details>
+</Accordion>
 
 
 <Info> 
