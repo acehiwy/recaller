@@ -4,6 +4,8 @@ sidebarTitle: "To panic or Not to panic"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ## Use panic when
 
 - You’re making the decision that a situation is unrecoverable <span style={{color: "var(--primary-font-color)"}}> on behalf of </span> the calling code.
@@ -21,13 +23,13 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 ---
 
-<Tip>
+<Callout type="tip">
 
 Returning `Result` is a good default choice
 
-</Tip>
+</Callout>
 
-<Note>
+<Callout type="note">
 
 If you can ensure by manually inspecting the code that you’ll <span style={{color: "var(--secondary-font-color)"}}> never </span> have an `Err` variant, it’s perfectly acceptable to call `unwrap`,
 and even better to document the reason you think you’ll never have an `Err` variant in the expect text.
@@ -42,7 +44,7 @@ Here’s an example:
      .expect("Hardcoded IP address should be valid");
 ```
 
-</Note>
+</Callout>
 
 ## Miscellaneous
 

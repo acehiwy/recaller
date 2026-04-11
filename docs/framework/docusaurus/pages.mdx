@@ -6,14 +6,16 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 The `@docusaurus/plugin-content-pages` plugin empowers you to create one-off standalone pages.
 You can use <span style={{color: "var(--secondary-font-color)"}}> React components </span>, or <span style={{color: "var(--secondary-font-color)"}}> Markdown </span>.
 
-<Tip>
+<Callout type="tip">
 
 Check the [Pages Plugin API Reference documentation](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-pages) for an exhaustive list of options.
 
-</Tip>
+</Callout>
 
 ## Add A React Page
 
@@ -50,7 +52,7 @@ export default function Hello() {
 
 Now open [http://localhost:3000/helloReact](http://localhost:3000/helloReact) and you will see the new page you just created.
 
-<Note>
+<Callout type="note">
 
 Each page doesn't come with any styling.
 You will need to import the Layout component from `import Layout from "@theme/Layout"`
@@ -69,7 +71,7 @@ and wrap your contents within that component if you want the <span style={{color
 </Tab>
 </Tabs>
 
-</Note>
+</Callout>
 
 ## Add A Markdown Page
 
@@ -100,11 +102,11 @@ For example:
 - `/src/pages/foo/test.js` → `[baseUrl]/foo/test`
 - `/src/pages/foo/index.js` → `[baseUrl]/foo/`
 
-<Info>
+<Callout type="info">
 
 baseUrl of pages , blog , docs can be configured using `docusaurus.config.js`
 
-</Info>
+</Callout>
 
 we recommend co-locating your styles with the page component in its own directory.
 
@@ -113,20 +115,20 @@ For example, to create a "Support" page, you could do one of the following:
 - Create a `/src/pages/support/index.js` file.
 - Create a `/src/pages/support/styles.module.css` with styles meant to only be used on the "Support" page.
 
-<Note>
+<Callout type="note">
 
 you will still need to manually import the CSS module file within your component module (support/index.js).
 
-</Note>
+</Callout>
 
-<Note>
+<Callout type="note">
 
 All JavaScript , TypeScript, Markdown files within the `src/pages/` directory will have corresponding website paths generated for them.
 
 If you want to create reusable components into that directory, use the exclude option (by default, files prefixed with \_, test files(.test.js),
 and files in **tests** directory <span style={{color: "var(--primary-font-color)"}}> are not turned into pages </span>).
 
-</Note>
+</Callout>
 
 ## Duplicate Routes
 

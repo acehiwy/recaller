@@ -6,6 +6,8 @@ tags:
   - design pattern
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ### Words we will use
 
 A collection is a container for a group of objects, such as a list, stack, tree, or graph.
@@ -104,7 +106,7 @@ The traversal algorithm and visited-item tracking are pushed into the collection
 
 
 
-<Note> 
+<Callout type="note"> 
 
 Client still need to know which method of the collection is used to return `iterator`
 
@@ -130,31 +132,31 @@ interface Tree{
 
 In this case, the client still needs to know the methods available on a `Tree`.
 
-<Info> 
+<Callout type="info"> 
 
 Different kinds of `tree` can implement the same `Tree` interface.
 
-</Info>
+</Callout>
 
-</Note>
+</Callout>
 
-<Tip> 
+<Callout type="tip"> 
 
 See [diagrams](https://refactoring.guru/design-patterns/iterator#structure) for better understanding
 
-</Tip>
+</Callout>
 
-<Info> 
+<Callout type="info"> 
 
 One iterator corresponds to one traversal behavior.
 
-</Info>
+</Callout>
 
-<Info> 
+<Callout type="info"> 
 
 Several iterators can traverse the same collection at the same time.
 
-</Info>
+</Callout>
 
 
 ## When to use
@@ -289,11 +291,11 @@ class TrinaryTree implements Tree, IterableTreeCollection<number>{
 
 </Tabs>
 
-<Info> 
+<Callout type="info"> 
 
 See more [code example](https://refactoring.guru/design-patterns/iterator#implementations) from [refactoring.guru](https://refactoring.guru/)
 
-</Info>
+</Callout>
 
 <br/>
 

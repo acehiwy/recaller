@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 Executing code base on conditions(`if`, `loop`)
 
 ## `if` <span style={{color: "var(--primary-font-color)"}}> Expressions </span>
@@ -24,7 +26,7 @@ fn main() {
 }
 ```
 
-<Warning>
+<Callout type="warning">
 
 The condition in this code must evaluate to a `bool` value; otherwise, Rust will throw a compile-time error.
 
@@ -38,7 +40,7 @@ fn main() {
 }
 ```
 
-</Warning>
+</Callout>
 
 ## Using `if` in a `let` Statement
 
@@ -53,7 +55,7 @@ fn main() {
 }
 ```
 
-<Note>
+<Callout type="note">
 
 The type of values return from each `if` branchs must be the same type.
 
@@ -64,7 +66,7 @@ fn main() {
 }
 ```
 
-</Note>
+</Callout>
 
 ## `loop`
 
@@ -100,11 +102,11 @@ fn main() {
 }
 ```
 
-<Note>
+<Callout type="note">
 
 When using multiple `break` to return value in a loop, their return type also need to be the compatible.
 
-</Note>
+</Callout>
 
 ### `break` and `continue` inside nested loop
 
@@ -136,13 +138,13 @@ fn main() {
 }
 ```
 
-<Note>
+<Callout type="note">
 
 Loop labels must begin with a single quote.
 
-</Note>
+</Callout>
 
-<Info>
+<Callout type="info">
 
 Use return value `break` with loop label
 
@@ -150,7 +152,7 @@ Use return value `break` with loop label
 break 'counting_up 123;
 ```
 
-</Info>
+</Callout>
 
 ### `while` loop
 

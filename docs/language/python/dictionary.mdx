@@ -6,6 +6,8 @@ tags:
   - python
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 A key-value data structure
 
 ## Create
@@ -22,23 +24,23 @@ my_dict = {
 }
 ```
 
-<Note> 
+<Callout type="note"> 
 
 Dictionaries are indexed by keys, which can be any <span style={{color: "var(--secondary-font-color)"}}> immutable </span> type
 
-</Note>
+</Callout>
 
-<Note> 
+<Callout type="note"> 
 
 Dictionaries order are preserve as the insertion order
 
-</Note>
+</Callout>
 
-<Note> 
+<Callout type="note"> 
 
 Tuples can be used as keys if they contain only strings, numbers, or tuples
 
-</Note>
+</Callout>
 
 ### Dictionaries comprehensions
 
@@ -134,11 +136,11 @@ my_dict = list({1: "foo", "2" : "bar" , 3: "baz"})
 
 ## Miscellaneous
 
-<Info> 
+<Callout type="info"> 
 
 Read more on [Dictionaries](https://docs.python.org/3/library/stdtypes.html#mapping-types-dict)
 
-</Info>
+</Callout>
 
 <br/>
 

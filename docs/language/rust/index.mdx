@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ## Hello World
 
 ### Create Hello World file
@@ -36,19 +38,19 @@ Executing the output binary file:
 
 The main function is special: it is always the first code that runs in every executable Rust program
 
-<Info>
+<Callout type="info">
 
 `println!` calls a Rust macro. If it had called a function instead, it would be entered as println (without the !).
 
 For now, you just need to know that using a ! means that you’re calling a macro instead of a normal function and that macros don’t always follow the same rules as functions.
 
-</Info>
+</Callout>
 
-<Info>
+<Callout type="info">
 
 Rust is an ahead-of-time compiled language, meaning you can compile a program and give the executable to someone else, and they can run it even without having Rust installed.
 
-</Info>
+</Callout>
 
 ## Printing
 
@@ -121,11 +123,11 @@ To obtain user input and then print the result as output, we need to bring the i
 use std::io;
 ```
 
-<Tip>
+<Callout type="tip">
 
 By default, Rust has a set of items defined in the standard library that it brings into the scope of every program. This set is called the prelude, and you can see everything in it in the [standard library documentation](https://doc.rust-lang.org/std/prelude/index.html).
 
-</Tip>
+</Callout>
 
 If a type you want to use isn’t in the prelude, you have to bring that type into scope explicitly with a use statement.
 
@@ -153,17 +155,17 @@ Calling function of a module
 
 call the stdin function from the io module
 
-<Tip>
+<Callout type="tip">
 
 If we hadn’t imported the io library with use std::io; at the beginning of the program, we could still use the function by writing this function call as std::io::stdin. The stdin function returns an instance of std::io::Stdin, which is a type that represents a handle to the standard input for your terminal.
 
-</Tip>
+</Callout>
 
-<Danger>
+<Callout type="danger">
 
 Next, the line .read_line(&mut guess) calls the read_line method on the standard input handle to get input from the user. We’re also passing &mut guess as the argument to read_line to tell it what string to store the user input in. The full job of read_line is to take whatever the user types into standard input and append that into a string (without overwriting its contents), so we therefore pass that string as an argument. The string argument needs to be mutable so the method can change the string’s content.
 
-</Danger>
+</Callout>
 
 The `&` indicates that this argument is a reference, which gives you a way to let multiple parts of your code access one piece of data without needing to copy that data into memory multiple times.
 
@@ -180,13 +182,13 @@ Hence, you need to write `&mut` guess rather than `&guess` to make it mutable.
 
 `read_line` return [Result](https://doc.rust-lang.org/std/result/enum.Result.html)
 
-<Tip>
+<Callout type="tip">
 
 If the `read_line` method returns an `Err`, it would likely be the result of an error coming from the underlying operating system.
 
-</Tip>
+</Callout>
 
-<Tip>
+<Callout type="tip">
 
 If you don’t call `expect`, the program <span style={{color: "var(--secondary-font-color)"}}> will compile </span>, but you’ll get a warning:
 
@@ -208,7 +210,7 @@ warning: `guessing_game` (bin "guessing_game") generated 1 warning
 
 Rust warns that you haven’t used the `Result` value returned from `read_line`, indicating that the program hasn’t handled a possible error.
 
-</Tip>
+</Callout>
 
 The project we’ve been building is a <span style={{color: "var(--secondary-font-color)"}}> binary crate </span>, which is an executable.
 

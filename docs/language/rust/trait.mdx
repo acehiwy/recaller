@@ -4,15 +4,17 @@ sidebarTitle: "Traits"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 A trait is a set of signatures that must be followed by any type implementing that trait.
 
 We can use traits to define shared behavior in an abstract way.
 
-<Info>
+<Callout type="info">
 
 Traits are similar to a feature often called interfaces in other languages, although with some differences.
 
-</Info>
+</Callout>
 
 ## Defining a Trait
 
@@ -80,7 +82,7 @@ fn main() {
 }
 ```
 
-<Warning>
+<Callout type="warning">
 
 One restriction is that we can’t implement external traits on external types.
 
@@ -98,7 +100,7 @@ This rule ensures that other people's code can't break your code and vice versa.
 
 </span>
 
-</Warning>
+</Callout>
 
 ## Default implementation
 
@@ -110,11 +112,11 @@ pub trait Summary {
 }
 ```
 
-<Note>
+<Callout type="note">
 
 Types that implement a trait can override the default implementation.
 
-</Note>
+</Callout>
 
 Default implementations can call other methods in the same trait, <span style={{color: "var(--secondary-font-color)"}}> even if </span> those other methods don’t have a default implementation.
 
@@ -128,13 +130,13 @@ pub trait Summary {
 }
 ```
 
-<Note>
+<Callout type="note">
 
 It isn’t possible to call the default implementation from an overriding implementation of that same method.
 
 **<span style={{color: "var(--writer-additional-note-font-color)"}}> //\\\ </span>** If you override method `foo`, you cannot use the default implementation of method `foo` inside it.
 
-</Note>
+</Callout>
 
 ### Using default implementation
 
@@ -177,11 +179,11 @@ pub fn notify(item1: &impl Summary, item2: &impl Summary) {}
 pub fn notify<T: Summary>(item1: &T, item2: &T) {}
 ```
 
-<Info>
+<Callout type="info">
 
 Long syntax is called Trait Bounds
 
-</Info>
+</Callout>
 
 ### Multiple trait
 
@@ -220,7 +222,7 @@ fn returns_summarizable() -> impl Summary {
 }
 ```
 
-<Note>
+<Callout type="note">
 
 You can only use `impl Trait` if you’re returning a single type
 
@@ -242,7 +244,7 @@ fn returns_summarizable(foo: bool) -> impl Summary {
 
 For more infomation, see [Using Trait Objects That Allow for Values of Different Types](https://doc.rust-lang.org/book/ch17-02-trait-objects.html#using-trait-objects-that-allow-for-values-of-different-types)
 
-</Note>
+</Callout>
 
 ## Using trait bound with `impl<T>`
 
@@ -275,7 +277,7 @@ impl<T: Display + PartialOrd> Pair<T> {
 
 This means only `Pair<T>` instance that its `T` type implement `Display` and `PartialOrd` will have `cmp_display` method.
 
-<Tip>
+<Callout type="tip">
 
 Implementations of a trait on any type that satisfies the trait bounds are called blanket implementations
 
@@ -291,7 +293,7 @@ Because of this, we can call the to_string method defined by the `ToString` trai
 
 &#8203;<span style={{color: "var(--writer-additional-note-font-color)"}}> //\\\ </span> Re-quoting above explanation with an example. Implementations of a trait(`ToString`) on any type(`T`) that satisfies the trait bounds(`Display`) are called blanket implementations
 
-</Tip>
+</Callout>
 
 <br />
 

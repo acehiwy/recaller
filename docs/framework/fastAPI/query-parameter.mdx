@@ -11,6 +11,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 Function parameters, that are not part of path parameter, are interpret as query params 
 
 ``` python lines
@@ -23,11 +25,11 @@ async def read_item(skip: int = 0, limit: int = 10):
 GET /items/?skip=0&limit=10
 ```
 
-<Note> 
+<Callout type="note"> 
 
 Argument declaring with type are validated and parsed. non-type will act as string
 
-</Note>
+</Callout>
 
 ## Make query parameter optional
 

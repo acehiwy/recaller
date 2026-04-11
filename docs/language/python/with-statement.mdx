@@ -6,6 +6,8 @@ tags:
   - python
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 The `with` statement allows you to automatically execute the setup and teardown code blocks of a callable (class or function).
 
 For a callable to have setup and teardown code blocks, it needs to support the [context manager](https://docs.python.org/3/reference/datamodel.html#context-managers) protocol.
@@ -29,7 +31,7 @@ Executing the `with` statement on a context manager callable allows Python to:
   1. if an exception occurs and is not handled by `__exit__`, the exception is propagated to the outer scope.
 
 
-<Tip> 
+<Callout type="tip"> 
 
 You can pass multiple callables to `with`:
 ``` python lines
@@ -47,7 +49,7 @@ with A() as a:
         pass
 ```
 
-</Tip>
+</Callout>
 
 
 <Accordion title="`with` statement is sugar syntax for `try...finally`">
@@ -71,17 +73,17 @@ finally:
 </Accordion>
 
 
-<Info> 
+<Callout type="info"> 
 
 More on [context manager](https://docs.python.org/3/reference/datamodel.html#context-managers)
 
-</Info>
+</Callout>
 
-<Info> 
+<Callout type="info"> 
 
 More on [`with` statement](https://docs.python.org/3/reference/compound_stmts.html#with)
 
-</Info>
+</Callout>
 
 ## Class-based context manager
 
@@ -116,19 +118,19 @@ with Foo('bar') as hello:
 # exception_traceback = None
 ```
 
-<Note> 
+<Callout type="note"> 
 
 An exception raised inside a `with` block <span style={{color: "var(--secondary-font-color)"}}> ends that block </span>. [`with` ends when an exception occurs]
 
 The exception is then passed to the `__exit__` method.
 
-</Note>
+</Callout>
 
-<Note> 
+<Callout type="note"> 
 
 If the `__exit__` method returns `True`, the exception is suppressed. Otherwise, the exception is propagated to the outer scope.
 
-<Tip> 
+<Callout type="tip"> 
 
 This is useful when you want a `callable` to automatically handle a certain exception.
 
@@ -139,9 +141,9 @@ def __exit__(self, exception_type, exception_value, exception_traceback):
     return True
 ```
 
-</Tip>
+</Callout>
 
-</Note>
+</Callout>
 
 ## Function-based context manager
 
@@ -175,19 +177,19 @@ print('end of program')
 # end of program
 ```
 
-<Note> 
+<Callout type="note"> 
 
 A decorated function must be a generator function. It must `yield` <span style={{color: "var(--primary-font-color)"}}> exactly one value</span>.
 
-</Note>
+</Callout>
 
-<Note> 
+<Callout type="note"> 
 
 At the point where the generator yields, the code inside `with` statement is executed.
 
-</Note>
+</Callout>
 
-<Note> 
+<Callout type="note"> 
 
 An exception raised inside a `with` block <span style={{color: "var(--secondary-font-color)"}}> ends that block </span>. [`with` ends when an exception occurs]
 
@@ -195,13 +197,13 @@ The exception is then re-raised inside the generator at the point where `yield` 
 
 If the generator does not re-raise the exception passed to it, the exception is suppressed.
 
-</Note>
+</Callout>
 
-<Note> 
+<Callout type="note"> 
 
 If `with` ends without an exception, the code after `yield` resumes, [including the `finally` statement, of course]
 
-</Note>
+</Callout>
 
 
 ## Async context manager
@@ -230,11 +232,11 @@ class AsyncContextManager:
         await log('exiting context')
 ```
 
-<Tip> 
+<Callout type="tip"> 
 
 You can define both sync and async setup / teardown methods to support both `with` and `async with`
 
-</Tip>
+</Callout>
 
 ### Function
 

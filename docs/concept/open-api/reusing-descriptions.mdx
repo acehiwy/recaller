@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 This page introduces a mechanism to remove redundancy from an OpenAPI document by reusing portions of it.
 
 ## Components Object
@@ -16,11 +18,11 @@ It contains <span style={{color: "var(--secondary-font-color)"}}> definitions fo
 
 ![component object](assets/component-object.png)
 
-<Info>
+<Callout type="info">
 
 Most objects(but not all) in an OpenAPI document can be replaced by a reference to a component.
 
-</Info>
+</Callout>
 
 Each field in the Components Object is a map pairing <span style={{color: "var(--secondary-font-color)"}}> component names </span>(as a key) with objects(as a value) to be reused.
 

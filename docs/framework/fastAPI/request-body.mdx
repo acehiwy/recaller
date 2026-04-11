@@ -11,6 +11,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 Declare the request body type by using `Pydantic`'s <span style={{color: "var(--secondary-font-color)"}}> `BaseModel` </span>.
 
 ``` python lines highlight={2,5}
@@ -33,11 +35,11 @@ async def create_item(item: Item):
     return item
 ```
 
-<Note> 
+<Callout type="note"> 
 
 Like query and path parameters, attributes with default values are not required when making a request.
 
-</Note>
+</Callout>
 
 <br/>
 

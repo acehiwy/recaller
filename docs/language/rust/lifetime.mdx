@@ -4,6 +4,8 @@ sidebarTitle: "Lifetimes"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 lifetimes ensure that references are valid as long as we need them to be.
 
 every reference in Rust has a lifetime, which is the scope for which that reference is valid.
@@ -34,11 +36,11 @@ fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
 }
 ```
 
-<Info>
+<Callout type="info">
 
 The `longest` function definition specifying that all the references in the signature must have the same lifetime `'a`
 
-</Info>
+</Callout>
 
 The generic lifetime `'a` will get the concrete lifetime that is equal to the <span style={{color: "var(--secondary-font-color)"}}> smaller </span> of the lifetimes of `x` and `y`.
 
@@ -118,11 +120,11 @@ If the compiler gets to the end of the three rules and there are still reference
 Lifetime names for struct fields always need to be <span style={{color: "var(--secondary-font-color)"}}> declared </span> after the `impl` keyword
 and then <span style={{color: "var(--secondary-font-color)"}}> used </span> after the struct's name, because those lifetimes are part of the struct's type.
 
-<Warning>
+<Callout type="warning">
 
 In method signatures inside the impl block, references might be tied to the lifetime of references in the struct’s fields, or they might be independent.
 
-</Warning>
+</Callout>
 
 ``` rust lines
 impl<'a> ImportantExcerpt<'a> {
@@ -165,11 +167,11 @@ Using `'static` lifetime annotation infer that reference can live for the entire
 let s: &'static str = "I have a static lifetime.";
 ```
 
-<Info>
+<Callout type="info">
 
 All string literals have the `'static` lifetime.<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> The text of this string is stored directly in the program’s binary, which is always available. Therefore, the lifetime of all string literals is `'static`</span>
 
-</Info>
+</Callout>
 
 ## <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> Example of using generic, trait bounds and lifetime together </span>
 

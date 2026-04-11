@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 This page shows how to take full advantage of special documentation capabilities in OpenAPI like markdown syntax or example objects.
 
 ## Documentation Fields
@@ -35,11 +37,11 @@ paths:
               ...
 ```
 
-<Tip>
+<Callout type="tip">
 
 Additionally, the [Path Item](https://spec.openapis.org/oas/v3.1.0#path-item-object), [Operation](https://spec.openapis.org/oas/v3.1.0#operation-object) and [Example objects](https://spec.openapis.org/oas/v3.1.0#example-object), which usually have long descriptions, accept a `summary` field <span style={{color: "var(--secondary-font-color)"}}> providing a short description </span>.
 
-</Tip>
+</Callout>
 
 ## Providing Long Descriptions in YAML
 
@@ -109,17 +111,17 @@ This is a string in multiple lines.
 And an extra one.
 ```
 
-<Note>
+<Callout type="note">
 
 Use an empty line to force a line break.
 
-</Note>
+</Callout>
 
-<Info>
+<Callout type="info">
 
 The literal and folded modes do not need to use quotes.
 
-</Info>
+</Callout>
 
 ## CommonMark Syntax
 
@@ -193,12 +195,12 @@ Two different fields provide this functionality:
 - `example` allows one sample
 - `examples` allows multiple.
 
-<Note>
+<Callout type="note">
 
 <span style={{color: "var(--secondary-font-color)"}}> Only one </span> of the two fields can
 be present in each object.
 
-</Note>
+</Callout>
 
 ### `example` field
 

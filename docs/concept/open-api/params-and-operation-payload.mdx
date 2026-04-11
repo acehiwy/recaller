@@ -6,17 +6,19 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 OpenAPI provides two mechanisms to specify input data, parameters and request body (message payload).
 
 &#8203;<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> Parameters are typically used to identify a resource, whereas the message payload provides content for that resource. </span>
 
 ![Parameters And Operation Payload](assets/parameters-and-operation-payload.png)
 
-<Info>
+<Callout type="info">
 
 The edges marked with an asterisk(\*) are arrays.
 
-</Info>
+</Callout>
 
 ## Parameter Object
 
@@ -56,11 +58,11 @@ paths:
           required: true
 ```
 
-<Warning>
+<Callout type="warning">
 
 When using `path` parameters, the `required` field must be present and its value must be `true`.
 
-</Warning>
+</Callout>
 
 #### `query`
 
@@ -81,11 +83,11 @@ paths:
 
 The parameter is sent in a custom HTTP header as part of the request.
 
-<Note>
+<Callout type="note">
 
 Header names are case-<span style={{color: "var(--secondary-font-color)"}}>in</span>sensitive.
 
-</Note>
+</Callout>
 
 ### Parameter Type
 
@@ -101,29 +103,29 @@ parameters:
       maximum: 100
 ```
 
-<Info>
+<Callout type="info">
 
 The [Content of Message Bodies](message-body-content#schema-object) page describes Schema objects in greater detail.
 
-</Info>
+</Callout>
 
 In more advanced scenarios the `content` field can be used instead.
 
 It provides a <span style={{color: "var(--secondary-font-color)"}}> single-entry map </span>(map that have only 1 key-value) of Media Types(as a key) to [Media Type Objects](https://spec.openapis.org/oas/v3.1.0#media-type-object)(as a value).
 
-<Note>
+<Callout type="note">
 
 &#8203;<span style={{color: "var(--secondary-font-color)"}}>Exactly one</span> of `schema` or `content` must be present. They cannot appear at the same time.
 
-</Note>
+</Callout>
 
 ### <span style={{color: "var(--can-not-understand-font-color)"}}> Parameter Serialization Control </span>
 
-<Warning>
+<Callout type="warning">
 
 https://oai.github.io/Documentation/specification/parameters.html#parameter-serialization-control
 
-</Warning>
+</Callout>
 
 ## Request Body Object
 
@@ -140,17 +142,17 @@ paths:
         ...
 ```
 
-<Info>
+<Callout type="info">
 
 The only mandatory field in the Request Body Object is `content` which is described in detail in the [Content of Message Bodies](message-body-content#schema-object) page.
 
-</Info>
+</Callout>
 
-<Note>
+<Callout type="note">
 
 The Request Body Object also has a `description` string and a `required` boolean to state whether the message payload is mandatory.
 
-</Note>
+</Callout>
 
 &#8203;<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> As a reminder, the snippet below describes an operation with a JSON request body containing a single integer with values between 1 and 100. </span>
 

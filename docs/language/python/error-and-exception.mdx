@@ -6,7 +6,9 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
-``` python lines
+import { Callout } from "/snippets/callout.mdx";
+
+```python lines
   try:
     # do something
   except ReferenceError:
@@ -19,19 +21,17 @@ lastUpdated: 2026-04-08T09:00:42.959Z
     # catch the rest error
 ```
 
+<Callout type="note">
 
-<Note> 
+A `except` clause only handle exception from its `try`, not from its neighbor `except`.
 
-A `except` clause only handle exception from its `try`, not from its neighbor `except`. 
+</Callout>
 
-</Note>
-
-
-<Info> 
+<Callout type="info">
 
 See more for [built-in exceptions](https://docs.python.org/3/library/exceptions.html#bltin-exceptions)
 
-</Info>
+</Callout>
 
 ## `raise` keyword
 
@@ -39,21 +39,21 @@ use to manually force an exception to occur
 
 `raise` must be followed by either an exception <span style={{color: "var(--secondary-font-color)"}}> instance </span> or an exception class
 
-``` python lines
+```python lines
 raise BaseException('foo')
 
 raise BaseException # same as raise BaseException()
 ```
 
-<Note> 
+<Callout type="note">
 
 If an exception is followed `raise`, it will be automatically instantiated with no constructor arguments
 
-</Note>
+</Callout>
 
 ### re-raise exception
 
-``` python lines
+```python lines
 try:
   raise TypeError
 except:
@@ -65,7 +65,7 @@ except:
 
 To indicate that an exception is cause by another exception, use:
 
-``` python lines highlight={7}
+```python lines highlight={7}
 def func():
   raise ConnectionError
 
@@ -77,7 +77,7 @@ except ConnectionError as exc:
 
 output:
 
-``` bash lines
+```bash lines
 Traceback (most recent call last):
   File "<stdin>", line 2, in <module>
     func()
@@ -93,18 +93,17 @@ Traceback (most recent call last):
 RuntimeError: Failed to open database
 ```
 
-
 ## Exception class
 
 Class as exception can be raised.
 
-<Note> 
+<Callout type="note">
 
 Class must inherit `BaseException` class
 
-</Note>
+</Callout>
 
-``` python lines
+```python lines
 class ParentClassException(BaseException):
   pass
 
@@ -124,14 +123,13 @@ def exception():
     print("match bc child have all properties of parent")
 ```
 
-<Note> 
+<Callout type="note">
 
 `BaseException` class is base class of all exception. Its subclass, `Exception`, indicate non-fatal exceptions
 
 fatal error mean program should terminate
 
-</Note>
-
+</Callout>
 
 ### Exception arguments
 
@@ -139,11 +137,11 @@ is a class constructor's argument passed to an exception class
 
 can access via `instance.args`
 
-``` python lines
+```python lines
 try:
     raise Exception('spam', 'eggs')
 except Exception as inst:
-    print(inst.args) 
+    print(inst.args)
     # ('spam', 'eggs')
     print(inst)
     # ('spam', 'eggs')
@@ -151,7 +149,7 @@ except Exception as inst:
 
 ### User-define exception
 
-``` python lines
+```python lines
 class MyError(Exception):
   pass
 
@@ -163,7 +161,7 @@ class AnotherError(BaseException):
 
 `else` block execute when try does not raise an exception.
 
-``` python lines
+```python lines
 try:
     pass
 except OSError:
@@ -172,12 +170,11 @@ else:
     print('exe when no error in try')
 ```
 
-
-<Tip> 
+<Callout type="tip">
 
 The purpose of the `else` clause is to avoid mixing up errors in `try`.
 
-``` python lines
+```python lines
 try:
   fucntion_1_might_raise_value_error()
   function_2_might_raise_another_value_error() # <-- don't want this to be caught
@@ -185,7 +182,7 @@ except ValueError:
   pass
 ```
 
-``` python lines
+```python lines
 try:
   fucntion_1_might_raise_value_error()
 except ValueError:
@@ -194,12 +191,11 @@ else:
   function_2_might_raise_another_value_error()
 ```
 
-</Tip>
-
+</Callout>
 
 ## `finally` clause
 
-``` python lines highlight={7-8}
+```python lines highlight={7-8}
 try:
   pass
 except:
@@ -212,24 +208,23 @@ finally:
 
 code inside `finally` block are executed, <span style={{color: "var(--secondary-font-color)"}}> as the last task </span>, in all cases whether or not an exception is raised regardless of its origin (raised from `try`, `except` or `else`)
 
-<Note> 
+<Callout type="note">
 
 If the `finally` clause executes a `break`, `continue` or `return` statement, exceptions are not re-raised.
 
-</Note>
+</Callout>
 
-<Note> 
+<Callout type="note">
 
 If the `try` statement reaches a `break`, `continue` or `return` statement, the `finally` clause will execute just prior to the `break`, `continue` or `return` statement's execution.
 
-</Note>
+</Callout>
 
-<Note> 
+<Callout type="note">
 
 If a `finally` clause includes a return statement, the returned value will be from `finally`'s return, not `try`'s return.
 
-
-``` python lines
+```python lines
 def bool_return():
     try:
         return True
@@ -240,20 +235,19 @@ bool_return()
 # False
 ```
 
-</Note>
+</Callout>
 
-
-<Tip> 
+<Callout type="tip">
 
 In real world applications, the `finally` clause is useful for releasing external resources (such as files or network connections)
 
-</Tip>
-
+</Callout>
 
 ## Raising multiple exceptions
 
 exceptions can be group together then raise as a single exception using [`ExceptionGroup`](https://docs.python.org/3/library/exceptions.html#ExceptionGroup):
-``` python lines
+
+```python lines
 def f():
     excs = [OSError('error 1'), SystemError('error 2')]
     raise ExceptionGroup('exception group desceiption', excs)
@@ -261,7 +255,7 @@ def f():
 
 output:
 
-``` bash lines
+```bash lines
   + Exception Group Traceback (most recent call last):
   |   File "<stdin>", line 1, in <module>
   |     f()
@@ -278,7 +272,7 @@ output:
 
 it can also be nested
 
-``` python lines
+```python lines
 raise ExceptionGroup('des1', [ ValueError, ExceptionGroup('des2', [ TypeError ] ) ] )
 ```
 
@@ -286,7 +280,7 @@ raise ExceptionGroup('des1', [ ValueError, ExceptionGroup('des2', [ TypeError ] 
 
 done by `except*` clause:
 
-``` python lines
+```python lines
 try:
   raise ExceptionGroup('des1', [ SystemError, OSError ] )
 except* OSError as e:
@@ -297,14 +291,13 @@ except* SystemError as e:
 
 It mean pick the exception<span style={{color: "var(--secondary-font-color)"}}>(s)</span> from the group and its nested group to handle
 
-
-<Info> 
+<Callout type="info">
 
 `ExceptionGroup` often the case in concurrency frameworks, when several tasks may have failed in parallel, but there are also other use cases where it is desirable to continue execution and collect multiple errors rather than raise the first exception.
 
 Example use cases
 
-``` python lines
+```python lines
 excs = []
 for test in tests:
     try:
@@ -316,13 +309,13 @@ if excs:
    raise ExceptionGroup("Test Failures", excs)
 ```
 
-</Info>
+</Callout>
 
 ## Add more info to the exception
 
 Apart from desceiption / information when initialize the exception via constructor, more info can be added to the exception by `<exception>.add_note(<note> : string)` method
 
-``` python lines
+```python lines
 try:
     raise TypeError('bad type')
 except Exception as e:
@@ -333,7 +326,7 @@ except Exception as e:
 
 output:
 
-``` bash lines
+```bash lines
 Traceback (most recent call last):
   File "<stdin>", line 2, in <module>
     raise TypeError('bad type')
@@ -342,8 +335,7 @@ Add some information
 Add some more information
 ```
 
-
-<br/>
+<br />
 
 ---
 

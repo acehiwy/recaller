@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ## References
 
 Passing value without ownership being taken.
@@ -31,11 +33,11 @@ The `&s1` syntax lets us create a reference that refers to the value of `s1` but
 
 Because it does not own it, the value it <span style={{color: "var(--primary-font-color)"}}> points to </span> will not be dropped when the reference stops being used.
 
-<Info>
+<Callout type="info">
 
 We call the action of creating a reference "borrowing".
 
-</Info>
+</Callout>
 
 References are immutable by default. You can't modify the value that you have borrowed
 
@@ -65,11 +67,11 @@ fn change(some_string: &mut String) {
 }
 ```
 
-<Info>
+<Callout type="info">
 
 Mutable reference can only be crated from mutable variable.
 
-</Info>
+</Callout>
 
 &#8203;<span style={{color: "var(--primary-font-color)"}}> In the same scope </span>, <span style={{color: "var(--secondary-font-color)"}}> multiple mutable references to the same value are not allowed </span>.
 If you have a mutable reference to a value, you can have no other references to that value.
@@ -155,11 +157,11 @@ fn dangle() -> &String { // dangle returns a reference to a String
 // highlight-error-end
 ```
 
-<Info>
+<Callout type="info">
 
 In Rust, the compiler guarantees that references will never be dangling references
 
-</Info>
+</Callout>
 
 <br />
 

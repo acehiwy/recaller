@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 In this tutorial we're going to make it possible to subscribe only to a <span style={{color: "var(--secondary-font-color)"}}> subset of the messages </span>.
 
 For example, we will be able to direct <span style={{color: "var(--secondary-font-color)"}}> only critical </span> error <span style={{color: "var(--secondary-font-color)"}}> messages </span> to the log file (to save disk space),
@@ -27,11 +29,11 @@ channel.bindQueue(
 
 The meaning of a binding key depends on the exchange type.
 
-<Note>
+<Callout type="note">
 
 The fanout exchanges simply ignored binding key value.
 
-</Note>
+</Callout>
 
 ## Direct exchange
 
@@ -52,11 +54,11 @@ In such a setup a message published to the exchange with a routing key `orange` 
 
 Messages with a routing key of `black` or `green` will go to `Q2`.
 
-<Warning>
+<Callout type="warning">
 
 In this setup, all other messages without binding key will be discarded.
 
-</Warning>
+</Callout>
 
 ## Multiple bindings
 

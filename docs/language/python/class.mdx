@@ -6,6 +6,8 @@ tags:
   - python
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 class is an object bundling state and functionality to manipulate its state.
 
 &#8203;<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>Code below is used as reference on futher section on this page</span>
@@ -49,15 +51,15 @@ instance.f()
 MyClass.f(instance)
 ```
 
-<Note> 
+<Callout type="note"> 
 
 Word `self` has no special meaning in python
 
 `self` is just convention. It can be any name
 
-</Note>
+</Callout>
 
-<Note> 
+<Callout type="note"> 
 
 An instance is still attached to the method even if the method is called sometime later
 
@@ -71,7 +73,7 @@ print(temp_f('bar'))
 # barfoo
 ```
 
-</Note>
+</Callout>
 
 
 ## Class variable and instance variable
@@ -91,7 +93,7 @@ class Dog:
 ```
 
 
-<Warning>
+<Callout type="warning">
 
 After class definition or instantiation
 
@@ -124,7 +126,7 @@ print(ins.i)
 
 </Accordion>
 
-</Warning>
+</Callout>
 
 ## Inheritance
 ``` python lines
@@ -197,11 +199,11 @@ Notice that `Base2` inherit `Bar` but `Bar` has already been searched in `Base1`
 </Accordion>
 
 
-<Info> 
+<Callout type="info"> 
 
 More info on [Method Resolution Order](https://docs.python.org/3/howto/mro.html#python-2-3-mro)
 
-</Info>
+</Callout>
 
 
 ## Private variable

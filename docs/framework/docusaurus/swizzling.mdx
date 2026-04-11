@@ -4,6 +4,8 @@ sidebarTitle: "Swizzling"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ## Overview
 
 This section is similar to [Styling and Layout](styling-and-layout), but this time, we will write actual React code instead of playing with stylesheets.
@@ -13,11 +15,11 @@ In practice, swizzling allows to swap a theme component with your own implementa
 - [Ejecting](#ejecting): creates a <span style={{color: "var(--secondary-font-color)"}}> copy </span> of the original theme component, which you can <span style={{color: "var(--secondary-font-color)"}}> fully customize </span>
 - [Wrapping](#wrapping): creates a <span style={{color: "var(--secondary-font-color)"}}> wrapper </span> around the original theme component, which you can <span style={{color: "var(--secondary-font-color)"}}> enhance </span>
 
-<Tip>
+<Callout type="tip">
 
 Prefer [wrapping](#wrapping) whenever possible: the amount of code to maintain is smaller.
 
-</Tip>
+</Callout>
 
 ### <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> Why is it called swizzling? </span>
 
@@ -28,11 +30,11 @@ For Docusaurus, component swizzling means providing an alternative component tha
 You can think of it as [Monkey Patching](https://en.wikipedia.org/wiki/Monkey_patch) for React components, enabling you to override the default implementation.
 Gatsby has a similar concept called [theme shadowing](https://www.gatsbyjs.com/docs/how-to/plugins-and-themes/shadowing/).
 
-<Tip>
+<Callout type="tip">
 
 To gain a deeper understanding of this, you have to understand [how theme components are resolved](https://docusaurus.io/docs/advanced/client#theme-aliases).
 
-</Tip>
+</Callout>
 
 ## Swizzling Process
 
@@ -95,7 +97,7 @@ export default function FooterWrapper(props) {
 </Tab>
 </Tabs>
 
-<Tip>
+<Callout type="tip">
 
 To get an overview of all the themes and components available to swizzle, run:
 
@@ -105,28 +107,28 @@ docusaurus swizzle --list
 
 Use `--help` to see all available CLI options, or refer to the reference [swizzle CLI documentation](https://docusaurus.io/docs/cli#docusaurus-swizzle).
 
-</Tip>
+</Callout>
 
-<Note>
+<Callout type="note">
 
 After swizzling a component, restart your dev server in order for Docusaurus to know about the new component.
 
-</Note>
+</Callout>
 
-<Note>
+<Callout type="note">
 
 `docusaurus swizzle` is only an automated way to help you swizzle the component.
 
 You can also create the `src/theme/SomeComponent.js` file <span style={{color: "var(--secondary-font-color)"}}> manually </span>,
 and Docusaurus will [resolve it](https://docusaurus.io/docs/advanced/client#theme-aliases).
 
-</Note>
+</Callout>
 
-<Danger>
+<Callout type="danger">
 
 Be sure to understand which components are [safe to swizzle](#what-is-safe-to-swizzle). Some components are internal implementation details of a theme.
 
-</Danger>
+</Callout>
 
 ### Ejecting
 
@@ -168,13 +170,13 @@ export default function Footer(props) {
 }
 ```
 
-<Warning>
+<Callout type="warning">
 
 Ejecting an [unsafe](#what-is-safe-to-swizzle) component can sometimes lead to copying a large amount of internal code, which <span style={{color: "var(--secondary-font-color)"}}> you now have to maintain yourself </span>.
 
 It can make Docusaurus upgrades more difficult, as you will need to migrate your customizations if the props received or internal theme APIs used have changed.
 
-</Warning>
+</Callout>
 
 ---
 
@@ -182,12 +184,12 @@ It can make Docusaurus upgrades more difficult, as you will need to migrate your
 
 To keep ejected components up-to-date after a Docusaurus upgrade, re-run the `eject` command and compare the changes with `git diff`.
 
-<Tip>
+<Callout type="tip">
 
 You are also recommended to write a brief comment at the top of the file explaining what changes you have made,
 so that you could more easily re-apply your changes after re-ejection.
 
-</Tip>
+</Callout>
 
 ---
 
@@ -241,7 +243,7 @@ The newly created wrapper <span style={{color: "var(--secondary-font-color)"}}> 
 
 </Accordion>
 
-<Tip>
+<Callout type="tip">
 
 Wrapping a theme is a great way to <span style={{color: "var(--primary-font-color)"}}> add extra components around </span> <span style={{color: "var(--secondary-font-color)"}}> existing one </span> without [ejecting](#ejecting) it.
 
@@ -262,7 +264,7 @@ export default function BlogPostItemWrapper(props) {
 }
 ```
 
-</Tip>
+</Callout>
 
 ## What is safe to swizzle?
 
@@ -278,17 +280,17 @@ For each theme component, the swizzle CLI will indicate 3 different <span style=
   and <span style={{color: "var(--secondary-font-color)"}}> breaking changes </span> might happen within a theme <span style={{color: "var(--primary-font-color)"}}> minor </span> <span style={{color: "var(--secondary-font-color)"}}> version </span>
 - **Forbidden**: the swizzle CLI will <span style={{color: "var(--primary-font-color)"}}> prevent </span> you from swizzling this component, because it is <span style={{color: "var(--primary-font-color)"}}> not designed to be swizzled at all </span>
 
-<Note>
+<Callout type="note">
 
 Some components might be safe to wrap, but not safe to eject.
 
-</Note>
+</Callout>
 
-<Info>
+<Callout type="info">
 
 Don't be too afraid to swizzle unsafe components: just keep in mind that breaking changes might happen, and you might need to upgrade your customizations manually on minor version upgrades.
 
-</Info>
+</Callout>
 
 ---
 
@@ -347,11 +349,11 @@ export default function Root({ children }) {
 }
 ```
 
-<Tip>
+<Callout type="tip">
 
 Use this component to render React Context providers.
 
-</Tip>
+</Callout>
 
 # Sources
 

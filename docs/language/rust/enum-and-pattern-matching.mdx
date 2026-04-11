@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 Enums allow you to <span style={{color: "var(--secondary-font-color)"}}> define a type </span> by enumerating its possible variants.
 
 ``` rust lines
@@ -76,7 +78,7 @@ let baz_discriminant = Foo::Baz as u32;
 assert_eq!(baz_discriminant, 123);
 ```
 
-<Info>
+<Callout type="info">
 
 You can put any kind of data inside an enum variant:
 
@@ -85,7 +87,7 @@ You can put any kind of data inside an enum variant:
 - structs
 - enum
 
-</Info>
+</Callout>
 
 <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>
 
@@ -161,7 +163,7 @@ let some_char = Some('e'); // type of some_char is Option<char>
 let absent_number: Option<i32> = None;
 ```
 
-<Info>
+<Callout type="info">
 
 `Option` enum is an enum defined by the standard library.
 
@@ -169,7 +171,7 @@ let absent_number: Option<i32> = None;
 
 You can use directly without the `Option::` prefix.
 
-</Info>
+</Callout>
 
 ## `match` Expression
 
@@ -203,11 +205,11 @@ and the resultant value of the expression in the matching arm is the value that 
 
 `match` end when a particular pattern is matched.
 
-<Info>
+<Callout type="info">
 
 Every possible case of `match` need to be handled.
 
-</Info>
+</Callout>
 
 ### Tuple variant enum with `match`
 
@@ -344,11 +346,11 @@ if let Coin::Quarter(state) = coin {
 };
 ```
 
-<Note>
+<Callout type="note">
 
 `if let` does not have the exhaustive checking that `match` enforces.
 
-</Note>
+</Callout>
 
 <br />
 

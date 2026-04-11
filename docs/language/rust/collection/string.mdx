@@ -4,6 +4,8 @@ sidebarTitle: "Strings"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 Strings are implemented as a <span style={{color: "var(--secondary-font-color)"}}> collection of bytes </span> <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> , plus some methods to provide useful functionality when those bytes are interpreted as text. </span>
 
 Both `String` and string slices are UTF-8 encoded.
@@ -21,12 +23,12 @@ let s = data.to_string();
 let s = "initial contents".to_string();
 ```
 
-<Info>
+<Callout type="info">
 
 Many of the same operations available with `Vec<T>` are available with `String` as well,
 because String is actually implemented as a wrapper around a <span style={{color: "var(--secondary-font-color)"}}> vector of bytes (`vector<u8>`)</span>
 
-</Info>
+</Callout>
 
 ## Updating String
 
@@ -68,17 +70,17 @@ fn add(self, s: &str) -> String { // also returning ownership
 }
 ```
 
-<Info>
+<Callout type="info">
 
 We can only add a `&str` to a `String`. we can’t add two `String` values together.
 
-</Info>
+</Callout>
 
-<Info>
+<Callout type="info">
 
 `&String` can be used as `&str` because Rust uses a deref coercion, which here turns `&String`(`&s2`) into `&str`(`&s2[..]`).
 
-</Info>
+</Callout>
 
 Although `let s3 = s1 + &s2;` looks like it will copy both strings and create a new one.
 
@@ -98,11 +100,11 @@ let s = format!("{s1}-{s2}-{s3}");
 The `format!` macro works like `println!`, but instead of printing the output to the screen,
 it returns a `String` with the contents.
 
-<Info>
+<Callout type="info">
 
 `format!` macro uses references. It doesn’t take ownership of any of its parameters.
 
-</Info>
+</Callout>
 
 ## Different representation of Strings
 
@@ -163,7 +165,7 @@ let first = &hello[0];
 
 `д` use 2 bytes to encode 208 and 180. Getting just first byte, 208, is not what user want
 
-<Warning>
+<Callout type="warning">
 
 Slicing `Strings` could lead to panic at runtime if you to try to slice only part of a character’s bytes
 
@@ -179,7 +181,7 @@ println!("{s}");
 
 `д` and `р` both use 2 byte to represent.
 
-</Warning>
+</Callout>
 
 ## Iterate over Strings
 
@@ -205,11 +207,11 @@ for b in "Зд".bytes() {
 // 180
 ```
 
-<Note>
+<Callout type="note">
 
 Getting grapheme require external lib. Find it on [crate.io](https://crates.io/)
 
-</Note>
+</Callout>
 
 ## Miscellaneous
 

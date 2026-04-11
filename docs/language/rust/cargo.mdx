@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 Cargo is Rust's build tool and package manager.
 
 ## Crete project using Cargo
@@ -14,25 +16,25 @@ Cargo is Rust's build tool and package manager.
 cargo new <project name>
 ```
 
-<Info>
+<Callout type="info">
 
 Use `--lib` option to create library crate.
 
 Eg. `cargo new restaurant --lib`
 
-</Info>
+</Callout>
 
 ![](assets/cargo-created-project-structure.png)
 
 Cargo also initialize a new Git repository along with a `.gitignore` file.
 
-<Info>
+<Callout type="info">
 
 Git files won’t be generated if you run cargo new within an existing Git repository.
 
 You can override this behavior by using `--vcs=git` option
 
-</Info>
+</Callout>
 
 ## `Cargo.toml`
 
@@ -61,13 +63,13 @@ cargo add <crate name>[@<crate version>]
 cargo add ferris-says@0.2
 ```
 
-<Info>
+<Callout type="info">
 
 In Rust, packages of code are referred to as crates.
 
 [crates.io](https://crates.io/) is a Rust package registry
 
-</Info>
+</Callout>
 
 ## Project structure
 
@@ -91,13 +93,13 @@ This command creates an executable file in `target/debug/hello_cargo` rather tha
 
 Because the <span style={{color: "var(--secondary-font-color)"}}> default build is a debug build </span>, Cargo puts the binary in a directory named `debug`.
 
-<Info>
+<Callout type="info">
 
 Running cargo build for the first time also causes Cargo to create a new file at the top level: `Cargo.lock`.
 
 This file keeps track of the <span style={{color: "var(--secondary-font-color)"}}> exact versions of dependencies </span> in your project.
 
-</Info>
+</Callout>
 
 ### Run
 

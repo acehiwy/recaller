@@ -7,25 +7,27 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ## Installation
 
 ``` bash lines
 pip install 'fastapi[standard]'
 ```
 
-<Note> 
+<Callout type="note"> 
 
 The `fastapi[standard]` package comes with some optional dependencies.
 
 If you don't want them, just use `pip install fastapi`.
 
-</Note>
+</Callout>
 
-<Info> 
+<Callout type="info"> 
 
 Install FastAPI without the FastAPI Cloud CLI: `pip install "fastapi[standard-no-fastapi-cloud-cli]"`
 
-</Info>
+</Callout>
 
 
 ## Hello world
@@ -60,11 +62,11 @@ Use the `<FastAPI instance>.<HTTP method name>()` decorator on a function.
 - `@app.patch()`
 - `@app.trace()`
 
-<Note> 
+<Callout type="note"> 
 
 FastAPI calls this a "path operation".
 
-</Note>
+</Callout>
 
 ### Returning a response
 

@@ -10,6 +10,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 import { Tree } from "mintlify/components";
+import { Callout } from '/snippets/callout.mdx';
 
 Create a Markdown file, `greeting.md`, and place it under the docs directory.
 
@@ -46,14 +47,14 @@ With `{#custom-id}` syntax you can set your own header ID.
 # Foo Header {#custom-id}
 ```
 
-<Note>
+<Callout type="note">
 
 All files prefixed with an underscore (`_`) <span style={{color: "var(--secondary-font-color)"}}> under the docs directory </span> are treated as "partial" pages
 and <span style={{color: "var(--secondary-font-color)"}}> will be ignored by default </span>.
 
 Read more about [importing partial pages](https://docusaurus.io/docs/markdown-features/react#importing-markdown).
 
-</Note>
+</Callout>
 
 ## Doc Front Matter
 
@@ -61,11 +62,11 @@ The front matter is used to <span style={{color: "var(--secondary-font-color)"}}
 
 Front matter is optional. Docusaurus will be able to infer all necessary metadata without the front matter.
 
-<Tip>
+<Callout type="tip">
 
 For all possible fields, see the [API documentation](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs#markdown-front-matter).
 
-</Tip>
+</Callout>
 
 ## Doc tags
 
@@ -83,7 +84,7 @@ tags:
 ---
 ```
 
-<Info>
+<Callout type="info">
 
 <Accordion title="tags will be displayed at the end of each doc page.">
 
@@ -93,7 +94,7 @@ tags:
 
 when tag is clicked, Docusaurus filter all docs containing it.
 
-</Info>
+</Callout>
 
 ## Docs Folder Structure
 
@@ -160,7 +161,7 @@ slug: /bonjour
 Lorem ipsum
 ```
 
-<Note>
+<Callout type="note">
 
 `slug` will be appended to the doc plugin's routeBasePath, which is `/docs` by default.
 
@@ -169,7 +170,7 @@ It is possible to use:
 - absolute slugs: slug: /mySlug, slug: /...
 - relative slugs: slug: mySlug, slug: ./../mySlug...
 
-</Note>
+</Callout>
 
 <br />
 

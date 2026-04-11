@@ -1,0 +1,9 @@
+export const Callout = ({ type = "note", title, children }) => {
+  const typeLower = type.toLowerCase();
+  if (typeLower === "info") return <Info title={title}>{children}</Info>;
+  if (typeLower === "tip") return <Tip title={title}>{children}</Tip>;
+  if (typeLower === "warning") return <Warning title={title}>{children}</Warning>;
+  if (typeLower === "danger") return <Danger title={title}>{children}</Danger>;
+  if (typeLower === "check") return <Check title={title}>{children}</Check>;
+  return <Note title={title}>{children}</Note>;
+};

@@ -6,12 +6,15 @@ tags:
   - python
 ---
 
-``` python lines
+import { Callout } from "/snippets/callout.mdx";
+
+```python lines
 squares = [1, 4, 9, 16, 25, "foo"]
 ```
 
 List can also be indexed and sliced
-``` python lines
+
+```python lines
 squares[0]  # indexing returns the item
 squares[-1]
 squares[-3:]  # slicing returns a new list
@@ -19,7 +22,7 @@ squares[-3:]  # slicing returns a new list
 
 ## Add <span style={{color: "var(--primary-font-color)"}}> a single </span> item to the list
 
-``` python lines
+```python lines
 foo = [1,2,3]
 
 foo.append(4)
@@ -29,20 +32,19 @@ foo.append(["a", "b"])
 
 ## Concat List
 
-``` python lines
+```python lines
 some_list + [36, 49, 64, 81, 100]
 ```
 
-``` python lines
+```python lines
 list.extend(<iterable>) # mutate object , return None
 
 [1,2,3].extend([4,5,6])
 ```
 
-
 ## Write value to a list / slice
 
-``` python lines
+```python lines
 letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
 
 # replace some values
@@ -56,28 +58,29 @@ letters[2:5] = []
 
 ## Sort list
 
-``` python lines
+```python lines
 my_list.sort() # mutate object , return None
 ```
 
-<Warning> 
+<Callout type="warning">
 
 If items in a list cannot be compared to each other (`None` with `string`, or `string` with `int`), then the list cannot be sorted.
 
 eg. `[None, 'hello', 10]`
 
-</Warning>
+</Callout>
 
-## List comprehensions 
+## List comprehensions
 
 sugar syntax to craete list
 
-``` python lines
+```python lines
 squares = [x**2 for x in range(10) if x > 2]
 ```
 
 Equivalent to
-``` python lines
+
+```python lines
 squares = []
 for x in range(10):
     if x > 2:
@@ -86,13 +89,13 @@ for x in range(10):
 
 ### <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> multiple loop </span>
 
-
-``` python lines
+```python lines
 squares = [(x, y) for x in [1,2,3] if x != 1 for y in [3,1,4] if x != y]
 ```
 
 Equivalent to
-``` python lines
+
+```python lines
 squares = []
 for x in [1,2,3]:
     if x != 1:
@@ -103,7 +106,7 @@ for x in [1,2,3]:
 
 ### nested list comprehensions
 
-``` python lines
+```python lines
 matrix = [
     [1, 2, 3, 4],
     [5, 6, 7, 8],
@@ -115,7 +118,7 @@ matrix = [
 
 equivalent to
 
-``` python lines
+```python lines
 
 transposed = []
 for i in range(4):
@@ -126,9 +129,7 @@ for i in range(4):
     transposed.append(transposed_row)
 ```
 
-
-
-<br/>
+<br />
 
 ---
 

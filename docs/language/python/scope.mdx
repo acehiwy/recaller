@@ -6,6 +6,8 @@ tags:
   - python
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 When you reference a variable, Python looks for it in this order:
 1. current enclosing (function , class)
 2. the next outer enclosing scope until the global scope, including imported modules
@@ -112,7 +114,7 @@ at global scope 2
 </Accordion>
 
 
-<Note> 
+<Callout type="note"> 
 
 `nonlocal` cannot be used to rewrite a global-scope variable.
 
@@ -129,7 +131,7 @@ File "/usr/src/app/class.py", line 3
 SyntaxError: no binding for nonlocal 'x' found
 ```
 
-</Note>
+</Callout>
 
 
 <br/>

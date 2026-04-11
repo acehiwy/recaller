@@ -4,6 +4,8 @@ sidebarTitle: "Image Optimization"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 Built-in image optimization feature.
 
 
@@ -37,13 +39,13 @@ Use the `priority` attribute.
 
 The `fetchpriority` attribute tells the browser that the resource should be loaded before resources with the default or `low` `fetchpriority`.
 
-<Tip> 
+<Callout type="tip"> 
 
 `fetchpriority=high` should not be overused; marking too many resources as `high` makes none of them meaningfully high priority.
 
 It should be used for LCP resources, typically one to three of them.
 
-</Tip>
+</Callout>
 
 The `loading=lazy` attribute tells the browser not to load an image when it is outside the viewport.
 

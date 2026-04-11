@@ -8,6 +8,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 In this one we'll create a Work Queue that will be used to distribute time-consuming tasks among multiple workers.
 
 The main idea behind Work Queues (aka: Task Queues) is to avoid doing a resource-intensive task immediately and having to wait for it to complete.
@@ -224,7 +226,7 @@ Using this code we can be sure that even if you kill a worker using CTRL+C while
 
 </span>
 
-<Warning>
+<Callout type="warning">
 
 Acknowledgement <span style={{color: "var(--secondary-font-color)"}}> must be sent </span> on the <span style={{color: "var(--primary-font-color)"}}> same channel </span> <span style={{color: "var(--secondary-font-color)"}}> that received the delivery </span>.
 
@@ -232,7 +234,7 @@ Attempts to acknowledge using a different channel will result in a channel-level
 
 See the [doc guide on confirmations](https://www.rabbitmq.com/confirms.html) to learn more.
 
-</Warning>
+</Callout>
 
 ### Forgotten acknowledgment
 
@@ -289,11 +291,11 @@ But there is a quick workaround - let's declare a queue with different name, for
 channel.assertQueue("task_queue", { durable: true });
 ```
 
-<Note>
+<Callout type="note">
 
 This `durable` <span style={{color: "var(--secondary-font-color)"}}> option change needs to be applied </span> to <span style={{color: "var(--primary-font-color)"}}> both </span> <span style={{color: "var(--secondary-font-color)"}}> the producer and consumer </span> code.
 
-</Note>
+</Callout>
 
 ### Message persistence
 
@@ -305,7 +307,7 @@ Now we need to mark our messages as persistent - by using the `persistent` optio
 channel.sendToQueue(queue, Buffer.from(msg), { persistent: true });
 ```
 
-<Warning>
+<Callout type="warning">
 
 Marking messages as persistent doesn't fully guarantee that a message won't be lost.
 
@@ -314,13 +316,13 @@ there is still a short time window when RabbitMQ has accepted a message and hasn
 
 Also, RabbitMQ doesn't do `fsync(2)` for every message -- it may be just saved to cache and not really written to the disk.
 
-</Warning>
+</Callout>
 
-<Info>
+<Callout type="info">
 
 The persistence guarantees aren't strong, but it's more than enough for our simple task queue. If you need a stronger guarantee then you can use [publisher confirms](https://www.rabbitmq.com/confirms.html).
 
-</Info>
+</Callout>
 
 ## Fair dispatch
 
@@ -342,13 +344,13 @@ Instead, it will dispatch it to the next worker that is not still busy.
 channel.prefetch(1);
 ```
 
-<Tip>
+<Callout type="tip">
 
 If all the workers are busy, <span style={{color: "var(--secondary-font-color)"}}> your queue can fill up </span>.
 
 You will want to keep an eye on that, and maybe add more workers, or have some other strategy.
 
-</Tip>
+</Callout>
 
 <br />
 
