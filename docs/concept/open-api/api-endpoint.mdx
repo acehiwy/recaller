@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ## Path Object (The Endpoints list)
 
 API Endpoints (also called Operations or Routes) are called Paths in the OAS.
@@ -18,11 +20,11 @@ Every field in the Paths Object is a [Path Item Object](https://spec.openapis.or
 
 Paths <span style={{color: "var(--secondary-font-color)"}}> must start with a forward slash `/` </span> <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> since they are directly appended to the server URL (described in the API Servers page) to construct the full endpoint URL </span>.
 
-<Info>
+<Callout type="info">
 
 The [Tic Tac Toe sample API](https://oai.github.io/Documentation/examples/tictactoe.yaml) is used in this guide to exemplify each concept and it is built piece by piece as the guide progresses.
 
-</Info>
+</Callout>
 
 Here's the first snippet already containing a single endpoint:
 
@@ -46,11 +48,11 @@ The [Path Item Object](https://spec.openapis.org/oas/v3.1.0#path-item-object) de
 
 Allowed operations match HTTP methods names like `get`, `put`, `delete` etc.
 
-<Tip>
+<Callout type="tip">
 
 This object also accepts <span style={{color: "var(--secondary-font-color)"}}> common properties </span> <span style={{color: "var(--primary-font-color)"}}> for all operations on the path </span> like `summary` or `description`.
 
-</Tip>
+</Callout>
 
 The details of each operation are given in each child Operation object.
 
@@ -101,19 +103,19 @@ paths:
 
 Each field name is an <span style={{color: "var(--secondary-font-color)"}}> HTTP response code </span> enclosed in quotation marks and its value is a [Response Object](https://spec.openapis.org/oas/v3.1.0#response-object) (note there is no 's' at the end) containing details about the response.
 
-<Note>
+<Callout type="note">
 
 At least one response must be given
 
 It is recommended that it corresponds to the success case (typically HTTP response code 200).
 
-</Note>
+</Callout>
 
-<Tip>
+<Callout type="tip">
 
 5 wildcards are allowed: 1XX, 2XX, 3XX, 4XX and 5XX (<span style={{color: "var(--secondary-font-color)"}}> explicit codes take preference over wildcards </span>).
 
-</Tip>
+</Callout>
 
 ## Response Object
 

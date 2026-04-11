@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 In the previous tutorial we created a work queue. The assumption behind a work queue is that each task is delivered to exactly one worker.
 
 In this part we'll do something completely different. We'll deliver <span style={{color: "var(--secondary-font-color)"}}> a message </span> to <span style={{color: "var(--secondary-font-color)"}}> multiple consumers </span>.
@@ -68,7 +70,7 @@ channel.publish("logs", "", Buffer.from("Hello World!"));
 
 The empty string as second parameter means that we don't want to send the message to any specific queue. We want only to publish it to our `logs` exchange.
 
-<Tip>
+<Callout type="tip">
 
 To list the exchanges on the server you can run the ever useful `rabbitmqctl`:
 
@@ -80,7 +82,7 @@ In this list there will be some `amq.*` exchanges and the default (unnamed) exch
 
 These are created by default, but it is unlikely you'll need to use them at the moment.
 
-</Tip>
+</Callout>
 
 ## Temporary queues
 
@@ -106,11 +108,11 @@ When the method returns, the queue instance contains a random queue name generat
 
 &#8203;<span style={{color: "var(--secondary-font-color)"}}> When the connection that declared it closes, the queue will be deleted </span> because it is declared as exclusive.
 
-<Tip>
+<Callout type="tip">
 
 You can learn more about the exclusive flag and other queue properties in the [guide on queues](https://www.rabbitmq.com/queues.html).
 
-</Tip>
+</Callout>
 
 ## Bindings
 
@@ -126,7 +128,7 @@ channel.bindQueue(queue_name, "logs", "");
 
 From now on the `logs` exchange will append messages to our queue.
 
-<Tip>
+<Callout type="tip">
 
 You can list existing bindings using
 
@@ -134,7 +136,7 @@ You can list existing bindings using
 rabbitmqctl list_bindings
 ```
 
-</Tip>
+</Callout>
 
 ## Putting it all together
 
@@ -176,11 +178,11 @@ amqp.connect("amqp://localhost", function (error0, connection) {
 
 As you see, after establishing the connection we declared the exchange. This step is necessary as publishing to a non-existing exchange is forbidden.
 
-<Danger>
+<Callout type="danger">
 
 The messages will be lost if no queue is bound to the exchange yet.
 
-</Danger>
+</Callout>
 
 But that's okay for us in this case; if no consumer is listening yet we can safely discard the message.
 

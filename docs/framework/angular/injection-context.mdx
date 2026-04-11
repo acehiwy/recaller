@@ -4,6 +4,8 @@ sidebarTitle: "Injection Context"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 An injection context is a place where you have access to the `inject` function.
 
 ## Valid injection context
@@ -59,11 +61,11 @@ export class HeroService {
 }
 ```
 
-<Note>
+<Callout type="note">
 
 [`runInInjectionContext`](https://angular.dev/api/core/runInInjectionContext) requires an [`EnvironmentInjector`](https://angular.dev/api/core/EnvironmentInjector).
 
-</Note>
+</Callout>
 
 <br />
 

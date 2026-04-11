@@ -4,6 +4,8 @@ sidebarTitle: "Vectors"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 `Vec<T>`, also known as a vector.
 
 Vectors allow you to store more than one value in a single data structure that <span style={{color: "var(--secondary-font-color)"}}> puts all the values next to each other in memory </span>.
@@ -16,11 +18,11 @@ Vectors can only store values of the <span style={{color: "var(--secondary-font-
 let v: Vec<i32> = Vec::new();
 ```
 
-<Note>
+<Callout type="note">
 
 We added a type annotation here. Because we aren’t inserting any values into this vector
 
-</Note>
+</Callout>
 
 Rust provides the `vec!` macro, which will create a new vector that holds the values you give it.
 
@@ -39,11 +41,11 @@ v.push(7);
 v.push(8);
 ```
 
-<Note>
+<Callout type="note">
 
 Changing Vector value require Vector to be mutable.
 
-</Note>
+</Callout>
 
 ## Reading elements of Vector
 
@@ -75,11 +77,11 @@ match third {
 - index syntax will cause the program to panic
 - `get` method will return `None` variant
 
-<Tip>
+<Callout type="tip">
 
 Use index syntax when you want program to crash when there s an attempt to access invalid index
 
-</Tip>
+</Callout>
 
 ## Reference Scope
 
@@ -95,7 +97,7 @@ v.push(6); // cannot borrow `v` as mutable because it is also borrowed as immuta
 println!("The first element is: {first}");
 ```
 
-<Info>
+<Callout type="info">
 
 Why should a reference to the first element care about changes at the end of the vector?
 
@@ -105,7 +107,7 @@ Adding a new element onto the end of the vector might require allocating new mem
 
 Reference might still point to the old stale memory location
 
-</Info>
+</Callout>
 
 ## Iterating
 
@@ -123,15 +125,15 @@ for i in &mut v {
 }
 ```
 
-<Note>
+<Callout type="note">
 
 If we attempted to insert or remove items in the for loop bodies, we would get a compiler error.
 
 The reference to the vector that the for loop holds <span style={{color: "var(--secondary-font-color)"}}> prevents simultaneous modification </span> <span style={{color: "var(--primary-font-color)"}}> of the whole vector </span>.
 
-</Note>
+</Callout>
 
-<Info>
+<Callout type="info">
 
 Iterating over a vector without using references is valid, but the items can no longer be used afterward because they are moved.
 
@@ -146,7 +148,7 @@ for i in v {
 println("{}", v[0]); // borrow of moved value: `v`
 ```
 
-</Info>
+</Callout>
 
 ## Using Enum to Store Multiple Type
 
@@ -180,11 +182,11 @@ When the vector gets dropped, all of its contents are also dropped.
 } // <- v goes out of scope and is freed here
 ```
 
-<Tip>
+<Callout type="tip">
 
 [Vector API](https://doc.rust-lang.org/std/vec/struct.Vec.html)
 
-</Tip>
+</Callout>
 
 <br />
 

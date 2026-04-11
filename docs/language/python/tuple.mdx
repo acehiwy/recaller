@@ -6,6 +6,8 @@ tags:
   - python
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 Tuples are <span style={{color: "var(--primary-font-color)"}}> immutable </span> sequences
 
 ``` python lines highlight={10}
@@ -28,7 +30,7 @@ u
 # ((12345, 54321, 'hello!'), (1, 2, 3, 4, 5))
 ```
 
-<Warning> 
+<Callout type="warning"> 
 
 Single item tuple is constructed with trailing comma, `,`
 
@@ -39,13 +41,13 @@ this_is_tuple = ("hello",) # notice trailing comma
 this_is_also_tuple = "hello", # notice trailing comma
 ```
 
-</Warning>
+</Callout>
 
-<Info> 
+<Callout type="info"> 
 
 Empty tuple syntax: `empty = ()`
 
-</Info>
+</Callout>
 
 
 ## Tuple comprehension
@@ -82,17 +84,17 @@ print(my_tuple_instance[0] , my_tuple_instance[1])
 
 Each field name needs to be a valid string that can be used to create an attribute name.
 
-<Note> 
+<Callout type="note"> 
 
 Field names cannot start with an underscore, `_`.
 
-</Note>
+</Callout>
 
-<Info> 
+<Callout type="info"> 
 
 `namedtuple` is a subclass of tuple.
 
-</Info>
+</Callout>
 
 ### Methods
 

@@ -4,6 +4,8 @@ sidebarTitle: "Recoverable Errors"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ## Result enum
 
 The `Result` enum have two variants, `Ok` and `Err`
@@ -36,11 +38,11 @@ fn main() {
 }
 ```
 
-<Info>
+<Callout type="info">
 
 `Result` enum and its variants are included in the prelude.
 
-</Info>
+</Callout>
 
 ## Matching on Different Errors
 
@@ -152,11 +154,11 @@ The `?` placed after a `Result` indicating
 - If `Ok` variant: the value inside the `Ok` will get returned from this expression (return to `username_file`)
 - If `Err` variant: the `Err` will be returned as function return.
 
-<Note>
+<Callout type="note">
 
 Error type return by `?` will be converted into the error type defined in the return type of the current function.
 
-</Note>
+</Callout>
 
 ### Where The `?` Operator Can Be Used
 
@@ -229,22 +231,22 @@ fn main() -> Result<(), Box<dyn Error>> {
 
 When a main function returns a `Result<(), E>`, the executable will exit with a value of 0 if main returns `Ok(())` and will exit with a nonzero value if main returns an `Err` value.
 
-<Tip>
+<Callout type="tip">
 
 The main function may return any types that implement the [std::process::Termination trait](https://doc.rust-lang.org/std/process/trait.Termination.html),
 which contains a function report that returns an `ExitCode`.
 
 Consult the standard library documentation for more information on implementing the `Termination` trait for your own types.
 
-</Tip>
+</Callout>
 
 ---
 
-<Warning>
+<Callout type="warning">
 
 the `ok` method on `Result` or the `ok_or` method on `Option`
 
-</Warning>
+</Callout>
 
 <br />
 

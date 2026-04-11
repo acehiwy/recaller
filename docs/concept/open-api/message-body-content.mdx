@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ## The `content` field
 
 This field can be found both in [Response Objects](https://spec.openapis.org/oas/v3.1.0#response-object) and [Request Body Objects](https://spec.openapis.org/oas/v3.1.0#request-body-object).
@@ -14,11 +16,11 @@ This field can be found both in [Response Objects](https://spec.openapis.org/oas
 
 This allows returning / accepting content in <span style={{color: "var(--secondary-font-color)"}}> different formats </span>, each one with a different structure described by the [Media Type Object](https://spec.openapis.org/oas/v3.1.0#media-type-object).
 
-<Note> 
+<Callout type="note"> 
 
 Wildcards are accepted for the media types, with the more specific ones taking precedence over the generic ones.
 
-</Note>
+</Callout>
 
 
 ``` yaml lines
@@ -98,19 +100,19 @@ content:
         type: integer
 ```
 
-<Note>
+<Callout type="note">
 
 **<span style={{color: "var(--writer-additional-note-font-color)"}}> //\\\\ </span>** All items inside array have to be the same type.
 
 It means you can only define a single `items`'s type per array.
 
-</Note>
+</Callout>
 
-<Info>
+<Callout type="info">
 
 The size of the array can be limited with `minItems` and `maxItems`.
 
-</Info>
+</Callout>
 
 ### Object type
 

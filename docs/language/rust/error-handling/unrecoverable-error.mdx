@@ -4,6 +4,8 @@ sidebarTitle: "Unrecoverable Errors"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ## Calling panic!
 
 ``` rust lines
@@ -67,14 +69,14 @@ stack backtrace:
 note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
 ```
 
-<Tip>
+<Callout type="tip">
 
 The key to reading the backtrace is to start from the top and read until you see files you wrote. Then
 
 - The lines above are code that your code has called
 - The lines below are code that called your code
 
-</Tip>
+</Callout>
 
 ## Unwinding and Aborting
 
@@ -88,11 +90,11 @@ So Rust allows you to immediately aborting which ends the program without cleani
 panic = 'abort'
 ```
 
-<Tip>
+<Callout type="tip">
 
 Switch to `panic = 'abort'` if you need to make the resulting binary as small as possible
 
-</Tip>
+</Callout>
 
 <br />
 

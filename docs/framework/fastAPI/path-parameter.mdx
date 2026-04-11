@@ -7,19 +7,21 @@ tags:
   - python
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ``` python lines
 @app.get("/users/{user_id}/items/{item_id}/")
 async def read_item(item_id: int, user_id: int):
     return {"item_id": item_id , "user_id": user_id}
 ```
 
-<Warning> 
+<Callout type="warning"> 
 
 The path parameter name `item_id` defined in the decorator must be aligned with the argument name `item_id` defined in the function.
 
 Otherwise, FastAPI would interpret the function argument as a query parameter.
 
-</Warning>
+</Callout>
 
 ## <span style={{color: "var(--secondary-font-color)"}}> Define argument type </span>
 
@@ -51,11 +53,11 @@ For example, when making the request `GET /foo/bar`:
 }
 ```
 
-<Note> 
+<Callout type="note"> 
 
 Data validation is performed under the hood by `Pydantic`
 
-</Note>
+</Callout>
 
 
 ## Path operation defining order
@@ -116,11 +118,11 @@ async def read_file(file_path: str):
 
 So the request `GET /files/path/to/user/file` would match the `read_file` function, and the `file_path` argument will be `/path/to/user/file`.
 
-<Tip> 
+<Callout type="tip"> 
 
 With `:path`, any `/file` route would match, so it acts like the wildcard route `/file/**`.
 
-</Tip>
+</Callout>
 
 <br/>
 

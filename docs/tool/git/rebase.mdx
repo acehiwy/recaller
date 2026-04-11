@@ -6,47 +6,51 @@ tags:
   - git
 ---
 
-``` bash lines
-A---B---C---F---G    
-         \             
+import { Callout } from "/snippets/callout.mdx";
+
+```bash lines
+A---B---C---F---G
+         \
           D---E---H---I (HEAD)
 ```
 
 ## `onto` option
 
-``` bash lines
+```bash lines
 git rebase --onto <new parent> <old parent> <until commit>
 ```
 
 Example: extract all commits after `D` to the new parent `F`.
-``` bash lines
-A---B---C---F---G    
-            \             
+
+```bash lines
+A---B---C---F---G
+            \
               E---H---I (HEAD)
 ```
-``` bash lines
+
+```bash lines
 git rebase --onto F D
 ```
-<Note> 
+
+<Callout type="note">
 
 It deletes `D`.
 
-</Note>
-
+</Callout>
 
 Example: extract all commits after `D` until `H` to the new parent `F`.
-``` bash lines
-A---B---C---F---G    
-            \             
+
+```bash lines
+A---B---C---F---G
+            \
               E---H (HEAD)
 ```
-``` bash lines
+
+```bash lines
 git rebase --onto F D H
 ```
 
-
-
-<br/>
+<br />
 
 ---
 

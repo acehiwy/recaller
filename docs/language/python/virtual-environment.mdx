@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 A self-contained directory that contains a specific version of the Python interpreter and a set of additional packages.
 
 It is used to separate Python's global modules from a project's modules.
@@ -22,17 +24,17 @@ python -m venv <dir path>
 python -m venv /foo
 ```
 
-<Note> 
+<Callout type="note"> 
 
 `<dir path>` is a directory that will contain a version of the Python interpreter and Python modules.
 
-</Note>
+</Callout>
 
-<Note> 
+<Callout type="note"> 
 
 `<dir path>` will be created if it does not exist.
 
-</Note>
+</Callout>
 
 ## Activate and deactivate virtual environment
 

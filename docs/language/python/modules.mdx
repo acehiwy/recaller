@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 A modules is a file containing variables, statements and functions. 
 
 A file name is a module name
@@ -28,11 +30,11 @@ print(__name__)
 ```
 
 
-<Note> 
+<Callout type="note"> 
 
 Within a module, the module's name (as string) is available as a value of global variable `__name__`
 
-</Note>
+</Callout>
 
 
 </Tab>
@@ -178,11 +180,11 @@ Lets say module `foo` is imported, the interpreter start search from:
   - `PYTHONPATH` environment variable
   - <span style={{color: "var(--can-not-understand-font-color)"}}> installation-dependent default </span>
 
-<Note> 
+<Callout type="note"> 
 
 If the input script is symlinked, the interpreter adds the original file location to the search path, <span style={{color: "var(--secondary-font-color)"}}> not the symlinked file directory </span>.
 
-</Note>
+</Callout>
 
 <Accordion title="`sys.path` example">
 
@@ -266,11 +268,11 @@ eg. `dir()` from `main.py` file above will give:
 ]
 ```
 
-<Info> 
+<Callout type="info"> 
 
 Built-in definitions can be listed by `import builtins; dir(builtins)`
 
-</Info>
+</Callout>
 
 
 ## Packages
@@ -297,22 +299,22 @@ import sound.formats.wavread
 from sound.formats.wavread import some_definition_inside_wavread
 ```
 
-<Info> 
+<Callout type="info"> 
 
 `__init__.py` makes its directory a module by using the definitions inside the `__init__.py` file.
 
 eg. the `import sound` statement would import definitions from a file `sound.py` or  `__init__.py` which live inside `sound` directory
 
-</Info>
+</Callout>
 
 
-<Tip> 
+<Callout type="tip"> 
 
 When using syntax like `import item.subitem.subsubitem`, each item except for the last must be a package.
 
 The last item can be a module or a package but can't be a class or function or variable defined in the previous item.
 
-</Tip>
+</Callout>
 
 ### Importing `*` from package
 

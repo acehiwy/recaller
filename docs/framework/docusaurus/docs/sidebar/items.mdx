@@ -7,6 +7,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ## Type of sidebar
 
 - **[Doc](#doc)**: link to a doc page, associating it with the sidebar
@@ -126,11 +128,11 @@ module.exports = {
 
 Use the html type to render <span style={{color: "var(--secondary-font-color)"}}> custom HTML sidebar </span> within the item's `<li>` tag.
 
-<Info>
+<Callout type="info">
 
 html value will be rendered inside `li` tag
 
-</Info>
+</Callout>
 
 This can be useful for inserting custom items such as dividers, section titles, ads, and images.
 
@@ -486,11 +488,11 @@ module.exports = {
 };
 ```
 
-<Note>
+<Callout type="note">
 
 The option in sidebars.js takes precedence over plugin configuration
 
-</Note>
+</Callout>
 
 #### Expanded categories by default
 

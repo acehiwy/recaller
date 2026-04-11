@@ -4,6 +4,8 @@ sidebarTitle: "Custom event"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 Component can define custom event it emit by using [`output`](https://angular.dev/api/core/output)
 
 ``` typescript title="foo.component.ts" lines
@@ -19,11 +21,11 @@ export class Foo {
 <app-foo (bar)="dosomethingWithEvent($event)" />
 ```
 
-<Info>
+<Callout type="info">
 
 Angular custom events do not bubble up the DOM
 
-</Info>
+</Callout>
 
 
 
@@ -64,11 +66,11 @@ export class CustomSlider {
 }
 ```
 
-<Tip> 
+<Callout type="tip"> 
 
 Avoid prefixing output names with "on"
 
-</Tip>
+</Callout>
 
 
 

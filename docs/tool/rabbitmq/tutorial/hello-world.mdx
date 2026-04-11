@@ -8,6 +8,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 In this part of the tutorial we'll write two small programs in Javascript;
 a producer that sends a single message, and a consumer that receives messages and prints them out.
 
@@ -21,17 +23,17 @@ In the diagram below:
 
 ![Producer Queue Consumer](../assets/producer-queue-consumer.png)
 
-<Info>
+<Callout type="info">
 
 RabbitMQ speaks multiple protocols. This tutorial uses AMQP 0-9-1, which is an open, general-purpose protocol for messaging.
 
-</Info>
+</Callout>
 
-<Tip>
+<Callout type="tip">
 
 RabbitMQ clients are available in [many different languages](http://rabbitmq.com/devtools.html).
 
-</Tip>
+</Callout>
 
 here we will use [amqp.node](https://amqp-node.github.io/amqplib/):
 
@@ -100,17 +102,17 @@ amqp.connect("amqp://localhost", function (error0, connection) {
 });
 ```
 
-<Note>
+<Callout type="note">
 
 Declaring a queue is idempotent - it will only be created if it doesn't exist already.
 
-</Note>
+</Callout>
 
-<Note>
+<Callout type="note">
 
 The message content is a byte array, so you can encode whatever you like there.
 
-</Note>
+</Callout>
 
 Lastly, we close the connection and exit:
 
@@ -144,7 +146,7 @@ amqp.connect("amqp://localhost", function (error0, connection) {
 });
 ```
 
-<Tip>
+<Callout type="tip">
 
 Sending doesn't work!
 
@@ -156,7 +158,7 @@ Check the broker logfile to confirm and reduce the limit if necessary.
 
 The [configuration file documentation](https://www.rabbitmq.com/configure.html#config-items) will show you how to set `disk_free_limit`.
 
-</Tip>
+</Callout>
 
 ## Consuming message
 
@@ -241,7 +243,7 @@ node send.js
 node receive.js
 ```
 
-<Info>
+<Callout type="info">
 
 You may wish to see what queues RabbitMQ has and how many messages are in them. You can do it (as a privileged user) using the `rabbitmqctl` tool:
 
@@ -262,7 +264,7 @@ rabbitmqctl.bat list_queues
 </Tab>
 </Tabs>
 
-</Info>
+</Callout>
 
 <br />
 

@@ -7,6 +7,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ## Markdown headings
 
 You can use regular Markdown headings.
@@ -52,11 +54,11 @@ toc_max_heading_level: 5
 # Foo Bar heading
 ```
 
-<Tip>
+<Callout type="tip">
 
 See [Front matter API spec](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-docs#markdown-front-matter) for more details
 
-</Tip>
+</Callout>
 
 ---
 
@@ -73,11 +75,11 @@ module.exports = {
 };
 ```
 
-<Tip>
+<Callout type="tip">
 
 See [configuration reference](https://docusaurus.io/docs/api/themes/configuration#table-of-contents) for more details
 
-</Tip>
+</Callout>
 
 ---
 
@@ -112,13 +114,13 @@ A special Markdown syntax lets you set an explicit heading id:
 
 ---
 
-<Tip>
+<Callout type="tip">
 
 Use the [write-heading-ids](https://docusaurus.io/docs/cli#docusaurus-write-heading-ids-sitedir) CLI command to add explicit IDs to all your Markdown documents.
 
-</Tip>
+</Callout>
 
-<Warning>
+<Callout type="warning">
 
 <span style={{color: "var(--primary-font-color)"}}> Generated </span> heading IDs will be <span style={{color: "var(--secondary-font-color)"}}>
   guaranteed to be unique
@@ -126,7 +128,7 @@ Use the [write-heading-ids](https://docusaurus.io/docs/cli#docusaurus-write-head
 
 But if you use <span style={{color: "var(--secondary-font-color)"}}> custom IDs </span>, make sure <span style={{color: "var(--secondary-font-color)"}}> each one appears exactly once on each page </span>
 
-</Warning>
+</Callout>
 
 ## <span style={{color: "var(--not-nesary-for-now-future-font-color)"}}> Inline table of contents </span>
 

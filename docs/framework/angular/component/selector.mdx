@@ -4,6 +4,8 @@ sidebarTitle: "Selector"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 Every component can define its CSS selector using the `selector` metadata.
 
 ``` typescript lines
@@ -66,11 +68,11 @@ export class App {
 </Tab>
 </Tabs>
 
-<Note> 
+<Callout type="note"> 
 
 The CSS class still applies to the HTML element even if it is matched.
 
-</Note>
+</Callout>
 
 
 
@@ -111,19 +113,19 @@ export class App {}
 
 &#8203;<span style={{color: "var(--can-not-understand-font-color)"}}>Angular matches selectors statically at compile-time. Changing the DOM at run-time, either via Angular bindings or with DOM APIs, does not affect the components rendered.</span>
 
-<Note>
+<Callout type="note">
 
 Components are "standalone" by default. This means another component can add them to its `imports`.
 
 The `standalone: false` metadata can be specified to indicate that a component belongs to a module and needs to be imported through its `NgModule` instead.
 
-</Note>
+</Callout>
 
-<Info>
+<Callout type="info">
 
 Angular throws an error when component selectors are duplicated.
 
-</Info>
+</Callout>
 
 <br />
 

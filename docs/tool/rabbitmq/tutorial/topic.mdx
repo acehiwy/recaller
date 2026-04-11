@@ -8,6 +8,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 Although using the direct exchange improved our system, it still has limitations - it can't do routing based on <span style={{color: "var(--secondary-font-color)"}}> multiple criteria </span>.
 
 In our logging system we might want to subscribe to not only logs based on severity, but also <span style={{color: "var(--secondary-font-color)"}}> based on the source which emitted </span> the log.
@@ -16,11 +18,11 @@ In our logging system we might want to subscribe to not only logs based on sever
 
 Messages sent to a topic exchange can't have an arbitrary `routing_key` - it <span style={{color: "var(--secondary-font-color)"}}> must be a list of words, delimited by dots </span>.
 
-<Info>
+<Callout type="info">
 
 Topic exchange is direct exchange with special format of routing key and binding key.
 
-</Info>
+</Callout>
 
 The words can be anything, but usually they specify some features connected to the message.
 
@@ -30,17 +32,17 @@ Examples:
 - `nyse.vmw`
 - `quick.orange.rabbit`
 
-<Warning>
+<Callout type="warning">
 
 There can be as many words in the routing key as you like, up to the limit of 255 bytes.
 
-</Warning>
+</Callout>
 
-<Note>
+<Callout type="note">
 
 The binding key must also be in the same form.
 
-</Note>
+</Callout>
 
 The logic behind the topic exchange is similar to a direct one - a message sent with a particular routing key will be delivered to all the queues that are bound with a matching binding key.
 
@@ -80,17 +82,17 @@ What happens if we break our contract and send a message with one or four words,
 
 On the other hand `lazy.orange.male.rabbit`, even though it has four words, will <span style={{color: "var(--secondary-font-color)"}}> match the last binding </span> `lazy.#` and will be <span style={{color: "var(--secondary-font-color)"}}> delivered to the second queue </span>.
 
-<Note>
+<Callout type="note">
 
 When a queue is bound with `#` (hash) binding key - it will <span style={{color: "var(--secondary-font-color)"}}> receive all the messages </span>, regardless of the routing key - like in fanout exchange.
 
-</Note>
+</Callout>
 
-<Note>
+<Callout type="note">
 
 When special characters `*` (star) and `#` (hash) <span style={{color: "var(--secondary-font-color)"}}> aren't used </span> <span style={{color: "var(--primary-font-color)"}}> in bindings </span>, the topic exchange will behave just like a direct exchange.
 
-</Note>
+</Callout>
 
 ## Code Example
 

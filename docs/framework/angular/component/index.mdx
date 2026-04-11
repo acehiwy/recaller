@@ -4,7 +4,9 @@ sidebarTitle: "Component"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
-``` typescript lines
+import { Callout } from "/snippets/callout.mdx";
+
+```typescript lines
 import { Component } from "@angular/core";
 
 @Component({
@@ -19,14 +21,11 @@ import { Component } from "@angular/core";
 export class App {}
 ```
 
-<Note>
+<Callout type="note">
 
 `:host` selector refers to the HTML element of a component
 
-</Note>
-
-
-
+</Callout>
 
 ## Component metadata
 
@@ -36,7 +35,7 @@ These fields are provide to `@Component` decorator
 
 Separate HTML and CSS files using `templateUrl` and `styleUrl` fields
 
-``` typescript lines
+```typescript lines
 @Component({
   selector: 'user-profile',
   templateUrl: 'user-profile.html',
@@ -46,26 +45,23 @@ Separate HTML and CSS files using `templateUrl` and `styleUrl` fields
 
 Component style only affect element inside its HTML template
 
-<Note>
+<Callout type="note">
 
 `style` and `styleUrl` fields are optional
 
-</Note>
+</Callout>
 
-<Note>
+<Callout type="note">
 
 `templateUrl` and `styleUrl` are relative to its component location
 
-</Note>
-
-
-
+</Callout>
 
 ## Component state
 
 `HTML template` can reference to class'properties using `{{ <properties name> }}` syntax
 
-``` typescript lines highlight={5,7}
+```typescript lines highlight={5,7}
 import { Component } from "@angular/core";
 
 @Component({
@@ -78,17 +74,17 @@ export class App {
 
 Angular evaluates contents inside `{{}}`
 
-<Info>
+<Callout type="info">
 
 The DOM rendered by component is called component's view
 
-</Info>
+</Callout>
 
 ## Component control flow
 
 use `@if` , `@else`
 
-``` typescript lines
+```typescript lines
 @Component({
   ...
   template: `
@@ -111,7 +107,7 @@ export class App {
 
 use `@for (<item> of <iterable> ; track <unique identifier>) {}`
 
-``` typescript lines highlight={4}
+```typescript lines highlight={4}
 @Component({
   ...
   template: `
@@ -125,16 +121,13 @@ export class App {
 }
 ```
 
-<Note>
+<Callout type="note">
 
 `track` is required
 
 It is like the `key` attribute in React
 
-</Note>
-
-
-
+</Callout>
 
 ## Property binding
 
@@ -142,7 +135,7 @@ Bind component property values to HTML attributes or other component parameters
 
 Use `[]` syntax
 
-``` typescript lines highlight={7-8,12}
+```typescript lines highlight={7-8,12}
 import {Component} from '@angular/core';
 
 @Component({
@@ -160,18 +153,15 @@ export class App {
 
 Angular updates the DOM when bound value changes
 
-<Info>
+<Callout type="info">
 
 bind to HTML attributes by prefixing with `attr.`
 
-``` html lines
+```html lines
 <ul [attr.role]="foo"></ul>
 ```
 
-</Info>
-
-
-
+</Callout>
 
 ## Event handling
 
@@ -179,7 +169,7 @@ To add an event listener, use `()`
 
 e.g., register `greet` function as a callback for a click event
 
-``` typescript lines
+```typescript lines
 @Component({
   ...
   template: `<button (click)="greet($event)">`
@@ -191,14 +181,11 @@ export class App {
 }
 ```
 
-<Note>
+<Callout type="note">
 
 `$event` keyword in HTML template represents DOM [`event`](https://developer.mozilla.org/en-US/docs/Web/API/Event) object
 
-</Note>
-
-
-
+</Callout>
 
 ## Services
 
@@ -208,7 +195,7 @@ Angular has dependency injection feature
 
 Register a class to DI container by using `Injectable` decorator
 
-``` typescript lines
+```typescript lines
 import { Injectable } from "@angular/core";
 
 @Injectable({ providedIn: "root" })
@@ -221,7 +208,7 @@ export class Calculator {
 
 Use `service` by calling `inject(<inject_token>)`
 
-``` typescript lines highlight={8}
+```typescript lines highlight={8}
 import { Component, inject } from "@angular/core";
 import { Calculator } from "./calculator";
 

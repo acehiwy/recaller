@@ -6,7 +6,9 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
-``` python lines
+import { Callout } from "/snippets/callout.mdx";
+
+```python lines
 with open('path/to/file', 'w', encoding="utf-8") as f
   file_content = f.read()
 
@@ -28,10 +30,9 @@ optional `encoding` keyword argument, default is `utf-8`, is the name of encodin
   - remove all file content or create a file if does not exist.
   - file's pointer start at the beginning
 - `x`: open for exclusive creation, failing if the file already exists
-- `a`: open for writing. appending to the end of file 
+- `a`: open for writing. appending to the end of file
   - create file if does not exist
   - all writes append to the end of the file regardless of the current pointer position
-
 
 - `b`: binary mode
 - `t`: text mode (default)
@@ -39,47 +40,46 @@ optional `encoding` keyword argument, default is `utf-8`, is the name of encodin
 
 the default mode is `r` (synonym of `rt`)
 
-`w+` and `w+b` open and truncate the file. 
+`w+` and `w+b` open and truncate the file.
 `r+` and `r+b` open the file with no truncation.
 
-<Note> 
+<Callout type="note">
 
 Mode `b`, contents are return as [`bytes`](https://docs.python.org/3/library/stdtypes.html#bytes) object
 
 Mode `t`, contents are return as `str`
 
-</Note>
+</Callout>
 
-<Note> 
+<Callout type="note">
 
 `with` keyword ensure that file is closed after the process is done even if an exception is raised.
 
-</Note>
+</Callout>
 
+<Callout type="info">
 
-<Info> 
+When <span style={{color: "var(--secondary-font-color)"}}> reading </span> in text mode, the default is to convert platform-specific line endings (`\n` on Unix, `\r\n` on Windows) to just `\n`.
 
-When <span style={{color: "var(--secondary-font-color)"}}> reading </span> in text mode, the default is to convert platform-specific line endings (`\n` on Unix, `\r\n` on Windows) to just `\n`. 
-
-When <span style={{color: "var(--secondary-font-color)"}}> writing </span> in text mode, the default is to convert occurrences of `\n` <span style={{color: "var(--secondary-font-color)"}}> back </span> to platform-specific line endings. 
-This behind-the-scenes modification to file data is fine for text files, but will corrupt binary data like that in JPEG or EXE files. 
+When <span style={{color: "var(--secondary-font-color)"}}> writing </span> in text mode, the default is to convert occurrences of `\n` <span style={{color: "var(--secondary-font-color)"}}> back </span> to platform-specific line endings.
+This behind-the-scenes modification to file data is fine for text files, but will corrupt binary data like that in JPEG or EXE files.
 Be very careful to use binary mode when reading and writing such files.
 
-</Info>
+</Callout>
 
-<Info> 
+<Callout type="info">
 
 In append binary mode, `a+b`, Pointer position will be moved ahead as the amount of bytes written regardless of its position.
 
 For example, if the pointer position is at 2 in a 10-byte file and you write 3 bytes to the end, resulting in a 13-byte file, the pointer moves from 2 to 5, not from 10 to 13.
 
-</Info>
+</Callout>
 
 ## Read file
 
 ### `read` method
 
-``` python lines
+```python lines
 with open('filepath') as f:
   # do something
   file_content = f.read()
@@ -89,7 +89,7 @@ The `<file>.read(<size>)` method returns a string or bytes object.
 
 An optional numeric `size` argument can be provided to specify how many characters (in text mode) or bytes (in binary mode) are read and returned. By default, all file content is returned.
 
-``` python lines
+```python lines
 with open...:
   first_10_char = file.read(10)
   _11_to_20th_char = file.read(10)
@@ -97,7 +97,7 @@ with open...:
 
 ### `readline` method
 
-``` python lines
+```python lines
 with open('foo.py') as f:
   line_1 = f.readline()
   line_2 = f.readline()
@@ -111,60 +111,59 @@ with open('foo.py') as f:
 
 a newline character (`\n`) is left at the end of the string
 
-<Tip> 
+<Callout type="tip">
 
 Returning each line as a list
 
-``` python lines
+```python lines
 my_list = f.readlines()
 
 # or
 my_list = list(f)
 ```
 
-</Tip>
+</Callout>
 
-
-<Note> 
+<Callout type="note">
 
 `read` and `readline` method return empty string if the end of the file is reached.
 
-</Note>
+</Callout>
 
-<Note> 
+<Callout type="note">
 
 The return type of a read operation is a string. Numbers need to be cast to `int` after reading.
 
-</Note>
+</Callout>
 
 ### Read JSON
 
-``` python lines
+```python lines
 with open('filepath' , 'r') as f:
     result = json.load(f)
 ```
 
 ## Write file
 
-``` python lines
-f.write('This is a test\n') 
-# 15 
+```python lines
+f.write('This is a test\n')
+# 15
 
 # write list to file
 f.writelines(['what' , 'ever'])
 ```
 
-<Note> 
+<Callout type="note">
 
 The `write` method returns the number of <span style={{color: "var(--secondary-font-color)"}}> characters </span> written.
 
-</Note>
+</Callout>
 
 The `write` method takes a string or bytes object. Other types of objects need to be converted first.
 
 ### Write JSON
 
-``` python lines
+```python lines
 arr = ['item1' , 'item2' , 3 , 3333 , (1,2,3,4)]
 dict = {'k1' : 1 , 'k2' : [1,2,3,4] , 'k3' : "foo"}
 
@@ -175,21 +174,23 @@ with open('filepath' , 'w+') as f:
 
 ## Move file's pointer position
 
-``` python lines
+```python lines
 f.seek(<offset> : int, <whence>: 0 | 1 | 2)
 ```
 
 move file pointer for `<offset>` <span style={{color: "var(--primary-font-color)"}}> byte </span> from `<whence>`
 
 `whence` argument accept
-- 0 (default): beginning of the file 
+
+- 0 (default): beginning of the file
 - 1: at current file pointer position
 - 2: end of the file
 
 Eg:
-``` python lines
+
+```python lines
 # move ahead 3 byte from the beginning
-f.seek(3,0) 
+f.seek(3,0)
 
 # move ahead 3 byte from the current pointer position
 f.seek(3,1)
@@ -201,41 +202,40 @@ f.seek(-3,2)
 f.seek(0,2)
 ```
 
-<Note> 
+<Callout type="note">
 
 The `seek` function should be used when you open a file in <span style={{color: "var(--secondary-font-color)"}}> binary mode </span>.
 
-</Note>
+</Callout>
 
-<Danger> 
+<Callout type="danger">
 
 When you open a file <span style={{color: "var(--secondary-font-color)"}}> in text mode </span>, `open('file', 'r+t')`
 
 `seek`'s argument should follow these otherwise error might be raised:
+
 - the `offset` argument should be aligned with the value returned from `f.tell()`
 - `whence` argument can only be `0`
 - the only two exceptions are:
   - move to the beginning, `seek(0)`, of the file
   - move to the end, `seek(0,2)`, of the file
 
-
-
-<Info> 
+<Callout type="info">
 
 Reason: In text mode, the read operation should return valid character data. If you move the file pointer into the middle of the bytes that make up a character, there is no reliable way to know which character it is supposed to represent.
 (If this part is unclear, read more about [character encoding](https://www.youtube.com/watch?v=GMF2Z1EZHXk).)
 
 If you want to move a file pointer in text mode, you can use `read` instead. For example, to move four characters forward, use `read(4)`.
 
-</Info>
+</Callout>
 
-</Danger>
-
+</Callout>
 
 ## Miscellaneous
 
 combine file paths:
-``` python lines
+
+```python lines
 from pathlib import Path
 
 file_paths = ['/example' , 'file' , 'path' , 'file.txt' ]
@@ -252,7 +252,7 @@ print(path_obj.as_posix())
 # base-path/file/path
 ```
 
-<br/>
+<br />
 
 ---
 

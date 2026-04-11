@@ -7,6 +7,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 There are two ways of adding a link to another page through
 
 - URL path
@@ -22,11 +24,11 @@ There are two ways of adding a link to another page through
 URL paths are <span style={{color: "var(--secondary-font-color)"}}> unprocessed </span> by Docusaurus, and you can see them as directly
 rendering to `<a href="./installation">`,
 
-<Note>
+<Callout type="note">
 
 URL paths will be resolved according to the page's URL location, rather than its file-system location.
 
-</Note>
+</Callout>
 
 ## File path
 
@@ -55,13 +57,13 @@ Relative file paths are resolved against the current file's directory.
 Absolute file paths, on the other hand, are resolved <span style={{color: "var(--secondary-font-color)"}}> relative to the content root </span>,
 usually `docs/`, `blog/`, or localized ones like `i18n/zh-Hans/plugin-content-docs/current`.
 
-<Note>
+<Callout type="note">
 
 Absolute file paths can also be relative to the site directory.
 
 However, beware that links that begin with `/docs/` or `/blog/` are not portable as you would need to manually update them if you create new doc versions or localize them.
 
-</Note>
+</Callout>
 
 ``` markdown lines
 You can write [links](/otherFolder/doc4.md) relative to the content root (`/docs/`).
@@ -69,19 +71,19 @@ You can write [links](/otherFolder/doc4.md) relative to the content root (`/docs
 You can also write [links](/docs/otherFolder/doc4.md) relative to the site directory, but it's not recommended.
 ```
 
-<Danger>
+<Callout type="danger">
 
 Markdown file references only work when the source and target files are processed by the same plugin instance.(eg. docs plugin , blogs plugin)
 
 This is a technical limitation of our Markdown processing architecture and will be fixed in the future.
 
-</Danger>
+</Callout>
 
-<Danger>
+<Callout type="danger">
 
 If you are linking files between plugins (e.g. linking to a doc page from a blog post), you have to use URL links.
 
-</Danger>
+</Callout>
 
 ### <span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> Benefits of using file path </span>
 

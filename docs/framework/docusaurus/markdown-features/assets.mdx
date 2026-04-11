@@ -7,6 +7,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 Sometimes you want to link to assets (e.g. docx files, images...) directly from Markdown files, and it is convenient to co-locate the asset next to the Markdown file using it.
 
 Let's imagine the following file structure:
@@ -63,7 +65,7 @@ or
 [Download this docx using Markdown](./assets/docusaurus-asset-example.docx)
 ```
 
-<Note>
+<Callout type="note">
 
 If you use the <span style={{color: "var(--secondary-font-color)"}}> Markdown image </span> `![]()` or <span style={{color: "var(--secondary-font-color)"}}> link syntax </span> `[]()`
 
@@ -71,7 +73,7 @@ All asset paths will be resolved as file paths by Docusaurus and <span style={{c
 
 You don't need to use `require()` in Markdown unless you use the JSX syntax, which you do have to handle yourself.
 
-</Note>
+</Callout>
 
 ## Inline SVGs
 
@@ -168,7 +170,7 @@ This is desirable in two regards:
 
 </span>
 
-<Tip>
+<Callout type="tip">
 
 If you intend to write URLs, you can use the `pathname://` protocol to disable automatic asset linking.
 
@@ -178,7 +180,7 @@ If you intend to write URLs, you can use the `pathname://` protocol to disable a
 
 This link will be generated as `<img src="/img/docusaurus-asset-example-banner.png" alt="banner" />`, without any processing or file existence checking.
 
-</Tip>
+</Callout>
 <br />
 
 ---

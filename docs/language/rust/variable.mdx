@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ## Variable
 
 Variables are immutable by default
@@ -38,11 +40,11 @@ Constants can be declared in <span style={{color: "var(--secondary-font-color)"}
 
 Constants may be set only to a constant expression, <span style={{color: "var(--secondary-font-color)"}}> not the result of a value that could only be computed at runtime </span>.
 
-<Info>
+<Callout type="info">
 
 Rust’s naming convention for constants is to use all uppercase with underscores between words.
 
-</Info>
+</Callout>
 
 Constants are valid for the entire time a program runs, within the scope in which they were declared.
 

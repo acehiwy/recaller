@@ -6,45 +6,49 @@ tags:
   - python
 ---
 
-``` python lines
+import { Callout } from "/snippets/callout.mdx";
+
+```python lines
 some_string = "string value"
 ```
 
 double quote and single quote are equivalent
 
 escape character is `\`
-``` python lines
+
+```python lines
 >>> 'doesn\'t'  # use \' to escape the single quote...
 "doesn't"
 ```
 
 with `print()`, special characters are interpreted
 
-``` python lines
-s = 'First line.\n Second line.' 
+```python lines
+s = 'First line.\n Second line.'
 s  # without print(), special characters are included in the string
 # 'First line.\n Second line.'
 
-print(s)  
+print(s)
 # First line.
 # Second line.
 ```
 
-<Info> 
+<Callout type="info">
 
 use raw string if you don't want characters prefaced by \ to be interpreted as special characters
 
-``` python lines
+```python lines
 print(r'C:\some\name')  # note the r before the quote
 # C:\some\name
 ```
 
-</Info>
+</Callout>
 
-## Multiple line string 
+## Multiple line string
 
 use triple quote:
-``` python lines
+
+```python lines
 print("""\
 Usage: thingy [OPTIONS]
      -h                        Display this usage message
@@ -52,29 +56,29 @@ Usage: thingy [OPTIONS]
 """)
 ```
 
-<Note> 
+<Callout type="note">
 
 End-of-line characters are automatically <span style={{color: "var(--secondary-font-color)"}}> included on each line </span>, but you can prevent that by adding `\` at the end of the line.
 
-</Note>
+</Callout>
 
 ## Concat string
 
-``` python lines
+```python lines
 3 * 'un' + 'ium'
 # 'unununium'
 ```
 
 Two or more <span style={{color: "var(--primary-font-color)"}}> string literals </span> next to each other are automatically concatenated.
 
-``` python lines
+```python lines
 'foo' 'bar'  'baz'
 # 'foobarbaz'
 ```
 
 ## String indexing
 
-``` python lines
+```python lines
 word = 'Python'
 word[0]  # character in position 0
 # 'P'
@@ -89,7 +93,7 @@ word[-6]
 
 ## Slice (substring)
 
-``` python lines
+```python lines
 word = 'Python'
 word[0:2]  # characters from position 0 (included) to 2 (excluded)
 # 'Py'
@@ -102,53 +106,53 @@ word[-2:]  # characters from the second-last (included) to the end
 # 'on'
 ```
 
-<Note> 
+<Callout type="note">
 
 Index substitution, the start is always included, and the end always excluded
 
-</Note>
+</Callout>
 
-<Note> 
+<Callout type="note">
 
 out of range slice indexes are handled gracefully:
 
-``` python lines
+```python lines
 word = "python"
 word[4:42]
 # 'on'
 word[42:]
 # ''
 ```
-</Note>
+
+</Callout>
 
 ## String length
 
 use `len()`
 
-``` python lines
+```python lines
 len("foo")
 ```
 
-
 ## String interpolation
 
-``` python lines
+```python lines
 result = f'{var_1} is not the same as {var_2}'
 ```
 
-<Info> 
+<Callout type="info">
 
 `str.format()` can be used alternatively. See more info [here](https://docs.python.org/3/library/stdtypes.html#str.format)
 
-</Info>
+</Callout>
 
-<Info> 
+<Callout type="info">
 
 The `{}` syntax can do much more than substitute a string. It can format a string in almost any way you like.
 
 see more info [here](https://docs.python.org/3/reference/lexical_analysis.html#f-strings)
 
-</Info>
+</Callout>
 
 ## Miscellaneous
 
@@ -157,7 +161,8 @@ Use [`str()`](https://docs.python.org/3/library/stdtypes.html#str) or [`repr()`]
 Convert string to byte, [`str.encode()`](https://docs.python.org/3/library/stdtypes.html#str.encode)
 
 JSON serializing and deserializing
-``` python lines
+
+```python lines
 import json
 x = [1, 'simple', 'list']
 
@@ -170,7 +175,7 @@ json_string = '...'
 json.loads(json_string)
 ```
 
-<br/>
+<br />
 
 ---
 

@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 A set of rules that the compiler checks.It enables Rust to make memory safety guarantees without needing a garbage collector.
 
 ## Stack and Heap
@@ -16,11 +18,11 @@ All data stored on the stack must have a known, fixed size.
 
 Data with an unknown size at compile time or a size that might change must be stored on the heap instead.
 
-<Tip>
+<Callout type="tip">
 
 More info: https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#the-stack-and-the-heap
 
-</Tip>
+</Callout>
 
 ## Ownership Rules
 
@@ -112,13 +114,13 @@ let s1 = String::from("hello");
 let s2 = s1;
 ```
 
-<Info>
+<Callout type="info">
 
 The unknow-size value that are copied are called "moved value"
 
 `s1` was moved into `s2`
 
-</Info>
+</Callout>
 
 ## Variables and Data Interacting with Clone
 
@@ -135,7 +137,7 @@ will get this:
 
 ![cloned variable](../assets/cloned-variable.svg)
 
-<Note>
+<Callout type="note">
 
 Calling `clone` on known-size variable are the same as direct assignment. They are stored entirely on the stack.
 
@@ -151,7 +153,7 @@ let y = x.clone();
 println!("x = {}, y = {}", x, y);
 ```
 
-</Note>
+</Callout>
 
 ## `Copy` and `Drop` trait
 

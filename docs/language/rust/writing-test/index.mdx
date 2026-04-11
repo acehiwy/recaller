@@ -4,6 +4,8 @@ sidebarTitle: "How to write test"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 A test in Rust is a function that’s annotated with the `test` attribute.
 
 Whenever we make a new <span style={{color: "var(--secondary-font-color)"}}> library </span> project with Cargo, a test module with a test function in it is automatically generated for us.
@@ -25,11 +27,11 @@ mod tests {
 }
 ```
 
-<Tip> 
+<Callout type="tip"> 
 
 We might also have non-test functions in the tests module to help set up common scenarios or perform common operations.
 
-</Tip>
+</Callout>
 
 
  Each test is run in a new thread, and when the main thread sees that a test thread has died, the test is marked as failed

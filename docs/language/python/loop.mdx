@@ -6,14 +6,16 @@ tags:
   - python
 ---
 
-``` python lines
+import { Callout } from "/snippets/callout.mdx";
+
+```python lines
 for i in range(5): # or range(2,5) -> 2,3,4
     print(i)
 ```
 
 <Accordion title="output">
 
-``` bash lines
+```bash lines
 # 0
 # 1
 # 2
@@ -23,17 +25,15 @@ for i in range(5): # or range(2,5) -> 2,3,4
 
 </Accordion>
 
-<Info> 
+<Callout type="info">
 
 The `range()` function returns an [iterable](https://docs.python.org/3/glossary.html#term-iterable).
 
-</Info>
-
-
+</Callout>
 
 ## Loop on a list
 
-``` python lines
+```python lines
 words = ['cat', 'window', 'defenestrate']
 for w in words:
     print(w, len(w))
@@ -41,7 +41,7 @@ for w in words:
 
 Get a list item's index.
 
-``` python lines
+```python lines
 words = ['cat', 'window', 'defenestrate']
 for index, value in enumerate(words):
     print(index, value)
@@ -49,23 +49,22 @@ for index, value in enumerate(words):
 
 ## Loop on dict
 
-``` python lines
+```python lines
 users = {'Hans': 'active', 'Éléonore': 'inactive', '景太郎': 'active'}
 
 for key, value in users.copy().items():
     # do something
 ```
 
-<Warning> 
+<Callout type="warning">
 
 Modifying and iterating over the same collection should be avoided. Use a copy instead, for example `<collection>.copy()`.
 
-</Warning>
+</Callout>
 
 ### `break` and `continue`
 
-
-``` python lines highlight={3,6}
+```python lines highlight={3,6}
 for ... :
   # do something
   continue
@@ -80,21 +79,20 @@ The `break` statement exits the <span style={{color: "var(--secondary-font-color
 
 ### `else` on Loop
 
-
 If the loop <span style={{color: "var(--secondary-font-color)"}}> finishes without </span> executing the `break`, the `else` clause executes.
 
-``` python lines
+```python lines
 for ... :
   # do something
 else:
   print("print if no break")
 ```
 
-``` python lines
+```python lines
 i = 0
 while i <= 3:
   print(i)
-  i = i +1 
+  i = i +1
   break
 else:
   print('print if no break')
@@ -103,7 +101,7 @@ else:
 # 0
 ```
 
-<br/>
+<br />
 
 ---
 

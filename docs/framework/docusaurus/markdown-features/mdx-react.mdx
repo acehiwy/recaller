@@ -7,18 +7,20 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 Docusaurus has built-in support for <span style={{color: "var(--primary-font-color)"}}> MDX </span>
 , which allows you to <span style={{color: "var(--secondary-font-color)"}}> write JSX </span> <span style={{color: "var(--primary-font-color)"}}> within </span> your <span style={{color: "var(--secondary-font-color)"}}> Markdown files </span> and <span style={{color: "var(--primary-font-color)"}}> render them as React components </span>.
 
 Docusaurus v3 uses <span style={{color: "var(--primary-font-color)"}}> MDX v3 </span>, so the parser is stricter than the old MDX v1 pipeline.
 
-<Tip>
+<Callout type="tip">
 
 Check out the [MDX docs](https://mdxjs.com/) to see what other fancy stuff you can do with MDX.
 
 Use the [MDX playground](https://mdxjs.com/playground/) to validate strict MDX v3 syntax when something doesn't compile.
 
-</Tip>
+</Callout>
 
 ## Exporting components
 
@@ -26,11 +28,11 @@ To <span style={{color: "var(--secondary-font-color)"}}> define </span> any cust
 
 Only paragraphs that start with `export` will be parsed as components instead of prose.
 
-<Info>
+<Callout type="info">
 
 prose : written or spoken language in its ordinary form
 
-</Info>
+</Callout>
 
 <Accordion title="Example">
 
@@ -54,7 +56,7 @@ I can write **Markdown** alongside my _JSX_!
 
 </Accordion>
 
-<Warning>
+<Callout type="warning">
 
 Since all doc files are parsed using MDX, anything that looks like HTML is actually JSX.
 
@@ -67,7 +69,7 @@ Therefore, if you need to inline-style a component, follow JSX flavor and provid
 <span style={{backgroundColor: 'red'}}>Foo</span>
 ```
 
-</Warning>
+</Callout>
 
 ## Importing components
 
@@ -82,11 +84,11 @@ import Button from '@mui/material/Button';
 import BrowserWindow from '@site/src/components/BrowserWindow';
 ```
 
-<Tip>
+<Callout type="tip">
 
 The `@site` alias points to your <span style={{color: "var(--secondary-font-color)"}}> website's directory </span>, usually <span style={{color: "var(--secondary-font-color)"}}> where the docusaurus.config.js file is </span>.
 
-</Tip>
+</Callout>
 
 While declaring components within Markdown is very convenient for simple cases,
 it becomes hard to maintain because of limited editor support, risks of parsing errors, and low reusability.
@@ -126,11 +128,11 @@ import PartialExample from "./_markdown-partial-example.mdx";
 If you are importing <span style={{color: "var(--secondary-font-color)"}}> Markdown </span> <span style={{color: "var(--primary-font-color)"}}> in </span><span style={{color: "var(--secondary-font-color)"}}> a React page </span>,
 you have to supply `MDXContent` provider yourself.
 
-<Info>
+<Callout type="info">
 
 Wrap your imported Markdown component with `MDXContent` provider.
 
-</Info>
+</Callout>
 
 ``` jsx title="fooPages.jsx" lines highlight={8-10}
 import React from "react";
@@ -148,11 +150,11 @@ export default function LandingPage() {
 }
 ```
 
-<Warning>
+<Callout type="warning">
 
 Currently, the table of contents does not contain the imported Markdown headings.
 
-</Warning>
+</Callout>
 
 ## Importing code snippets
 
@@ -187,11 +189,11 @@ import MyComponentSource from "!!raw-loader!./myComponent";
 <CodeBlock language="jsx">{MyComponentSource}</CodeBlock>;
 ```
 
-<Tip>
+<Callout type="tip">
 
 See [using code blocks in JSX](code-blocks) for more details of the `<CodeBlock>` component.
 
-</Tip>
+</Callout>
 
 ## MDX component scope
 

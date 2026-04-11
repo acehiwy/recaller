@@ -7,6 +7,8 @@ tags:
   - python
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 FastAPI can execte "callable" object (function , class) that should be exectued before path operation function.
 
 Callable's argument, including sub-dependencies, will <span style={{color: "var(--secondary-font-color)"}}> be treated as they are the path operation argument </span> themselvees.
@@ -83,11 +85,11 @@ View it as a reusable block of code
 
 </Accordion>
 
-<Note> 
+<Callout type="note"> 
 
 Return value of dependency function can be anything. Its type better match with `Annotated`
 
-</Note>
+</Callout>
 
 ## Class as dependency
 
@@ -110,7 +112,7 @@ async def read_items(commons: Annotated[CommonQueryParams, Depends(CommonQueryPa
     pass
 ```
 
-<Tip> 
+<Callout type="tip"> 
 
 Shorthand style
 
@@ -123,7 +125,7 @@ async def read_items(commons: Annotated[CommonQueryParams, Depends(CommonQueryPa
   pass
 ```
 
-</Tip>
+</Callout>
 
 ## Sub dependencies
 
@@ -141,7 +143,7 @@ async def foo(bar: Annotated[dict, Depends(bar)]):
     pass
 ```
 
-<Tip> 
+<Callout type="tip"> 
 
 In a single request cycle, if a dependency function is used multiple time. FastAPI will call it only once.
 
@@ -154,7 +156,7 @@ def foo(fresh_value: Annotated[str, Depends(get_value, use_cache=False)]):
     pass
 ```
 
-</Tip>
+</Callout>
 
 ## Declare dependencies in path operation decorator
 
@@ -200,11 +202,11 @@ FastAPI accepts any function that is valid for use with the [`contextmanager`](h
 
 The value yielded from the dependency function is passed to the path operation.
 
-<Note> 
+<Callout type="note"> 
 
 The dependency function does not need to be decorated with a context manager decorator.
 
-</Note>
+</Callout>
 
 ``` python lines
 def foo():
@@ -271,15 +273,15 @@ If an exception is raised inside the caller, it then will be passed to a context
 
 Context manager dependency can handle it with `except` clause or reraise the exception
 
-<Warning> 
+<Callout type="warning"> 
 
 The application will throw error, (user will get 500 Internal Server Error response) when an exception is passed from the caller to dependency function and it decide to
 - not reraise an exception
 - raising a non-[HTTP-like exception](https://fastapi.tiangolo.com/tutorial/handling-errors/#use-httpexception) (one that does not trigger response to be returned)
 
-</Warning>
+</Callout>
 
-<Tip> 
+<Callout type="tip"> 
 
 You should always reraised an exception on context manager
 
@@ -292,7 +294,7 @@ def foo():
         raise
 ```
 
-</Tip>
+</Callout>
 
 
 <br/>

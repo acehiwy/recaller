@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 This page shows how to <span style={{color: "var(--secondary-font-color)"}}> specify the server </span> where the API can be accessed,
 which can contain multiple URLs and even variable portions.
 
@@ -17,11 +19,11 @@ It can be found in the `servers` array present in the root [OpenAPI Object](http
 
 ![server object](assets/server-object.png)
 
-<Note>
+<Callout type="note">
 
 The edges marked with an asterisk are arrays.
 
-</Note>
+</Callout>
 
 Each element in a `servers` array is a Server Object providing, at least, a `url` field <span style={{color: "var(--secondary-font-color)"}}> with the </span> <span style={{color: "var(--primary-font-color)"}}> base URL </span> for that server.
 
@@ -65,19 +67,19 @@ paths:
 
 GET requests to the `/users` endpoint are served from `https://server2.com` and not from `https://server1.com`.
 
-<Info>
+<Callout type="info">
 
 If no servers are provided, it is assumed that all API endpoints are relative to the location where the OpenAPI document is being served.
 
-</Info>
+</Callout>
 
-<Tip>
+<Callout type="tip">
 
 If the servers are used for different environments, chances are that their APIs will be different and <span style={{color: "var(--secondary-font-color)"}}> describing them in </span> <span style={{color: "var(--primary-font-color)"}}> a single document </span> <span style={{color: "var(--secondary-font-color)"}}> will be complicated </span>.
 
 In these cases it is probably better to use different documents, and even different API versions.
 
-</Tip>
+</Callout>
 
 ## Server Variables
 

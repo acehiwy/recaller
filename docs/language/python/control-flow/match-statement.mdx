@@ -1,13 +1,15 @@
 ---
 title: "match statement"
 sidebarTitle: "match statement"
-# 
+#
 tags:
   - python
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
-``` python lines
+import { Callout } from "/snippets/callout.mdx";
+
+```python lines
 def http_error(status):
   match status:
       case 400:
@@ -24,14 +26,18 @@ def http_error(status):
 
 Only the first pattern that matches gets executed
 
-<Note> 
+<Callout type="note">
 
 the variable `_` acts as a wildcard and never fails to match
 
-</Note>
+</Callout>
 
-<span style={{color: "var(--can-not-understand-font-color)"}}> it can also extract components (sequence elements or object attributes) from the value into variables. </span>
-<br/>
+<span style={{ color: "var(--can-not-understand-font-color)" }}>
+  {" "}
+  it can also extract components (sequence elements or object attributes) from
+  the value into variables.{" "}
+</span>
+<br />
 
 ---
 

@@ -7,6 +7,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 You can create a sidebar for each <span style={{color: "var(--secondary-font-color)"}}> set of Markdown </span> files that you want to <span style={{color: "var(--secondary-font-color)"}}> group together </span>.
 
 <Accordion title="Example results">
@@ -146,18 +148,18 @@ pagination_next: getting-started
 # Installation on Windows
 ```
 
-<Note>
+<Callout type="note">
 
 You can also disable displaying a pagination link with `pagination_next: null` or `pagination_prev: null`.
 
-</Note>
+</Callout>
 
-<Note>
+<Callout type="note">
 
 The pagination label by default is the <span style={{color: "var(--secondary-font-color)"}}> sidebar label </span>.
 You can use the <span style={{color: "var(--secondary-font-color)"}}> front matter </span> `pagination_label` to customize how this doc appears in the pagination.
 
-</Note>
+</Callout>
 
 ## The `ref` item
 

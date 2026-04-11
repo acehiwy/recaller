@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 Rust must know types of all variables at compile time.
 
 ## Scalar Type
@@ -47,14 +49,14 @@ a sign (unsigned)
 | 128-bit | i128   | u128     |
 | arch    | isize  | usize    |
 
-<Note>
+<Callout type="note">
 
 `isize` and `usize` type are
 
 - 64-bits integer length on 64bit computer architecture
 - 32-bits integer length for 32bit computer architecture
 
-</Note>
+</Callout>
 
 <Accordion title="Range of integer for each type">
 
@@ -91,11 +93,11 @@ numbers from 0 to $2n - 1$
 
 </Accordion>
 
-<Note>
+<Callout type="note">
 
 Integer types default to `i32`.
 
-</Note>
+</Callout>
 
 Integer can also be represent in these format
 
@@ -107,7 +109,7 @@ Integer can also be represent in these format
 | Binary          | 0b1111_0000    |
 | Byte            | (u8 only) b'A' |
 
-<Note>
+<Callout type="note">
 
 Integer division will be rounded down
 
@@ -118,13 +120,13 @@ println!("{}, {}", 9/5, -9/8);
 // -9/8 = -1.125 which round down to -1
 ```
 
-</Note>
+</Callout>
 
-<Tip>
+<Callout type="tip">
 
 [Integer Overflow](https://doc.rust-lang.org/book/ch03-02-data-types.html#integer-overflow)
 
-</Tip>
+</Callout>
 
 ### Floating-Point
 
@@ -137,17 +139,17 @@ let y: f32 = 3.0; // f32
 
 `f64`, 64 bits in size
 
-<Note>
+<Callout type="note">
 
 The default type is f64
 
-</Note>
+</Callout>
 
-<Note>
+<Callout type="note">
 
 All floating-point types are signed
 
-</Note>
+</Callout>
 
 ### Booleans
 
@@ -170,11 +172,11 @@ let heart_eyed_cat = '😻';
 
 `char` type is 4 bytes in size and represents a Unicode Scalar Value.
 
-<Note>
+<Callout type="note">
 
 zero-width spaces are valid `char` values
 
-</Note>
+</Callout>
 
 ## Compound Types
 
@@ -200,7 +202,7 @@ let six_point_four = x.1;
 let one = x.2;
 ```
 
-<Info>
+<Callout type="info">
 
 The tuple without any values has a special name, `unit`.
 
@@ -212,7 +214,7 @@ let fooUnit: () = ();
 
 Expressions implicitly return the `unit` value if they don't return any other value.
 
-</Info>
+</Callout>
 
 ### Array
 
@@ -242,15 +244,15 @@ let foo = a[0];
 let bar = a[1];
 ```
 
-<Note>
+<Callout type="note">
 
 Rust will `panic` if you access an invalid index.
 
-</Note>
+</Callout>
 
 ---
 
-<Info>
+<Callout type="info">
 
 In cases when many types are possible, we must add a type annotation
 
@@ -258,7 +260,7 @@ In cases when many types are possible, we must add a type annotation
 let bar: u32 = "42".parse().expect("Not a number!");
 ```
 
-</Info>
+</Callout>
 
 <br />
 

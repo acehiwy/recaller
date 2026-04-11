@@ -7,6 +7,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 We have a special admonitions syntax by wrapping content <span style={{color: "var(--secondary-font-color)"}}> ( text , markdown , jsx ) </span> with a set of 3 colons,
 followed by a label denoting its type.
 
@@ -42,35 +44,35 @@ Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
 :::
 ```
 
-<Note>
+<Callout type="note">
 
 Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
 
-</Note>
+</Callout>
 
-<Tip>
-
-Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
-
-</Tip>
-
-<Info>
+<Callout type="tip">
 
 Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
 
-</Info>
+</Callout>
 
-<Warning>
-
-Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
-
-</Warning>
-
-<Danger>
+<Callout type="info">
 
 Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
 
-</Danger>
+</Callout>
+
+<Callout type="warning">
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+</Callout>
+
+<Callout type="danger">
+
+Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
+
+</Callout>
 
 ## Usage with Prettier
 
@@ -107,11 +109,11 @@ Some **content** with _Markdown_ `syntax`.
 :::
 ```
 
-<Note>
+<Callout type="note">
 
 Some **content** with _Markdown_ `syntax`.
 
-</Note>
+</Callout>
 
 ## Usage in JSX
 
@@ -133,9 +135,9 @@ import Admonition from "@theme/Admonition";
 export default function MyReactPage() {
   return (
     <div>
-      <Tip>
+      <Callout type="tip">
         <p>Some information</p>
-      </Tip>
+      </Callout>
     </div>
   );
 }

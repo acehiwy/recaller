@@ -6,6 +6,8 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 ## Cards
 
 A question and answer pair is called a 'card'.
@@ -65,19 +67,19 @@ Anki will hide the default deck if it contains no cards and you have added other
 
 Alternatively, you may rename this deck and use it for other cards.
 
-<Tip>
+<Callout type="tip">
 
 Decks are best used to hold broad categories of cards, rather than specific topics such as “food verbs” or “lesson 1”.
 
 For more info on this, please see the [using decks appropriately](https://docs.ankiweb.net/editing.html#using-decks-appropriately) section.
 
-</Tip>
+</Callout>
 
-<Tip>
+<Callout type="tip">
 
 For information on how decks affect the order cards are displayed in, please see the [display order](https://docs.ankiweb.net/studying.html#display-order) section.
 
-</Tip>
+</Callout>
 
 ## Notes and Fields
 
@@ -133,12 +135,12 @@ In Anki, this <span style={{color: "var(--secondary-font-color)"}}> related info
 
 So we can say that this type of note has three fields: French, English, and Page.
 
-<Tip>
+<Callout type="tip">
 
 To add and edit fields, click the “Fields..." button while adding or editing notes.
 For more information on fields, please see the [Customizing Fields](https://docs.ankiweb.net/editing.html#customizing-fields) section.
 
-</Tip>
+</Callout>
 
 ### Card Types
 
@@ -171,21 +173,21 @@ By surrounding a field name in double curly brackets, we tell Anki to replace th
 
 Anything not surrounded by curly brackets remains the same on each card. (<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> For instance, we don't have to type “Page #” into the Page field when adding material - it's added automatically to every card. </span>)
 
-<Info>
+<Callout type="info">
 
 `<br>` is a special code that tells Anki to move to the next line. More details are available in the [templates](https://docs.ankiweb.net/templates/intro.html) section.
 
-</Info>
+</Callout>
 
 Once a card type has been created, every time you add a new note, a card will be created based on that card type.
 
-<Tip>
+<Callout type="tip">
 
 To add and edit card types, click the “Cards..." button while adding or editing notes.
 
 For more information on card types, please see the [Cards and Templates](https://docs.ankiweb.net/templates/intro.html) section.
 
-</Tip>
+</Callout>
 
 ## Note Types
 
@@ -197,13 +199,13 @@ It's a good idea to create a separate note type for each broad topic you're stud
 In the above French example, we might create a note type called `French` for that.
 If we wanted to learn capital cities, we could create a separate note type for that as well, with fields such as `Country` and `Capital City`.
 
-<Warning>
+<Callout type="warning">
 
 When Anki checks for duplicates, it only compares other notes of the same type.
 
 Thus if you add a capital city called “Orange” using the capital city note type, you won't see a duplicate message when it comes time to learn how to say “orange” in French.
 
-</Warning>
+</Callout>
 
 ### Standard note types
 
@@ -211,11 +213,11 @@ When you create a new collection, Anki automatically adds some standard note typ
 
 These note types are provided to make Anki easier for new users.
 
-<Tip>
+<Callout type="tip">
 
 In the long run it's recommended you define your own note types for the content you are learning.
 
-</Tip>
+</Callout>
 
 The standard note types are as follows:
 
@@ -228,11 +230,11 @@ The standard note types are as follows:
   after flipping to the back your input would be checked and compared with the answer. <span style={{color: "var(--not-nesary-for-now-future-font-color)"}}> More information is available in the [Checking Your Answer](https://docs.ankiweb.net/templates/fields.html#checking-your-answer) section. </span>
 - **Cloze**: A note type which makes it easy to select text and turn it into a cloze deletion (e.g., “Man landed on the moon in ....​” → “Man landed on the moon in 1969”). <span style={{color: "var(--not-nesary-for-now-future-font-color)"}}> More information is available in the [cloze deletion](https://docs.ankiweb.net/editing.html#cloze-deletion) section. </span>
 
-<Note>
+<Callout type="note">
 
 To add your own note types and modify existing ones, you can use Tools → Manage Note Types from the main Anki window.
 
-</Note>
+</Callout>
 
 Notes and note types are common to your whole [collection](#collection) rather than limited to an individual deck.
 
@@ -255,13 +257,13 @@ The easiest way to get started with Anki is to download a deck of cards someone 
 1. When you've found a deck you're interested in, click the “Download” button to download a deck package.
 1. Double-click on the downloaded package to load it into Anki, or File→Import it.
 
-<Note>
+<Callout type="note">
 
 Note that it's not currently possible to add shared decks directly to your AnkiWeb account. You need to import them with the desktop program, then synchronize to upload them to AnkiWeb.
 
-</Note>
+</Callout>
 
-<Tip>
+<Callout type="tip">
 
 Creating your own deck is the most effective way to learn a complex subject.
 
@@ -269,7 +271,7 @@ Subjects like languages and the sciences can't be understood simply by memorizin
 
 Furthermore, inputting the information yourself forces you to decide what the key points are, leading to a better understanding.
 
-</Tip>
+</Callout>
 
 <br />
 

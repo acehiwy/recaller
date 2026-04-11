@@ -4,6 +4,8 @@ sidebarTitle: "Hash Maps"
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
+import { Callout } from '/snippets/callout.mdx';
+
 The type `HashMap<K, V>` stores a mapping of keys of type `K` to values of type `V`
 
 ## Creating Hash Map
@@ -17,11 +19,11 @@ scores.insert(String::from("Blue"), 10);
 scores.insert(String::from("Yellow"), 50);
 ```
 
-<Info>
+<Callout type="info">
 
 Just like vectors, hash maps store their data on the heap.
 
-</Info>
+</Callout>
 
 ## Acessing Value
 
@@ -39,7 +41,7 @@ let team_name = String::from("Blue");
 let score: Option<&i32> = scores.get(&team_name);
 ```
 
-<Tip>
+<Callout type="tip">
 
 You can handles the Option by calling `copied` to get an `Option<i32>` rather than an `Option<&i32>`,
 
@@ -50,7 +52,7 @@ let team_name = String::from("Blue");
 let score = scores.get(&team_name).copied().unwrap_or(0);
 ```
 
-</Tip>
+</Callout>
 
 ## Iterating
 
@@ -69,11 +71,11 @@ for (key, value) in &scores {
 }
 ```
 
-<Note>
+<Callout type="note">
 
 Order of iteration is arbitrary.
 
-</Note>
+</Callout>
 
 ## Ownership
 
@@ -100,13 +102,13 @@ println!("{field_name}{field_value}");
 // highlight-error-end
 ```
 
-<Note>
+<Callout type="note">
 
 If we insert references to values into the hash map, the values won’t be moved into the hash map.
 
 The values that the references point to must be valid for at least as long as the hash map is valid.
 
-</Note>
+</Callout>
 
 ## Updating a Hash Map
 
@@ -143,11 +145,11 @@ println!("{:?}", scores);
 
 `Entry.or_insert` insert key-value if key does not exist or do nothing if key exist.
 
-<Note>
+<Callout type="note">
 
 `Entry.or_insert` return a mutable reference of corresponding value
 
-</Note>
+</Callout>
 
 ### Updating a value based on the old value
 
@@ -166,11 +168,11 @@ for word in text.split_whitespace() {
 println!("{:?}", map);
 ```
 
-<Tip>
+<Callout type="tip">
 
 `split_whitespace` method returns an iterator over sub-slices, separated by whitespace
 
-</Tip>
+</Callout>
 
 ## <span style={{color: "var(--not-nesary-for-now-future-font-color)"}}> Hashing Functions </span>
 

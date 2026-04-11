@@ -5,6 +5,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
 import { Tree } from "mintlify/components";
+import { Callout } from "/snippets/callout.mdx";
 
 Modules let us organize code within a crate for readability and easy reuse.
 
@@ -63,11 +64,11 @@ The module definition above produces this module tree.
   </Tree.Folder>
 </Tree>
 
-<Info>
+<Callout type="info">
 
 Sibling modules are modules defined in the same parent module. `hosting` and `serving` are siblings defined within `front_of_house`.
 
-</Info>
+</Callout>
 
 ## Referring Module Tree with Path
 
@@ -109,17 +110,17 @@ But items in child modules can use the items in their ancestor modules (ancestor
 
 Use `pub` keyword to mark items / module public which can be accessed by their outer ancestor.
 
-<Note>
+<Callout type="note">
 
 If the module itself is not marked public, the items it contains are still private even if the item itself is marked public.
 
-</Note>
+</Callout>
 
-<Note>
+<Callout type="note">
 
 Sibling modules and items can access each other without being marked public themselves.
 
-</Note>
+</Callout>
 
 ## Relative path using `super`
 
@@ -184,7 +185,7 @@ pub fn eat_at_restaurant() {
 }
 ```
 
-<Note>
+<Callout type="note">
 
 Because the `Breakfast` struct has private fields,
 
@@ -192,13 +193,13 @@ The struct needs to provide a public associated function (`summer`) that constru
 
 Otherwise client wouldn't be able to create `Breakfast` instance.
 
-</Note>
+</Callout>
 
-<Info>
+<Callout type="info">
 
 `struct` fields are private by default
 
-</Info>
+</Callout>
 
 ### `pub` `enum`
 
@@ -218,11 +219,11 @@ pub fn eat_at_restaurant() {
 }
 ```
 
-<Info>
+<Callout type="info">
 
 `enum` variants are public by default
 
-</Info>
+</Callout>
 
 ## Bringing Paths into Scope with `use` keyword
 
@@ -247,7 +248,7 @@ pub fn something_else(){
 }
 ```
 
-<Tip>
+<Callout type="tip">
 
 When bringing <span style={{color: "var(--secondary-font-color)"}}> function </span> into scope, preferably bringing its parent module rather than the function
 
@@ -255,7 +256,7 @@ So calling function would be `<Parent>::<function name>`. Eg. `hosting::add_to_w
 
 Specifying the parent module when calling the function <span style={{color: "var(--secondary-font-color)"}}> makes it clear </span> that the function <span style={{color: "var(--secondary-font-color)"}}> isn’t locally defined </span>
 
-</Tip>
+</Callout>
 
 ## Providing new name
 
@@ -365,11 +366,11 @@ Modules can also hold definitions for other items, such as structs, enums, const
 
 making the module public doesn’t make its contents public. The pub keyword on a module only lets code in its ancestor modules refer to it, not access its inner code.
 
-<Tip>
+<Callout type="tip">
 
 If you plan on sharing your library crate, see [Rust API guidelines](https://rust-lang.github.io/api-guidelines/)
 
-</Tip>
+</Callout>
 
 <br />
 
