@@ -11,7 +11,7 @@ When you reference a variable, Python looks for it in this order:
 2. the next outer enclosing scope until the global scope, including imported modules
 3. built-in module names
 
-```python title=main.py showLineNumbers
+``` python title="main.py" lines
 import sys # built-in module name
 
 from current_module import baz
@@ -29,12 +29,11 @@ def foo():
 
 You cannot rewrite an outer enclosing variable without the special keywords `nonlocal` and `global`.
 
-```python title=main.py showLineNumbers
+``` python title="main.py" lines highlight={5}
 def foo():
   x = 1
 
   def bar():
-    # highlight-next-line
     x = 2
     print('bar:' ,x)
   
@@ -44,7 +43,7 @@ def foo():
 
 <Accordion title="output">
 
-```bash title= showLineNumbers
+``` bash lines
 bar: 2
 foo: 1
 ```
@@ -60,15 +59,13 @@ Python interprets `x = 2` as defining `x` in the current enclosing scope, so it 
 
 To rewrite an outer enclosing variable, use the `nonlocal` keyword.
 
-```python title=main.py showLineNumbers
+``` python title="main.py" lines highlight={5-6}
 def foo():
   x = 1
 
   def bar():
-    # highlight-start
     nonlocal x 
     x = 2
-    # highlight-end
     print('bar:' ,x)
   
   bar()
@@ -77,7 +74,7 @@ def foo():
 
 <Accordion title="output">
 
-```bash title= showLineNumbers
+``` bash lines
 bar: 2
 foo: 2
 ```
@@ -89,7 +86,7 @@ foo: 2
 
 To rewrite a global variable, use the `global` keyword.
 
-```python title=main.py showLineNumbers
+``` python title="main.py" lines
 x = 0
 def foo():
   x = 1
@@ -106,7 +103,7 @@ print('at global scope' , x)
 
 <Accordion title="output">
 
-```bash title= showLineNumbers
+``` bash lines
 bar: 2
 foo: 1
 at global scope 2
@@ -119,14 +116,13 @@ at global scope 2
 
 `nonlocal` cannot be used to rewrite a global-scope variable.
 
-```python title=main.py showLineNumbers
+``` python title="main.py" lines highlight={3}
 x = 0
 def foo():
-  # highlight-error-next-line
   nonlocal x
   x = 1
 ```
-```bash title= showLineNumbers
+``` bash lines
 File "/usr/src/app/class.py", line 3
     nonlocal x
     ^^^^^^^^^^

@@ -21,7 +21,7 @@ Wildcards are accepted for the media types, with the more specific ones taking p
 </Note>
 
 
-```yaml title= showLineNumbers
+``` yaml lines
 content:
   application/json:
     ...
@@ -38,7 +38,7 @@ The [Media Type Object](https://spec.openapis.org/oas/v3.1.0#media-type-object) 
 The structure is described in the `schema` field
 
 
-```yaml title= showLineNumbers
+``` yaml lines
 content:
   application/json:
     schema:
@@ -61,7 +61,7 @@ Depending on the selected type, a number of other fields are available to furthe
 
 Example integer with limited range:
 
-```yaml title= showLineNumbers
+``` yaml lines
 content:
   application/json:
     schema:
@@ -72,7 +72,7 @@ content:
 
 Example string with only three valid options:
 
-```yaml title= showLineNumbers
+``` yaml lines
 content:
   application/json:
     schema:
@@ -87,7 +87,7 @@ content:
 
 Array types must have an `items` field, which is a [Schema Object](https://spec.openapis.org/oas/v3.1.0#schema-object) itself.
 
-```yaml title= showLineNumbers
+``` yaml lines
 content:
   application/json:
     schema:
@@ -120,7 +120,7 @@ This field is a key-value pairing property names (as a key) with a [Schema Objec
 
 Here's an example defining an object with two fields: a `productName` string and a `productPrice` number:
 
-```yaml title= showLineNumbers
+``` yaml lines
 content:
   application/json:
     schema:
@@ -136,7 +136,7 @@ content:
 
 From [Tic Tac Toe sample API](https://oai.github.io/Documentation/examples/tictactoe.yaml)
 
-```yaml title= showLineNumbers
+``` yaml lines
 openapi: 3.1.0
 info:
   title: Tic Tac Toe

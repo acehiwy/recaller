@@ -10,7 +10,7 @@ A key-value data structure
 
 ## Create
 
-```python title= showLineNumbers
+``` python lines
 def foo():
   return 'foo'
 
@@ -42,14 +42,14 @@ Tuples can be used as keys if they contain only strings, numbers, or tuples
 
 ### Dictionaries comprehensions
 
-```python title= showLineNumbers
+``` python lines
 {x: x**2 for x in (2, 4, 6)}
 # {2: 4, 4: 16, 6: 36}
 ```
 
 ### Create from sequences <span style={{color: "var(--primary-font-color)"}}> of key-value pairs </span>
 
-```python title= showLineNumbers
+``` python lines
 # create from key-value list
 dict( [('sape', 4139), ('guido', 4127), ('jack', 4098)] )
 # {'sape': 4139, 'guido': 4127, 'jack': 4098}
@@ -61,13 +61,13 @@ dict( ((1,2), (3,4)) )
 
 ### <span style={{color: "var(--not-nesary-for-now-future-font-color)"}}> Create using keyword argument </span>
 
-```python title= showLineNumbers
+``` python lines
 dict(sape=4139, guido=4127, jack=4098)
 # {'sape': 4139, 'guido': 4127, 'jack': 4098}
 ```
 ## Read value
 
-```python title= showLineNumbers
+``` python lines
 def foo():
   return 'foo'
 
@@ -87,13 +87,13 @@ my_dict[foo]
 
 ## Write value
 
-```python title= showLineNumbers
+``` python lines
 my_dict["asdf"] = 'something_else'
 ```
 
 ## Check for existing key
 
-```python title= showLineNumbers
+``` python lines
 def foo():
   return 'foo'
 
@@ -120,14 +120,14 @@ some_var in my_dict
 
 ## Delete key
 
-```python title= showLineNumbers
+``` python lines
 del foo[some_key]
 ```
 
 
 ## <span style={{color: "var(--not-nesary-for-now-future-font-color)"}}> Extract dictionaries' key as list </span>
 
-```python title= showLineNumbers
+``` python lines
 my_dict = list({1: "foo", "2" : "bar" , 3: "baz"})
 # [1, '2', 3]
 ```

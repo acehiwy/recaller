@@ -34,7 +34,7 @@ and even better to document the reason you think you’ll never have an `Err` va
 
 Here’s an example:
 
-```rust title= showLineNumbers
+``` rust lines
  use std::net::IpAddr;
 
  let home: IpAddr = "127.0.0.1"
@@ -48,14 +48,12 @@ Here’s an example:
 
 When you do not want users of your struct to write to a struct field but still want to allow reading, you can implement a `getter` method. The reverse is also true for a `setter`.
 
-```rust title= showLineNumbers
+``` rust lines highlight={2,6}
 pub struct Guess {
-    // highlight-next-line
     value: i32, // this field is private
 }
 
 impl Guess {
-    // highlight-next-line
     pub fn value(&self) -> i32 { // user can read value using this getter method
         self.value
     }

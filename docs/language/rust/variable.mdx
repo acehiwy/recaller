@@ -10,24 +10,23 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 Variables are immutable by default
 
-```rust title= showLineNumbers
+``` rust lines highlight={3}
 let x = 5;
 
-// highlight-error-next-line
 x = 10
 // error[E0384]: cannot assign twice to immutable variable `x`
 ```
 
 You can make them mutable by adding mut in front of the variable name
 
-```rust title= showLineNumbers
+``` rust lines
 let mut x = 5;
 x = 6;
 ```
 
 ## Constants
 
-```rust title=
+``` rust
 const THREE_HOURS_IN_SECONDS: u32 = 60 * 60 * 3;
 ```
 
@@ -53,7 +52,7 @@ You can declare a new variable <span style={{color: "var(--secondary-font-color)
 
 Rustaceans say that the first variable is shadowed by the second. The second variable is valid until it itself is shadowed(by another variable) or the scope ends.
 
-```rust title= showLineNumbers
+``` rust lines
 fn main() {
     let x = 5;
     let x = x + 1;
@@ -73,7 +72,7 @@ Shadowing is different from marking a variable as `mut`.
 - With shadowing we can perform a few transformations on a value but have the variable be immutable after those transformations have been completed (out of scope).
 - With shadowing we are creating a new variable using `let`, the type of value can be change as well
 
-```rust title= showLineNumbers
+``` rust lines
 let spaces = "   ";
 let spaces = spaces.len();
 ```

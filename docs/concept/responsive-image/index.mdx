@@ -8,7 +8,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 Use the `srcset` attribute.
 
-```jsx title= showLineNumbers
+``` jsx lines
 <img srcset="<path to image 1> <image 1 width>w, <path to image 2> <image 2 width>w, ..."  />
 
 <img srcset="250-dog.png 250w, 500-dog.png 500w>
@@ -26,7 +26,7 @@ The browser calculates the appropriate space for an image and then picks the rig
 
 Images' [intrinsic size](https://developer.mozilla.org/en-US/docs/Glossary/Intrinsic_Size) is the real size / dimensions of an image file in pixels
 
-```bash title= showLineNumbers
+``` bash lines
 file some-image.webp
 # some-image.webp: RIFF (little-endian) data, Web/P image, VP8 encoding, 1536x1024, Scaling: [none]x[none], YUV color, decoders should clam
 # -------------------------------------------------------------------------HERE----------------------------------------------------------
@@ -64,7 +64,7 @@ It then picks the first image that is equal to or larger than the reserved space
 
 For example:
 
-```jsx title= showLineNumbers
+``` jsx lines
 <img srcset="250-dog.png 250w, 500-dog.png 500w, 1000-dog.png 1000w">
 ```
 
@@ -92,7 +92,7 @@ The browser takes screen size, pixel density, zoom level, screen orientation, an
 
 The `sizes` attribute tells the browser how much space the image will take.
 
-```jsx title= showLineNumbers
+``` jsx lines
 <img
   srcset="250-dog.png 250w, 500-dog.png 500w, 1000-dog.png 1000w"
   sizes="
@@ -116,7 +116,7 @@ The browser matches the first condition that is true, so order matters.
 
 ## Picture element
 
-```jsx title= showLineNumbers
+``` jsx lines
 <picture>
   <source
     type="image/avif"

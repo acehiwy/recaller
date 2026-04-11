@@ -10,7 +10,7 @@ Cargo is Rust's build tool and package manager.
 
 ## Crete project using Cargo
 
-```bash title=
+``` bash
 cargo new <project name>
 ```
 
@@ -38,7 +38,7 @@ You can override this behavior by using `--vcs=git` option
 
 `Cargo.toml` is the manifest file for Rust. It's where you keep <span style={{color: "var(--secondary-font-color)"}}> metadata for your project </span>, as well as <span style={{color: "var(--secondary-font-color)"}}> dependencies </span>.
 
-```toml title=Cargo.toml showLineNumbers
+``` toml title="Cargo.toml" lines
 [package]
 name = "hello_cargo"
 version = "0.1.0"
@@ -53,11 +53,11 @@ edition = "2021"
 
 ## Adding dependencies
 
-```bash title=
+``` bash
 cargo add <crate name>[@<crate version>]
 ```
 
-```bash title=
+``` bash
 cargo add ferris-says@0.2
 ```
 
@@ -83,7 +83,7 @@ The top-level project directory is just for README files, license information, c
 
 From project's root directory, run:
 
-```bash title=
+``` bash
 cargo build
 ```
 
@@ -101,7 +101,7 @@ This file keeps track of the <span style={{color: "var(--secondary-font-color)"}
 
 ### Run
 
-```bash title= showLineNumbers
+``` bash lines
 ./target/debug/hello_cargo
 ```
 
@@ -109,13 +109,13 @@ This file keeps track of the <span style={{color: "var(--secondary-font-color)"}
 
 We can also use cargo run to compile the code and then run the resultant executable all in one command:
 
-```bash title=
+``` bash
 cargo run
 ```
 
 ## Check whether the code compiles
 
-```bash title=
+``` bash
 cargo check
 ```
 

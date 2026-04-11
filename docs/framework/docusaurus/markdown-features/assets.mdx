@@ -11,7 +11,7 @@ Sometimes you want to link to assets (e.g. docx files, images...) directly from 
 
 Let's imagine the following file structure:
 
-```title= showLineNumbers
+``` title= lines
 # Your doc
 /website/docs/myFeature.mdx
 
@@ -25,14 +25,14 @@ Let's imagine the following file structure:
 <Tabs>
   <Tab title="Markdown Syntax">
 
-```markdown title=
+``` markdown
 ![Example banner](./assets/docusaurus-asset-example-banner.png)
 ```
 
   </Tab>
   <Tab title="CommonJS require">
 
-```jsx title=
+``` jsx
 <img
   src={require("./assets/docusaurus-asset-example-banner.png").default}
   alt="Example banner"
@@ -42,7 +42,7 @@ Let's imagine the following file structure:
   </Tab>
   <Tab title="Import Statement">
 
-```jsx title=
+``` jsx
 import myImageUrl from "./assets/docusaurus-asset-example-banner.png";
 
 <img src={myImageUrl} alt="Example banner" />;
@@ -55,7 +55,7 @@ import myImageUrl from "./assets/docusaurus-asset-example-banner.png";
 
 You can link to existing assets by `require` ing them and using the returned URL in videos, a anchor links, etc.
 
-```jsx title=foo.md showLineNumbers
+``` jsx title="foo.md" lines
 <a target="\_blank" href={require('./assets/docusaurus-asset-example.docx').default}> Download this docx </a>
 
 or
@@ -77,7 +77,7 @@ You don't need to use `require()` in Markdown unless you use the JSX syntax, whi
 
 Docusaurus supports inlining SVGs out of the box.
 
-```jsx title= showLineNumbers
+``` jsx lines
 import DocusaurusSvg from "./docusaurus.svg";
 
 <DocusaurusSvg />;
@@ -87,13 +87,13 @@ import DocusaurusSvg from "./docusaurus.svg";
 
 You can change one of the SVG colors based on the current theme.
 
-```jsx title= showLineNumbers
+``` jsx lines
 import DocusaurusSvg from "./docusaurus.svg";
 
 <DocusaurusSvg className="themedDocusaurus" />;
 ```
 
-```css title= showLineNumbers
+``` css lines
 [data-theme="light"] .themedDocusaurus [fill="#FFFF50"] {
   fill: greenyellow;
 }
@@ -111,7 +111,7 @@ The ThemedImage component (included in the themes) allows you to <span style={{c
 the <span style={{color: "var(--secondary-font-color)"}}> image source </span>
 based on the <span style={{color: "var(--secondary-font-color)"}}> current theme </span>.
 
-```jsx title= showLineNumbers
+``` jsx lines
 import ThemedImage from "@theme/ThemedImage";
 
 <ThemedImage
@@ -129,14 +129,14 @@ Alternatively you can use Github [image theming approach](https://github.blog/ch
 
 To toggle the visibility of an image using the path fragment.
 
-```css title=src/css/custom.css showLineNumbers
+``` css title="src/css/custom.css" lines
 [data-theme="light"] img[src$="#gh-dark-mode-only"],
 [data-theme="dark"] img[src$="#gh-light-mode-only"] {
   display: none;
 }
 ```
 
-```markdown title= showLineNumbers
+``` markdown lines
 ![Docusaurus themed image](/img/docusaurus_keytar.svg#gh-light-mode-only)
 
 ![Docusaurus themed image](/img/docusaurus_speed.svg#gh-dark-mode-only)
@@ -151,7 +151,7 @@ the path will be seen as a <span style={{color: "var(--secondary-font-color)"}}>
 
 For example, if you have configured static directories to be `['public', 'static']`, then for the following image:
 
-```markdown title=foo.md showLineNumbers
+``` markdown title="foo.md" lines
 ![An image from the static](/img/docusaurus.png)
 ```
 
@@ -172,7 +172,7 @@ This is desirable in two regards:
 
 If you intend to write URLs, you can use the `pathname://` protocol to disable automatic asset linking.
 
-```markdown title= showLineNumbers
+``` markdown lines
 ![banner](pathname:///img/docusaurus-asset-example-banner.png)
 ```
 

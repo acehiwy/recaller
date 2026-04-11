@@ -100,7 +100,7 @@ We'll start off with a working assumption that the routing keys of logs will hav
 
 ### Publisher
 
-```javascript title=emit_log_topic.js showLineNumbers
+``` javascript title="emit_log_topic.js" lines
 var amqp = require("amqplib/callback_api");
 
 amqp.connect("amqp://localhost", function (error0, connection) {
@@ -132,7 +132,7 @@ amqp.connect("amqp://localhost", function (error0, connection) {
 
 ### Subscriber
 
-```javascript title=receive_logs_topic.js showLineNumbers
+``` javascript title="receive_logs_topic.js" lines highlight={35-39}
 var amqp = require("amqplib/callback_api");
 
 var args = process.argv.slice(2);
@@ -167,13 +167,11 @@ amqp.connect("amqp://localhost", function (error0, connection) {
         }
         console.log(" [*] Waiting for logs. To exit press CTRL+C");
 
-        // highlight-start
         args.forEach(function (key) {
           // $ node emit_log_topic.js "kern.critical" "A critical kernel error"
           // key is routing key ("kern.critical" , "A critical kernel error" )
           channel.bindQueue(q.queue, exchange, key);
         });
-        // highlight-end
 
         channel.consume(
           q.queue,
@@ -198,31 +196,31 @@ amqp.connect("amqp://localhost", function (error0, connection) {
 
 #### Receive all logs
 
-```bash title=
+``` bash
 node receive_logs_topic.js '#'
 ```
 
 #### To receive all logs from the facility `kern`:
 
-```bash title=
+``` bash
 node receive_logs_topic.js 'kern.*'
 ```
 
 #### To receive all `critical` logs:
 
-```bash title=
+``` bash
 node receive_logs_topic.js '*.critical'
 ```
 
 #### Subscriber with multiple bindings:
 
-```bash title=
+``` bash
 node receive_logs_topic.js 'kern.*' '*.critical'
 ```
 
 #### Publisher with routing key `kern.critical`:
 
-```bash title=
+``` bash
 node emit_log_topic.js "kern.critical" "A critical kernel error"
 ```
 

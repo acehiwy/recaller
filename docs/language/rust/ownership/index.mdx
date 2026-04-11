@@ -33,7 +33,7 @@ and can be quickly copied as an instance if another part of code needs to use it
 
 ## `String` type
 
-```rust title= showLineNumbers
+``` rust lines
 let mut s = String::from("hello");
 
 s.push_str(", world!"); // push_str() appends a literal to a String
@@ -71,7 +71,7 @@ This means:
 
 When a variable goes out of scope, Rust automatically calls a special `drop` function and <span style={{color: "var(--secondary-font-color)"}}> cleans up the heap memory for that variable </span>.
 
-```rust title= showLineNumbers
+``` rust lines
 {
     let s = String::from("hello"); // s is valid from this point forward
 
@@ -84,7 +84,7 @@ When a variable goes out of scope, Rust automatically calls a special `drop` fun
 
 When copying known-size value, the value can be copied and push to the stack
 
-```rust title= showLineNumbers
+``` rust lines
 let x = 5;
 let y = x;
 // two `5` value are pushed onto the stack
@@ -92,7 +92,7 @@ let y = x;
 
 But copying unknown-size create a stack of its metadata and pointer point to the content location.
 
-```rust title= showLineNumbers
+``` rust lines
 let s1 = String::from("hello");
 let s2 = s1;
 ```
@@ -107,7 +107,7 @@ After copying, `let s2 = s1;`, Rust invalidate `s1`.
 
 `s1` can no longer be used, and Rust does not need to deal with a double-free error.
 
-```rust title= showLineNumbers
+``` rust lines
 let s1 = String::from("hello");
 let s2 = s1;
 ```
@@ -124,7 +124,7 @@ The unknow-size value that are copied are called "moved value"
 
 Clone unknown-size variable by `clone` method
 
-```rust title= showLineNumbers
+``` rust lines
 let s1 = String::from("hello");
 let s2 = s1.clone();
 
@@ -139,7 +139,7 @@ will get this:
 
 Calling `clone` on known-size variable are the same as direct assignment. They are stored entirely on the stack.
 
-```rust title= showLineNumbers
+``` rust lines
 let x = 5;
 let y = x;
 
@@ -175,7 +175,7 @@ Example of types that implement `Copy`:
 
 Passing a variable to a function will move or copy (passing ownership), just as assignment does.
 
-```rust title= showLineNumbers
+``` rust lines
 fn main() {
     let s = String::from("hello");  // s comes into scope
 
@@ -194,7 +194,7 @@ fn main() {
 
 return value and scope
 
-```rust title= showLineNumbers
+``` rust lines highlight={20}
 fn main() {
     let s1 = gives_ownership();         // gives_ownership moves its return
                                         // value into s1
@@ -214,7 +214,6 @@ fn gives_ownership() -> String {             // gives_ownership will move its
     let some_string = String::from("yours"); // some_string comes into scope
 
     some_string                              // some_string is returned and
-                                             // highlight-next-line
                                              // moves out to the calling function
 }
 

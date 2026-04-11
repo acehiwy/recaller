@@ -10,7 +10,7 @@ class is an object bundling state and functionality to manipulate its state.
 
 &#8203;<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}>Code below is used as reference on futher section on this page</span>
 
-```python title= showLineNumbers
+``` python lines
 class MyClass:
     """A simple example class"""
     i = 12345
@@ -36,13 +36,13 @@ first argument, `self`, refer to instance of a class itself
 
 ### Instantiate
 
-```python title= showLineNumbers
+``` python lines
 instance = MyClass('foo')
 ```
 
 When method is called, <span style={{color: "var(--secondary-font-color)"}}>an instance is passed as the first argument</span>
 
-```python title= showLineNumbers
+``` python lines
 instance.f()
 
 # equivalent to
@@ -62,14 +62,12 @@ Word `self` has no special meaning in python
 An instance is still attached to the method even if the method is called sometime later
 
 
-```python title= showLineNumbers
+``` python lines highlight={4-5}
 ins = MyClass('foo')
 temp_f = ins.f
 
-# highlight-start
 # no need to provide `self`
 print(temp_f('bar'))
-# highlight-end
 # barfoo
 ```
 
@@ -82,7 +80,7 @@ A class variable is attributes that shared across all instances (static attribut
 
 A instance variable is attributes that unique to each instance
 
-```python title= showLineNumbers
+``` python lines
 class Dog:
     # class variable shared by all instances
     kind = 'canine'  
@@ -102,7 +100,7 @@ After class definition or instantiation
 
 <Accordion title="Example">
 
-```python title= showLineNumbers
+``` python lines
 class MyClass:
   """A simple example class"""
   i = 12345
@@ -129,7 +127,7 @@ print(ins.i)
 </Warning>
 
 ## Inheritance
-```python title= showLineNumbers
+``` python lines
 class DerivedClassName(BaseClassName):
     pass
 ```
@@ -138,17 +136,15 @@ class DerivedClassName(BaseClassName):
 
 use `<BaseClass>.<method>(<instance> , ...arguments)`
 
-```python title= showLineNumbers
+``` python lines highlight={7-8}
 class BaseClass:
   def foo(self, arg1):
     return 'foo' + arg1
   
 
 class Derived(BaseClass):
-  # highlight-start
   def foo(self):
     return BaseClass.foo(self, 'bar') + 'overrided'
-  # highlight-end
 
 ins = Derived()
 print(ins.foo())
@@ -156,7 +152,7 @@ print(ins.foo())
 ```
 
 ### [`isinstance`](https://docs.python.org/3/library/functions.html#isinstance) function
-```python title= showLineNumbers
+``` python lines
 isinstance(obj, int)
 ```
 
@@ -164,7 +160,7 @@ Check whether `obj` is an instance or a derived instance of `int`
 
 ### [`issubclass`](https://docs.python.org/3/library/functions.html#issubclass) function
 
-```python title= showLineNumbers
+``` python lines
 issubclass(Derived, BaseClass)
 ```
 
@@ -174,7 +170,7 @@ Check whether class object, `Derived`, is derived from another class object, `Ba
 
 ### Multiple inheritance
 
-```python title= showLineNumbers
+``` python lines
 class DerivedClassName(Base1, Base2, Base3):
     pass
 ```
@@ -219,7 +215,7 @@ People conventionally prepend variable name with single underscore `_` to indica
 
 Class attributes that begin with >= 2 underscore and does not end with >= 2 underscore are not acceesible outside class definition
 
-```python title= showLineNumbers
+``` python lines
 class Foo:
   _1under = 10
   __2under = 20
@@ -245,7 +241,7 @@ This effect is [Name Mangling](https://docs.python.org/3/reference/expressions.h
 
 Python change attribute name from `__<attr name>` to `_<its class name>__<attr name>`
 
-```python title= showLineNumbers
+``` python lines
 ins = Foo()
 
 # no error
@@ -259,7 +255,7 @@ Foo._Foo__2under1_
 
 is accessing class's attribute or class's method (apply for both a static class and class instance)
 
-```python title= showLineNumbers
+``` python lines
 instance = MyClass()
 
 # attr reference

@@ -10,7 +10,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 ## input
 
-```typescript title= showLineNumbers
+``` typescript lines
 class User {
   occupation = input<string>();
 }
@@ -28,7 +28,7 @@ The input function returns the [`InputSignal`](https://angular.dev/api/core/Inpu
 
 A child component can send data to a parent component using [`output()`](https://angular.dev/api/core/output)
 
-```typescript title= showLineNumbers
+``` typescript lines
 class Child {
   incrementCountEvent = output<number>();
 
@@ -39,7 +39,7 @@ class Child {
 }
 ```
 
-```typescript title=app.ts showLineNumbers
+``` typescript title="app.ts" lines
 @Component({
   selector: "app-root",
   template: ` <app-child (incrementCountEvent)="doSomething($event)" /> `,
@@ -60,7 +60,7 @@ You can defer some components until the browser is idle by using `@defer`.
 
 By default, `@defer` loads the component when the browser is idle.
 
-```html title= showLineNumbers
+``` html lines
 @defer {
 <heavy-load-component />
 }
@@ -68,7 +68,7 @@ By default, `@defer` loads the component when the browser is idle.
 
 Trigger loading when the deferred content enters the viewport.
 
-```html title= showLineNumbers
+``` html lines
 @defer (on viewport) {
 <heavy-load-component />
 }
@@ -78,7 +78,7 @@ Trigger loading when the deferred content enters the viewport.
 
 Use `@placeholder` to show content before loading starts.
 
-```html title= showLineNumbers
+``` html lines
 @defer {
 <some-component />
 } @placeholder { content before some-component start loading }
@@ -88,7 +88,7 @@ Use `@placeholder` to show content before loading starts.
 
 Use `@loading` to show content while a component is loading.
 
-```html title= showLineNumbers
+``` html lines
 @defer {
 <some-component />
 } @placeholder { content before some-component start loading } @loading {
@@ -98,7 +98,7 @@ Use `@loading` to show content while a component is loading.
 
 `@placeholder` and `@loading` have an optional `(minimum <time>)` argument that keeps their content rendered for at least `<time>` to prevent flickering.
 
-```html title= showLineNumbers
+``` html lines
 @defer {
 <comments />
 } @placeholder (minimum 2s) {
@@ -110,7 +110,7 @@ Use `@loading` to show content while a component is loading.
 
 ## Optimizing images
 
-```typescript title= showLineNumbers
+``` typescript lines
 import { NgOptimizedImage } from '@angular/common';
 @Component({
   imports: [NgOptimizedImage],
@@ -138,7 +138,7 @@ The [`priority`](https://angular.dev/api/common/NgOptimizedImage#priority) attri
 
 Create routes
 
-```typescript title= showLineNumbers
+``` typescript lines
 import {Routes} from '@angular/router';
 export const routes: Routes = [];
 ```

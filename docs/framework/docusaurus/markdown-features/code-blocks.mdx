@@ -11,13 +11,13 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 You can add a title to the code block by adding a `title` key after the language (leave a space between them).
 
-````markdown title= showLineNumbers
+``` `markdown lines
 ```jsx title="/src/components/HelloCodeTitle.js"
 function HelloCodeTitle(props) {
   return <h1>Hello, {props.name}</h1>;
 }
 ```
-````
+``` `
 
 ## Syntax highlighting
 
@@ -33,7 +33,7 @@ You may check out [this reference](https://github.com/mdx-js/specification) for 
 ```js
 console.log("Every repo must come with a mascot.");
 ```
-````
+``` `
 
 Docusaurus will pick up syntax highlighting automatically, powered by [Prism React Renderer](https://github.com/FormidableLabs/prism-react-renderer).
 
@@ -55,7 +55,7 @@ You can change this to another theme by passing theme field in prism as themeCon
 
 For example, if you prefer to use the `dracula` highlighting theme:
 
-```javascript title=docusaurus.config.js showLineNumbers
+``` javascript title="docusaurus.config.js" lines
 import { themes as prismThemes } from "prism-react-renderer";
 
 export default {
@@ -81,7 +81,7 @@ To add syntax highlighting for any of the other [Prism-supported languages](http
 
 For example, if you want to add highlighting for the PowerShell language:
 
-```javascript title=docusaurus.config.js showLineNumbers
+``` javascript title="docusaurus.config.js" lines
 module.exports = {
   // ...
   themeConfig: {
@@ -117,11 +117,10 @@ You can use comments
 
 to select which lines are highlighted.
 
-````markdown title= showLineNumbers
+``` `markdown lines highlight={4,11-13}
 ```js
 function HighlightSomeText(highlight) {
   if (highlight) {
-    // highlight-next-line
     return "This text is highlighted!";
   }
 
@@ -129,21 +128,18 @@ function HighlightSomeText(highlight) {
 }
 
 function HighlightMoreText(highlight) {
-  // highlight-start
   if (highlight) {
     return "This range is highlighted!";
   }
-  // highlight-end
 
   return "Nothing highlighted";
 }
 ```
-````
+``` ` highlight={5,12-14}
 
 ```javascript title= showLineNumbers
 function HighlightSomeText(highlight) {
   if (highlight) {
-    // highlight-next-line
     return "This text is highlighted!";
   }
 
@@ -151,11 +147,9 @@ function HighlightSomeText(highlight) {
 }
 
 function HighlightMoreText(highlight) {
-  // highlight-start
   if (highlight) {
     return "This range is highlighted!";
   }
-  // highlight-end
 
   return "Nothing highlighted";
 }
@@ -182,7 +176,7 @@ function HighlightMoreText(highlight) {
 
 You can set your own background color for highlighted code line in your `src/css/custom.css`
 
-```css title=/src/css/custom.css showLineNumbers
+``` css title="/src/css/custom.css" lines
 :root {
   --docusaurus-highlighted-code-line-bg: rgb(72, 77, 91);
 }
@@ -209,7 +203,7 @@ For example, you can register another magic comment that adds a `code-block-erro
 <Tabs>
 <Tab title="docusaurus.config.js">
 
-```javascript title= showLineNumbers
+``` javascript lines highlight={11}
 module.exports = {
   themeConfig: {
     prism: {
@@ -217,12 +211,9 @@ module.exports = {
         // Remember to extend the default highlight class name as well!
         {
           className: "theme-code-block-highlighted-line",
-          line: "highlight-next-line",
-          block: { start: "highlight-start", end: "highlight-end" },
         },
         {
           className: "code-block-error-line",
-          line: "highlight-error-next-line",
         },
       ],
     },
@@ -233,7 +224,7 @@ module.exports = {
 </Tab>
 <Tab title="src/css/custom.css">
 
-```css title= showLineNumbers
+``` css lines
 .code-block-error-line {
   background-color: #ff000020;
   display: block;
@@ -246,23 +237,21 @@ module.exports = {
 </Tab>
 <Tab title="foo.md">
 
-````markdown title= showLineNumbers
+``` `markdown lines highlight={5}
 In JavaScript, trying to access properties on `null` will error.
 
 ```js
 const name = null;
-// highlight-error-next-line
 console.log(name.toUpperCase());
 // Uncaught TypeError: Cannot read properties of null (reading 'toUpperCase')
 ```
-````
+``` ` highlight={7}
 
 </Tab>
 </Tabs>
 
 ```javascript title=foo.md showLineNumbers
 const name = null;
-// highlight-error-next-line
 console.log(name.toUpperCase());
 // Uncaught TypeError: Cannot read properties of null (reading 'toUpperCase')
 ```
@@ -290,14 +279,14 @@ Using CSS to target the class can already do a lot, but you can unlock the full 
 <Tabs>
 <Tab title="npm">
 
-```bash title=
+``` bash
 npm run swizzle @docusaurus/theme-classic CodeBlock/Line
 ```
 
 </Tab>
 <Tab title="yarn">
 
-```bash title=
+``` bash
 yarn run swizzle @docusaurus/theme-classic CodeBlock/Line
 ```
 
@@ -312,7 +301,7 @@ The `Line` component will receive the list of class names, based on which you ca
 
 You can enable line numbering for your code block by using `showLineNumbers` key within the language meta string <span style={{color: "var(--secondary-font-color)"}}> (don't forget to add space directly before the key) </span>.
 
-````markdown title=
+``` `markdown
 ```jsx showLineNumbers
 import React from "react";
 
@@ -326,7 +315,7 @@ function MyComponent(props) {
 
 export default MyComponent;
 ```
-````
+``` `
 
 ```javascript showLineNumbers
 import React from "react";
@@ -356,13 +345,12 @@ refer to further document: https://docusaurus.io/docs/markdown-features/code-blo
 
 Outside of Markdown, you can use the @theme/CodeBlock component to get the same output.
 
-```jsx title= showLineNumbers
+``` jsx lines highlight={6-14}
 import CodeBlock from "@theme/CodeBlock";
 
 export default function MyReactPage() {
   return (
     <div>
-      // highlight-start
       <CodeBlock
         language="jsx"
         title="/src/components/HelloCodeTitle.js"
@@ -372,7 +360,6 @@ export default function MyReactPage() {
           return <h1>Hello, {props.name}</h1>;
         }`}
       </CodeBlock>
-      // highlight-end
     </div>
   );
 }

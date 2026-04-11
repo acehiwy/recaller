@@ -40,7 +40,7 @@ Docusaurus provides an convenient interactive CLI to swizzle components.
 
 You generally only need to remember the following command:
 
-```bash title=
+``` bash
 docusaurus swizzle
 ```
 
@@ -50,7 +50,7 @@ which should look like this example:
 <Tabs>
 <Tab title="Ejecting">
 
-```jsx title=src/theme/Footer/index.js showLineNumbers
+``` jsx title="src/theme/Footer/index.js" lines
 import React from "react";
 import { useThemeConfig } from "@docusaurus/theme-common";
 import FooterLinks from "@theme/Footer/Links";
@@ -79,7 +79,7 @@ export default React.memo(Footer);
 </Tab>
 <Tab title="Wrapping">
 
-```jsx title=src/theme/SomeComponent.js showLineNumbers
+``` jsx title="src/theme/SomeComponent.js" lines
 import React from "react";
 import Footer from "@theme-original/Footer";
 
@@ -99,7 +99,7 @@ export default function FooterWrapper(props) {
 
 To get an overview of all the themes and components available to swizzle, run:
 
-```bash title=
+``` bash
 docusaurus swizzle --list
 ```
 
@@ -135,13 +135,13 @@ which you can fully customize and override.
 
 To eject a theme component, use the swizzle CLI interactively, or with the '--eject' option:
 
-```bash title=
+``` bash
 docusaurus swizzle [theme name] [component name] --eject
 ```
 
 Example:
 
-```bash title=
+``` bash
 docusaurus swizzle @docusaurus/theme-classic Footer --eject
 ```
 
@@ -155,7 +155,7 @@ You are now free to completely re-implement the `<Footer>` component.
 
 </span>
 
-```jsx title=src/theme/SomeComponent.js showLineNumbers
+``` jsx title="src/theme/SomeComponent.js" lines
 import React from "react";
 
 export default function Footer(props) {
@@ -198,13 +198,13 @@ which you can <span style={{color: "var(--secondary-font-color)"}}> enhance </sp
 
 To wrap a theme component, use the swizzle CLI interactively, or with the `--wrap` option:
 
-```bash title=
+``` bash
 docusaurus swizzle [theme name] [component name] --wrap
 ```
 
 Example:
 
-```bash title=
+``` bash
 docusaurus swizzle @docusaurus/theme-classic Footer --wrap
 ```
 
@@ -214,9 +214,8 @@ Docusaurus will now use the `<FooterWrapper>` component <span style={{color: "va
 
 You can now add customizations around the original component.
 
-```jsx title=src/theme/SomeComponent.js showLineNumbers
+``` jsx title="src/theme/SomeComponent.js" lines highlight={2}
 import React from "react";
-// highlight-next-line
 import Footer from "@theme-original/Footer";
 
 export default function FooterWrapper(props) {
@@ -248,7 +247,7 @@ Wrapping a theme is a great way to <span style={{color: "var(--primary-font-colo
 
 For example, you can easily add a custom comment system under each blog post:
 
-```jsx title=src/theme/BlogPostItem.js showLineNumbers
+``` jsx title="src/theme/BlogPostItem.js" lines
 import React from "react";
 import BlogPostItem from "@theme-original/BlogPostItem";
 import MyCustomCommentSystem from "@site/src/MyCustomCommentSystem";
@@ -318,7 +317,7 @@ It is not always clear which component you should swizzle exactly to achieve the
 
 To print an overview of all the `@docusaurus/theme-classic` components:
 
-```bash title=
+``` bash
 docusaurus swizzle @docusaurus/theme-classic --list
 ```
 
@@ -339,7 +338,7 @@ It is the <span style={{color: "var(--secondary-font-color)"}}> perfect place to
 
 Swizzle it manually by creating a file at `src/theme/Root.js`:
 
-```jsx title=src/theme/Root.js showLineNumbers
+``` jsx title="src/theme/Root.js" lines
 import React from "react";
 
 // Default implementation, that you can customize

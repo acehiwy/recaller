@@ -22,7 +22,7 @@ Your site's documentation is organized by four levels, from lowest to highest:
 
 A freshly initialized Docusaurus site has the following structure:
 
-```title= showLineNumbers
+``` title= lines
 example.com/                                -> generated from `src/pages/index.js`
 
 example.com/docs/intro                      -> generated from `docs/intro.md`
@@ -38,18 +38,16 @@ But what if your site only has docs, or you want to prioritize your docs by putt
 
 To enter docs-only mode, change it to like this:
 
-```javascript title=docusaurus.config.js showLineNumbers
+``` javascript title="docusaurus.config.js" lines highlight={7,10}
 module.exports = {
   // ...
   presets: [
     "@docusaurus/preset-classic",
     {
       docs: {
-        // highlight-next-line
         routeBasePath: "/", // Serve the docs at the site's root
         /* other docs plugin options */
       },
-      // highlight-next-line
       blog: false, // Optional: disable the blog plugin
       // ...
     },
@@ -64,7 +62,7 @@ they are now at the site root: `https://example.com/some-doc`.
 
 Don't forget to put some page at the root (https://example.com/) through adding the front matter:
 
-```markdown title=docs/index.md showLineNumbers
+``` markdown title="docs/index.md" lines
 ---
 slug: /
 ---
@@ -82,7 +80,7 @@ If you added slug: / to a doc to make it the homepage, you should delete the exi
 
 Now, the site's structure will be like the following:
 
-```title= showLineNumbers
+``` title= lines
 example.com/                       -> generated from `docs/intro.md`
 example.com/tutorial-basics/...    -> generated from `docs/tutorial-basics/...`
 ```

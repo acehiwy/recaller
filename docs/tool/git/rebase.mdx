@@ -6,7 +6,7 @@ tags:
   - git
 ---
 
-```bash title= showLineNumbers
+``` bash lines
 A---B---C---F---G    
          \             
           D---E---H---I (HEAD)
@@ -14,17 +14,17 @@ A---B---C---F---G
 
 ## `onto` option
 
-```bash title= showLineNumbers
+``` bash lines
 git rebase --onto <new parent> <old parent> <until commit>
 ```
 
 Example: extract all commits after `D` to the new parent `F`.
-```bash title= showLineNumbers
+``` bash lines
 A---B---C---F---G    
             \             
               E---H---I (HEAD)
 ```
-```bash title= showLineNumbers
+``` bash lines
 git rebase --onto F D
 ```
 <Note> 
@@ -35,12 +35,12 @@ It deletes `D`.
 
 
 Example: extract all commits after `D` until `H` to the new parent `F`.
-```bash title= showLineNumbers
+``` bash lines
 A---B---C---F---G    
             \             
               E---H (HEAD)
 ```
-```bash title= showLineNumbers
+``` bash lines
 git rebase --onto F D H
 ```
 

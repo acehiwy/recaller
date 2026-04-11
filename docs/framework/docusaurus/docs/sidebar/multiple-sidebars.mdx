@@ -28,7 +28,7 @@ You can create a sidebar for each <span style={{color: "var(--secondary-font-col
 
 Consider this example:
 
-```javascript title=sidebar.js  showLineNumbers
+``` javascript title="sidebar.js" lines
 module.exports = {
   tutorialSidebar: {
     "Category A": ["doc1", "doc2"],
@@ -45,7 +45,7 @@ When browsing `doc3` or `doc4`, the `apiSidebar` will be displayed.
 
 Following the example above, if a commonDoc is included in both sidebars:
 
-```javascript title=sidebar.js  showLineNumbers
+``` javascript title="sidebar.js" lines
 module.exports = {
   tutorialSidebar: {
     "Category A": ["doc1", "doc2", "commonDoc"],
@@ -76,7 +76,7 @@ Front matter option `displayed_sidebar` will <span style={{color: "var(--primary
 
 For the same example, you can still use doc shorthands without any special configuration:
 
-```javascript title=sidebar.js showLineNumbers
+``` javascript title="sidebar.js" lines
 module.exports = {
   tutorialSidebar: {
     "Category A": ["doc1", "doc2"],
@@ -87,7 +87,7 @@ module.exports = {
 
 And then add a front matter:
 
-```markdown title=commonDoc.md showLineNumbers
+``` markdown title="commonDoc.md" lines
 ---
 displayed_sidebar: apiSidebar
 ---
@@ -97,7 +97,7 @@ Which explicitly tells Docusaurus to display `apiSidebar` when browsing `commonD
 
 Using the same method, you can make sidebar X, which doesn't contain doc Y, appear on doc Y:
 
-```markdown title=foo.md  showLineNumbers
+``` markdown title="foo.md" lines
 ---
 displayed_sidebar: tutorialSidebar
 ---
@@ -121,7 +121,7 @@ If a sidebar is displayed by setting `displayed_sidebar` front matter, and this 
 
 You can customize pagination with front matter `pagination_next` and `pagination_prev`. Consider this sidebar:
 
-```javascript title=sidebar.js showLineNumbers
+``` javascript title="sidebar.js" lines
 module.exports = {
   tutorial: [
     "introduction",
@@ -138,7 +138,7 @@ you would want readers to proceed to `getting started` after `installation`.
 
 In this case, you can set the pagination manually:
 
-```markdown title=windows.md showLineNumbers
+``` markdown title="windows.md" lines
 ---
 pagination_next: getting-started
 ---
@@ -173,13 +173,12 @@ It is particularly useful where you wish to link to the same document from multi
 
 Consider this example:
 
-```javascript title=sidebar.js  showLineNumbers
+``` javascript title="sidebar.js" lines highlight={6}
 module.exports = {
   tutorialSidebar: {
     'Category A': [
       'doc1',
       'doc2',
-      // highlight-next-line
       {type: 'ref', id: 'commonDoc'},
       'doc5',
     ],

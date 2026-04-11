@@ -8,7 +8,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 The `Result` enum have two variants, `Ok` and `Err`
 
-```rust title= showLineNumbers
+``` rust lines
 enum Result<T, E> {
   Ok(T),
   Err(E),
@@ -22,7 +22,7 @@ enum Result<T, E> {
 
 For example opening a file:
 
-```rust title= showLineNumbers
+``` rust lines
 use std::fs::File;
 
 fn main() {
@@ -44,7 +44,7 @@ fn main() {
 
 ## Matching on Different Errors
 
-```rust title= showLineNumbers
+``` rust lines highlight={9-16}
 use std::fs::File;
 use std::io::ErrorKind;
 
@@ -53,7 +53,6 @@ fn main() {
 
     let greeting_file = match greeting_file_result {
         Ok(file) => file,
-        // highlight-start
         Err(error) => match error.kind() {
             ErrorKind::NotFound => {
               // do something
@@ -62,7 +61,6 @@ fn main() {
               // do other thing
             }
         },
-        // highlight-end
     };
 }
 ```
@@ -83,7 +81,7 @@ If the `Result` is the `Err` variant, unwrap will call the `panic!` macro for us
 
 ### Using `unwrap`
 
-```rust title= showLineNumbers
+``` rust lines
 use std::fs::File;
 
 fn main() {
@@ -91,7 +89,7 @@ fn main() {
 }
 ```
 
-```text title= showLineNumbers
+``` text lines
 thread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: Os {
 code: 2, kind: NotFound, message: "No such file or directory" }',
 src/main.rs:4:49
@@ -99,7 +97,7 @@ src/main.rs:4:49
 
 ### Using `expect`
 
-```rust title= showLineNumbers
+``` rust lines
 use std::fs::File;
 
 fn main() {
@@ -108,7 +106,7 @@ fn main() {
 }
 ```
 
-```text title= showLineNumbers
+``` text lines
 thread 'main' panicked at 'hello.txt should be included in this project: Os {
 code: 2, kind: NotFound, message: "No such file or directory" }',
 src/main.rs:5:10
@@ -118,7 +116,7 @@ src/main.rs:5:10
 
 Propagating Errors is return error to the calling code instead of handling error itself.
 
-```rust title= showLineNumbers
+``` rust lines highlight={9}
 use std::fs::File;
 use std::io::{self, Read};
 
@@ -127,7 +125,6 @@ fn read_username_from_file() -> Result<String, io::Error> {
 
     let mut username_file = match username_file_result {
         Ok(file) => file,
-        // highlight-next-line
         Err(e) => return Err(e),
     };
 
@@ -139,12 +136,11 @@ fn read_username_from_file() -> Result<String, io::Error> {
 
 The pattern of propagating errors is so common in Rust that Rust provides the question mark operator `?` to make this easier.
 
-```rust title= showLineNumbers
+``` rust lines highlight={5}
 use std::fs::File;
 use std::io::{self, Read};
 
 fn read_username_from_file() -> Result<String, io::Error> {
-    // highlight-next-line
     let mut username_file = File::open("hello.txt")?;
 
     return Ok("foobar".to_string());
@@ -168,7 +164,7 @@ The `?` operator can only be used <span style={{color: "var(--secondary-font-col
 
 ### Use `?` after `Option<T>`
 
-```rust title= showLineNumbers
+``` rust lines
 fn last_char_of_first_line(text: &str) -> Option<char> {
     text.lines() // return iterator of string separated by line
     .next()? // next return Option type bc first line can be empty
@@ -188,16 +184,14 @@ If the value is `Some`, the value inside the `Some` is the resulting value of th
 
 `File::open` have `read_to_string` method which take mutable variable for passing file content to it.
 
-```rust title= showLineNumbers
+``` rust lines highlight={5-7}
 use std::fs::File;
 use std::io::{self, Read};
 
 fn read_username_from_file() -> Result<String, io::Error> {
-    // highlight-start
     let mut username = String::new();
 
     File::open("hello.txt")?.read_to_string(&mut username)?;
-    // highlight-end
 
     Ok(username)
 }
@@ -207,12 +201,11 @@ fn read_username_from_file() -> Result<String, io::Error> {
 
 You can read file then return `Result<file content String>` in one method
 
-```rust title= showLineNumbers
+``` rust lines highlight={5}
 use std::fs;
 use std::io;
 
 fn read_username_from_file() -> Result<String, io::Error> {
-    // highlight-next-line
     fs::read_to_string("hello.txt")
 }
 ```
@@ -223,7 +216,7 @@ fn read_username_from_file() -> Result<String, io::Error> {
 
 `main` can also return a `Result<(), E>`
 
-```rust title= showLineNumbers
+``` rust lines
 use std::error::Error;
 use std::fs::File;
 

@@ -10,7 +10,7 @@ A signal is a value that notifies its consumers when it changes.
 
 ## Create signal
 
-```typescript title= showLineNumbers
+``` typescript lines
 import { signal } from "@angular/core";
 const firstName: WritableSignal<string> = signal("Morgan");
 ```
@@ -19,13 +19,13 @@ const firstName: WritableSignal<string> = signal("Morgan");
 
 Call its getter function.
 
-```typescript title= showLineNumbers
+``` typescript lines
 console.log(firstName());
 ```
 
 ## Update signal value
 
-```typescript title= showLineNumbers
+``` typescript lines
 firstName.set("Jaime");
 firstName.update((name) => name.toUpperCase());
 ```
@@ -40,7 +40,7 @@ A writable signal has the [`WritableSignal`](https://angular.dev/api/core/Writab
 
 [`computed`](https://angular.dev/api/core/computed) is a <span style={{color: "var(--secondary-font-color)"}}>read-only</span> `signal` that derives its value from other signals.
 
-```typescript title= showLineNumbers
+``` typescript lines
 import { signal, computed } from "@angular/core";
 
 const firstName = signal("Morgan");
@@ -75,7 +75,7 @@ A `computed` signal has no `update` or `set` method.
 
 An effect is a code block that executes whenever one of its parent signals changes.
 
-```typescript title= showLineNumbers
+``` typescript lines
 import { effect } from "@angular/core";
 
 effect(() => {
@@ -91,21 +91,17 @@ Effects can only be created inside an injection context.
 
 <Accordion title="example">
 
-```typescript title= showLineNumbers
+``` typescript lines highlight={3-5,8-10}
 @Component({...})
 export class MyComponent {
-  // highlight-start
   private barEffect =  effect(() => {
     console.log('bar effect', fooSignal())
   });
-  // highlight-end
 
   constructor() {
-    // highlight-start
     effect(() => {
       console.log('something with', fooSignal())
     });
-    // highlight-end
   }
 }
 ```
@@ -114,7 +110,7 @@ export class MyComponent {
 
 To create an `effect` outside an injection context, pass an `injector` to it.
 
-```typescript title= showLineNumbers
+``` typescript lines highlight={9}
 @Component({...})
 export class EffectiveCounterComponent {
   readonly count = signal(0);
@@ -123,7 +119,6 @@ export class EffectiveCounterComponent {
   initializeLogging(): void {
     effect(() => {
       console.log(`The count is: ${this.count()}`);
-      // highlight-next-line
     }, {injector: this.injector});
   }
 }
@@ -151,7 +146,7 @@ An `effect` is also destroyed before it is rerun.
 
 Use [`effect.destroy()`](https://angular.dev/api/core/EffectRef#destroy).
 
-```typescript title= showLineNumbers
+``` typescript lines
 const effectRef = effect(() => {});
 effectRef.destroy();
 ```
@@ -160,7 +155,7 @@ effectRef.destroy();
 
 An `effect` can be configured to last until it is manually destroyed by using the `manualCleanup` option.
 
-```typescript title= showLineNumbers
+``` typescript lines
 effect(() => {}, { manualCleanup: true });
 ```
 
@@ -168,16 +163,13 @@ effect(() => {}, { manualCleanup: true });
 
 You can execute a function when the `effect` is destroyed.
 
-```typescript title= showLineNumbers
-// highlight-next-line
+``` typescript lines highlight={1,4-6}
 effect((onCleanup) => {
   const timer = setTimeout(() => {}, 1000);
 
-  // highlight-start
   onCleanup(() => {
     clearTimeout(timer);
   });
-  // highlight-end
 });
 ```
 
@@ -189,7 +181,7 @@ Angular uses the term "dependencies" for parent signals.
 
 `bar` is a `computed` value or `effect` that reads the `foo` signal, so `foo` is a dependency of `bar`.
 
-```typescript title= showLineNumbers
+``` typescript lines
 const bar = effect(() => foo());
 // or
 const bar = computed(() => foo());
@@ -205,7 +197,7 @@ If dependencies change, the child code block is re-executed.
 
 ### Example: reading outside of child code block
 
-```typescript title= showLineNumbers
+``` typescript lines
 const isFoo = signal(false);
 const bar = signal("bar");
 
@@ -223,7 +215,7 @@ function external() {
 
 ### Example: conditional reading
 
-```typescript title= showLineNumbers
+``` typescript lines
 const isFoo = signal(false);
 const bar = signal("bar");
 
@@ -254,14 +246,14 @@ They do, however, cause the child code block to re-execute, even if the new valu
 
 You can prevent a signal from being tracked by using [`untracked`](https://angular.dev/api/core/untracked).
 
-```typescript title= showLineNumbers
+``` typescript lines
 effect(() => {
   const barValue = untracked(barSignal);
   console.log(fooSignal(), barValue);
 });
 ```
 
-```typescript title= showLineNumbers
+``` typescript lines
 // untracked accept callback function
 effect(() => {
   fooSignal();
@@ -285,7 +277,7 @@ Without `untracked`, the `effect` would execute whenever `fooSignal` <span style
 
 [`linkedSignal`](https://angular.dev/api/core/linkedSignal) is like `computed`, but it is writable.
 
-```typescript title= showLineNumbers
+``` typescript lines
 import { linkedSignal, signal } from "@angular/core";
 
 const foo = signal("foo");
@@ -319,7 +311,7 @@ It can also update its own value.
 
 `linkedSignal` allows you to access its previous value and the previous values of its dependencies.
 
-```typescript title= showLineNumbers
+``` typescript lines
 const foo = signal(123);
 
 linkedSignal({
@@ -338,7 +330,7 @@ linkedSignal({
 
 <Accordion title="example">
 
-```typescript title= showLineNumbers
+``` typescript lines
 linkedSignal({
   source: () => 123,
   computation: (newSourceValue, previous) => {
@@ -365,7 +357,7 @@ Any signals called from either the `source` or `computation` function are tracke
 
 It is necessary to provide type arguments to `linkedSignal`.
 
-```typescript title= showLineNumbers
+``` typescript lines
 linkedSignal<SourceReturnedValue, ComputationReturnValue>(...)
 ```
 
@@ -381,7 +373,7 @@ linkedSignal<SourceReturnedValue, ComputationReturnValue>(...)
 
 By making `source` return an object instead of a single value, you can access multiple source values from the previous cycle.
 
-```typescript title= showLineNumbers
+``` typescript lines
 linkedSignal({
   source: () => {key1: 1 , key2: 2},
   computation: (newSourceValue, previous) => {
@@ -396,7 +388,7 @@ linkedSignal({
 
 You can provide a function to determine whether a signal value has changed.
 
-```typescript title= showLineNumbers
+``` typescript lines
 import _ from "lodash";
 
 const sample = {key1: 1, key2: 2}

@@ -61,14 +61,14 @@ Take the [math plugins](https://docusaurus.io/docs/markdown-features/math-equati
 <Tabs>
 <Tab title="npm">
 
-```bash title=
+``` bash
 npm install --save remark-math@6 rehype-katex@7
 ```
 
 </Tab>
 <Tab title="yarn">
 
-```bash title=
+``` bash
 yarn add remark-math@6 rehype-katex@7
 ```
 
@@ -100,7 +100,7 @@ This decouples the extraction of math formulae from their rendering, which means
 
 Some plugins can be configured and accept their own options. In that case, use the `[plugin, pluginOptions]` syntax, like this:
 
-```javascript title=docusaurus.config.js showLineNumbers
+``` javascript title="docusaurus.config.js" lines
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 

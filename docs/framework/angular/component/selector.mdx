@@ -6,7 +6,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 Every component can define its CSS selector using the `selector` metadata.
 
-```typescript title= showLineNumbers
+``` typescript lines
 @Component({
   selector: 'profile-photo',
   template: `
@@ -28,7 +28,7 @@ Example. with class selector
 <Tabs>
 <Tab title="Foo component">
 
-```typescript title=foo.ts showLineNumbers
+``` typescript title="foo.ts" lines
 @Component({
   selector: ".some-css-class",
   template: ` <span> foo component content </span> `,
@@ -39,13 +39,12 @@ export class Foo {}
 </Tab>
 <Tab title="App component">
 
-```typescript title=app.ts showLineNumbers
+``` typescript title="app.ts" lines highlight={6}
 @Component({
   selector: 'app-root',
   imports: [Foo],
   template: `
     main component content
-    // highlight-next-line
     <div class="some-css-class">
       original content in main
       <span> some text </span>
@@ -58,7 +57,7 @@ export class App {
 </Tab>
 <Tab title="Rendered HTML">
 
-```html title= HTML showLineNumbers
+``` html lines
 <div class="some-css-class">
   <span> foo component content </span>
 </div>
@@ -83,7 +82,7 @@ A component is created if an HTML tag name matches the `selector`.
 
 The rendered HTML element from the example above would be:
 
-```html title= showLineNumbers
+``` html lines
 <profile-photo>
   <span>work</span>
 </profile-photo>
@@ -91,11 +90,10 @@ The rendered HTML element from the example above would be:
 
 Another component can use it by referencing this selector and importing the component class into its `imports` metadata.
 
-```typescript title= showLineNumbers
+``` typescript lines highlight={4,12,14}
 import { Component } from "@angular/core";
 
 @Component({
-  // highlight-next-line
   selector: "app-user",
   template: ` from user component `,
 })
@@ -104,10 +102,8 @@ export class User {}
 @Component({
   selector: "app-root",
   template: `
-    // highlight-next-line
     <app-user />
   `,
-  // highlight-next-line
   imports: [User],
 })
 export class App {}

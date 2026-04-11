@@ -8,7 +8,7 @@ tags:
 
 Tuples are <span style={{color: "var(--primary-font-color)"}}> immutable </span> sequences
 
-```python title= showLineNumbers
+``` python lines highlight={10}
 t = (12345, 54321, 'hello!')  # or declare without (). eg, t = 12345, 54321, 'hello!'
 t[0]
 # 12345
@@ -18,12 +18,11 @@ t
 
 # Tuples are immutable:
 t[0] = 88888
-#  highlight-error-next-line
 # TypeError: 'tuple' object does not support item assignment
 ```
 
 Tuples may be nested:
-```python title= showLineNumbers
+``` python lines
 u = ( t, (1, 2, 3, 4, 5) )
 u
 # ((12345, 54321, 'hello!'), (1, 2, 3, 4, 5))
@@ -33,7 +32,7 @@ u
 
 Single item tuple is constructed with trailing comma, `,`
 
-```python title= showLineNumbers
+``` python lines
 this_is_interpreted_as_string = ("hello")
 
 this_is_tuple = ("hello",) # notice trailing comma
@@ -51,7 +50,7 @@ Empty tuple syntax: `empty = ()`
 
 ## Tuple comprehension
 
-```python title= showLineNumbers
+``` python lines
 my_tuple = tuple( x + 2 for x in [1,2,3,4] )
 ```
 
@@ -60,7 +59,7 @@ my_tuple = tuple( x + 2 for x in [1,2,3,4] )
 
 It is like a tuple, but each item can also be accessed by name.
 
-```python title= showLineNumbers
+``` python lines
 from collections import namedtuple
 
 MyTuple = namedtuple('MyTuple' , ['key1' , 'key2'])
@@ -101,7 +100,7 @@ Field names cannot start with an underscore, `_`.
 
 create `namedtuple` instance from iterable
 
-```python title= showLineNumbers
+``` python lines
 MyTuple = namedtuple('MyTuple' , ['key1' , 'key2'])
 
 ins = MyTuple._make(['key1_value', 'key2_value'])
@@ -112,11 +111,10 @@ ins = MyTuple._make(['key1_value', 'key2_value'])
 
 return dict representing tuple
 
-```python title= showLineNumbers
+``` python lines highlight={4}
 MyTuple = namedtuple('MyTuple' , ['key1' , 'key2'])
 
 ins = MyTuple('key1_value', 'key2_value')
-# highlight-next-line
 ins._asdict()
 # {'key1': 'key1_value', 'key2': 'key2_value'}
 ```

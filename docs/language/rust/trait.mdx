@@ -16,7 +16,7 @@ Traits are similar to a feature often called interfaces in other languages, alth
 
 ## Defining a Trait
 
-```rust title= showLineNumbers
+``` rust lines
 pub trait Summary {
     fn summarize(&self) -> String;
 }
@@ -26,7 +26,7 @@ Each type implementing this trait must provide its own custom behavior for the b
 
 ## Implementing a Trait on a Type
 
-```rust title= showLineNumbers
+``` rust lines highlight={12,25}
 pub trait Summary {
     fn summarize(&self) -> String;
 }
@@ -38,7 +38,6 @@ pub struct NewsArticle {
     pub content: String,
 }
 
-// highlight-next-line
 impl Summary for NewsArticle {
     fn summarize(&self) -> String {
         format!("{}, by {} ({})", self.headline, self.author, self.location)
@@ -52,7 +51,6 @@ pub struct Tweet {
     pub retweet: bool,
 }
 
-// highlight-next-line
 impl Summary for Tweet {
     fn summarize(&self) -> String {
         format!("{}: {}", self.username, self.content)
@@ -64,9 +62,8 @@ impl Summary for Tweet {
 
 This is the same as calling a method on a type instance, but <span style={{color: "var(--secondary-font-color)"}}> the trait must be brought into scope </span>.
 
-```rust title= showLineNumbers
+``` rust lines highlight={2,14}
 // bringing Summary trait
-// highlight-next-line
 use aggregator::{Summary, Tweet};
 
 fn main() {
@@ -79,7 +76,6 @@ fn main() {
         retweet: false,
     };
 
-    // highlight-next-line
     println!("1 new tweet: {}", tweet.summarize());
 }
 ```
@@ -106,7 +102,7 @@ This rule ensures that other people's code can't break your code and vice versa.
 
 ## Default implementation
 
-```rust title= showLineNumbers
+``` rust lines
 pub trait Summary {
     fn summarize(&self) -> String {
         String::from("(Read more...)")
@@ -122,12 +118,11 @@ Types that implement a trait can override the default implementation.
 
 Default implementations can call other methods in the same trait, <span style={{color: "var(--secondary-font-color)"}}> even if </span> those other methods don’t have a default implementation.
 
-```rust title= showLineNumbers
+``` rust lines highlight={5}
 pub trait Summary {
     fn summarize_author(&self) -> String;
 
     fn summarize(&self) -> String {
-        // highlight-next-line
         format!("(Read more from {}...)", self.summarize_author())
     }
 }
@@ -145,7 +140,7 @@ It isn’t possible to call the default implementation from an overriding implem
 
 We specify an empty `impl` block with `impl Summary for NewsArticle {}`.
 
-```rust title= showLineNumbers
+``` rust lines highlight={8}
 pub struct NewsArticle {
     pub headline: String,
     pub location: String,
@@ -153,7 +148,6 @@ pub struct NewsArticle {
     pub content: String,
 }
 
-// highlight-next-line
 impl Summary for NewsArticle {}
 ```
 
@@ -161,7 +155,7 @@ impl Summary for NewsArticle {}
 
 Use the `impl` keyword followed by a trait.
 
-```rust title= showLineNumbers
+``` rust lines
 pub fn notify(item: impl Summary) {
     println!("Breaking news! {}", item.summarize());
 }
@@ -176,7 +170,7 @@ Parameter `item` accepts any type that implements the `Summary` trait
 
 ### Long syntax
 
-```rust title= showLineNumbers
+``` rust lines
 pub fn notify(item1: &impl Summary, item2: &impl Summary) {}
 
 // same as
@@ -191,7 +185,7 @@ Long syntax is called Trait Bounds
 
 ### Multiple trait
 
-```rust title= showLineNumbers
+``` rust lines
 pub fn notify(item: &(impl Summary + Display)) {}
 // or
 pub fn notify<T: Summary + Display>(item: &T) {}
@@ -203,7 +197,7 @@ This means parameter `item` <span style={{color: "var(--secondary-font-color)"}}
 
 Alternate syntax for readability
 
-```rust title= showLineNumbers
+``` rust lines
 fn some_function<T: Display + Clone, U: Clone + Debug>(t: &T, u: &U) -> i32 {}
 // same as
 
@@ -218,8 +212,7 @@ where
 
 We can also use the `impl Trait` syntax in the return position to return a value of some type that implements a trait,
 
-```rust title= showLineNumbers
-// highlight-next-line
+``` rust lines highlight={1}
 fn returns_summarizable() -> impl Summary {
     Tweet {
         // ...
@@ -233,8 +226,7 @@ You can only use `impl Trait` if you’re returning a single type
 
 Returning multiple type wouldn't work
 
-```rust title= showLineNumbers
-// highlight-error-next-line
+``` rust lines highlight={1}
 fn returns_summarizable(foo: bool) -> impl Summary {
     if foo {
         NewsArticle {
@@ -256,7 +248,7 @@ For more infomation, see [Using Trait Objects That Allow for Values of Different
 
 Using `impl` block with generic type trait bound parameter, we can implement methods conditionally for types that implement the specified traits
 
-```rust title= showLineNumbers
+``` rust lines highlight={14}
 use std::fmt::Display;
 
 struct Pair<T> {
@@ -270,7 +262,6 @@ impl<T> Pair<T> {
     }
 }
 
-// highlight-next-line
 impl<T: Display + PartialOrd> Pair<T> {
     fn cmp_display(&self) {
         if self.x >= self.y {
@@ -290,7 +281,7 @@ Implementations of a trait on any type that satisfies the trait bounds are calle
 
 For example, the standard library implements the ToString trait on any type that implements the Display trait. The impl block in the standard library looks similar to this code:
 
-```rust title= showLineNumbers
+``` rust lines
 impl<T: Display> ToString for T {
     // --snip--
 }

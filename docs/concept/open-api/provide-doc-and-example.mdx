@@ -15,7 +15,7 @@ This page shows how to take full advantage of special documentation capabilities
 For instance, a parameter's `name`, `type` and valid range of values are already present in the API definition.
 The `description` field can complement this information by explaining the purpose of this parameter, the effect of each value or possible interactions with other parameters:
 
-```yaml title= showLineNumbers
+``` yaml lines highlight={12-17}
 paths:
   /audio/volume:
     put:
@@ -27,14 +27,12 @@ paths:
               type: integer
               minimum: 0
               maximum: 11
-              // highlight-start
               description:
                 Current volume for all audio output.
                 0 means no audio output (mute). 10 is the maximum value. 11 enables
                 the overdrive system (danger!).
                 When set to 0 all other audio settings have no effect.
               ...
-              // highlight-end
 ```
 
 <Tip>
@@ -48,7 +46,7 @@ Additionally, the [Path Item](https://spec.openapis.org/oas/v3.1.0#path-item-obj
 ### Plain Mode
 
 
-```yaml title= showLineNumbers
+``` yaml lines
 description: 
   Current volume for all audio output.
   0 means no audio output (mute). 10 is the maximum value. 11 enables
@@ -63,7 +61,7 @@ But it can confuse YAML-parsing tools if the string contains colon `:` or hash `
 
 In these cases, the whole string must be enclosed in single or double quotes:
 
-```yaml title=
+``` yaml
 description: "Beware of lines containing colons and hashes like this: #"
 ```
 
@@ -73,7 +71,7 @@ Literal mode use Pipe `|` as an indicator character.
 
 Line breaks in the source YAML file <span style={{color: "var(--secondary-font-color)"}}> are preserved in the output </span>.
 
-```yaml title= showLineNumbers
+``` yaml lines
 description: |
   This is a string
   in multiple lines.
@@ -83,7 +81,7 @@ description: |
 
 Output:
 
-```txt title= showLineNumbers
+``` txt lines
 This is a string
 in multiple lines.
 
@@ -96,7 +94,7 @@ Folded mode use Greater-than sign `>` as an indicator character.
 
 &#8203;<span style={{color: "var(--secondary-font-color)"}}> Line breaks are removed so the output is a single string. </span>
 
-```yaml title= showLineNumbers
+``` yaml lines
 description: >
   This is a string
   in multiple lines.
@@ -106,7 +104,7 @@ description: >
 
 Output:
 
-```yaml title= showLineNumbers
+``` yaml lines
 This is a string in multiple lines.
 And an extra one.
 ```
@@ -137,7 +135,7 @@ using more advanced formatting is typically very complicated.
 
 ### Headings
 
-```markdown title= showLineNumbers
+``` markdown lines
 # Level 1
 
 ## Level 2
@@ -148,7 +146,7 @@ using more advanced formatting is typically very complicated.
 ### Emphasis
 
 
-```markdown title= showLineNumbers
+``` markdown lines
 *Emphasis*
 
 **Strong Emphasis**
@@ -158,7 +156,7 @@ using more advanced formatting is typically very complicated.
 
 ### Lists
 
-```markdown title= showLineNumbers
+``` markdown lines
 - Item 1
 - Item 2
   - Item 2.1
@@ -166,7 +164,7 @@ using more advanced formatting is typically very complicated.
 
 ### Code
 
-````markdown title= showLineNumbers
+``` `markdown lines
 An inline `code span`.
 
 ```
@@ -206,13 +204,12 @@ be present in each object.
 
 The content of the `example` field (found in Parameter, Media Type and Schema Objects) must match the format of its parent object:
 
-```yaml title= showLineNumbers
+``` yaml lines highlight={6}
 schema:
   coordinate:
     type: integer
     minimum: 1
     maximum: 3
-    // highlight-next-line
     example: 1
 ```
 
@@ -222,7 +219,7 @@ The `examples` field (found in Parameter and Media Type Objects) is a map pairin
 
 The Example Object can also provide a `summary` and a `description` field along with its value ( `value` or `externalValue` field ).
 
-```yaml title= showLineNumbers
+``` yaml lines highlight={8-14}
 responses:
   "400":
     description: The provided parameters are incorrect
@@ -230,7 +227,6 @@ responses:
       text/html: # This is a Media Type Object
         schema:
           type: string
-        // highlight-start
         examples:
           illegalCoordinates:
             value: "Illegal coordinates."
@@ -238,7 +234,6 @@ responses:
             value: "Square is not empty."
           invalidMark:
             value: "Invalid Mark (X or O)."
-        // highlight-end
 ```
 
 <br />

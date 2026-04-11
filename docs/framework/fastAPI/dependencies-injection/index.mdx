@@ -11,7 +11,7 @@ FastAPI can execte "callable" object (function , class) that should be exectued 
 
 Callable's argument, including sub-dependencies, will <span style={{color: "var(--secondary-font-color)"}}> be treated as they are the path operation argument </span> themselvees.
 
-```python title= showLineNumbers
+``` python lines
 def call_this_first(query_param1: str, query_param2: int, request_body: RequestBodyClass):
   return {
     'query_param1': query_param1,
@@ -33,7 +33,7 @@ The value returned from callable then passed as an argument to the path operatio
 
 ## Function as dependency
 
-```python title= showLineNumbers
+``` python lines highlight={12,16,21}
 from pydantic import BaseModel
 from typing import Annotated
 from fastapi import Depends, FastAPI
@@ -45,18 +45,15 @@ class CommonRequestBody(BaseModel):
   bar: int
 
 
-# highlight-next-line
 async def common_parameters(request_body: CommonRequestBody,  q: str | None = None, skip: int = 0, limit: int = 100):
     return {"q": q, "skip": skip, "limit": limit}
 
 @app.get("/items/")
-# highlight-next-line
 async def read_items(commons: Annotated[dict, Depends(common_parameters)]):
     return commons
 
 
 @app.get("/users/")
-# highlight-next-line
 async def read_users(commons: Annotated[dict, Depends(common_parameters)]):
     return commons
 ```
@@ -69,7 +66,7 @@ FastAPI will also interpret its argument, (`request_body`, `q` `skip` and `limit
 
 <Accordion title="Code above can be written similarly this way">
 
-```python title= showLineNumbers
+``` python lines
 # .....
 
 @app.get("/items/")
@@ -94,14 +91,13 @@ Return value of dependency function can be anything. Its type better match with 
 
 ## Class as dependency
 
-```python title= showLineNumbers
+``` python lines highlight={7,14}
 from typing import Annotated
 from fastapi import Depends, FastAPI
 
 app = FastAPI()
 
 class CommonQueryParams:
-  # highlight-next-line
     def __init__(self, q: str | None = None, skip: int = 0, limit: int = 100):
         self.q = q
         self.skip = skip
@@ -109,7 +105,6 @@ class CommonQueryParams:
 
 
 @app.get("/items/")
-# highlight-next-line
 async def read_items(commons: Annotated[CommonQueryParams, Depends(CommonQueryParams)]):
     # `commons` is a class instance
     pass
@@ -119,7 +114,7 @@ async def read_items(commons: Annotated[CommonQueryParams, Depends(CommonQueryPa
 
 Shorthand style
 
-```python title= showLineNumbers
+``` python lines
 async def read_items(commons: Annotated[CommonQueryParams, Depends()]):
   pass
 
@@ -134,7 +129,7 @@ async def read_items(commons: Annotated[CommonQueryParams, Depends(CommonQueryPa
 
 Your dependency function can also depends on other function
 
-```python title= showLineNumbers
+``` python lines
 def baz(query2: str):
     return 'baz'
   
@@ -153,7 +148,7 @@ In a single request cycle, if a dependency function is used multiple time. FastA
 Subsequece call in the same request cycle will be returned with cache
 
 You can disable caching by:
-```python title= showLineNumbers
+``` python lines
 # here get_value will be called every time it is used
 def foo(fresh_value: Annotated[str, Depends(get_value, use_cache=False)]):
     pass
@@ -165,7 +160,7 @@ def foo(fresh_value: Annotated[str, Depends(get_value, use_cache=False)]):
 
 Dependencies can be add via decorator but this way their return value will not be passed to the path operation function.
 
-```python title= showLineNumbers
+``` python lines highlight={8}
 def verify_token(x_token: Annotated[str, Header()]):
     # do something
 
@@ -173,7 +168,6 @@ async def verify_key(x_key: Annotated[str, Header()]):
     # do something
     return x_key
 
-# highlight-next-line
 @app.get("/items/", dependencies=[Depends(verify_token), Depends(verify_key)])
 async def read_items():
   pass
@@ -184,7 +178,7 @@ async def read_items():
 
 Apply callable to all routes
 
-```python title= showLineNumbers
+``` python lines highlight={10}
 from fastapi import Depends, FastAPI, Header
 from typing_extensions import Annotated
 
@@ -194,7 +188,6 @@ def verify_token(x_token: Annotated[str, Header()]):
 def verify_key(x_key: Annotated[str, Header()]):
   pass
 
-# highlight-next-line
 app = FastAPI(dependencies=[Depends(verify_token), Depends(verify_key)])
 ```
 
@@ -213,7 +206,7 @@ The dependency function does not need to be decorated with a context manager dec
 
 </Note>
 
-```python title= showLineNumbers
+``` python lines
 def foo():
     print('foo')
     yield 'yielded from foo'
@@ -234,7 +227,7 @@ The code after `yield` statement is executed after creating the HTTP response bu
 
 <Accordion title="see multiple context manager dependencies chanined together">
 
-```python title= showLineNumbers
+``` python lines
 def first():
   name = first.__name__
   print(name)
@@ -290,13 +283,12 @@ The application will throw error, (user will get 500 Internal Server Error respo
 
 You should always reraised an exception on context manager
 
-```python title= showLineNumbers
+``` python lines highlight={6}
 def foo():
     try:
         yield "bar"
     except:
         print("logging error")
-        # highlight-next-line
         raise
 ```
 

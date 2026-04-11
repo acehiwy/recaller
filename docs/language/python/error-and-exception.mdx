@@ -6,7 +6,7 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
-```python title= showLineNumbers
+``` python lines
   try:
     # do something
   except ReferenceError:
@@ -39,7 +39,7 @@ use to manually force an exception to occur
 
 `raise` must be followed by either an exception <span style={{color: "var(--secondary-font-color)"}}> instance </span> or an exception class
 
-```python title= showLineNumbers
+``` python lines
 raise BaseException('foo')
 
 raise BaseException # same as raise BaseException()
@@ -53,7 +53,7 @@ If an exception is followed `raise`, it will be automatically instantiated with 
 
 ### re-raise exception
 
-```python title= showLineNumbers
+``` python lines
 try:
   raise TypeError
 except:
@@ -65,20 +65,19 @@ except:
 
 To indicate that an exception is cause by another exception, use:
 
-```python title= showLineNumbers
+``` python lines highlight={7}
 def func():
   raise ConnectionError
 
 try:
   func()
 except ConnectionError as exc:
-  # highlight-next-line
   raise RuntimeError('Failed to open database') from exc
 ```
 
 output:
 
-```bash title= showLineNumbers
+``` bash lines
 Traceback (most recent call last):
   File "<stdin>", line 2, in <module>
     func()
@@ -105,7 +104,7 @@ Class must inherit `BaseException` class
 
 </Note>
 
-```python title= showLineNumbers
+``` python lines
 class ParentClassException(BaseException):
   pass
 
@@ -140,7 +139,7 @@ is a class constructor's argument passed to an exception class
 
 can access via `instance.args`
 
-```python title= showLineNumbers
+``` python lines
 try:
     raise Exception('spam', 'eggs')
 except Exception as inst:
@@ -152,7 +151,7 @@ except Exception as inst:
 
 ### User-define exception
 
-```python title= showLineNumbers
+``` python lines
 class MyError(Exception):
   pass
 
@@ -164,7 +163,7 @@ class AnotherError(BaseException):
 
 `else` block execute when try does not raise an exception.
 
-```python title= showLineNumbers
+``` python lines
 try:
     pass
 except OSError:
@@ -178,7 +177,7 @@ else:
 
 The purpose of the `else` clause is to avoid mixing up errors in `try`.
 
-```python title= showLineNumbers
+``` python lines
 try:
   fucntion_1_might_raise_value_error()
   function_2_might_raise_another_value_error() # <-- don't want this to be caught
@@ -186,7 +185,7 @@ except ValueError:
   pass
 ```
 
-```python title= showLineNumbers
+``` python lines
 try:
   fucntion_1_might_raise_value_error()
 except ValueError:
@@ -200,17 +199,15 @@ else:
 
 ## `finally` clause
 
-```python title= showLineNumbers
+``` python lines highlight={7-8}
 try:
   pass
 except:
   pass
 else:
   pass
-# highlight-start
 finally:
   # do something
-# highlight-end
 ```
 
 code inside `finally` block are executed, <span style={{color: "var(--secondary-font-color)"}}> as the last task </span>, in all cases whether or not an exception is raised regardless of its origin (raised from `try`, `except` or `else`)
@@ -232,7 +229,7 @@ If the `try` statement reaches a `break`, `continue` or `return` statement, the 
 If a `finally` clause includes a return statement, the returned value will be from `finally`'s return, not `try`'s return.
 
 
-```python title= showLineNumbers
+``` python lines
 def bool_return():
     try:
         return True
@@ -256,7 +253,7 @@ In real world applications, the `finally` clause is useful for releasing externa
 ## Raising multiple exceptions
 
 exceptions can be group together then raise as a single exception using [`ExceptionGroup`](https://docs.python.org/3/library/exceptions.html#ExceptionGroup):
-```python title= showLineNumbers
+``` python lines
 def f():
     excs = [OSError('error 1'), SystemError('error 2')]
     raise ExceptionGroup('exception group desceiption', excs)
@@ -264,7 +261,7 @@ def f():
 
 output:
 
-```bash title= showLineNumbers
+``` bash lines
   + Exception Group Traceback (most recent call last):
   |   File "<stdin>", line 1, in <module>
   |     f()
@@ -281,7 +278,7 @@ output:
 
 it can also be nested
 
-```python title= showLineNumbers
+``` python lines
 raise ExceptionGroup('des1', [ ValueError, ExceptionGroup('des2', [ TypeError ] ) ] )
 ```
 
@@ -289,7 +286,7 @@ raise ExceptionGroup('des1', [ ValueError, ExceptionGroup('des2', [ TypeError ] 
 
 done by `except*` clause:
 
-```python title= showLineNumbers
+``` python lines
 try:
   raise ExceptionGroup('des1', [ SystemError, OSError ] )
 except* OSError as e:
@@ -307,7 +304,7 @@ It mean pick the exception<span style={{color: "var(--secondary-font-color)"}}>(
 
 Example use cases
 
-```python title= showLineNumbers
+``` python lines
 excs = []
 for test in tests:
     try:
@@ -325,7 +322,7 @@ if excs:
 
 Apart from desceiption / information when initialize the exception via constructor, more info can be added to the exception by `<exception>.add_note(<note> : string)` method
 
-```python title= showLineNumbers
+``` python lines
 try:
     raise TypeError('bad type')
 except Exception as e:
@@ -336,7 +333,7 @@ except Exception as e:
 
 output:
 
-```bash title= showLineNumbers
+``` bash lines
 Traceback (most recent call last):
   File "<stdin>", line 2, in <module>
     raise TypeError('bad type')

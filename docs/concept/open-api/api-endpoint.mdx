@@ -27,7 +27,7 @@ The [Tic Tac Toe sample API](https://oai.github.io/Documentation/examples/tictac
 Here's the first snippet already containing a single endpoint:
 
 
-```yaml title= showLineNumbers
+``` yaml lines highlight={8-10}
 openapi: 3.1.0
 info:
   title: Tic Tac Toe
@@ -35,11 +35,9 @@ info:
     This API allows writing down marks on a Tic Tac Toe board
     and requesting the state of the board or of individual squares.
   version: 1.0.0
-// highlight-start
 paths:
   /board: 
     ...
-// highlight-end
 ```
 
 ## Path Item Object
@@ -57,15 +55,13 @@ This object also accepts <span style={{color: "var(--secondary-font-color)"}}> c
 The details of each operation are given in each child Operation object.
 
 
-```yaml title= showLineNumbers
+``` yaml lines highlight={2-6}
 paths:
-  // highlight-start
   /board:
     get:
       ...
     put:
       ...
-    // highlight-end
 ```
 
 ## Operation Object
@@ -73,10 +69,9 @@ paths:
 Besides giving the operation a `summary` and a `description`, The [Operation Object](https://spec.openapis.org/oas/v3.1.0#operation-object) basically describes the operation's parameters, payload and possible server responses.
 
 
-```yaml title= showLineNumbers
+``` yaml lines highlight={3-9}
 paths:
   /board:
-    // highlight-start
     get:
       summary: Get the whole board
       description: Retrieves the current state of the board and the winner.
@@ -84,7 +79,6 @@ paths:
         ...
       responses: 
         ...
-      // highlight-end
 ```
 
 ## Response<span style={{color: "var(--primary-font-color)"}}>s</span> Object
@@ -92,19 +86,17 @@ paths:
 The [Responses Object](https://spec.openapis.org/oas/v3.1.0#responses-object) is a container for the expected answers the server can give to this request.
 
 
-```yaml title= showLineNumbers
+``` yaml lines highlight={6-10}
 paths:
   /board:
     get:
       summary: ...
       description: ...
-      // highlight-start
       responses:
         "200":
           ...
         "404":
           ...
-        // highlight-end
 ```
 
 Each field name is an <span style={{color: "var(--secondary-font-color)"}}> HTTP response code </span> enclosed in quotation marks and its value is a [Response Object](https://spec.openapis.org/oas/v3.1.0#response-object) (note there is no 's' at the end) containing details about the response.
@@ -130,17 +122,15 @@ The Response Object contains a <span style={{color: "var(--secondary-font-color)
 The `content` field describes the possible payloads of the response. Details of this field will be described in [Content of Message Bodies](message-body-content) page.
 
 
-```yaml title= showLineNumbers
+``` yaml lines highlight={5-8}
 paths:
   /board:
     get:
       responses:
-        // highlight-start
         "200":
           description: Everything went fine.
           content:
             ...
-        // highlight-end
 ```
 
 <br />

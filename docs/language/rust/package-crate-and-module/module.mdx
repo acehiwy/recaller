@@ -25,7 +25,7 @@ Modules also allow us to control the privacy <span style={{color: "var(--seconda
 
 ## Defining an inline module
 
-```rust title=src/lib.rs showLineNumbers
+``` rust title="src/lib.rs" lines
 mod front_of_house {
     mod hosting {
         fn add_to_waitlist() {}
@@ -45,7 +45,7 @@ mod front_of_house {
 
 The module definition above produces this module tree.
 
-```text title= showLineNumbers
+``` text lines
 crate
  └── front_of_house
      ├── hosting
@@ -77,7 +77,7 @@ A path can take two forms:
   - `super`
   - an identifier in the current module
 
-```rust title= showLineNumbers
+``` rust lines
 mod front_of_house {
     pub mod hosting {
         pub fn add_to_waitlist() {}
@@ -121,13 +121,12 @@ Sibling modules and items can access each other without being marked public them
 
 It is like `..` in filesystem.
 
-```rust title=src/lib.rs showLineNumbers
+``` rust title="src/lib.rs" lines highlight={6}
 fn deliver_order() {}
 
 mod back_of_house {
     fn fix_incorrect_order() {
         cook_order();
-        // highlight-next-line
         super::deliver_order();
     }
 
@@ -145,17 +144,14 @@ Using `pub` on a `struct` definition only makes the `struct` public, not its fie
 
 `pub` must be used explicitly on each `struct` field.
 
-```rust title= showLineNumbers
+``` rust lines highlight={2-3,8}
 mod back_of_house {
-  // highlight-next-line
     pub struct Breakfast {
-        // highlight-next-line
         pub toast: String,
         seasonal_fruit: String,
     }
 
     impl Breakfast {
-        // highlight-next-line
         pub fn summer(toast: &str) -> Breakfast {
             Breakfast {
                 toast: String::from(toast),
@@ -202,7 +198,7 @@ Otherwise client wouldn't be able to create `Breakfast` instance.
 
 Using `pub` on `enum` make it and its variants public.
 
-```rust title=src/lib.rs showLineNumbers
+``` rust title="src/lib.rs" lines
 mod back_of_house {
     pub enum Appetizer {
         Soup,
@@ -228,7 +224,7 @@ We can create a shortcut to a path with the `use` keyword
 
 `use` makes the path valid <span style={{color: "var(--primary-font-color)"}}> in the scope </span> where `use` is declared.
 
-```rust title=src/lib.rs showLineNumbers
+``` rust title="src/lib.rs" lines highlight={13}
 mod front_of_house {
     pub mod hosting {
         pub fn add_to_waitlist() {}
@@ -241,7 +237,6 @@ pub fn eat_at_restaurant() {
 }
 
 pub fn something_else(){
-    // highlight-error-next-line
     hosting::add_to_waitlist(); // failed to resolve: use of undeclared crate or module `hosting`
 }
 ```
@@ -260,9 +255,8 @@ Specifying the parent module when calling the function <span style={{color: "var
 
 Rust doesn't allow you to bring multiple types with the same name into scope.
 
-```rust title= showLineNumbers
+``` rust lines highlight={2}
 use std::fmt::Result;
-// highlight-next-line
 use std::io::Result as IoResult;
 
 fn function1() -> Result {
@@ -280,7 +274,7 @@ The shortcut brought into scope is private by default. This means outer ancestor
 
 Marking a shortcut with `pub` to allow outer ancestor to also use the shortcut.
 
-```rust title=restaurant/src/lib.rs showLineNumbers
+``` rust title="restaurant/src/lib.rs" lines
 mod front_of_house {
     pub mod hosting {
         pub fn add_to_waitlist() {}
@@ -298,7 +292,7 @@ Instead of lib user calling `restaurant::front_of_house::hosting::add_to_waitlis
 
 ## Shared `use` paths
 
-```rust title= showLineNumbers
+``` rust lines
 use std::cmp::Ordering;
 use std::io;
 
@@ -310,7 +304,7 @@ this bring `std::io` and `std::cmp::Ordering` into scope
 
 ### Using `self`
 
-```rust title= showLineNumbers
+``` rust lines
 use std::io;
 use std::io::Write;
 
@@ -322,7 +316,7 @@ this brings `std::io` and `std::io::Write` into scope.
 
 ## Separating Modules into Different Files
 
-```rust title=src/lib.rs showLineNumbers
+``` rust title="src/lib.rs" lines
 mod front_of_house;
 mod back_of_house;
 
@@ -339,27 +333,25 @@ pub fn eat_at_restaurant() {
 }
 ```
 
-```rust title=src/front_of_house.rs showLineNumbers
+``` rust title="src/front_of_house.rs" lines
 pub mod hosting;
 
 pub fn foo_in_front_of_house() {}
 ```
 
-```rust title=src/front_of_house/hosting.rs showLineNumbers
+``` rust title="src/front_of_house/hosting.rs" lines highlight={4-9}
 pub fn add_to_waitlist() {}
 
 
-// highlight-start
 // valid only when back_of_house module is imported to the same crate
 // Once a module is part of your crate, you can refer to code in that module from anywhere else in that same crate
 use crate::back_of_house;
 pub fn bar_in_hosting() {
   back_of_house::foo_in_back_of_house();
 }
-// highlight-end
 ```
 
-```rust title=src/back_of_house.rs showLineNumbers
+``` rust title="src/back_of_house.rs" lines
 fn foo_in_back_of_house(){}
 ```
 

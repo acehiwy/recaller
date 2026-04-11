@@ -46,16 +46,14 @@ The <span style={{color: "var(--secondary-font-color)"}}> parameter's name must 
 
 For example, the path `/users/{id}` must contain at least one parameter described with:
 
-```yaml title= showLineNumbers
+``` yaml lines highlight={6-7}
 paths:
   /users/{id}:
     get:
       parameters:
         - name: id
-          // highlight-start
           in: path
           required: true
-          // highlight-end
 ```
 
 <Warning>
@@ -70,13 +68,12 @@ The parameter is appended to the <span style={{color: "var(--secondary-font-colo
 
 For example, the URL `/users?id=1234` can be parsed using:
 
-```yaml title= showLineNumbers
+``` yaml lines highlight={6}
 paths:
   /users:
     get:
       parameters:
         - name: id
-        // highlight-next-line
           in: query
 ```
 
@@ -94,16 +91,14 @@ Header names are case-<span style={{color: "var(--secondary-font-color)"}}>in</s
 
 Most of the time a parameter's type can be specified by using a [Schema Object](https://spec.openapis.org/oas/v3.1.0#schemaObject) in the schema field.
 
-```yaml title= showLineNumbers
+``` yaml lines highlight={4-7}
 parameters:
   - name: id
     in: query
-    // highlight-start
     schema:
       type: integer
       minimum: 1
       maximum: 100
-    // highlight-end
 ```
 
 <Info>
@@ -137,14 +132,12 @@ https://oai.github.io/Documentation/specification/parameters.html#parameter-seri
 The [Request Body Object](https://spec.openapis.org/oas/v3.1.0#request-body-object) is specified through the `requestBody` field in the [Operation Object](https://spec.openapis.org/oas/v3.1.0#operationRequestBody).
 
 
-```yaml title= showLineNumbers
+``` yaml lines highlight={4-5}
 paths:
   /board:
     put:
-      // highlight-start
       requestBody: 
         ...
-      // highlight-end
 ```
 
 <Info>
@@ -161,7 +154,7 @@ The Request Body Object also has a `description` string and a `required` boolean
 
 &#8203;<span style={{color: "var(--not-require-but-good-to-know-font-color)"}}> As a reminder, the snippet below describes an operation with a JSON request body containing a single integer with values between 1 and 100. </span>
 
-```yaml title= showLineNumbers
+``` yaml lines
 requestBody:
   content:
     application/json:
@@ -179,7 +172,7 @@ The [Tic Tac Toe sample API](https://oai.github.io/Documentation/examples/tictac
 - another one with both (`/board/{row}/{column}`).
 
 
-```yaml title= showLineNumbers
+``` yaml lines
 paths:
   # Single square operations
   /board/{row}/{column}:

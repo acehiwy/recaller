@@ -6,7 +6,7 @@ tags:
 lastUpdated: 2026-04-08T09:00:42.959Z
 ---
 
-```python title= showLineNumbers
+``` python lines
 with open('path/to/file', 'w', encoding="utf-8") as f
   file_content = f.read()
 
@@ -79,7 +79,7 @@ For example, if the pointer position is at 2 in a 10-byte file and you write 3 b
 
 ### `read` method
 
-```python title= showLineNumbers
+``` python lines
 with open('filepath') as f:
   # do something
   file_content = f.read()
@@ -89,7 +89,7 @@ The `<file>.read(<size>)` method returns a string or bytes object.
 
 An optional numeric `size` argument can be provided to specify how many characters (in text mode) or bytes (in binary mode) are read and returned. By default, all file content is returned.
 
-```python title= showLineNumbers
+``` python lines
 with open...:
   first_10_char = file.read(10)
   _11_to_20th_char = file.read(10)
@@ -97,7 +97,7 @@ with open...:
 
 ### `readline` method
 
-```python title= showLineNumbers
+``` python lines
 with open('foo.py') as f:
   line_1 = f.readline()
   line_2 = f.readline()
@@ -115,7 +115,7 @@ a newline character (`\n`) is left at the end of the string
 
 Returning each line as a list
 
-```python title= showLineNumbers
+``` python lines
 my_list = f.readlines()
 
 # or
@@ -139,14 +139,14 @@ The return type of a read operation is a string. Numbers need to be cast to `int
 
 ### Read JSON
 
-```python title= showLineNumbers
+``` python lines
 with open('filepath' , 'r') as f:
     result = json.load(f)
 ```
 
 ## Write file
 
-```python title= showLineNumbers
+``` python lines
 f.write('This is a test\n') 
 # 15 
 
@@ -164,7 +164,7 @@ The `write` method takes a string or bytes object. Other types of objects need t
 
 ### Write JSON
 
-```python title= showLineNumbers
+``` python lines
 arr = ['item1' , 'item2' , 3 , 3333 , (1,2,3,4)]
 dict = {'k1' : 1 , 'k2' : [1,2,3,4] , 'k3' : "foo"}
 
@@ -175,7 +175,7 @@ with open('filepath' , 'w+') as f:
 
 ## Move file's pointer position
 
-```python title= showLineNumbers
+``` python lines
 f.seek(<offset> : int, <whence>: 0 | 1 | 2)
 ```
 
@@ -187,7 +187,7 @@ move file pointer for `<offset>` <span style={{color: "var(--primary-font-color)
 - 2: end of the file
 
 Eg:
-```python title= showLineNumbers
+``` python lines
 # move ahead 3 byte from the beginning
 f.seek(3,0) 
 
@@ -235,7 +235,7 @@ If you want to move a file pointer in text mode, you can use `read` instead. For
 ## Miscellaneous
 
 combine file paths:
-```python title= showLineNumbers
+``` python lines
 from pathlib import Path
 
 file_paths = ['/example' , 'file' , 'path' , 'file.txt' ]

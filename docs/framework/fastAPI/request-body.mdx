@@ -13,13 +13,11 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 Declare the request body type by using `Pydantic`'s <span style={{color: "var(--secondary-font-color)"}}> `BaseModel` </span>.
 
-```python title= showLineNumbers
+``` python lines highlight={2,5}
 from fastapi import FastAPI
-#  highlight-next-line
 from pydantic import BaseModel
 
 
-#  highlight-next-line
 class Item(BaseModel):
     name: str
     description: str | None = None

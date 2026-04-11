@@ -12,7 +12,7 @@ For a callable to have setup and teardown code blocks, it needs to support the [
 
 In other words, it needs to have an `__enter__` method (for setup code) and an `__exit__` method (for teardown code).
 
-```python title= showLineNumbers
+``` python lines
 with foo_callable() as return_value_from__enter__method:
   print('foo')
 
@@ -32,7 +32,7 @@ Executing the `with` statement on a context manager callable allows Python to:
 <Tip> 
 
 You can pass multiple callables to `with`:
-```python title= showLineNumbers
+``` python lines
 with (
     A() as a,
     B() as b,
@@ -41,7 +41,7 @@ with (
 ```
 
 equivalent to:
-```python title= showLineNumbers
+``` python lines
 with A() as a:
     with B() as b:
         pass
@@ -53,13 +53,13 @@ with A() as a:
 <Accordion title="`with` statement is sugar syntax for `try...finally`">
 
 Opening file with `with`:
-```python title= showLineNumbers
+``` python lines
 with open("hello.txt", "w") as file:
   file.write("Hello, World!")
 ```
 
 with `try...finally`:
-```python title= showLineNumbers
+``` python lines
 file = open("hello.txt", "w")
 
 try:
@@ -87,7 +87,7 @@ More on [`with` statement](https://docs.python.org/3/reference/compound_stmts.ht
 
 You can create a class that supports the context manager protocol.
 
-```python title= showLineNumbers
+``` python lines highlight={17-18}
 class Foo:
   def __init__(self, arg1):
     self._arg1 = arg1
@@ -104,10 +104,8 @@ class Foo:
     print(f"{exception_traceback = }")
 
 
-# highlight-start
 with Foo('bar') as hello:
      print(hello)
-# highlight-end
 
 # Init with bar
 # Entering the context
@@ -134,7 +132,7 @@ If the `__exit__` method returns `True`, the exception is suppressed. Otherwise,
 
 This is useful when you want a `callable` to automatically handle a certain exception.
 
-```python title= showLineNumbers
+``` python lines
 def __exit__(self, exception_type, exception_value, exception_traceback):
   if isinstance(exception_value, IndexError):
     # handle error
@@ -147,15 +145,13 @@ def __exit__(self, exception_type, exception_value, exception_traceback):
 
 ## Function-based context manager
 
-```python title= showLineNumbers
+``` python lines highlight={3,7}
 from contextlib import contextmanager
 
-# highlight-next-line
 @contextmanager
 def foo(arg1):
   print('executing inside generator arg1 =', arg1)
   try:
-    # highlight-next-line
     yield "Hello, World!"
     print('after `with` enclosing end if exception does not occur')
   except BaseException as e:
@@ -214,7 +210,7 @@ An async context manager is a context manager whose setup and teardown functions
 
 It use with `async with` statement.
 
-```python title= showLineNumbers
+``` python lines
 async with foo() as bar:
   pass
 ```
@@ -225,7 +221,7 @@ use `__aenter__` for setup method
 
 use `__aexit__` for teardown method
 
-```python title= showLineNumbers
+``` python lines
 class AsyncContextManager:
     async def __aenter__(self):
         await log('entering context')
@@ -244,7 +240,7 @@ You can define both sync and async setup / teardown methods to support both `wit
 
 use `asynccontextmanager` decorator
 
-```python title= showLineNumbers
+``` python lines
 from contextlib import asynccontextmanager
 
 @asynccontextmanager

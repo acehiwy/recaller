@@ -14,7 +14,7 @@ Within a component, service, or directive class (a class decorated with `@Compon
 
 This includes code inside the `constructor` block or class property initializers.
 
-```typescript title= showLineNumbers
+``` typescript lines
 class Foo {
   private service1 = inject(service1);
 
@@ -36,9 +36,8 @@ Some APIs run inside an injection context, so it is valid to use `inject`.
 
 For example, router guards such as `CanActivateFn`.
 
-```typescript title= showLineNumbers
+``` typescript lines highlight={2}
 const canActivateTeam: CanActivateFn = (route, state) => {
-  // highlight-next-line
   return inject(someservice);
 };
 ```
@@ -47,18 +46,15 @@ const canActivateTeam: CanActivateFn = (route, state) => {
 
 Wrap the code block with [`runInInjectionContext`](https://angular.dev/api/core/runInInjectionContext).
 
-```typescript title= showLineNumbers
+``` typescript lines highlight={3,6-8}
 @Injectable()
 export class HeroService {
-  // highlight-next-line
   private environmentInjector = inject(EnvironmentInjector);
 
   someMethod() {
-    // highlight-start
     runInInjectionContext(this.environmentInjector, () => {
       inject(SomeService);
     });
-    // highlight-end
   }
 }
 ```

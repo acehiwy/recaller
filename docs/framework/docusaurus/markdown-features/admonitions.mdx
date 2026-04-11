@@ -10,7 +10,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 We have a special admonitions syntax by wrapping content <span style={{color: "var(--secondary-font-color)"}}> ( text , markdown , jsx ) </span> with a set of 3 colons,
 followed by a label denoting its type.
 
-```markdown title= showLineNumbers
+``` markdown lines
 :::note
 
 Some **content** with _Markdown_ `syntax`. Check [this `api`](#).
@@ -78,7 +78,7 @@ If you use [Prettier](https://prettier.io/) to format your Markdown files, Prett
 
 To avoid this problem, add empty lines around the starting and ending directives.
 
-```markdown title= showLineNumbers
+``` markdown lines
 <!-- Prettier doesn't change this -->
 :::note
 
@@ -99,7 +99,7 @@ Hello world
 
 You may also specify an <span style={{color: "var(--secondary-font-color)"}}> optional </span> title.
 
-```markdown title= showLineNumbers
+``` markdown lines
 :::note[Your Title]
 
 Some **content** with _Markdown_ `syntax`.
@@ -127,7 +127,7 @@ The types that are accepted are the same as above:
 
 Optionally, you can specify an icon by passing a JSX element or a string, or a title
 
-```jsx title=foo.jsx showLineNumbers
+``` jsx title="foo.jsx" lines
 import Admonition from "@theme/Admonition";
 
 export default function MyReactPage() {
@@ -149,7 +149,7 @@ You can customize how each individual admonition type is rendered through [swizz
 
 You can often achieve your goal through a simple wrapper. For example, in the follow example, we swap out the icon for info admonitions only.
 
-```javascript title=src/theme/Admonition.js showLineNumbers
+``` javascript title="src/theme/Admonition.js" lines
 import React from "react";
 import Admonition from "@theme-original/Admonition";
 import MyIcon from "@site/static/img/info.svg";
@@ -170,7 +170,7 @@ The plugin is designed to be configurable.
 
 To customize the Remark plugin for a specific content plugin (docs, blog, pages), pass the options through the admonitions key.
 
-```javascript title=docusaurus.config.js showLineNumbers
+``` javascript title="docusaurus.config.js" lines
 export default {
   presets: [
     [

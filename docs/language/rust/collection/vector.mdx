@@ -12,7 +12,7 @@ Vectors can only store values of the <span style={{color: "var(--secondary-font-
 
 ## Creating a Vector
 
-```rust title= showLineNumbers
+``` rust lines
 let v: Vec<i32> = Vec::new();
 ```
 
@@ -24,14 +24,13 @@ We added a type annotation here. Because we aren’t inserting any values into t
 
 Rust provides the `vec!` macro, which will create a new vector that holds the values you give it.
 
-```rust title= showLineNumbers
+``` rust lines
 let v = vec![1, 2, 3];
 ```
 
 ## Updating a Vector
 
-```rust title= showLineNumbers
-// highlight-next-line
+``` rust lines highlight={1}
 let mut v = Vec::new();
 
 v.push(5);
@@ -50,7 +49,7 @@ Changing Vector value require Vector to be mutable.
 
 ### By index syntax
 
-```rust title= showLineNumbers
+``` rust lines
 let v = vec![1, 2, 3, 4, 5];
 
 let third: &i32 = &v[2]; // note that ownership concept still apply
@@ -61,7 +60,7 @@ println!("The third element is {third}");
 
 `get` accept index as an argument and return `Option<&T>`
 
-```rust title= showLineNumbers
+``` rust lines
 let v = vec![1, 2, 3, 4, 5];
 
 let third: Option<&i32> = v.get(2);
@@ -86,12 +85,11 @@ Use index syntax when you want program to crash when there s an attempt to acces
 
 mutable and immutable references in the same scope concept still apply
 
-```rust title= showLineNumbers
+``` rust lines highlight={5}
 let mut v = vec![1, 2, 3, 4, 5];
 
 let first = &v[0];
 
-// highlight-error-next-line
 v.push(6); // cannot borrow `v` as mutable because it is also borrowed as immutable
 
 println!("The first element is: {first}");
@@ -111,7 +109,7 @@ Reference might still point to the old stale memory location
 
 ## Iterating
 
-```rust title= showLineNumbers
+``` rust lines
 // with immutable ref
 let v = vec![100, 32, 57];
 for i in &v {
@@ -137,7 +135,7 @@ The reference to the vector that the for loop holds <span style={{color: "var(--
 
 Iterating over a vector without using references is valid, but the items can no longer be used afterward because they are moved.
 
-```rust title= showLineNumbers
+``` rust lines highlight={8}
 let v = vec![100, 32, 57];
 for i in v {
     // move occurs because `v` has type `Vec<i32>`, which does not implement the `Copy` trait
@@ -145,7 +143,6 @@ for i in v {
     println!("{i}");
 }
 
-// highlight-error-next-line
 println("{}", v[0]); // borrow of moved value: `v`
 ```
 
@@ -157,7 +154,7 @@ When we need <span style={{color: "var(--secondary-font-color)"}}> one type to r
 
 Because enum variants are consider the same enum type, we can create a vector to hold that enum and so, ultimately, holds different types.
 
-```rust title= showLineNumbers
+``` rust lines
 enum SpreadsheetCell {
     Int(i32),
     Float(f64),
@@ -175,7 +172,7 @@ let row = vec![
 
 When the vector gets dropped, all of its contents are also dropped.
 
-```rust title= showLineNumbers
+``` rust lines
 {
     let v = vec![1, 2, 3, 4];
 

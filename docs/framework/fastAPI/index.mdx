@@ -9,7 +9,7 @@ lastUpdated: 2026-04-08T09:00:42.959Z
 
 ## Installation
 
-```bash title= showLineNumbers
+``` bash lines
 pip install 'fastapi[standard]'
 ```
 
@@ -30,7 +30,7 @@ Install FastAPI without the FastAPI Cloud CLI: `pip install "fastapi[standard-no
 
 ## Hello world
 
-```python title=main.py showLineNumbers
+``` python title="main.py" lines
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -42,7 +42,7 @@ async def root():
 ```
 
 Run server:
-```bash title= showLineNumbers
+``` bash lines
 fastapi dev main.py
 ```
 
@@ -68,7 +68,7 @@ FastAPI calls this a "path operation".
 
 ### Returning a response
 
-```python title= showLineNumbers
+``` python lines
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
