@@ -1,0 +1,36 @@
+---
+last_update:
+  date: 2026-04-13T15:09:04.725Z
+---
+
+# How to write test
+
+A test in Rust is a function that’s annotated with the `test` attribute.
+
+Whenever we make a new <Color color="var(--secondary-font-color)"> library </Color> project with Cargo, a test module with a test function in it is automatically generated for us.
+
+```rust title= showLineNumbers
+pub fn add(left: usize, right: usize) -> usize {
+    left + right
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_works() {
+        let result = add(2, 2);
+        assert_eq!(result, 4);
+    }
+}
+```
+
+<Admonition type="tip" title="tip"> 
+
+We might also have non-test functions in the tests module to help set up common scenarios or perform common operations.
+
+</Admonition>
+
+
+ Each test is run in a new thread, and when the main thread sees that a test thread has died, the test is marked as failed
