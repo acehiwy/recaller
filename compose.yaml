@@ -5,7 +5,6 @@ services:
     build:
       dockerfile: local.Dockerfile
     volumes:
-        - app-node-modules:/home/node/app/node_modules
         - app-git-worktrees:/home/node/worktrees
         - .:/home/node/app
     ports:
@@ -14,5 +13,4 @@ services:
 
 
 volumes:
-  app-node-modules:
   app-git-worktrees:
