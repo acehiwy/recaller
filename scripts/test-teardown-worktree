@@ -221,7 +221,7 @@ test_unmerged_unpushed_branch_blocks() {
     run_setup "$branch"
     commit_in_worktree "$branch" "local-only.txt" "test: local-only commit"
 
-    expect_failure_contains "unmerged and unpushed branch blocks" "work is not preserved yet" run_teardown "$branch"
+    expect_failure_contains "unmerged and unpushed branch blocks" "is not preserved" run_teardown "$branch"
     assert_path_exists "$path" "unmerged and unpushed branch blocks"
     assert_local_branch_exists "$branch" "unmerged and unpushed branch blocks"
 
