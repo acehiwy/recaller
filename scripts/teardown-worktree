@@ -2,18 +2,15 @@
 # =============================================================================
 # teardown-worktree
 #
-# Safely removes a git worktree and, by default, deletes its local branch.
-# Refuses teardown when the worktree has unsaved changes or when its HEAD is
-# neither merged into a target branch nor preserved on the configured remote.
+# Safely removes one or more git worktrees and, by default, deletes their local
+# branches. Refuses teardown when a worktree has unsaved changes or when its
+# HEAD is neither merged into a target branch nor preserved on the remote.
 #
 # Usage:
-#   ./teardown-worktree [OPTIONS] WORKTREE_NAME
-#
-# See `--help` for full usage.
+#   ./teardown-worktree [OPTIONS] WORKTREE_NAME [WORKTREE_NAME ...]
 # =============================================================================
 
 set -euo pipefail
-
 
 # =============================================================================
 # CONFIGURATION & DEFAULTS
@@ -25,608 +22,502 @@ MERGE_TARGET="main"
 DEFAULT_WORKTREES_BASE="$HOME/worktrees"
 WORKTREES_BASE_INPUT="$DEFAULT_WORKTREES_BASE"
 DELETE_BRANCH=true
-FORCE=false
 DRY_RUN=false
-WORKTREE_NAME=""
+
+# Granular force flags (replaces single --force)
+FORCE_DIRTY=false
+FORCE_LOCKED=false
+FORCE_UNMERGED=false
+
+declare -a TARGET_NAMES=()
+
+# Queue: aligned by index
+declare -a QUEUED_PATHS=()
+declare -a QUEUED_BRANCHES=()
+declare -a QUEUED_PRESERVATION_MSGS=()
 
 CURRENT_WORKTREE_ROOT=""
 WORKTREES_BASE=""
-GIT_CONTEXT_PATH=""
+SAFE_GIT_CONTEXT=""
+
+# Worktree registry: one entry per worktree, pipe-delimited
+# Format: PATH|HEAD|BRANCH|LOCKED|PRUNABLE
+declare -a WORKTREE_REGISTRY=()
+
+# Per-iteration state (populated by resolve_target_worktree)
 TARGET_WORKTREE_PATH=""
 TARGET_BRANCH=""
 TARGET_HEAD=""
 TARGET_LOCKED=false
 TARGET_PRUNABLE=false
 
-MERGED_TO_TARGET=false
-MERGE_TARGET_REF=""
-REMOTE_HAS_PRESERVED_HEAD=false
-REMOTE_PRESERVED_REF=""
-REMOTE_IS_CONFIGURED=false
-
-declare -a WORKTREE_PATHS=()
-declare -a WORKTREE_HEADS=()
-declare -a WORKTREE_BRANCHES=()
-declare -a WORKTREE_LOCKED_FLAGS=()
-declare -a WORKTREE_PRUNABLE_FLAGS=()
-
 
 # =============================================================================
-# HELPER FUNCTIONS
+# LOGGING & HELPERS
 # =============================================================================
 
-err() {
-    printf '%s\n' "❌  Error: $*" >&2
-}
+err()    { printf 'Error: %s\n' "$*" >&2; }
+warn()   { printf 'Warning: %s\n' "$*" >&2; }
+info()   { printf '%s\n' "$*"; }
 
-warn() {
-    printf '%s\n' "⚠️   $*" >&2
-}
-
-info() {
-    printf '%s\n' "$*"
-}
-
+# detail: supports multi-line via printf %b so \n in messages expands correctly
 detail() {
-    printf '%s\n' "    $*" >&2
+    printf '    %b\n' "$*" >&2
+}
+
+run_step() {
+    if [[ "$DRY_RUN" == true ]]; then
+        local formatted=""
+        for arg in "$@"; do
+            printf -v formatted '%s%q ' "$formatted" "$arg"
+        done
+        info "  [dry-run] ${formatted% }"
+        return 0
+    fi
+    "$@"
 }
 
 usage() {
     cat << EOF
-Usage: $SCRIPT_NAME [OPTIONS] WORKTREE_NAME
+Usage: $SCRIPT_NAME [OPTIONS] WORKTREE_NAME [WORKTREE_NAME ...]
        $SCRIPT_NAME -h | --help
 
-Safely tears down a git worktree managed under the worktree base directory.
-The target may be provided as the worktree name or as the attached branch name
-when that branch maps uniquely to a registered worktree.
+Safely tears down git worktrees managed under the worktree base directory.
 
 OPTIONS:
-  -d, --base-dir DIR       Base directory containing managed worktrees.
-                           Final path lookup: DIR/WORKTREE_NAME
-                           Default: ~/worktrees
-  -r, --remote NAME        Remote used to detect preserved work.
-                           Default: $REMOTE
-  -m, --merge-target REF   Branch or ref that counts as merged.
-                           Default: $MERGE_TARGET
-  -k, --keep-branch        Remove only the worktree; keep the local branch.
-  -f, --force              Override dirty and preservation safety checks.
-  -p, --dry-run            Print what would be removed without changing git state.
-  -h, --help               Show this help message and exit.
+  -d, --base-dir DIR          Base directory containing managed worktrees.
+                              Default: ~/worktrees
+  -r, --remote NAME           Remote used to detect preserved work.
+                              Default: $REMOTE
+  -m, --merge-target REF      Branch or ref that counts as merged.
+                              Default: $MERGE_TARGET
+  -k, --keep-branch           Remove only the worktree; keep the local branch.
+  -p, --dry-run               Print what would happen without changing git state.
 
-ARGUMENTS:
-  WORKTREE_NAME            Worktree path suffix or attached branch name.
-                           Allowed characters: letters, digits, hyphens,
-                           dots, underscores, and forward slashes.
-                           Must not start with a hyphen or contain '..'.
+  Force flags (use only the minimum needed):
+  --force-dirty               Skip uncommitted-changes check.
+  --force-locked              Skip worktree-lock check.
+  --force-unmerged            Skip preservation/merge check.
+  -f, --force                 Shorthand for all three force flags above.
 
-DEFAULT BEHAVIOR:
-  The script removes the worktree directory and deletes the local branch.
-  Teardown is blocked when the worktree has uncommitted changes or when its
-  HEAD is neither merged into the merge target nor preserved on the remote.
+  -h, --help                  Show this help message and exit.
 
 EXAMPLES:
-  $SCRIPT_NAME feat-ui-logic
+  $SCRIPT_NAME feat-ui-logic fix-auth-bug
   $SCRIPT_NAME --keep-branch feat-ui-logic
-  $SCRIPT_NAME --base-dir ~/worktrees docs/refactor-links
   $SCRIPT_NAME --remote origin --merge-target develop feat-ui-logic
-  $SCRIPT_NAME --dry-run feat-ui-logic
-  $SCRIPT_NAME --force feat-ui-logic
+  $SCRIPT_NAME --force-dirty feat-ui-logic    # override only dirty check
 EOF
 }
 
-validate_worktree_name() {
-    local name="$1"
+# =============================================================================
+# REGISTRY: PARSING & LOOKUP
+# =============================================================================
 
-    if [[ "$name" == *..* ]]; then
-        err "WORKTREE_NAME must not contain '..' (path traversal is not allowed)."
-        return 1
-    fi
+# Each worktree is stored as a single pipe-delimited record:
+#   PATH|HEAD|BRANCH|LOCKED|PRUNABLE
+# Using one record per entry avoids parallel-array index drift.
 
-    if [[ "$name" == -* ]]; then
-        err "WORKTREE_NAME must not start with a hyphen."
-        return 1
-    fi
+_registry_field() {
+    # _registry_field RECORD FIELD_NUMBER (1-based)
+    local record="$1" field="$2"
+    echo "$record" | cut -d'|' -f"$field"
+}
 
-    if [[ ! "$name" =~ ^[a-zA-Z0-9._/-]+$ ]]; then
-        err "WORKTREE_NAME contains unsupported characters."
-        err "Allowed: letters, digits, hyphens (-), dots (.), underscores (_), slashes (/)."
-        return 1
-    fi
+load_worktree_registry() {
+    WORKTREE_REGISTRY=()
+
+    local line="" path="" head="" branch="" locked=false prunable=false
+
+    while IFS= read -r line; do
+        if [[ -z "$line" ]]; then
+            if [[ -n "$path" ]]; then
+                WORKTREE_REGISTRY+=("${path}|${head}|${branch}|${locked}|${prunable}")
+            fi
+            path=""; head=""; branch=""; locked=false; prunable=false
+            continue
+        fi
+
+        case "$line" in
+            worktree\ *)              path="${line#worktree }" ;;
+            HEAD\ *)                  head="${line#HEAD }" ;;
+            branch\ refs/heads/*)     branch="${line#branch refs/heads/}" ;;
+            detached)                 branch="(detached)" ;;
+            # Explicit guard before the wildcard: skip any other "branch *" value
+            # that doesn't look like a simple ref (e.g. future git edge cases)
+            branch\ *)
+                local raw_branch="${line#branch }"
+                if [[ "$raw_branch" =~ ^[a-zA-Z0-9_./-]+$ ]]; then
+                    branch="$raw_branch"
+                else
+                    warn "Unexpected branch format, skipping: $line"
+                fi
+                ;;
+            locked*)                  locked=true ;;
+            prunable*)                prunable=true ;;
+        esac
+    done < <(git -C "$CURRENT_WORKTREE_ROOT" worktree list --porcelain && printf '\n')
+}
+
+# Populate TARGET_* variables from a registry record
+_populate_target_from_record() {
+    local record="$1"
+    TARGET_WORKTREE_PATH="$(_registry_field "$record" 1)"
+    TARGET_HEAD="$(_registry_field          "$record" 2)"
+    TARGET_BRANCH="$(_registry_field        "$record" 3)"
+    TARGET_LOCKED="$(_registry_field        "$record" 4)"
+    TARGET_PRUNABLE="$(_registry_field      "$record" 5)"
 }
 
 resolve_directory_path() {
     local path="$1"
-    local create_if_missing="${2:-false}"
 
     if [[ -z "$path" ]]; then
-        err "The worktree base directory must not be empty."
-        return 1
+        err "The worktree base directory must not be empty."; return 1
     fi
 
-    case "$path" in
-        "~")
-            path="$HOME"
-            ;;
-        "~/"*)
-            path="$HOME/${path#"~/"}"
-            ;;
-    esac
+    path="${path/#\~/$HOME}"
 
     if [[ "$path" != /* ]]; then
         path="$CURRENT_WORKTREE_ROOT/$path"
     fi
 
-    if [[ -e "$path" && ! -d "$path" ]]; then
-        err "Worktree base path exists but is not a directory: $path"
+    if [[ ! -d "$path" ]]; then
+        err "Worktree base directory does not exist or is not a directory: $path"
         return 1
     fi
 
-    if [[ ! -d "$path" ]]; then
-        if [[ "$create_if_missing" == true ]]; then
-            mkdir -p "$path"
-        else
-            err "Worktree base directory does not exist: $path"
-            return 1
-        fi
+    (cd "$path" && pwd -P)
+}
+
+# =============================================================================
+# PHASE 1: VALIDATION
+# =============================================================================
+
+validate_worktree_name() {
+    local name="$1"
+    if [[ "$name" == *..* ]] || [[ "$name" == -* ]] || [[ ! "$name" =~ ^[a-zA-Z0-9._/-]+$ ]]; then
+        err "Invalid WORKTREE_NAME: '$name'. Contains unsupported characters, '..', or starts with a hyphen."
+        return 1
     fi
-
-    (
-        cd "$path"
-        pwd -P
-    )
-}
-
-record_worktree_entry() {
-    WORKTREE_PATHS+=("$1")
-    WORKTREE_HEADS+=("$2")
-    WORKTREE_BRANCHES+=("$3")
-    WORKTREE_LOCKED_FLAGS+=("$4")
-    WORKTREE_PRUNABLE_FLAGS+=("$5")
-}
-
-load_worktree_metadata() {
-    WORKTREE_PATHS=()
-    WORKTREE_HEADS=()
-    WORKTREE_BRANCHES=()
-    WORKTREE_LOCKED_FLAGS=()
-    WORKTREE_PRUNABLE_FLAGS=()
-
-    local line=""
-    local current_path=""
-    local current_head=""
-    local current_branch=""
-    local current_locked=false
-    local current_prunable=false
-
-    while IFS= read -r line; do
-        if [[ -z "$line" ]]; then
-            if [[ -n "$current_path" ]]; then
-                record_worktree_entry \
-                    "$current_path" \
-                    "$current_head" \
-                    "$current_branch" \
-                    "$current_locked" \
-                    "$current_prunable"
-            fi
-
-            current_path=""
-            current_head=""
-            current_branch=""
-            current_locked=false
-            current_prunable=false
-            continue
-        fi
-
-        case "$line" in
-            worktree\ *)
-                current_path="${line#worktree }"
-                ;;
-            HEAD\ *)
-                current_head="${line#HEAD }"
-                ;;
-            branch\ refs/heads/*)
-                current_branch="${line#branch refs/heads/}"
-                ;;
-            branch\ *)
-                current_branch="${line#branch }"
-                ;;
-            detached)
-                current_branch=""
-                ;;
-            locked*)
-                current_locked=true
-                ;;
-            prunable*)
-                current_prunable=true
-                ;;
-        esac
-    done < <(git -C "$CURRENT_WORKTREE_ROOT" worktree list --porcelain && printf '\n')
-}
-
-is_managed_worktree_path() {
-    local path="$1"
-    [[ "$path" == "$WORKTREES_BASE" || "$path" == "$WORKTREES_BASE/"* ]]
-}
-
-set_target_from_index() {
-    local index="$1"
-    TARGET_WORKTREE_PATH="${WORKTREE_PATHS[index]}"
-    TARGET_HEAD="${WORKTREE_HEADS[index]}"
-    TARGET_BRANCH="${WORKTREE_BRANCHES[index]}"
-    TARGET_LOCKED="${WORKTREE_LOCKED_FLAGS[index]}"
-    TARGET_PRUNABLE="${WORKTREE_PRUNABLE_FLAGS[index]}"
 }
 
 resolve_target_worktree() {
-    local expected_path="$WORKTREES_BASE/$WORKTREE_NAME"
-    local path_match_index=-1
-    local branch_match_index=-1
+    local name="$1"
+    local expected_path="$WORKTREES_BASE/$name"
+
+    local path_match_record=""
+    local branch_match_record=""
     local branch_match_count=0
-    local index
 
-    for index in "${!WORKTREE_PATHS[@]}"; do
-        if ! is_managed_worktree_path "${WORKTREE_PATHS[index]}"; then
-            continue
+    for record in "${WORKTREE_REGISTRY[@]}"; do
+        local rec_path
+        rec_path="$(_registry_field "$record" 1)"
+
+        # Only consider worktrees under our managed base
+        [[ "$rec_path" != "$WORKTREES_BASE"* ]] && continue
+
+        # Path match takes priority — find it and stop scanning
+        if [[ "$rec_path" == "$expected_path" ]]; then
+            path_match_record="$record"
+            break
         fi
 
-        if [[ "${WORKTREE_PATHS[index]}" == "$expected_path" ]]; then
-            path_match_index="$index"
-        fi
-
-        if [[ -n "${WORKTREE_BRANCHES[index]}" && "${WORKTREE_BRANCHES[index]}" == "$WORKTREE_NAME" ]]; then
-            branch_match_index="$index"
-            ((branch_match_count += 1))
+        local rec_branch
+        rec_branch="$(_registry_field "$record" 3)"
+        if [[ -n "$rec_branch" && "$rec_branch" != "(detached)" && "$rec_branch" == "$name" ]]; then
+            branch_match_record="$record"
+            (( branch_match_count += 1 ))
         fi
     done
 
-    if (( path_match_index >= 0 )); then
-        set_target_from_index "$path_match_index"
-        return 0
+    if [[ -n "$path_match_record" ]]; then
+        _populate_target_from_record "$path_match_record"; return 0
+    elif (( branch_match_count == 1 )); then
+        _populate_target_from_record "$branch_match_record"; return 0
+    elif (( branch_match_count > 1 )); then
+        err "Branch '$name' is attached to multiple managed worktrees."; return 1
     fi
 
-    if (( branch_match_count == 1 )); then
-        set_target_from_index "$branch_match_index"
-        return 0
-    fi
+    err "No managed worktree found for '$name' under: $WORKTREES_BASE"
+    return 1
+}
 
-    if (( branch_match_count > 1 )); then
-        err "Branch '$WORKTREE_NAME' is attached to multiple managed worktrees."
-        err "Pass the exact worktree name or path suffix instead."
+check_safety() {
+    local name="$1"
+    local status merged_ref remote_ref
+
+    # --- Guard: refuse to tear down the main worktree ---
+    if [[ "$(cd "$TARGET_WORKTREE_PATH" 2>/dev/null && git rev-parse --show-toplevel 2>/dev/null)" == "$TARGET_WORKTREE_PATH" ]] \
+        && [[ "$(git -C "$TARGET_WORKTREE_PATH" rev-parse --git-dir 2>/dev/null)" == ".git" ]]; then
+        err "'$name' appears to be the main repository worktree. Teardown refused."
         return 1
     fi
 
-    err "No managed worktree found for '$WORKTREE_NAME' under: $WORKTREES_BASE"
-    return 1
-}
-
-resolve_git_context_path() {
-    local target_path="$1"
-    local index
-
-    for index in "${!WORKTREE_PATHS[@]}"; do
-        if [[ "${WORKTREE_PATHS[index]}" == "$target_path" ]]; then
-            continue
-        fi
-
-        if [[ -d "${WORKTREE_PATHS[index]}" ]]; then
-            printf '%s\n' "${WORKTREE_PATHS[index]}"
-            return 0
-        fi
-    done
-
-    err "Unable to find another live worktree for repository-level git commands."
-    return 1
-}
-
-resolve_ref() {
-    local ref_name="$1"
-    local candidate=""
-
-    for candidate in "$ref_name" "refs/heads/$ref_name" "refs/remotes/$ref_name"; do
-        if git -C "$GIT_CONTEXT_PATH" rev-parse --verify "$candidate^{commit}" > /dev/null 2>&1; then
-            printf '%s\n' "$candidate"
-            return 0
-        fi
-    done
-
-    return 1
-}
-
-is_commit_preserved_by_ref() {
-    local commit="$1"
-    local ref_name="$2"
-    git -C "$GIT_CONTEXT_PATH" merge-base --is-ancestor "$commit" "$ref_name"
-}
-
-find_remote_ref_preserving_head() {
-    local commit="$1"
-    local matching_refs=""
-    local ref_name=""
-
-    matching_refs="$(git -C "$GIT_CONTEXT_PATH" for-each-ref --format='%(refname:short)' --contains "$commit" "refs/remotes/$REMOTE")"
-
-    if [[ -z "$matching_refs" ]]; then
+    # --- 1. Directory Existence ---
+    if [[ ! -d "$TARGET_WORKTREE_PATH" ]]; then
+        err "Worktree directory missing: $TARGET_WORKTREE_PATH"
+        [[ "$TARGET_PRUNABLE" == true ]] && detail "Git marked this as prunable. Run 'git worktree prune'."
         return 1
     fi
 
-    while IFS= read -r ref_name; do
-        if [[ "$ref_name" != "$REMOTE/HEAD" ]]; then
-            printf '%s\n' "$ref_name"
-            return 0
-        fi
-    done <<< "$matching_refs"
-
-    printf '%s\n' "${matching_refs%%$'\n'*}"
-}
-
-collect_branch_checkouts_elsewhere() {
-    local branch_name="$1"
-    local target_path="$2"
-    local index
-    local matches=()
-
-    for index in "${!WORKTREE_PATHS[@]}"; do
-        if [[ "${WORKTREE_PATHS[index]}" == "$target_path" ]]; then
-            continue
-        fi
-
-        if [[ "${WORKTREE_BRANCHES[index]}" == "$branch_name" ]]; then
-            matches+=("${WORKTREE_PATHS[index]}")
-        fi
-    done
-
-    printf '%s\n' "${matches[@]}"
-}
-
-worktree_status_output() {
-    local path="$1"
-    git -C "$path" status --short --untracked-files=normal
-}
-
-move_out_of_target_if_needed() {
-    if [[ "$PWD" == "$TARGET_WORKTREE_PATH" || "$PWD" == "$TARGET_WORKTREE_PATH/"* ]]; then
-        cd "$GIT_CONTEXT_PATH"
+    # --- 2. Dirty Check ---
+    status="$(git -C "$TARGET_WORKTREE_PATH" status --short --untracked-files=normal)"
+    if [[ -n "$status" && "$FORCE_DIRTY" != true ]]; then
+        err "'$name' has uncommitted changes. Stash or commit them, or use --force-dirty."
+        detail "Uncommitted changes:\n$status"
+        return 1
     fi
-}
+    [[ -n "$status" ]] && warn "Skipping dirty check for '$name' (--force-dirty)."
 
-run_step() {
-    if [[ "$DRY_RUN" == true ]]; then
-        local formatted_command=""
-        local argument=""
-        for argument in "$@"; do
-            printf -v formatted_command '%s%q ' "$formatted_command" "$argument"
+    # --- 3. Lock Check ---
+    if [[ "$TARGET_LOCKED" == true && "$FORCE_LOCKED" != true ]]; then
+        err "'$name' is locked. Unlock it or rerun with --force-locked."
+        return 1
+    fi
+    [[ "$TARGET_LOCKED" == true ]] && warn "Skipping lock check for '$name' (--force-locked)."
+
+    # --- 4. Preservation Check ---
+    local is_preserved=false
+    local pres_msg=""
+
+    if merged_ref="$(git -C "$CURRENT_WORKTREE_ROOT" rev-parse --verify "$MERGE_TARGET^{commit}" 2>/dev/null)"; then
+        if git -C "$CURRENT_WORKTREE_ROOT" merge-base --is-ancestor "$TARGET_HEAD" "$merged_ref" 2>/dev/null; then
+            is_preserved=true
+            pres_msg="Preservation check passed via merge target: $MERGE_TARGET"
+        fi
+    fi
+
+    if [[ "$is_preserved" == false ]] \
+        && git -C "$CURRENT_WORKTREE_ROOT" config --get "remote.$REMOTE.url" >/dev/null 2>&1; then
+        remote_ref="$(git -C "$CURRENT_WORKTREE_ROOT" \
+            for-each-ref --format='%(refname:short)' \
+            --contains "$TARGET_HEAD" \
+            "refs/remotes/$REMOTE" \
+            | grep -v "$REMOTE/HEAD" \
+            | head -n 1)"
+        if [[ -n "$remote_ref" ]]; then
+            is_preserved=true
+            pres_msg="Preservation check passed via remote ref: $remote_ref"
+        fi
+    fi
+
+    if [[ "$is_preserved" == false && "$FORCE_UNMERGED" != true ]]; then
+        err "Work in '$name' is not preserved. Push to '$REMOTE' or merge into '$MERGE_TARGET', or use --force-unmerged."
+        return 1
+    fi
+
+    if [[ "$is_preserved" == false ]]; then
+        warn "Skipping preservation check for '$name' (--force-unmerged)."
+        pres_msg="Preservation checks bypassed by --force-unmerged."
+    fi
+
+    # Preservation message is returned via a global to avoid adding a separate
+    # queue array that could drift out of sync. It is appended to
+    # QUEUED_PRESERVATION_MSGS immediately after this function returns,
+    # in the same code block that appends QUEUED_PATHS and QUEUED_BRANCHES.
+    _LAST_PRES_MSG="$pres_msg"
+
+    # --- 5. Branch Checkout Usage Check ---
+    if [[ "$DELETE_BRANCH" == true && -n "$TARGET_BRANCH" && "$TARGET_BRANCH" != "(detached)" ]]; then
+        for record in "${WORKTREE_REGISTRY[@]}"; do
+            local rec_path rec_branch
+            rec_path="$(_registry_field   "$record" 1)"
+            rec_branch="$(_registry_field "$record" 3)"
+
+            # Skip self
+            [[ "$rec_path" == "$TARGET_WORKTREE_PATH" ]] && continue
+
+            # Skip paths already queued for deletion
+            local skip=false
+            for qp in "${QUEUED_PATHS[@]+"${QUEUED_PATHS[@]}"}"; do
+                [[ "$rec_path" == "$qp" ]] && { skip=true; break; }
+            done
+            [[ "$skip" == true ]] && continue
+
+            if [[ "$rec_branch" == "$TARGET_BRANCH" ]]; then
+                err "Branch '$TARGET_BRANCH' is checked out in surviving worktree: $rec_path"
+                return 1
+            fi
         done
-        info "🧪  Dry run: ${formatted_command% }"
-        return 0
     fi
 
-    "$@"
+    return 0
 }
 
+# =============================================================================
+# PHASE 2: TEARDOWN
+# =============================================================================
+
+find_safe_context() {
+    for record in "${WORKTREE_REGISTRY[@]}"; do
+        local candidate
+        candidate="$(_registry_field "$record" 1)"
+
+        local slated=false
+        for qp in "${QUEUED_PATHS[@]+"${QUEUED_PATHS[@]}"}"; do
+            [[ "$candidate" == "$qp" ]] && { slated=true; break; }
+        done
+
+        if [[ "$slated" == false && -d "$candidate" ]]; then
+            SAFE_GIT_CONTEXT="$candidate"
+            return 0
+        fi
+    done
+
+    err "Cannot find a safe git context to run teardown commands."
+    return 1
+}
+
+perform_teardown() {
+    local path="$1"
+    local branch="$2"
+    local pres_msg="$3"
+
+    # Re-verify safe context is still available before each teardown
+    if [[ ! -d "$SAFE_GIT_CONTEXT" ]]; then
+        err "Safe git context has become unavailable: $SAFE_GIT_CONTEXT"
+        return 1
+    fi
+
+    info "  Removing worktree: $path"
+    [[ -n "$pres_msg" ]] && detail "$pres_msg"
+
+    local rm_cmd=(git -C "$SAFE_GIT_CONTEXT" worktree remove)
+    [[ "$FORCE_DIRTY" == true || "$FORCE_LOCKED" == true ]] && rm_cmd+=(--force)
+    rm_cmd+=("$path")
+
+    run_step "${rm_cmd[@]}"
+
+    if [[ "$DELETE_BRANCH" == true && -n "$branch" && "$branch" != "(detached)" ]]; then
+        info "  Deleting local branch: $branch"
+        run_step git -C "$SAFE_GIT_CONTEXT" branch -D "$branch"
+    elif [[ "$DELETE_BRANCH" == false && -n "$branch" && "$branch" != "(detached)" ]]; then
+        info "  Keeping local branch: $branch"
+    fi
+
+    info "  Done: $path"
+    echo ""
+}
 
 # =============================================================================
-# FLAG PARSING
+# BATCH ERROR TRACKING
 # =============================================================================
 
+declare -a FAILED_NAMES=()
+declare -a SUCCEEDED_NAMES=()
+
+teardown_with_tracking() {
+    local idx="$1" name="$2"
+    if perform_teardown \
+        "${QUEUED_PATHS[idx]}" \
+        "${QUEUED_BRANCHES[idx]}" \
+        "${QUEUED_PRESERVATION_MSGS[idx]}"; then
+        SUCCEEDED_NAMES+=("$name")
+    else
+        FAILED_NAMES+=("$name")
+    fi
+}
+
+print_summary() {
+    echo "========================================"
+    info "Teardown summary:"
+    for name in "${SUCCEEDED_NAMES[@]+"${SUCCEEDED_NAMES[@]}"}"; do
+        info "  DONE    $name"
+    done
+    for name in "${FAILED_NAMES[@]+"${FAILED_NAMES[@]}"}"; do
+        info "  FAILED  $name"
+    done
+
+    if (( ${#FAILED_NAMES[@]} > 0 )); then
+        echo ""
+        warn "${#FAILED_NAMES[@]} worktree(s) failed to tear down."
+        return 1
+    fi
+    return 0
+}
+
+# =============================================================================
+# MAIN SCRIPT EXECUTION
+# =============================================================================
+
+# --- 1. Parse Arguments ---
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        -h|--help)
-            usage
-            exit 0
-            ;;
-
-        -d|--base-dir)
-            shift
-            if [[ $# -eq 0 ]]; then
-                err "-d / --base-dir requires a value (e.g. -d ~/worktrees)."
-                exit 1
-            fi
-            WORKTREES_BASE_INPUT="$1"
-            shift
-            ;;
-
-        -r|--remote)
-            shift
-            if [[ $# -eq 0 ]]; then
-                err "-r / --remote requires a value (e.g. -r upstream)."
-                exit 1
-            fi
-            REMOTE="$1"
-            shift
-            ;;
-
-        -m|--merge-target)
-            shift
-            if [[ $# -eq 0 ]]; then
-                err "-m / --merge-target requires a value (e.g. -m main)."
-                exit 1
-            fi
-            MERGE_TARGET="$1"
-            shift
-            ;;
-
-        -k|--keep-branch)
-            DELETE_BRANCH=false
-            shift
-            ;;
-
-        -f|--force)
-            FORCE=true
-            shift
-            ;;
-
-        -p|--dry-run)
-            DRY_RUN=true
-            shift
-            ;;
-
-        *)
-            if [[ -z "$WORKTREE_NAME" ]]; then
-                WORKTREE_NAME="$1"
-                shift
-            else
-                err "Unexpected argument: '$1'"
-                usage >&2
-                exit 1
-            fi
-            ;;
+        -h|--help)           usage; exit 0 ;;
+        -d|--base-dir)       shift; WORKTREES_BASE_INPUT="$1"; shift ;;
+        -r|--remote)         shift; REMOTE="$1"; shift ;;
+        -m|--merge-target)   shift; MERGE_TARGET="$1"; shift ;;
+        -k|--keep-branch)    DELETE_BRANCH=false; shift ;;
+        -p|--dry-run)        DRY_RUN=true; shift ;;
+        --force-dirty)       FORCE_DIRTY=true; shift ;;
+        --force-locked)      FORCE_LOCKED=true; shift ;;
+        --force-unmerged)    FORCE_UNMERGED=true; shift ;;
+        -f|--force)          FORCE_DIRTY=true; FORCE_LOCKED=true; FORCE_UNMERGED=true; shift ;;
+        -*)                  err "Unknown flag: $1"; usage >&2; exit 1 ;;
+        *)                   TARGET_NAMES+=("$1"); shift ;;
     esac
 done
 
-
-# =============================================================================
-# PRE-FLIGHT CHECKS
-# =============================================================================
-
-if [[ -z "$WORKTREE_NAME" ]]; then
-    err "Missing required argument: WORKTREE_NAME."
-    usage >&2
-    exit 1
+if [[ ${#TARGET_NAMES[@]} -eq 0 ]]; then
+    err "No WORKTREE_NAME provided."
+    usage >&2; exit 1
 fi
 
-validate_worktree_name "$WORKTREE_NAME"
-
+# --- 2. Pre-flight Setup ---
 if ! git rev-parse --git-dir > /dev/null 2>&1; then
-    err "Not inside a git repository. Please run this script from within a git project."
-    exit 1
-fi
-
-if ! git worktree list > /dev/null 2>&1; then
-    err "'git worktree' is not supported by the version of git on this system."
-    err "Please upgrade to Git 2.5 or later."
+    err "Not inside a git repository."
     exit 1
 fi
 
 CURRENT_WORKTREE_ROOT="$(git rev-parse --show-toplevel)"
-WORKTREES_BASE="$(resolve_directory_path "$WORKTREES_BASE_INPUT")"
+WORKTREES_BASE="$(resolve_directory_path "$WORKTREES_BASE_INPUT")" || exit 1
 
-load_worktree_metadata
+load_worktree_registry
 
-if ! resolve_target_worktree; then
-    exit 1
-fi
+# --- 3. Phase 1: Validate all requested worktrees (fail-fast) ---
+_LAST_PRES_MSG=""
 
-GIT_CONTEXT_PATH="$(resolve_git_context_path "$TARGET_WORKTREE_PATH")"
+for name in "${TARGET_NAMES[@]}"; do
+    validate_worktree_name "$name"     || exit 1
+    resolve_target_worktree "$name"    || exit 1
+    check_safety "$name"               || exit 1
 
-if [[ ! -d "$TARGET_WORKTREE_PATH" ]]; then
-    err "Worktree directory does not exist on disk: $TARGET_WORKTREE_PATH"
-    if [[ "$TARGET_PRUNABLE" == true ]]; then
-        detail "Git has already marked this worktree as prunable. Use 'git worktree prune' to clean stale metadata."
+    # All three queues are appended together in one place — no drift possible
+    QUEUED_PATHS+=("$TARGET_WORKTREE_PATH")
+    QUEUED_BRANCHES+=("$TARGET_BRANCH")
+    QUEUED_PRESERVATION_MSGS+=("$_LAST_PRES_MSG")
+    _LAST_PRES_MSG=""
+done
+
+# --- 4. Phase 2: Execute Teardown ---
+find_safe_context || exit 1
+
+# Move out of harm's way if CWD is inside a targeted worktree
+for qp in "${QUEUED_PATHS[@]}"; do
+    if [[ "$PWD" == "$qp" || "$PWD" == "$qp/"* ]]; then
+        cd "$SAFE_GIT_CONTEXT"
+        break
     fi
-    exit 1
+done
+
+info "Starting teardown of ${#QUEUED_PATHS[@]} worktree(s)..."
+[[ "$DRY_RUN" == true ]] && info "(dry-run mode — no changes will be made)"
+echo "----------------------------------------"
+
+# Disable set -e for the teardown loop so we can collect failures
+# rather than aborting on the first one.
+set +e
+for i in "${!QUEUED_PATHS[@]}"; do
+    teardown_with_tracking "$i" "${TARGET_NAMES[i]}"
+done
+set -e
+
+print_summary
+exit_code=$?
+
+if [[ "$DRY_RUN" == true && $exit_code -eq 0 ]]; then
+    info "Dry run finished. No changes were made."
 fi
 
-if [[ -z "$TARGET_HEAD" ]]; then
-    TARGET_HEAD="$(git -C "$TARGET_WORKTREE_PATH" rev-parse HEAD)"
-fi
-
-
-# =============================================================================
-# SAFETY CHECKS
-# =============================================================================
-
-WORKTREE_STATUS="$(worktree_status_output "$TARGET_WORKTREE_PATH")"
-
-if [[ -n "$WORKTREE_STATUS" && "$FORCE" != true ]]; then
-    err "Refusing to tear down '$WORKTREE_NAME' because the worktree has uncommitted changes."
-    detail "Review, commit, stash, or discard these changes first:"
-    printf '%s\n' "$WORKTREE_STATUS" >&2
-    exit 1
-fi
-
-if [[ -n "$WORKTREE_STATUS" && "$FORCE" == true ]]; then
-    warn "Force mode will remove a dirty worktree: $TARGET_WORKTREE_PATH"
-fi
-
-if [[ "$TARGET_LOCKED" == true && "$FORCE" != true ]]; then
-    err "Refusing to tear down '$WORKTREE_NAME' because the worktree is locked."
-    detail "Unlock it first, or rerun with --force if you are certain the lock is stale."
-    exit 1
-fi
-
-if merge_target_ref_candidate="$(resolve_ref "$MERGE_TARGET")"; then
-    MERGE_TARGET_REF="$merge_target_ref_candidate"
-    if is_commit_preserved_by_ref "$TARGET_HEAD" "$MERGE_TARGET_REF"; then
-        MERGED_TO_TARGET=true
-    fi
-fi
-
-if git -C "$GIT_CONTEXT_PATH" config --get "remote.$REMOTE.url" > /dev/null 2>&1; then
-    REMOTE_IS_CONFIGURED=true
-    if remote_ref_candidate="$(find_remote_ref_preserving_head "$TARGET_HEAD")"; then
-        REMOTE_HAS_PRESERVED_HEAD=true
-        REMOTE_PRESERVED_REF="$remote_ref_candidate"
-    fi
-fi
-
-if [[ "$FORCE" != true && "$MERGED_TO_TARGET" != true && "$REMOTE_HAS_PRESERVED_HEAD" != true ]]; then
-    err "Refusing to tear down '$WORKTREE_NAME' because its work is not preserved yet."
-    detail "HEAD $TARGET_HEAD is not reachable from '$MERGE_TARGET' or any '$REMOTE' remote-tracking ref."
-    if [[ -n "$TARGET_BRANCH" ]]; then
-        detail "Push '$TARGET_BRANCH' to '$REMOTE' or merge it into '$MERGE_TARGET', then rerun."
-    else
-        detail "Push the detached HEAD to '$REMOTE' or merge it into '$MERGE_TARGET', then rerun."
-    fi
-    if [[ "$REMOTE_IS_CONFIGURED" != true ]]; then
-        detail "Remote '$REMOTE' is not configured in this repository."
-    fi
-    if [[ -z "$MERGE_TARGET_REF" ]]; then
-        detail "Merge target '$MERGE_TARGET' does not resolve to a local or remote-tracking ref."
-    fi
-    exit 1
-fi
-
-if [[ "$FORCE" == true && "$MERGED_TO_TARGET" != true && "$REMOTE_HAS_PRESERVED_HEAD" != true ]]; then
-    warn "Force mode will remove work that is neither merged into '$MERGE_TARGET' nor preserved on '$REMOTE'."
-fi
-
-if [[ "$DELETE_BRANCH" == true && -n "$TARGET_BRANCH" ]]; then
-    OTHER_BRANCH_CHECKOUTS="$(collect_branch_checkouts_elsewhere "$TARGET_BRANCH" "$TARGET_WORKTREE_PATH")"
-
-    if [[ -n "$OTHER_BRANCH_CHECKOUTS" ]]; then
-        err "Cannot delete local branch '$TARGET_BRANCH' because it is still checked out elsewhere."
-        detail "Use --keep-branch or switch those worktrees to another branch first:"
-        printf '%s\n' "$OTHER_BRANCH_CHECKOUTS" >&2
-        exit 1
-    fi
-fi
-
-
-# =============================================================================
-# TEARDOWN
-# =============================================================================
-
-info "🗑   Removing worktree: $TARGET_WORKTREE_PATH"
-
-if [[ "$MERGED_TO_TARGET" == true ]]; then
-    info "🔒  Preservation check passed via merge target: $MERGE_TARGET_REF"
-elif [[ "$REMOTE_HAS_PRESERVED_HEAD" == true ]]; then
-    info "🔒  Preservation check passed via remote ref: $REMOTE_PRESERVED_REF"
-elif [[ "$FORCE" == true ]]; then
-    info "⚠️   Preservation checks were bypassed by --force."
-fi
-
-move_out_of_target_if_needed
-
-REMOVE_WORKTREE_COMMAND=(git -C "$GIT_CONTEXT_PATH" worktree remove)
-if [[ "$FORCE" == true ]]; then
-    REMOVE_WORKTREE_COMMAND+=(--force)
-fi
-REMOVE_WORKTREE_COMMAND+=("$TARGET_WORKTREE_PATH")
-run_step "${REMOVE_WORKTREE_COMMAND[@]}"
-
-if [[ "$DELETE_BRANCH" == true && -n "$TARGET_BRANCH" ]]; then
-    info "🌿  Deleting local branch: $TARGET_BRANCH"
-    DELETE_BRANCH_COMMAND=(git -C "$GIT_CONTEXT_PATH" branch -D "$TARGET_BRANCH")
-    run_step "${DELETE_BRANCH_COMMAND[@]}"
-elif [[ "$DELETE_BRANCH" == false && -n "$TARGET_BRANCH" ]]; then
-    info "🌿  Keeping local branch: $TARGET_BRANCH"
-fi
-
-if [[ "$DRY_RUN" == true ]]; then
-    info "✅  Dry run complete. No changes were made."
-elif [[ "$DELETE_BRANCH" == true && -n "$TARGET_BRANCH" ]]; then
-    info "✅  Done. Removed worktree and deleted local branch '$TARGET_BRANCH'."
-else
-    info "✅  Done. Removed worktree at: $TARGET_WORKTREE_PATH"
-fi
+exit $exit_code
