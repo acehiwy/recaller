@@ -5,12 +5,13 @@ services:
     build:
       dockerfile: local.Dockerfile
     volumes:
-        - app-git-worktrees:/home/node/worktrees
-        - .:/home/node/app
+      - app-git-worktrees:/home/node/worktrees
+      - .:/home/node/app
+      - ${HOME}/.agents:/home/node/.agents
+      - ${HOME}/.gemini:/home/node/.gemini
     ports:
       - 22222:22222
     command: bash -c "yarn install --immutable && yarn start"
-
 
 volumes:
   app-git-worktrees:
