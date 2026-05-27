@@ -1,6 +1,6 @@
 ---
 last_update:
-  date: 2026-04-07T07:58:07.199Z
+  date: 2026-05-27T11:23:17.751Z
 ---
 
 How do
@@ -24,3 +24,34 @@ continuing to work correctly, event when things go wrong
 
 6 The former term is slightly
 misleading: it suggests that we could make 
+
+fault is a component not bahave as its spec
+failure is when the system stop respond to the user
+
+
+## hardware fault
+
+hardware could be thee cause of failure. a hardware can live about 10 - 50 years
+
+### typical solution
+redunancy component is usually an approach
+hard disk -> store duplicate data in multiple hard disk (RAID configuration)
+server -> dual power supply
+data center -> use batteries or gas power generator
+
+
+## software error
+
+eg
+- a bug in software that crash multiple server instance
+- some process that consume lot of CPU or memory
+
+<Admonition type="info" title="info"> 
+
+When software error occur, it reveal that a software had made assumption about its environment.
+
+mostly the assumption was true , but eventually the error would occur
+
+</Admonition>
+
+there is no quick solution for software error
