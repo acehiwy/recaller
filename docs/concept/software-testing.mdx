@@ -1,0 +1,59 @@
+
+
+Multiple assertions are okay if they all verify the same behavior
+
+# Test the Edge Cases, Not Just the Happy Path
+Empty inputs, nulls, zero, negative numbers
+test boundary value
+N - 1  →  one step before the boundary
+N      →  the boundary itself  ← this is where bugs hide
+N + 1  →  one step after the boundary
+
+What happens when a dependency fails
+race condition fir asynccode
+
+
+
+Name Tests Like Sentences
+test("redirects to dashboard when credentials are valid")
+test("shows error message when password is wrong")
+
+
+Tests must not share mutable state. Each test sets up and tears down its own world. beforeEach is your friend; global state is your enemy.
+
+Don't Mock What You Don't Own
+Mocking third-party libraries (e.g., a database driver) tightly couples tests to implementation details. Instead, wrap external dependencies behind your own interface, then mock your interface.
+
+
+Unit Tests — write these when:
+
+Testing a single function, class, or module in isolation
+The logic is complex (calculations, transformations, business rules)
+You want fast feedback during development (should run in milliseconds)
+You can fully control inputs and verify outputs without the real world
+
+Good fit: Pure functions, algorithms, validators, formatters, state machines
+Hallmark: No real network, no real DB, no real filesystem. Everything external is mocked/stubbed.
+
+
+Integration Tests — write these when:
+Testing that two or more modules work correctly together
+A unit test would require so many mocks it stops being meaningful
+
+Good fit: Repository/data layer, service-to-service calls within your system, API route handlers with a real test DB
+
+
+End-to-End (E2E) Tests — write these when:
+
+Testing a complete user flow through the whole system
+Protecting your most critical business paths 
+
+
+
+
+Are you testing "did my mock return the right value"?
+  └─ You're testing the mock, not your code. Rethink.
+
+
+
+Test have sevirity too. write the critical bussiness cases before minor one
