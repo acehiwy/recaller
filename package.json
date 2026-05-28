@@ -14,9 +14,6 @@
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "wt": "./scripts/setup-worktree",
-    "wt:teardown": "./scripts/teardown-worktree",
-    "test:teardown": "./scripts/test-teardown-worktree",
     "prepare": "husky"
   },
   "dependencies": {
@@ -54,7 +51,7 @@
     ]
   },
   "engines": {
-    "node": ">=20.0"
+    "node": ">=22.0"
   },
-  "packageManager": "yarn@4.5.3"
+  "packageManager": "yarn@4.15.0"
 }
