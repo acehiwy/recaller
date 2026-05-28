@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM aienv
+FROM node:24-slim
 
 ARG CONTAINER_USER=node
 
@@ -12,11 +12,6 @@ RUN apt-get update -y && apt-get install --no-install-recommends -y \
   vim \
   # for handle Linux signals
   dumb-init \
-  # for tools to make requests
-  curl \
-  ca-certificates \
-  # for port forwarding
-  socat \
   && rm -rf /var/lib/apt/lists/*
 
 # create user if not exist
@@ -27,7 +22,6 @@ USER $CONTAINER_USER
 WORKDIR /home/${CONTAINER_USER}/app
 
 ENV PATH="/home/${CONTAINER_USER}/bin:${PATH}"
-
 RUN --mount=type=bind,source=package.json,target=package.json \
 <<EOF
 mkdir -p $HOME/bin
@@ -36,6 +30,5 @@ yarn --version
 EOF
 
 RUN mkdir node_modules
-RUN mkdir -p /home/${CONTAINER_USER}/worktrees
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
