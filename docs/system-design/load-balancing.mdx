@@ -1,0 +1,74 @@
+---
+last_update:
+  date: 2026-06-10T12:52:07.479Z
+---
+
+session persistence mean ensuring subsequent request from same user land on the same server instance
+
+## benefits
+
+load balancer allow
+
+- high availability
+- auto scaling
+- blue green deployment
+- SSL Termination
+
+## algorithm
+
+### round robin
+
+### least connection
+
+monitor open connection. direct to server that have fewest opened.
+
+### weighted round robin
+
+each server dont have same computation power. more computation power = more weight
+
+send task based on weight ratio
+
+### weighted least connection
+
+combine both. monitor open connection and calcuate server's weight. calculate based on those.
+
+### IP hash
+
+hash a value (typically IP address) ad send request to the server.
+
+this ensure same user hit the same server instance (session persistence , sticky session)
+
+### least response time
+
+keep track of active connection and response latency of each server instance.
+
+send request to instance have fastest response time.
+
+## SSL termination / TLS offloading
+
+SSL/TLS Termination mean decryping TLS at some server (load balance) to offload application server from TLS operations
+
+benefit
+
+- Centralized Certificate Management. each server dont have to manage it own TLS cert
+- reduce TLS operation time.
+  - load balancer may attached with spicilize hardware for doing cyptogrphy operation
+  - expensive TLS operation is on TLS handshake. load balance can do handshake with all server and keep connection alive for subsequent requests
+- layer 7 decrypt allow
+  - content based routing (URL path , cookie , headers) .
+  - can also analyze content for malicious
+  - do a DDOS protection
+  - content based caching
+
+<Admonition type="info" title="info">
+
+DNS load balancer is just load balance at DNS level. when resolving domain name. DNS load balancer do round robin return server's IP addreess
+
+</Admonition>
+<br />
+
+---
+
+# Sources
+
+- https://www.designgurus.io/learn-system-design/introduction-to-load-balancing

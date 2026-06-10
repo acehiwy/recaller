@@ -1,0 +1,16 @@
+---
+last_update:
+  date: 2026-06-10T12:52:07.479Z
+---
+
+Reason A: Sequential Writing vs. Random Searching
+Writing the actual database structure is Random I/O: Databases organize tables and indexes in a structured way (like a complex tree). If you insert or update a random row, that data might belong on block #4, the index update might belong on block #942, and another index on block #10,051. Shifting physical disk heads or solid-state controllers around to find and update random, scattered blocks takes a massive amount of time.
+
+Writing to the WAL is Sequential I/O: The WAL is a simple, append-only file. The database never searches, never alters old records, and never skips around the disk. It simply tacks the new intent log onto the very end of the file. Sequential writing is incredibly fast—even on older hard drives, and significantly more so on modern NVMe SSDs.
+
+Reason B: Grouping and Deferring (The Power of "Later")
+Because the WAL acts as a safety net, the database can hold the updated data in RAM for minutes at a time. This unlocks two massive optimization techniques:
+
+Write Amortization: If a single row is updated 100 times in one minute, the database writes 100 fast sequential logs to the WAL. However, when it comes time to write the final data structure to disk, it only flushes it once (the final state).
+
+I/O Batching: When the background process finally flushes data from RAM to disk, it sorts the data pages first. It turns what would have been thousands of frantic, random individual disk writes into a few smooth, contiguous block updates.

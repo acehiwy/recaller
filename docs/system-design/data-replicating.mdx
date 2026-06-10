@@ -1,0 +1,68 @@
+---
+last_update:
+  date: 2026-06-10T12:52:07.479Z
+---
+
+distributed system can replicate data for fault tolerance and high availability
+
+## leaderless (Quorum consensus)
+
+multiple instance of db work together
+
+Before an operation (like a read or a write) is considered successful, a minimum number of servers must agree on it.
+
+W is number of instance agreed on write operation
+R is number of instance agreed on read operation
+N is number of all instance
+
+W+R > N garantee strong consistentcy
+
+<Admonition type="tip" title="tip">
+
+Avoid R=1 and W=N (write-all, read-one)
+
+This means every write must succeed on every node. If even one node is down, writes fail. In real systems, nodes go down all the time, so writes will often fail.
+
+The sweet spot for most apps
+
+Most applications read far more often than they write. So a good rule of thumb is:
+
+1 < R < W < N
+
+</Admonition>
+
+using quorum ensure reliability and consistency (write and read take multiple instance agreement)
+
+quorum isn't primarily a read performance tool — it's a correctness and availability tool trade for extra latency.
+
+using quorum lead to lower availability cause multiple instance need to do some work.
+
+<Admonition type="note" title="note">
+
+Tunable per-operation consistency. This is the underrated one. A payment confirmation needs W=3, R=3, strong consistency. A user's "last seen online" status can tolerate W=1, R=1, eventual consistency.
+
+</Admonition>
+
+## Leader follower
+
+a single primary node for write operation , other replicas only serve read operation.
+
+scaling READ with high availability / low latency trade for consistency when write still propergate from leader to followers
+
+data propergation from leader can be either async or sync
+
+- async , after leader write to its local. it response immediately. data propergation to followers happen asychronously after
+- sync: wait for at least 1 replica. if time out leader fails back to asynchonous
+
+### when leader max out
+
+- audit index. find which write operation take much time. reduce index if needed
+- batch write operation.
+- patch write operation to message queue. consumer can pull and batch or execute write at sustainable rate
+  - trade for eventual consistency
+- domain Isolation: split high traffic write table(order, activity_logs) to dedicated database
+- vertical scaling
+- verify connection pool is used effectivly
+- sharing
+
+

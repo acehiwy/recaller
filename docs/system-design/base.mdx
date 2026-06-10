@@ -1,0 +1,22 @@
+---
+last_update:
+  date: 2026-06-10T12:52:07.479Z
+---
+
+# BASE
+
+system will be available at all time. it accept that data might not be consistent immediately, it would eventually becomes consistent
+
+## Basically Available
+
+it will always try to give you some response. It may not be the most up-to-date data, but the service remains up.
+
+## Soft State
+
+State of the system may change overtime even without new input (eventually consistent)
+
+state is changing in the background. user might not immediately see up-to-date state
+
+## Eventually Consistent
+
+The system guarantees that if no new updates are made, all copies of the data across all nodes will eventually converge to the same, consistent

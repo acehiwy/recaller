@@ -1,0 +1,26 @@
+---
+last_update:
+  date: 2026-06-10T12:52:07.479Z
+---
+
+# ACID
+
+## Atomicity
+
+transactions is either fully completely or not at all.
+
+## Consistency
+
+each transaction bring databast from one valid state to another valid state
+
+it dont violate its rules
+
+## Isolation
+
+Each transaction does not interfere with each other
+
+For instance, in an online inventory system, if one user is updating the stock count of a product, another user reading the stock at the same time should either see the old count or the new count, but nothing in-between
+
+## Durability
+
+Once transaction commited it wont be lost

@@ -1,0 +1,51 @@
+---
+last_update:
+  date: 2026-06-10T12:52:07.479Z
+---
+
+## message queue
+
+a message goes to one consumer and is deleted upon acknowledgment
+
+## pub/sub
+
+one meesage is broadcasted (fanned out) to multiple subscriber.
+
+if subscriber is offline and does not have a durable subscription setup. they miss the message
+
+## event stream
+
+<Color color="var(--secondary-font-color)">append only</Color> durable ordered log
+
+multiple consumers can read from stream without destroying the data
+
+
+
+
+## Benefit
+
+absorb traffice spikes
+decoupling producer / consumer
+offload heavy task in the background
+
+
+delivery guarantees
+
+at most once
+at least once
+exactly once (myth because of network partition)
+
+<Admonition type="note" title="note"> 
+
+consumer must be idempotent processing the message
+
+</Admonition>
+
+
+Pull vs. Push:
+Push: Broker sends to consumer. Risk of overwhelming a slow consumer.
+Pull: Consumer requests messages at its own pace.
+
+## tradeoff
+
+Ordering vs. Throughput: Global ordering (e.g., all messages for all users in strict sequence) destroys throughput. The standard solution is Partitioned Ordering (e.g., Kafka partitions): messages with the same key (e.g., user_id) go to the same partition, guaranteeing order per key, while allowing massive parallel throughput across partitions.

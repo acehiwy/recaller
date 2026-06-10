@@ -1,0 +1,49 @@
+---
+last_update:
+  date: 2026-06-10T12:52:07.479Z
+---
+
+# API gateway
+
+purpose is to provide single entry point. it forwads reuqest to appropriate services
+
+it can also do
+- authentication
+- rate limiting
+- caching
+- monitoring
+- logging
+- tls termination
+- circuit breaker (stop sending request to failed server)
+- transform request / response
+- combine response from multiple services
+- protocol transalation (HTTP to gRPC)
+- apply security rule (firewall / content scanning for malicious requests)
+
+## different between API gateway and load balancer
+
+api gate focus on routing request while load balancer focused on distributing request
+
+gateway route same request to the same destination
+load balancer could route to different destination
+
+gateway dont have distributed algorithm, it just route request based on defined rules
+
+<Admonition type="tip" title="tip">
+
+destination do the same task on load balancer while gateway destinations do different task
+
+</Admonition>
+
+<Admonition type="note" title="note"> 
+
+Scaling API gateway server is possible. put the gate way behide (L4) load balancer
+
+</Admonition>
+<br />
+
+---
+
+# Sources
+
+- https://www.designgurus.io/learn-system-design/introduction-to-api-gateway

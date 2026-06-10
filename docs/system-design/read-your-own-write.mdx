@@ -1,0 +1,16 @@
+---
+last_update:
+  date: 2026-06-10T12:52:07.479Z
+---
+
+when user write to server A 
+
+subsequent request to read that written data load balancer do sticky session, make user land on the same server instance
+
+
+when server response to write request. it could pass along timestamp token for that write operation
+when the client want to read the written data, they would send the read request along with the token
+if user land on different server instance (write does not populated yet), server compare attached token with token it read from it own storage
+
+it wait for write-sync if attached token is newer than it own or forward request to a replicat that is up to date
+

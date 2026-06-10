@@ -1,0 +1,145 @@
+---
+last_update:
+  date: 2026-06-10T12:52:07.479Z
+---
+
+# Caching
+
+reduce the number of times data needs to be fetched from its original source
+
+## Cache replacement policies / cache
+
+determine which item should be removed from cache when it full
+
+### Least recently used (LRU)
+
+assuming item that recently used would be used again.
+
+when item is read it move to the head of the line. item at the last of the line will be removed
+
+<Admonition type="info" title="info">
+
+track each item last read timestamp. remove one the have oldest.
+
+</Admonition>
+
+#### Failed when "Cache Scan Pollution".
+
+An operation (batch job, db scan) that would read huge amount of rarely accessed cache item.
+
+this would put hot-cache item the the back of the line (or being removed from cache)
+
+## Least Frequently Used (LFU)
+
+track each item read count. remove one the have the least read count (regardless of read timestamp)
+
+#### failed when Stale Accumulation / cache Pollution
+
+low-value items that were once popular stick around too long. (flash-sell item)
+
+LFU should pair with aging policy. If an item hasn't been accessed in a while, its counter is automatically decremented
+
+Sliding Window LFU
+
+instead of global time window. it only track frequentcy count on recent time window (last 10 min)
+
+## window tinyLFU
+
+tinyLFU is a rule that decide whether to allow incoming cache item to enter the cache (it is not an eviction policy)
+
+when cahce full and new item arrive, it compare frequentcy count of an existing item that would be evicted againt estimated frequentcy count of the new item
+
+lower one got kick out of / reject from entering the cache
+
+## FIFO-Reinsertion (Second Chance / Clock Algorithm)
+
+Rather than evicting the oldest item immediately, the system checks a "reference bit" (set to 1 when accessed). If the bit is 1, it clears the bit to 0 and moves the item to the back of the queue, giving it a "second chance." If the bit is already 0, it is evicted.
+
+## cache invalidation
+
+### time to live
+
+simple. not used that much
+
+### read through
+
+application read from cache. if cache miss the cache instance fetch from source, update itself and return latest response to application
+
+### cache-aside
+
+application responsible for interacting with both cache instance and source
+
+on read, fetch from cache if missed the fetch from source then make update / delete to cache instance
+
+on write, delete the cache key.
+
+<Admonition type="tip" title="tip">
+
+Deleting the key is safer than updating it directly because multiple concurrent writes could cause race conditions (e.g., an older write overwriting a newer write in the cache).
+
+</Admonition>
+
+## write through
+
+write operation write to cache instance and source.
+
+```text title= showLineNumbers
+app -> cache
+    -> source
+
+app -> cahce -> source
+```
+
+write operation considered success when both request success
+
+it provide strong consistency trade off with write latency (waiting for both request to complete)
+
+## write behide / write back
+
+application write to cache then cache return response immediately while asychromously make write request to source
+
+provide low write latency tradeoff with risk of data loss if async write process to source is not success
+
+### Change data capture (CDC)
+
+application write to source. the source publish change event to Queue. A dedicate cache invalidation worker consume the event and invalidate the cache key
+
+decouple application from caching operation
+
+<Admonition type="note" title="note">
+
+Cache invalidation must be evaluate with PACELC theorem
+
+choosing between Latency and consistency
+
+</Admonition>
+
+## Edge case & mitigation strategies
+
+### cache penetration
+
+Requesting the key that does not exist in the source. the request hit the cache then hit the source.
+
+every single request flood the database
+
+#### mitigation
+
+implement bloom filter at API gateway to quickly check if the key exist
+
+## Cache Breakdown (Cache Stampede / Thundering Herd)
+
+a hot-key cache serve million of request per second. when it expired / remove from the cache, millon of request hit the database
+
+#### mitigateion
+
+- use mutex locking. only first request is allow to hit the database and re-build the cache. other request must wait or get stale data temporaily
+
+- implement background job that watch and refresh hot-key before its TTL expires
+
+<br />
+
+---
+
+# Sources
+
+- https://www.designgurus.io/learn-system-design/introduction-to-caching

@@ -1,0 +1,37 @@
+---
+last_update:
+  date: 2026-06-10T12:52:07.479Z
+---
+
+CAP
+
+distrubuted system can only chose 2 out of 3
+
+## consistency
+
+all nodes see the same data at the same time.
+
+
+## availability
+
+the system always respons to request (could be stale data but cannot response error)
+
+every request to non-failing node must return response
+
+## Parition tolerance
+
+system continues to operate while network communication fail between nodes
+
+
+## chooing CA is not possible
+
+network partition (failed network communication) will happen
+
+in realword you can either chose consistency or availability when network partition occur
+
+
+## PACELC
+
+If there is a Partition chose between Availability or Consistency Else choose between Latency or Consistency.
+
+this apply in normal network conditions not just focusing on network partition happening

@@ -1,0 +1,68 @@
+---
+last_update:
+  date: 2026-06-10T12:52:07.479Z
+---
+
+# Data Partitioning
+
+## vertical partitioning
+
+split subset of columns into separate db instance
+
+eg.
+
+- column 1-5 into server A , column 6-10 into server B.
+- user table on A. order table on B
+
+## range based sharding
+
+chose partition key based on range of data.
+
+eg. use data ranges as key
+
+- date 1-10 goes into one instance, 11-20 goes to another . so on
+
+<Admonition type="caution" title="caution">
+
+Make sure work load is evenly distributed across partitions.
+
+chose partition key based on rage is not ideal.
+
+</Admonition>
+
+## hash based sharding
+
+typical approach. partition key goes into consistent hashing function. evenly devide workload across shards
+
+## directory based sharding
+
+create a lookup table that point which data should goes to which shard
+
+eg.
+
+1. The Request: An application wants to find data for User_ID: 402.
+1. The Directory Lookup: The system checks the central directory table: "Where is User 402?"
+1. The Mapping: The directory replies: "User 402 is on Shard C."
+1. The Fetch: The system goes directly to Shard C to get the data.
+
+### Benefit
+
+VIP customer that make million request could be assigned to it own shard separate from normal user
+
+### downside
+
+have to maintain a lookup table (directory) and its caching add massive overhead. could cause single point of failure
+
+<Admonition type="note" title="note"> 
+
+Make sure choosing partition key(s) is evenly distributed data across shards
+
+</Admonition>
+
+
+## tradeoff
+
+cross partition queries expensive. workaround is to denormalize data
+
+data migration from shard to shard. eg chose new partition key
+

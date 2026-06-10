@@ -1,0 +1,55 @@
+---
+last_update:
+  date: 2026-06-10T12:52:07.479Z
+---
+
+# Content Delivery Network
+
+reduce latency of web app by serving content from nearest server (edge server) to the user
+
+edge server cache content for further access. when request hit the edge server, it check cache if cache miss then edge server fetch content from the origin server and caches it
+
+<Admonition type="info" title="info">
+
+Point of Presence (PoP) is physical localtion where CDN / edge servers are deployed
+
+</Admonition>
+
+<Admonition type="note" title="note">
+
+Cache warming is process of preloading content to server before requested by user
+
+</Admonition>
+
+<Admonition type="note" title="note">
+
+Origin server send request with cache control header to CDN server, controlling TTL
+
+</Admonition>
+
+CDN / edge server also provide
+
+- web application firewall (WAF)
+- DDos protection- TLS termination
+- JWT authentication
+
+## Anycast
+
+a network routing method which incoming request can be routed to different IP (location / server).
+
+typically route to nearest location
+
+multiple server share the same IP. when request hit, the root node route request to the most optimal server (base on latency and network hop)
+
+## geoDNS
+
+lookup on which IP is the most optimal for an incoming domain name
+
+Tokyo incomming would get 4.4.4.4 but England incomming would get 5.5.5.5
+
+
+## Push / Pull CDN
+
+Pull CDN is typical CDN. content is pull from origin by CDN when request hit CDN
+
+Push is origin push content to multiple CDN without request incomming
