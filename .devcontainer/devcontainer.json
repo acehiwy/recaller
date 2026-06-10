@@ -1,12 +1,20 @@
 {
 	"name": "${localWorkspaceFolderBasename}",
-	"dockerComposeFile": [
-		"../compose.yaml",
-		"docker-compose.yml"
+	"build": {
+		"context": "..",
+		"dockerfile": "../local.Dockerfile"
+	},
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"forwardPorts": [
+		22222
 	],
-	"service": "app",
-	"workspaceFolder": "/home/node/app",
-	"postStartCommand": "yarn install --immutable && yarn start",
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {
+			"version": "latest",
+			"ppa": "false"
+		}
+	},
+	"postStartCommand": "pnpm i --frozen-lockfile && pnpm start --host 0.0.0.0",
 	"customizations": {
 		"vscode": {
 			"extensions": [

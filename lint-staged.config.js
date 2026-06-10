@@ -1,3 +1,3 @@
 module.exports = {
-  '*.{md,mdx}': ['yarn update-last-updated'],
+  '*.{md,mdx}': ['pnpm update-last-updated'],
 };

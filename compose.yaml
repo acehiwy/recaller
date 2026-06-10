@@ -5,11 +5,7 @@ services:
     build:
       dockerfile: local.Dockerfile
     volumes:
-      - app-node-modules:/home/node/app/node_modules
-      - .:/home/node/app
+      - .:/workspaces
     ports:
       - 22222:22222
-    command: bash -c "yarn install --immutable && yarn start"
-
-volumes:
-  app-node-modules:
+    command: bash -c "pnpm i && pnpm start --host 0.0.0.0"
