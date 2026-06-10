@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",
-    "s": "yarn start",
-    "start": "docusaurus start --host 0.0.0.0 --port 22222 --no-open",
+    "s": "pnpm start",
+    "start": "docusaurus start --port 22222 --no-open",
     "build": "docusaurus build",
     "update-last-updated": "node update-last-updated.mjs",
     "swizzle": "docusaurus swizzle",
@@ -52,6 +52,5 @@
   },
   "engines": {
     "node": ">=22.0"
-  },
-  "packageManager": "yarn@4.15.0"
+  }
 }
