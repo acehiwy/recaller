@@ -5,9 +5,6 @@
 		"dockerfile": "../local.Dockerfile"
 	},
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-	"forwardPorts": [
-		22222
-	],
 	"features": {
 		"ghcr.io/devcontainers/features/git:1": {
 			"version": "latest",
