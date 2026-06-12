@@ -4,3 +4,7 @@ allowBuilds:
 
 overrides:
   webpack: 5.105.3
+
+minimumReleaseAge: 86400 # 60 days
+trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 262800 # 6 months
