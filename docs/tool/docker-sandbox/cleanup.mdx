@@ -1,0 +1,24 @@
+---
+last_update:
+  date: 2026-06-23T14:38:19.324Z
+---
+
+# Clean up
+
+## stop sandbox
+
+```text title= showLineNumbers
+sbx stop <sandbox-name>
+```
+
+## remove sandbox
+
+```text title= showLineNumbers
+sbx rm <sandbox-name>
+```
+
+<Admonition type="caution" title="caution">
+
+Removing sandbox delete everything inside it (installed packages, docker images). Files on host mapped into sandbox are unaffected.
+
+</Admonition>

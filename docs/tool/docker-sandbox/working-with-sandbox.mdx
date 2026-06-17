@@ -1,0 +1,205 @@
+---
+last_update:
+  date: 2026-06-23T14:38:19.324Z
+---
+
+# Working with sandboxes
+
+## run sandbox and attach agent
+
+```text title= showLineNumbers
+sbx run <agent name> [path to directory]
+```
+
+create sandbox and attach claude code to current directory
+
+```text title= showLineNumbers
+sbx run claude
+```
+
+create sandbox and attach opencode to `foo` directory
+
+```text title= showLineNumbers
+sbx run opencode ~/path/to/foo
+```
+
+## get a shell inside sandbox
+
+```text title= showLineNumbers
+sbx exec -ti <sandbox-name> bash
+```
+
+<Admonition type="note" title="note">
+
+`sbx exec` would default land on `/home/agent/workspace` directory unless `-w | --workdir <path inside sandbox>` (working directory) is passed
+
+</Admonition>
+
+## view existing sandboxes
+
+```text title= showLineNumbers
+sbx ls
+```
+
+## managing sandboxes
+
+lunch interactive TUI dashboard for managing sandboxes
+
+```text title= showLineNumbers
+sbx
+```
+
+select sandbox:
+
+- `enter` to attach agent (`sbx run`)
+- `x` to open shell inside sandbox (like `sbx exec` but land on mapped directory)
+
+## git workflow
+
+### default mode
+
+a directory from host is mapped to sandbox. read-write from both side affect another
+
+### clone mode
+
+```text title= showLineNumbers
+sbx create --clone claude .
+```
+
+copy git repo from host to sandbox.
+
+the git repo in sandbox become a new git remote which you can interact from host machine
+
+agent can push to this remote then you on the host can review and merge changes from sandbox remote to main remote
+
+<Admonition type="note" title="note">
+
+clone mode follows whichever ref your host repository has checked out at create time
+
+</Admonition>
+
+<Admonition type="note" title="note">
+
+sandbox git remote is available on host to interact only when sandbox is running
+
+</Admonition>
+
+<Admonition type="caution" title="caution">
+
+Removing cloned sandbox permanently remove sandbox git remote.
+
+Besure to fetch or merge the commit from sandbox remote to host.
+
+</Admonition>
+
+### clone mode limitation
+
+clone mode only work on when directory have `.git` dir.
+
+`.git` must contain repo information.
+
+it can not work on repo which `.git` is a pointer file (eg. worktree directory)
+
+## mount directories into workspaces
+
+```text title= showLineNumbers
+sbx run claude ~/main-project ~/shared-dir:ro ~/docs:ro
+```
+
+<Admonition type="note" title="note">
+
+Path of mounted directories are replicated to the sandbox.
+
+eg. if host directory location is `/foo/bar/dir-1` then sandbox directory location will be `/foo/bar/dir-1`
+
+</Admonition>
+
+<Admonition type="note" title="note">
+
+append `:ro` to mount as read-only
+
+</Admonition>
+
+## give unique identity to a sandbox
+
+use `--name` option
+
+```text title=
+sbx run --name foo-bar claude /path/to/foo/bar
+```
+
+## create sandbox without attaching
+
+```text title= showLineNumbers
+sbx create claude path/to/dir
+```
+
+## copying file between host and sandbox
+
+```text title= showLineNumbers
+sbx cp ./config.json my-sandbox:/home/user/
+sbx cp my-sandbox:/home/user/output.log ./
+sbx cp ./src/ my-sandbox:/home/user/src
+```
+
+## accessing service in the sandbox
+
+done by publish port
+
+```text title= showLineNumbers
+sbx ports my-sandbox --publish [<host port>:]<sandbox service port>
+```
+
+```text title= showLineNumbers
+sbx ports my-sandbox --publish 8080:3000
+```
+
+### unpublish port
+
+```text title= showLineNumbers
+sbx ports my-sandbox --unpublish 8080:3000
+```
+
+<Admonition type="note" title="note">
+
+Service running on sandbox must listen on all network interfaces in order to be accessed from host
+
+</Admonition>
+
+<Admonition type="info" title="info">
+
+Port can only be published after sandbox is running
+
+</Admonition>
+
+<Admonition type="info" title="info">
+
+Port are lost when sandbox stops
+
+</Admonition>
+
+## accessing host service from inside sandbox
+
+if service is running on host at `localhost:1234`
+
+you need to allow network policy
+
+```text title= showLineNumbers
+sbx policy allow network my-sandbox-name localhost:1234
+```
+
+then inside sandbox can access host by reference `host.docker.internal`
+
+eg.
+
+```text title= showLineNumbers
+curl http://host.docker.internal:1234
+```
+
+<br />
+
+---
+
+# Sources
+
+- https://docs.docker.com/ai/sandboxes/usage

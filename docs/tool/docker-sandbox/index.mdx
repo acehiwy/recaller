@@ -1,0 +1,50 @@
+---
+last_update:
+  date: 2026-06-23T14:38:19.324Z
+---
+
+# Docker sandbox
+
+<Color color="var(--primary-font-color)">Based on version 0.32</Color>
+
+## Setup and installation
+
+```text title= showLineNumbers
+brew install docker/tap/sbx
+```
+
+login with docker account
+
+```text title= showLineNumbers
+sbx login
+```
+
+then chose network policy. `Balanced` is good for starting,
+
+it block all out going network traffic from the sandbox except common trusted domain (google.com, npmjs.com, docker etc).
+
+## network policy
+
+sandbox are allow / disallow to make request to certain domain base on network policy
+
+view global network policy (apply to all sandboxes)
+
+```text title= showLineNumbers
+sbx policy ls
+```
+
+### allow network access
+
+to `foo.com`
+
+```text title= showLineNumbers
+sbx policy allow network foo.com
+```
+
+<br />
+
+---
+
+# Sources
+
+- https://docs.docker.com/ai/sandboxes/get-started/
